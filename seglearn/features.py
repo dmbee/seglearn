@@ -210,6 +210,10 @@ def _compute_features(X, features, corr_feats):
     Nuv = len(features)
     fts = np.zeros((N, Nuv * D))
 
+    # todo: change this to use append, and concatenate along columns
+    # we'll need number of variables for each for the labels, maybe by running it once and checking width this is a good idea at the fit stage, run on one series,
+    # check each n is equal and how many outputs, then we can send names and features sizes.
+    # make corr features just another thing in the dictionary
     for i in range(Nuv):
         fts[:, i * D:((i + 1) * D)] = features[i](X['ts'])
 
