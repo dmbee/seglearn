@@ -1,11 +1,37 @@
+'''
+This module is an sklearn compatible pipeline for machine learning
+time series data and sequences using a sliding window segmentation
+'''
+# Author: David Burns
+# License: BSD
+
+
 import numpy as np
 from sklearn.utils.metaestimators import _BaseComposition
 from sklearn.utils.validation import check_is_fitted
 from sklearn.pipeline import Pipeline
 
-# make an option for est to be none
-
 class SegPipe(_BaseComposition):
+    '''
+    The pipeline supports learning multi-variate time series with or without relational static variables (see introduction).
+
+    The purpose of this pipeline is to assemble the segmentation, feature extraction (optional), feature processing (optional), and final estimator steps into a single pipeline that can be cross validated together setting different parameters.
+
+    The pipeline is applied in three steps.
+
+    The first step is applied by the 'feed' pipeline (or transformer) that performs the sliding window segmentation, and optionally any feature extraction. Feature extraction is not required for estimators that learn the segments directly (eg a recurrent neural network). Feature extraction can be helpful for classifiers such as RandomForest or SVC that learn a feature representation of the segments.
+
+    The second step expands the target vector (y), aligning it with the segments computed during the first step. The segmentation changes the effective number of samples available to the estimator, which is not supported within native sklearn pipelines and is the motivation for this extension.
+
+    The third step applies the 'est' estimator pipeline (or estimator) that performs additional feature processing (optional) and applies the final estimator for classification or regression.
+
+    Parameters
+    ----------
+    feed : Segment transformer or sklearn pipeline chaining Segment with a feature extractor
+    est : sklearn estimator or pipeline for feature processing (optional) and applying the final estimator
+    shuffle : bool, optional
+        shuffle the segments before fitting the 'est' pipeline (recommended)
+    '''
     def __init__(self, feed, est, shuffle = True):
         self.feed = feed
         self.est = est

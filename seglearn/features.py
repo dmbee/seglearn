@@ -1,6 +1,8 @@
 '''
 This module is for calculating hand-coded (eg statistical, heuristic, etc) from a segmented time series.
 '''
+# Author: David Burns
+# License: BSD
 
 import numpy as np
 import scipy.stats as stats
@@ -17,16 +19,16 @@ class SegFeatures(BaseEstimator, TransformerMixin):
     Parameters
     ----------
     features : dict, optional
-        Dictionary of functions for calculating features from a segmented time series. If not specified, a default
-        feature dictionary will be used (see _base_features)
-
+        Dictionary of functions for calculating features from a segmented time series.
         Each function in the dictionary is specified to compute features for all variables
         in the segmented time series along axis 1 (the segment) eg:
-            def mean_fun(X):
-                F = np.mean(X, axis = 1)
-                return(F)
+            >>> def mean_fun(X):
+            >>>    F = np.mean(X, axis = 1)
+            >>>    return(F)
             X : array-like shape [n_samples, segment_width, n_variables]
             F : array-like [n_samples, n_variables]
+
+        If features is not specified, a default feature dictionary will be used (see _base_features)
 
     corr_features : bool, optional
         If true, correlation features will be computed between the variables of a multi-variate time series
@@ -48,11 +50,12 @@ class SegFeatures(BaseEstimator, TransformerMixin):
         X : segmented time-series data, array-like shape [n_series, ...]
             Can be a list, numpy array or numpy recarray of segmented time series'.
 
-            Each segmented time series in X is array-like with shape [n_samples, segment_width, n_variables]
-            n_samples can be different for each series, but segment_width and n_variables must be constant
+            Each element of X is array-like shape [n_samples, segment_width, n_variables]
+            n_samples can be different for each element of X
+            segment_width and n_variables must be constant
 
             If X is a recarray, the time series data must have name "ts".
-            Static variables associated with each series can be named arbitrarily. See Introduction.
+            Static variables associated with each series can be named arbitrarily.
         y : None
             There is no need of a target in a transformer, yet the pipeline API requires this parameter.
         x_labels : array-like, optional
@@ -79,21 +82,22 @@ class SegFeatures(BaseEstimator, TransformerMixin):
         with the returned feature data.
 
         Parameters
-        ----------
         X : segmented time-series data, array-like shape [n_series, ...]
             Can be a list, numpy array or numpy recarray of segmented time series'.
 
-            Each segmented time series in X is array-like with shape [n_samples, segment_width, n_variables]
-            n_samples can be different for each series, but segment_width and n_variables must be constant
+            Each element of X is array-like shape [n_samples, segment_width, n_variables]
+            n_samples can be different for each element of X
+            segment_width and n_variables must be constant
 
             If X is a recarray, the time series data must have name "ts".
-            Static variables associated with each series can be named arbitrarily. See Introduction.
+            Static variables associated with each series can be named arbitrarily.
 
         Returns
         -------
         X_new : array shape [n_series, ...]
             The returned feature data, including features computed from the time-series' and any static variables
-            Each element in X_new is array-like with shape [n_samples, n_features]
+
+            Each element in X_new is array-like shape [n_samples, n_features]
         '''
         check_is_fitted(self,'f_labels')
         N = len(X)
@@ -223,6 +227,7 @@ def _compute_features(X, features, corr_feats):
 def _corr_features(X):
     '''
     calculates pearson correlation for all variables in a segmented time series
+
     Parameters
     ----------
     X : array-like shape [n_samples, segment_width, n_variables]
@@ -246,6 +251,7 @@ def _corr_features(X):
 def mean_crossings(X):
     '''
     Computes number of mean crossings for each variable in a segmented time series
+
     Parameters
     ----------
     X : array-like shape [n_samples, segment_width, n_variables]

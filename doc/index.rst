@@ -3,13 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to sklearn-template's documentation!
-============================================
+Seglearn
+========
 
-This project is a reference implementation to anyone who wishes to develop
-scikit-learn compatible classes. It comes with a `template` module which
-contains a single estimator with unit tests.
-
+This project is an sklearn extension for machine learning time series or sequences using a sliding window segmentation. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and a final estimator compatible with sklearn model evaluation and parameter optimization tools. Seglearn supports multivariate time series data with relational static variables.
 
     .. toctree::
        :maxdepth: 2
