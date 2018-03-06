@@ -1,6 +1,6 @@
-recursive-include doc *
-recursive-include examples *
-recursive-include data *
+include seglearn/data/*
+include examples/*
+include doc/*
 include requirements.txt
 include README.md
 include LICENSE

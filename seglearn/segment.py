@@ -25,13 +25,17 @@ class Segment(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         check_is_fitted(self, 'step')
-        Xt = np.array([sliding_tensor(X['ts'][i], self.width, self.step) for i in range(len(X))])
+        N = len(X)
+        if X['ts'][0].ndim > 1:
+            Xt = np.array([sliding_tensor(X['ts'][i], self.width, self.step) for i in np.arange(N)])
+        else:
+            Xt = np.array([sliding_window(X['ts'][i], self.width, self.step) for i in np.arange(N)])
         h_names = [h for h in X.dtype.names if h != 'ts']
         Xh = [X[h] for h in h_names]
         X_new = np.core.records.fromarrays([Xt] + Xh, names=['ts'] + h_names)
         return X_new
 
-def sliding_window(time_series, step, width):
+def sliding_window(time_series, width, step):
     '''
     segments time_series with sliding windows
     :param time_series: numpy array shape (T,)
@@ -39,8 +43,6 @@ def sliding_window(time_series, step, width):
     :param width: length of window in samples
     :return: segmented time_series, numpy array shape (N, width)
     '''
-    assert step >= 1
-    assert width >= 1
     w = np.hstack(time_series[i:1 + i - width or None:step] for i in range(0, width))
     return w.reshape((int(len(w)/width),width),order='F')
 
@@ -52,11 +54,6 @@ def sliding_tensor(mv_time_series, width, step):
     :param step: number of data points to advance for each window
     :return: multivariate temporal tensor, numpy array shape (N, W, D)
     '''
-
-    data = []
     D = mv_time_series.shape[1]
-
-    for j in range(D):
-        data.append(sliding_window(mv_time_series[:, j], step, width)) # each item is NxW, list length D
-
+    data = [sliding_window(mv_time_series[:, j], width, step) for j in range(D)]
     return np.stack(data, axis = 2)

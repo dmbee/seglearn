@@ -46,9 +46,6 @@ class TemporalKFold():
                 Njs = int(len(X[j]) / self.n_splits)
                 X_new.append(X[j][(Njs*i):(Njs*(i+1))])
 
-
-
-
         return X_new
 
 

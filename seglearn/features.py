@@ -43,21 +43,27 @@ class SegFeatures(BaseEstimator, TransformerMixin):
     Examples
     --------
 
-    >>> from seglearn.features import SegFeatures, mean, var, std, mean_crossings, skew
+    >>> from seglearn.features import SegFeatures, mean, var, std, skew
     >>> from seglearn.pipe import SegPipe
     >>> from seglearn.segment import Segment
+    >>> from seglearn.datasets import load_watch
     >>> from sklearn.pipeline import Pipeline
     >>> from sklearn.ensemble import RandomForestClassifier
     >>> import numpy as np
-
-
+    >>> data = load_watch()
+    >>> fts = {'mean': mean, 'var': var, 'std': std, 'skew': skew}
+    >>> feed = Pipeline([('segment', Segment()),('features', SegFeatures(fts))])
+    >>> est = RandomForestClassifier()
+    >>> pipe = SegPipe(feed, est)
+    >>> pipe.fit(data['X'], data['y'])
+    >>> print(pipe.score(data['X'], data['y']))
 
     '''
     def __init__(self, features = None, multithread = False):
         self.multithread = multithread
         self.features = features
         if features is None:
-            self.features = self.base_features()
+            self.features = base_features()
 
     def fit(self, X, y = None):
         '''
@@ -120,14 +126,6 @@ class SegFeatures(BaseEstimator, TransformerMixin):
         if hasattr(self, 'f_labels'):
             del self.f_labels
 
-    def base_features(self):
-        ''' Returns data dictionary of some basic features that can be calculated for segmented time series data '''
-        features = {'mean': mean,
-               'std': std,
-               'var': var,
-               'mnx': mean_crossings}
-        return features
-
     def _check_features(self, features, X):
         '''
         tests output of each feature against a segmented time series X
@@ -174,11 +172,6 @@ class SegFeatures(BaseEstimator, TransformerMixin):
 
         return f_labels
 
-    def _arglist(self, X):
-        ''' generates argument list for threading feature computation from rec-array time-series data '''
-        N = len(X)
-        return [[X[i], list(self.features.values()), self.corr_features] for i in range(N)]
-
 def _feature_thread(args):
     ''' helper function for threading '''
     return _compute_features(*args)
@@ -188,7 +181,7 @@ def _compute_features(X, features):
     Computes features for a segmented time series
     Parameters
     ----------
-    X : recarray element or dict
+    X : recarray element 
         segmented time series data keyed ['ts']
         and any other static data associated for the series
     features : dict
@@ -201,46 +194,35 @@ def _compute_features(X, features):
 
     '''
     N = X['ts'].shape[0]
-    #W = X.shape[1]
-    D = X['ts'].shape[2]
-
-    Nuv = len(features)
-    fts = np.zeros((N, Nuv * D))
-
+    Xt = np.atleast_3d(X['ts'])
     # computed features
-    for i in range(Nuv):
-        fts[:, i * D:((i + 1) * D)] = features[i](X['ts'])
-
+    fts = [features[i](Xt) for i in range(len(features))]
     # static features
-    hnames = [h for h in X.dtype.names if h != 'ts']
-    for h in hnames:
-        fts = np.column_stack([fts,np.full(N,X[h])])
+    s_fts = [np.full(N,X[s]) for s in X.dtype.names if s!= 'ts']
+    fts = np.column_stack(fts+s_fts)
 
     return fts
 
-def mean_crossings(X):
-    '''
-    Computes number of mean crossings for each variable in a segmented time series
+def base_features():
+    ''' Returns data dictionary of some basic features that can be calculated for segmented time series data '''
+    features = {'mean': mean,
+                'std': std,
+                'var': var,
+                'mnx': mean_crossings}
+    return features
 
-    Parameters
-    ----------
-    X : array-like shape [n_samples, segment_width, n_variables]
-        segmented time series instance
-
-    Returns
-    -------
-    mnx : array-like shape [n_samples, n_variables]
-        mean crossings
-    '''
-    N = X.shape[0]
-    D = X.shape[2]
-    mnx = np.zeros((N,D))
-    for i in range(D):
-        pos = X[:,:,i] > 0
-        npos = ~pos
-        c = (pos[:,:-1] & npos[:,1:]) | (npos[:,:-1] & pos[:,1:])
-        mnx[:,i] = np.count_nonzero(c,axis=1)
-    return mnx
+def all_features():
+    features = {'mean' : mean,
+                'std': std,
+                'var': var,
+                'min': min,
+                'max': max,
+                'skew': skew,
+                'kurt': kurt,
+                'hist4': hist4,
+                'mse': mse,
+                'mnx': mean_crossings}
+    return features
 
 def mean(X):
     ''' statistical mean for each variable in a segmented time series '''
@@ -287,6 +269,31 @@ def hist4(X):
 def mse(X):
     ''' computes mean spectral energy for each variable in a segmented time series '''
     return np.mean(np.square(np.abs(np.fft.fft(X, axis=1))), axis=1)
+
+def mean_crossings(X):
+    '''
+    Computes number of mean crossings for each variable in a segmented time series
+
+    Parameters
+    ----------
+    X : array-like shape [n_samples, segment_width, n_variables]
+        segmented time series instance
+
+    Returns
+    -------
+    mnx : array-like shape [n_samples, n_variables]
+        mean crossings
+    '''
+    N = X.shape[0]
+    D = X.shape[2]
+    mnx = np.zeros((N,D))
+    for i in range(D):
+        pos = X[:,:,i] > 0
+        npos = ~pos
+        c = (pos[:,:-1] & npos[:,1:]) | (npos[:,:-1] & pos[:,1:])
+        mnx[:,i] = np.count_nonzero(c,axis=1)
+    return mnx
+
 
 def corr2(X):
     '''
