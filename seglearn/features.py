@@ -14,7 +14,9 @@ from sklearn.utils.validation import check_is_fitted
 
 class SegFeatures(BaseEstimator, TransformerMixin):
     '''
-    A transformer for calculating hand-coded features from a segmented time series
+    A transformer for calculating hand-coded features from segmented time series data.
+
+    This transformer generates tabular feature data from the segmented time series', by computing the same feature set for each segment from each time series in the data set. This transformer, if used, follows the Segment transformer in the 'feed' pipeline for the SegPipe class.
 
     Parameters
     ----------
@@ -33,6 +35,23 @@ class SegFeatures(BaseEstimator, TransformerMixin):
 
     multithread: bool, optional
         If true, will use multithreading to compute the features
+
+    Attributes
+    ----------
+    f_labels : list of string feature labels (in order) corresponding to the computed features
+
+    Examples
+    --------
+
+    >>> from seglearn.features import SegFeatures, mean, var, std, mean_crossings, skew
+    >>> from seglearn.pipe import SegPipe
+    >>> from seglearn.segment import Segment
+    >>> from sklearn.pipeline import Pipeline
+    >>> from sklearn.ensemble import RandomForestClassifier
+    >>> import numpy as np
+
+
+
     '''
     def __init__(self, features = None, multithread = False):
         self.multithread = multithread

@@ -23,6 +23,7 @@ setup(name='seglearn',
       description='Machine Learning with Time Series Segmentation',
       author='David Burns',
       packages=find_packages(),
+      include_package_data=True,
       install_requires=INSTALL_REQUIRES,
       author_email='david.mo.burns@gmail.com',
       )
