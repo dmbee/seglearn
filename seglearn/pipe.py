@@ -37,12 +37,12 @@ class SegPipe(_BaseComposition):
         self.est = est
         self.shuffle = shuffle
 
-    def fit(self, X, y, **feed_fit_params):
+    def fit(self, X, y, **est_fit_params):
         ''' X can be array like time series or a dictionary with time and heuristic data '''
         self._reset()
-        self._check_data(X)
+        X = self._check_data(X)
 
-        self.feed.fit(X, y, **feed_fit_params)
+        self.feed.fit(X, y)
         X = self.feed.transform(X)
 
         if type(self.feed) is Pipeline:
@@ -53,21 +53,22 @@ class SegPipe(_BaseComposition):
         X, y = self._ts_expand(X, y)
         self.N_train = len(X)
         if self.shuffle is True:
-            X, y = self._shuffle(X, y)
-        self.est.fit(X, y)
+            # X, y = self._shuffle(X, y)
+            pass
+        self.est.fit(X, y, **est_fit_params)
 
     def transform(self, X, y = None):
         check_is_fitted(self, 'N_train')
-        self._check_data(X)
+        X = self._check_data(X)
         X = self.feed.transform(X)
         X, y = self._ts_expand(X, y)
-        return self.est.transform(X), y
+        return self.est.transform(X, y), y
 
 
-    def predict(self, X, y, **feed_fit_params):
+    def predict(self, X, y):
         check_is_fitted(self, 'N_train')
 
-        self._check_data(X)
+        X = self._check_data(X)
         X = self.feed.transform(X)
         X, y = self._ts_expand(X, y)
         yp = self.est.predict(X)
@@ -78,7 +79,7 @@ class SegPipe(_BaseComposition):
     def score(self, X, y, sample_weight = None):
         check_is_fitted(self, 'N_train')
 
-        self._check_data(X)
+        X = self._check_data(X)
         X = self.feed.transform(X)
         X, y = self._ts_expand(X, y)
         self.N_test = len(y)
@@ -123,56 +124,36 @@ class SegPipe(_BaseComposition):
         try:
             dnames = X.dtype.names
             assert 'ts' in dnames
+            return X
         except:
-            pass
+            return np.core.records.fromarrays([X], names = ['ts'])
 
     def _ts_expand(self, X, y = None):
         # if its a record array we need to expand 'ts' and 'h'
-        try:
-            dnames = X.dtype.names
-        except:
-            dnames = None
-
-        if dnames is not None:
-            Xe, Nt = self._expand_recarray(X)
-        else:
-            Xe, Nt = self._expand_array(X,y)
+        N = len(X)
+        Nt = [len(X['ts'][i]) for i in np.arange(N)]
 
         ye = []
         if y is not None:
-            N = len(y)
-            for i in np.arange(N):
-                ye.append(np.full(Nt[i], y[i]))
-            ye = np.concatenate(ye)
-        return Xe, ye
+            ye = np.concatenate([np.full(Nt[i], y[i]) for i in np.arange(N)])
 
-    def _expand_recarray(self, X):
-        N = len(X)
-        Nt = [len(X['ts'][i]) for i in np.arange(N)]
         Xt = np.concatenate(X['ts'])
+        s_names = [h for h in X.dtype.names if h != 'ts']
 
-        h_names = [h for h in X.dtype.names if h != 'ts']
-        h_arrays = []
-        for h in h_names:
-            hi = []
-            for i in np.arange(N):
-                hi.append(np.full(Nt[i],X[h][i]))
-            hi = np.concatenate(hi)
-            h_arrays.append(hi)
-
-        X_new = np.core.records.fromarrays(Xt + h_arrays, names=['ts'] + h_names)
-        return X_new, Nt
-
-    def _expand_array(self, X, y):
-        N = len(X)
-        Nt = [len(X[i]) for i in np.arange(N)]
-        Xe = np.concatenate(X)
-        return Xe, Nt
+        if len(s_names) == 0:
+            return Xt, ye
+        else:
+            s_arrays = []
+            for h in s_names:
+                s_arrays.append(np.concatenate([np.full(Nt[i],X[h][i]) for i in np.arange(N)]))
+            X_new = np.core.records.fromarrays(Xt + s_arrays, names=['ts'] + s_names)
+            return X_new, ye
 
     def _shuffle(self, X, y):
-        ind = np.arange(len(y))
+        ind = np.arange(len(y), dtype=np.int)
         np.random.shuffle(ind)
-        X, y = X[ind], y[ind]
+        X = X[ind]
+        y = y[ind]
         return X, y
 
 

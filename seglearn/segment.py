@@ -25,29 +25,11 @@ class Segment(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         check_is_fitted(self, 'step')
-        if type(X) is np.recarray:
-            X_new = self._transform_recarray(X)
-        else:
-            X_new = self._transform(X)
-
-        return X_new
-
-    def _transform(self, X):
-        N = len(X)
-        W = []
-        for i in range(N):
-            W.append(sliding_tensor(X[i], self.width, self.step))
-        return np.array(W)
-
-    def _transform_recarray(self, X):
-        Xt = self._transform(X['ts'])
-        Xh = []
+        Xt = np.array([sliding_tensor(X['ts'][i], self.width, self.step) for i in range(len(X))])
         h_names = [h for h in X.dtype.names if h != 'ts']
-        for h in h_names:
-            Xh.append(X[h])
-        X_new = np.core.records.fromarrays([Xt] + Xh, names = ['ts'] + h_names)
+        Xh = [X[h] for h in h_names]
+        X_new = np.core.records.fromarrays([Xt] + Xh, names=['ts'] + h_names)
         return X_new
-
 
 def sliding_window(time_series, step, width):
     '''
