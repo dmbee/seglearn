@@ -1,6 +1,9 @@
 API Documentation
 =================
 
-* :doc:`template`
-* :doc:`features`
 * :doc:`pipe`
+* :doc:`segment`
+* :doc:`features`
+* :doc:`split`
+* :doc:`util`
+* :doc:`datasets`

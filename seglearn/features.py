@@ -49,7 +49,6 @@ class SegFeatures(BaseEstimator, TransformerMixin):
     >>> from seglearn.datasets import load_watch
     >>> from sklearn.pipeline import Pipeline
     >>> from sklearn.ensemble import RandomForestClassifier
-    >>> import numpy as np
     >>> data = load_watch()
     >>> fts = {'mean': mean, 'var': var, 'std': std, 'skew': skew}
     >>> feed = Pipeline([('segment', Segment()),('features', SegFeatures(fts))])
@@ -147,7 +146,7 @@ class SegFeatures(BaseEstimator, TransformerMixin):
         fshapes = np.zeros((N_fts, 2), dtype=np.int)
         keys = [key for key in features]
         for i in np.arange(N_fts):
-            fshapes[i] = features[keys[i]](X).shape
+            fshapes[i] = np.row_stack(features[keys[i]](X)).shape
 
         # make sure each feature returns an array shape [N, ]
         assert np.count_nonzero(fshapes[:,0] == N)
@@ -194,9 +193,8 @@ def _compute_features(X, features):
 
     '''
     N = X['ts'].shape[0]
-    Xt = np.atleast_3d(X['ts'])
     # computed features
-    fts = [features[i](Xt) for i in range(len(features))]
+    fts = [features[i](X['ts']) for i in range(len(features))]
     # static features
     s_fts = [np.full(N,X[s]) for s in X.dtype.names if s!= 'ts']
     fts = np.column_stack(fts+s_fts)
@@ -221,7 +219,8 @@ def all_features():
                 'kurt': kurt,
                 'hist4': hist4,
                 'mse': mse,
-                'mnx': mean_crossings}
+                'mnx': mean_crossings,
+                'corr': corr2}
     return features
 
 def mean(X):
@@ -255,19 +254,45 @@ def kurt(X):
 def hist4(X):
     '''
     4 bin histogram for each variable in a segmented time series
+
+    Parameters
+    ----------
+    X : array-like shape [n_samples, segment_width, n_variables]
+        segmented time series instance
+
+    Returns
+    -------
+    hist : array-like shape [n_samples, 4*n_variables]
+        histograms
+
     .. note:: this feature is expensive to compute with the current implementation
     '''
+    X = np.atleast_3d(X)
     N = X.shape[0]
     D = X.shape[2]
     bins = 4
     hist = np.zeros((N, D * bins))
     for i in np.arange(N):
         for j in np.arange(D):
-            hist[i,(j*D):((j+1)*D)] = np.histogram(X[i,:,j],bins = bins, density=True)[0]
+            # for each variable, advance by bins
+            hist[i,(j*bins):((j+1)*bins)] = np.histogram(X[i,:,j],bins = bins, density=True)[0]
     return hist
 
 def mse(X):
-    ''' computes mean spectral energy for each variable in a segmented time series '''
+    '''
+    computes mean spectral energy for each variable in a segmented time series
+
+    Parameters
+    ----------
+    X : array-like shape [n_samples, segment_width, n_variables]
+        segmented time series instance
+
+    Returns
+    -------
+    mse : array-like shape [n_samples, n_variables]
+        mean spectral energy
+
+    '''
     return np.mean(np.square(np.abs(np.fft.fft(X, axis=1))), axis=1)
 
 def mean_crossings(X):
@@ -284,6 +309,7 @@ def mean_crossings(X):
     mnx : array-like shape [n_samples, n_variables]
         mean crossings
     '''
+    X = np.atleast_3d(X)
     N = X.shape[0]
     D = X.shape[2]
     mnx = np.zeros((N,D))
@@ -298,10 +324,23 @@ def mean_crossings(X):
 def corr2(X):
     '''
     computes correlations between all variable pairs in a segmented time series
+
+    Parameters
+    ----------
+    X : array-like shape [n_samples, segment_width, n_variables]
+        segmented time series instance
+
+    Returns
+    -------
+    corr : array-like shape [n_samples, triangle_number(n_variables)]
+        pearson correlation coefficients
+
     .. note:: this feature is expensive to compute with the current implementation
     '''
+    X = np.atleast_3d(X)
     N = X.shape[0]
     D = X.shape[2]
+    assert D > 1
     trii = np.triu_indices(D, k=1)
     DD = len(trii[0])
     r = np.zeros((N, DD))

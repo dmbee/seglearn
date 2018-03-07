@@ -1,20 +1,36 @@
+'''
+This module has utilities for time series data input checking
+'''
+# Author: David Burns
+# License: BSD
+
 import numpy as np
 
 def check_ts_data(X):
+    '''
+    Checks time series data is appropriate
+
+    Parameters
+    ----------
+    X :
+
+    Returns
+    -------
+
+    '''
     if type(X) is np.recarray:
-        _check_ts_input(X['ts'])
+        _check_ts(X['ts'])
     elif type(X) is list or type(X) is np.ndarray:
-        _check_ts_input(X)
+        _check_ts(X)
     else:
         raise TypeError
 
-def _check_ts_input(X):
-    Nvars = [len(X[i]) for i in range(len(X))]
-    assert np.unique(Nvars) == 1
-
-
+def _check_ts(X):
+    Nvars = np.array([np.row_stack(X[i]).shape[1] for i in range(len(X))])
+    assert len(np.unique(Nvars)) == 1
 
 def ts_stats(X, y, fs = 1.0, class_labels = None):
+    check_ts_data(X)
     try:
         dnames = X.dtype.names
     except:
