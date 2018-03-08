@@ -4,7 +4,7 @@ This module has two classes for splitting time series data temporally - where tr
 # Author: David Burns
 # License: BSD
 
-from .util import check_ts_data
+from .util import check_ts_data, get_ts_data_parts, make_ts_data
 import numpy as np
 
 class TemporalKFold():
@@ -49,55 +49,63 @@ class TemporalKFold():
 
         Parameters
         ----------
-        X : array-like, shape [n_series, ]
-            | Time series data
-            | Can be list, object array, or recarray
-            | If recarray is used, the time series data must have name 'ts'
-        y : array-like, shape [n_series]
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) static data created as per ``make_ts_data``
+        y : array-like shape [n_series]
             target vector
 
         Returns
         -------
         X : array-like, shape [n_series * n_splits, ]
-            Split time series data
+            Split time series data and static data
         y : array-like, shape [n_series * n_splits]
             Split target data
         cv : list, shape [2, n_splits]
             Splitting indices
         '''
-        N = len(X)
-        if type(X) is np.recarray:
-            X_new = np.concatenate([X for i in range(self.n_splits)])
-            X_new['ts'] = self._ts_slice(X['ts'])
-            N_new = len(X_new['ts'])
+
+        check_ts_data(X)
+        Xt, Xs = get_ts_data_parts(X)
+        N = len(Xt)
+        Xt_new = self._ts_slice(Xt)
+
+        if Xs is not None:
+            Xs_new = np.concatenate([Xs for i in range(self.n_splits)])
         else:
-            X_new = self._ts_slice(X)
-            N_new = len(X_new)
+            Xs_new = None
 
         y_new = np.concatenate([y for i in range(self.n_splits)])
 
+        cv = self._make_indices(N)
+
+        return make_ts_data(Xt_new, Xs_new), y_new, cv
+
+    def _ts_slice(self, Xt):
+        ''' takes a time series, splits each one into folds '''
+        N = len(Xt)
+        X_new = []
+        for i in range(self.n_splits):
+            for j in range(N):
+                Njs = int(len(Xt[j]) / self.n_splits)
+                X_new.append(Xt[j][(Njs * i):(Njs * (i + 1))])
+
+        return X_new
+
+    def _make_indices(self, N):
+        ''' makes indices for cross validation '''
+        N_new = int(N * self.n_splits)
+
         test = [np.full(N_new, False) for i in range(self.n_splits)]
         for i in range(self.n_splits):
-            test[i][np.arange(N*i,N*(i+1))] = True
+            test[i][np.arange(N * i, N * (i + 1))] = True
         train = [np.logical_not(test[i]) for i in range(self.n_splits)]
 
         test = [np.arange(N_new)[test[i]] for i in range(self.n_splits)]
         train = [np.arange(N_new)[train[i]] for i in range(self.n_splits)]
 
         cv = list(zip(train, test))
+        return cv
 
-        return X_new, y_new, cv
-
-    def _ts_slice(self, X):
-        ''' takes a time series, splits each one into folds '''
-        N = len(X)
-        X_new = []
-        for i in range(self.n_splits):
-            for j in range(N):
-                Njs = int(len(X[j]) / self.n_splits)
-                X_new.append(X[j][(Njs*i):(Njs*(i+1))])
-
-        return X_new
 
 # todo
 # inspiration: http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html

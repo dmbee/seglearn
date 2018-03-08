@@ -2,8 +2,8 @@ API Documentation
 =================
 
 * :doc:`pipe`
-* :doc:`segment`
-* :doc:`features`
-* :doc:`split`
+* :doc:`transform`
+* :doc:`feature_functions`
 * :doc:`util`
+* :doc:`split`
 * :doc:`datasets`

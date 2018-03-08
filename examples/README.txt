@@ -3,4 +3,4 @@
 General examples
 ================
 
-Introductory examples.
+General-purpose and introductory examples for the `seglearn` toolbox.

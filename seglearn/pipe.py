@@ -5,6 +5,7 @@ time series data and sequences using a sliding window segmentation
 # Author: David Burns
 # License: BSD
 
+from .util import make_ts_data, get_ts_data_parts
 
 import numpy as np
 from sklearn.utils.metaestimators import _BaseComposition
@@ -19,24 +20,22 @@ class SegPipe(_BaseComposition):
 
     The pipeline is applied in three steps.
 
-    The first step is applied by the 'feed' pipeline (or transformer) that performs the sliding window segmentation, and optionally any feature extraction. Feature extraction is not required for estimators that learn the segments directly (eg a recurrent neural network). Feature extraction can be helpful for classifiers such as RandomForest or SVC that learn a feature representation of the segments.
+    The first step is applied by the ``feed`` pipeline (or transformer) that performs the sliding window segmentation, and optionally any feature extraction. Feature extraction is not required for estimators that learn the segments directly (eg a recurrent neural network). Feature extraction can be helpful for classifiers such as RandomForest or SVC that learn a feature representation of the segments.
 
-    The second step expands the target vector (y), aligning it with the segments or segment features computed during the first step. The segmentation changes the effective number of samples available to the estimator, which is not supported within native sklearn pipelines and is the motivation for this extension.
+    The second step expands the target vector (y), aligning it with the segments or the feature representation of the segments computed during the first step. The segmentation changes the effective number of samples available to the estimator, which is not supported within native sklearn pipelines and is the motivation for this extension.
 
-    The third step applies the 'est' estimator pipeline (or estimator) that performs additional feature processing (optional) and applies the final estimator for classification or regression.
+    The third step applies the ``est`` estimator pipeline (or estimator) that performs additional feature processing (optional) and applies the final estimator for classification or regression.
 
-    The time series data (X) can be given to SegPipe methods in three formats: 1) a list of arrays 2) an object array, or 3) a recarray. The recarray format is required to support a combination time-series and static relational data. If using a recarray, the time series data must have name 'ts'. Each element of the time series data is array-like with shape [n_samples, segment_width, n_variables]. n_samples can be different for each element (series).
+    The time series data (X) is input to the pipeline as a numpy object array. The first column holds the time series data, and subsequent columns can hold relational static variables. Each element of the time series data is array-like with shape [n_samples, n_variables]. n_samples can be different for each element (series). The ``util`` module has functions to help create the necessary data structure.
 
-    The recarray data format is used by the 'feed' pipeline, and time series data input to SegPipe as an object array or list is converted to a recarray. At the second step (expansion), if the time-series data has been converted to a feature representation or has no static variables, it is converted back into a numpy object array for convenience.
-
-    The API for setting parameters for the 'feed' and 'est' pipelines are different, but compatible with sklearn parameter optimization tools (eg GridSearchCV). See the set_params method, and examples for details.
+    The API for setting parameters for the ``feed`` and ``est`` pipelines are different, but compatible with sklearn parameter optimization tools (eg GridSearchCV). See the set_params method, and examples for details.
 
     Parameters
     ----------
     feed : Segment transformer or sklearn pipeline chaining Segment with a feature extractor
     est : sklearn estimator or pipeline for feature processing (optional) and applying the final estimator
     shuffle : bool, optional
-        shuffle the segments before fitting the 'est' pipeline (recommended)
+        shuffle the segments before fitting the ``est`` pipeline (recommended)
 
 
     Attributes
@@ -48,9 +47,9 @@ class SegPipe(_BaseComposition):
     Examples
     --------
 
-    >>> from seglearn.features import SegFeatures, mean, var, std, skew
+    >>> from seglearn.transform import SegFeatures, Segment
+    >>> from seglearn.feature_functions import mean, var, std, skew
     >>> from seglearn.pipe import SegPipe
-    >>> from seglearn.segment import Segment
     >>> from seglearn.datasets import load_watch
     >>> from sklearn.pipeline import Pipeline
     >>> from sklearn.ensemble import RandomForestClassifier
@@ -76,16 +75,16 @@ class SegPipe(_BaseComposition):
     def fit(self, X, y, **est_fit_params):
         '''
         Fit the data.
-        Applies fit to 'feed' pipeline, segment expansion, and fit on 'est' pipeline.
+        Applies fit to ``feed`` pipeline, segment expansion, and fit on ``est`` pipeline.
 
         Parameters
         ----------
-        X : list, object array, or recarray shape [n_series, ...]
-            Time series data and (optionally) static data
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) static data created as per ``make_ts_data``
         y : array-like shape [n_series]
             target vector
         est_fit_params : optional parameters
-            passed to 'est' pipe fit method
+            passed to ``est`` pipe fit method
 
         Returns
         -------
@@ -94,7 +93,6 @@ class SegPipe(_BaseComposition):
 
         '''
         self._reset()
-        X = self._check_data(X)
 
         self.feed.fit(X, y)
         X = self.feed.transform(X)
@@ -103,12 +101,15 @@ class SegPipe(_BaseComposition):
             self.f_labels = self.feed._final_estimator.f_labels
         else:
             self.f_labels = self.feed.f_labels
+
         # make sure the number of labels corresponds to the number of columns in X
-        if self.f_labels is not None:
-            assert len(self.f_labels) == np.row_stack(X['ts'][0]).shape[1]
+        # put this in testing
+        # if self.f_labels is not None:
+        #     assert len(self.f_labels) == np.row_stack(X['ts'][0]).shape[1]
 
         X, y = self._ts_expand(X, y)
-        self.N_train = len(X)
+
+        self.N_train = len(y)
 
         if self.shuffle is True:
             # todo: X, y = self._shuffle(X, y)
@@ -117,13 +118,13 @@ class SegPipe(_BaseComposition):
 
     def transform(self, X, y = None):
         '''
-        Applies transform to 'feed' pipeline, segment expansion, and transform on 'est' pipeline.
+        Applies transform to ``feed`` pipeline, segment expansion, and transform on ``est`` pipeline.
         If the target vector y is supplied, the segmentation expansion will be performed on it and returned.
 
         Parameters
         ----------
-        X : list, object array, or recarray shape [n_series, ...]
-            Time series data and (optionally) static data
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) static data created as per ``make_ts_data``
         y : array-like shape [n_series], optional
             target vector
 
@@ -135,22 +136,23 @@ class SegPipe(_BaseComposition):
             expanded target vector
         '''
         check_is_fitted(self, 'N_train')
-        X = self._check_data(X)
         X = self.feed.transform(X)
         X, y = self._ts_expand(X, y)
-        self.N_test = len(X)
+
+
+        self.N_test = len(X[0]) # to get Xt
         X = self.est.transform(X)
         return X, y
 
 
     def predict(self, X, y):
         '''
-        Applies transform to 'feed' pipeline, segment expansion, and predict on 'est' pipeline.
+        Applies transform to ``feed`` pipeline, segment expansion, and predict on ``est`` pipeline.
 
         Parameters
         ----------
-        X : list, object array, or recarray shape [n_series, ...]
-            Time series data and (optionally) static data
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) static data created as per ``make_ts_data``
         y : array-like shape [n_series], optional
             target vector
 
@@ -164,7 +166,6 @@ class SegPipe(_BaseComposition):
         '''
         check_is_fitted(self, 'N_train')
 
-        X = self._check_data(X)
         X = self.feed.transform(X)
         X, y = self._ts_expand(X, y)
         yp = self.est.predict(X)
@@ -178,8 +179,8 @@ class SegPipe(_BaseComposition):
 
         Parameters
         ----------
-        X : list, object array, or recarray shape [n_series, ...]
-            Time series data and (optionally) static data
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) static data created as per ``make_ts_data``
         y : array-like shape [n_series], optional
             target vector
         sample_weight : array-like shape [n_series], default = None
@@ -190,12 +191,12 @@ class SegPipe(_BaseComposition):
         score : float
         '''
         check_is_fitted(self, 'N_train')
-        X = self._check_data(X)
 
         score_params = {}
         if sample_weight is not None:
-            Nt = self._number_of_segments_per_series(X['ts'])
-            score_params['sample_weight'] = self._expand_series_variable_to_segments(sample_weight, Nt)
+            Xt, Xs = get_ts_data_parts(X)
+            Nt = self._number_of_segments_per_series(Xt)
+            score_params['sample_weight'] = self._expand_target_to_segments(sample_weight, Nt)
 
         X = self.feed.transform(X)
         X, y = self._ts_expand(X, y)
@@ -250,42 +251,35 @@ class SegPipe(_BaseComposition):
         if hasattr(self, 'N_test'):
             del self.N_test
 
-    def _check_data(self, X, y = None): #todo: check y
-        ''' checks input data, returns recarray if list or object array given '''
-        try:
-            dnames = X.dtype.names
-            assert 'ts' in dnames
-            return X
-        except:
-            return np.core.records.fromarrays([X], names = ['ts'])
-
-    def _expand_series_variable_to_segments(self, v, Nt):
+    def _expand_target_to_segments(self, y, Nt):
         ''' expands variable vector v, by repeating each instance as specified in Nt '''
-        v_e = np.concatenate([np.full(Nt[i], v[i]) for i in np.arange(len(v))])
-        return v_e
+        y_e = np.concatenate([np.full(Nt[i], y[i]) for i in np.arange(len(y))])
+        return y_e
 
-    def _number_of_segments_per_series(self, X):
+    def _expand_static_variables_to_segments(self, v, Nt):
+        N_v = len(np.atleast_1d(v[0]))
+        return np.concatenate([np.full((Nt[i], N_v), v[i]) for i in np.arange(len(v))])
+
+    def _number_of_segments_per_series(self, Xt):
         ''' returns the number of segments in each series of X '''
-        Nt = [len(X[i]) for i in np.arange(len(X))]
+        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
         return Nt
 
     def _ts_expand(self, X, y = None):
         # if its a record array we need to expand 'ts' and 'h'
-        Nt = self._number_of_segments_per_series(X['ts'])
+        Xt, Xs = get_ts_data_parts(X)
+        Nt = self._number_of_segments_per_series(Xt)
+        Xt_new = np.concatenate(Xt)
+
         ye = []
         if y is not None:
-            ye = self._expand_series_variable_to_segments(y, Nt)
+            ye = self._expand_target_to_segments(y, Nt)
 
-        Xt = np.concatenate(X['ts'])
-        s_names = [h for h in X.dtype.names if h != 'ts']
-
-        if len(s_names) == 0:
-            return Xt, ye
+        if Xs is None:
+            return Xt_new, ye
         else:
-            s_arrays = []
-            for h in s_names:
-                s_arrays.append(self._expand_series_variable_to_segments(X[h], Nt))
-            X_new = np.core.records.fromarrays(Xt + s_arrays, names=['ts'] + s_names)
+            Xs_new = self._expand_static_variables_to_segments(Xs, Nt)
+            X_new = make_ts_data(Xt_new, Xs_new)
             return X_new, ye
 
     def _shuffle(self, X, y):
