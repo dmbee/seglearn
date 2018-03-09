@@ -81,7 +81,8 @@ par_grid = {'f$segment__width' : [50,100,200],
 clf = GridSearchCV(pipe, par_grid, cv=cv)
 clf.fit(X, y)
 
-plot_grid_search(clf.cv_results_, par_grid['f$segment__width'], par_grid['f$segment__overlap'],'width', 'overlap')
+plot_grid_search(clf.cv_results_, par_grid['f$segment__width'],
+                 par_grid['f$segment__overlap'],'width', 'overlap')
 plt.show()
 
 

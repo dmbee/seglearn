@@ -17,7 +17,9 @@ from seglearn.util import make_ts_data
 
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, cross_validate
+from sklearn.metrics import f1_score, make_scorer
 
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
@@ -32,7 +34,8 @@ y = data['y']
 # create a feature representation pipeline
 feed = Pipeline([('segment', Segment()),
                  ('features', SegFeatures(features = base_features()))])
-est = RandomForestClassifier()
+est = Pipeline([('scaler', StandardScaler()),
+                ('rf', RandomForestClassifier())])
 pipe = SegPipe(feed, est)
 
 # split the data
@@ -47,7 +50,9 @@ print("N segments in train: ", pipe.N_train)
 print("N segments in test: ", pipe.N_test)
 print("Accuracy score: ", score)
 
+
 # cross validation
+scoring = make_scorer(f1_score, average = 'macro')
 cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
 print("CV Scores: ", pd.DataFrame(cv_scores))
 

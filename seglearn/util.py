@@ -23,7 +23,7 @@ def make_ts_data(time_series, static_vars = None):
         Object containing time series as first column and static data if any
     '''
     if static_vars is not None:
-        return np.column_stack([np.array(time_series), np.array(static_vars)])
+        return np.column_stack([np.array(time_series), np.row_stack(static_vars)])
     else:
         return time_series
 

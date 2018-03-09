@@ -79,7 +79,7 @@ of the scikit-learn community. Therefore, you can refer to their
 About
 -----
 
-If you use imbalanced-learn in a scientific publication, we would appreciate
+If you use seglearn in a scientific publication, we would appreciate
 citations to the following paper::
 
   @article{JMLR:v18:16-365,

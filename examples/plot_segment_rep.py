@@ -15,22 +15,27 @@ from seglearn.datasets import load_watch
 from seglearn.util import make_ts_data
 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import f1_score
 from keras.layers import Dense, LSTM, Conv1D
 from keras.models import Sequential
 from keras.wrappers.scikit_learn import KerasClassifier
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
-def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5, conv_filters=64, lstm_units=100):
+
+def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
+               conv_filters=64, lstm_units=100):
     input_shape = (width, n_vars)
     model = Sequential()
-    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size, padding='valid', activation='relu',
-                     input_shape=input_shape))
-    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size, padding='valid', activation='relu'))
+    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
+                     padding='valid', activation='relu', input_shape=input_shape))
+    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
+                     padding='valid', activation='relu'))
     model.add(LSTM(units=lstm_units, dropout=0.1, recurrent_dropout=0.1))
     model.add(Dense(n_classes, activation="softmax"))
 
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam',
+                  metrics=['accuracy'])
 
     return model
 

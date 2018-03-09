@@ -93,6 +93,10 @@ class Segment(BaseEstimator, TransformerMixin):
 
         return make_ts_data(Xt, Xs)
 
+    def fit_transform(self, X, y = None):
+        self.fit(X, y)
+        return self.transform(X)
+
 def sliding_window(time_series, width, step):
     '''
     Segments univariate time series with sliding window

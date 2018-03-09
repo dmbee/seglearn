@@ -33,7 +33,9 @@ class SegPipe(_BaseComposition):
     Parameters
     ----------
     feed : Segment transformer or sklearn pipeline chaining Segment with a feature extractor
-    est : sklearn estimator or pipeline for feature processing (optional) and applying the final estimator
+    est : sklearn estimator or pipeline
+        for feature processing (optional) and applying the final estimator
+        can also be None
     shuffle : bool, optional
         shuffle the segments before fitting the ``est`` pipeline (recommended)
 
@@ -63,7 +65,6 @@ class SegPipe(_BaseComposition):
 
     Todo
     ----
-    - scoring
     - shuffling
 
     '''
@@ -114,7 +115,9 @@ class SegPipe(_BaseComposition):
         if self.shuffle is True:
             # todo: X, y = self._shuffle(X, y)
             pass
-        self.est.fit(X, y, **est_fit_params)
+
+        if self.est is not None:
+            self.est.fit(X, y, **est_fit_params)
 
     def transform(self, X, y = None):
         '''
@@ -141,8 +144,32 @@ class SegPipe(_BaseComposition):
 
 
         self.N_test = len(X[0]) # to get Xt
-        X = self.est.transform(X)
+        if self.est is not None:
+            X = self.est.transform(X)
+
         return X, y
+
+
+    def fit_transform(self, X, y):
+        '''
+        Applies fit and transform methods to the full pipeline sequentially
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) static data created as per ``make_ts_data``
+        y : array-like shape [n_series], optional
+            target vector
+
+        Returns
+        -------
+        X : array-like, shape [n_segments, ]
+            transformed feature data
+        y : array-like, shape [n_segments]
+            expanded target vector
+        '''
+        self.fit(X,y)
+        return self.transform(X, y)
 
 
     def predict(self, X, y):
@@ -203,6 +230,7 @@ class SegPipe(_BaseComposition):
 
         self.N_test = len(y)
         return self.est.score(X, y, **score_params)
+
 
     def set_params(self, **params):
         '''

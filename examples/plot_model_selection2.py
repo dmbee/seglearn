@@ -22,12 +22,15 @@ from keras.wrappers.scikit_learn import KerasClassifier
 
 import matplotlib.pyplot as plt
 
-def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5, conv_filters=64, lstm_units=100):
+def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
+               conv_filters=64, lstm_units=100):
+    # create a crnn model with keras with two cnn layers, and one rnn layer
     input_shape = (width, n_vars)
     model = Sequential()
-    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size, padding='valid', activation='relu',
-                     input_shape=input_shape))
-    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size, padding='valid', activation='relu'))
+    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
+                     padding='valid', activation='relu', input_shape=input_shape))
+    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
+                     padding='valid', activation='relu'))
     model.add(LSTM(units=lstm_units, dropout=0.1, recurrent_dropout=0.1))
     model.add(Dense(n_classes, activation="softmax"))
 
@@ -59,7 +62,8 @@ pipe = SegPipe(feed, est)
 # when the ``feed`` or ``est`` pipeline is not a pipeline, but just a single estimator
 # the parameter would be keyed f$parameter or e$parameter respectively
 #
-# you can also set a parameter to be always equal to another parameter, by setting its value to parameter name to track
+# you can also set a parameter to be always equal to another parameter, by setting its value to
+# parameter name to track
 #
 # note that if you want to set a parameter to a single value, it will still need to be as a list
 
