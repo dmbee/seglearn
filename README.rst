@@ -7,7 +7,7 @@
 seglearn
 ========
 
-Seglearn is a python package for machine learning time series or sequences using a sliding window segmentation. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and final estimator. Seglearn supports multivariate time series data with relational static variables. It is compatible with scikit-learn_ and will hopefully one day make it onto scikit-learn-contrib_
+Seglearn is a python package for machine learning time series or sequences using a sliding window segmentation. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and final estimator. Seglearn supports multivariate time series data with relational static variables. It is compatible with scikit-learn_.
 
 
 Documentation
@@ -90,7 +90,7 @@ This package was developed by::
 
 
 Citing seglearn
----------------
+~~~~~~~~~~~~~~~
 
 If you use seglearn in a scientific publication, we would appreciate
 citations to the following paper::
