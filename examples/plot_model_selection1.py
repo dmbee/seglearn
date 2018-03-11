@@ -9,20 +9,17 @@ This example demonstrates how to do model selection in a feature representation 
 # Author: David Burns
 # License: BSD
 
-from seglearn.feature_functions import base_features
-from seglearn.transform import SegFeatures, Segment
-from seglearn.pipe import SegPipe
-from seglearn.datasets import load_watch
-from seglearn.util import make_ts_data
+import seglearn as sgl
 
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, GroupKFold
+from sklearn.preprocessing import StandardScaler
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-import pandas as pd
+
 
 def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_param_2):
     # plotting grid results from David Alvarez on Stack Overflow
@@ -48,8 +45,8 @@ def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_
 
 
 # load the data
-data = load_watch()
-X = make_ts_data(data['X'])
+data = sgl.load_watch()
+X = sgl.make_ts_data(data['X'])
 y = data['y']
 g = data['subject']
 
@@ -58,10 +55,11 @@ splitter = GroupKFold(n_splits=3)
 cv = splitter.split(X,y,groups = g)
 
 # create a feature representation pipeline
-feed = Pipeline([('segment', Segment()),
-                 ('features', SegFeatures(features = base_features()))])
-est = RandomForestClassifier()
-pipe = SegPipe(feed, est)
+est = Pipeline([('features', sgl.FeatureRep()),
+                ('scaler', StandardScaler()),
+                ('rf', RandomForestClassifier())])
+
+pipe = sgl.SegPipe(est)
 
 
 # create a parameter dictionary using the SegPipe API - which is similar to the sklearn API
@@ -74,15 +72,15 @@ pipe = SegPipe(feed, est)
 #
 # note that if you want to set a parameter to a single value, it will still need to be as a list
 
-par_grid = {'f$segment__width' : [50,100,200],
-            'f$segment__overlap' : [0., 0.5],
-            'e$n_estimators' : [20]}
+par_grid = {'s$width' : [50,100,200],
+            's$overlap' : [0., 0.5],
+            'rf__n_estimators' : [20]}
 
 clf = GridSearchCV(pipe, par_grid, cv=cv)
 clf.fit(X, y)
 
-plot_grid_search(clf.cv_results_, par_grid['f$segment__width'],
-                 par_grid['f$segment__overlap'],'width', 'overlap')
+plot_grid_search(clf.cv_results_, par_grid['s$width'],
+                 par_grid['s$overlap'],'width', 'overlap')
 plt.show()
 
 

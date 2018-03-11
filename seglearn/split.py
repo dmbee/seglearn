@@ -50,14 +50,14 @@ class TemporalKFold():
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) static data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data created as per ``make_ts_data``
         y : array-like shape [n_series]
             target vector
 
         Returns
         -------
         X : array-like, shape [n_series * n_splits, ]
-            Split time series data and static data
+            Split time series data and contextual data
         y : array-like, shape [n_series * n_splits]
             Split target data
         cv : list, shape [2, n_splits]
@@ -65,20 +65,20 @@ class TemporalKFold():
         '''
 
         check_ts_data(X)
-        Xt, Xs = get_ts_data_parts(X)
+        Xt, Xc = get_ts_data_parts(X)
         N = len(Xt)
         Xt_new = self._ts_slice(Xt)
 
-        if Xs is not None:
-            Xs_new = np.concatenate([Xs for i in range(self.n_splits)])
+        if Xc is not None:
+            Xc_new = np.concatenate([Xc for i in range(self.n_splits)])
         else:
-            Xs_new = None
+            Xc_new = None
 
         y_new = np.concatenate([y for i in range(self.n_splits)])
 
         cv = self._make_indices(N)
 
-        return make_ts_data(Xt_new, Xs_new), y_new, cv
+        return make_ts_data(Xt_new, Xc_new), y_new, cv
 
     def _ts_slice(self, Xt):
         ''' takes a time series, splits each one into folds '''

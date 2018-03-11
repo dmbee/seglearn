@@ -9,11 +9,7 @@ This example demonstrates how the pipeline can be used to perform transformation
 # Author: David Burns
 # License: BSD
 
-from seglearn.feature_functions import base_features
-from seglearn.transform import SegFeatures, Segment
-from seglearn.pipe import SegPipe
-from seglearn.datasets import load_watch
-from seglearn.util import make_ts_data
+import seglearn as sgl
 
 from sklearn.pipeline import Pipeline
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
@@ -40,18 +36,15 @@ def plot_embedding(emb, y, y_labels):
     plt.tight_layout()
 
 # load the data
-data = load_watch()
-X = make_ts_data(data['X'])
+data = sgl.load_watch()
+X = sgl.make_ts_data(data['X'])
 y = data['y']
 
 # create a pipeline for LDA transformation of the feature representation
-feed = Pipeline([('segment', Segment()),
-                 ('features', SegFeatures(features = base_features()))])
-est = LinearDiscriminantAnalysis(n_components=2)
-pipe = SegPipe(feed, est)
+est = Pipeline([ ('ftr', sgl.FeatureRep()),
+    ('lda', LinearDiscriminantAnalysis(n_components=2))])
 
-pipe.fit(X,y)
-Xtr, ytr = pipe.transform(X, y)
-
-plot_embedding(Xtr, ytr.astype(int), data['y_labels'])
+pipe = sgl.SegPipe(est)
+X2, y2 = pipe.fit_transform(X, y)
+plot_embedding(X2, y2.astype(int), data['y_labels'])
 plt.show()

@@ -14,8 +14,7 @@ segments (not series') as instances of the data.
 # License: BSD
 
 
-from seglearn.feature_functions import base_features
-from seglearn.transform import SegFeatures, Segment
+from seglearn.transform import FeatureRep, Segment
 from seglearn.pipe import SegPipe
 from seglearn.datasets import load_watch
 from seglearn.util import make_ts_data
@@ -24,7 +23,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, cross_validate
-from sklearn.metrics import f1_score, confusion_matrix
+from sklearn.metrics import f1_score, confusion_matrix, make_scorer
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -68,11 +67,10 @@ X = make_ts_data(data['X'])
 y = data['y']
 
 # create a feature representation pipeline
-feed = Pipeline([('segment', Segment()),
-                 ('features', SegFeatures(features = base_features()))])
-est = Pipeline([('scaler', StandardScaler()),
+est = Pipeline([('features', FeatureRep()),
+                ('scaler', StandardScaler()),
                 ('rf', RandomForestClassifier())])
-pipe = SegPipe(feed, est)
+pipe = SegPipe(est)
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
@@ -117,38 +115,36 @@ print("CV Scores: ", pd.DataFrame(cv_scores))
 #
 # workarounds for this issue are outlined below
 
+
+###################################################
+# SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
+###################################################
+
+# ``SegPipe`` can be initialized with a scorer callable made with sklearn.metrics.make_scorer
+# this can be used to cross_validate or grid search with any 1 score
+
+scorer = make_scorer(f1_score, average='macro')
+pipe = SegPipe(est, scorer = scorer)
+cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
+print("CV F1 Scores: ", pd.DataFrame(cv_scores))
+
+
 ##################################################
-# SCORING WORKAROUND 1: WORK OUTSIDE THE PIPELINE
+# SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 ##################################################
 
-# The scoring methods in sklearn can be used by first transforming the time series
-# data into segments and doing model_selection just with the ``est`` part of the
+# If you want to have multiple score computed, the only way is as follows
+#
+# First transform the time series data into segments and then score the ``est`` part of the
 # pipeline.
 #
 # The disadvantage of this is that the parameters of the ``seg`` pipeline cannot be
 # optimized with this approach
 
-pipe_t = SegPipe(feed, None)
-X_seg, y_seg = pipe_t.fit_transform(X, y)
+segmenter = Segment()
+X_seg, y_seg, _ = segmenter.fit_transform(X, y)
 scoring = ['accuracy','precision_macro','recall_macro','f1_macro']
 cv_scores = cross_validate(est, X_seg, y_seg,
                            cv=4, return_train_score=False, scoring=scoring)
 print("CV Scores (workaround): ", pd.DataFrame(cv_scores))
-
-
-########################################################
-# SCORING WORKAROUND 2: MODIFY THE FINAL ESTIMATOR CLASS
-########################################################
-
-# I haven't done this yet, but in principle it should be possible to modify the score
-# function of the final estimator in the ``est`` pipeline in order to both use the sklearn
-# scoring functions during model selection
-#
-# Support for this is coming with Keras, however, in a feature rep pipeline this would involve
-# modifying the sklearn class of the final estimator
-#
-# This is only necessary if one is intent on doing model selection on the
-# ``feed`` pipeline parameters with a scoring function other than accuracy
-
-
 

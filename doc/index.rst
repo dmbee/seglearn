@@ -9,6 +9,8 @@ Welcome to seglearn documentation!
 
 This project is an sklearn extension for machine learning time series or sequences using a sliding window segmentation. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and a final estimator compatible with sklearn model evaluation and parameter optimization tools. Seglearn supports multivariate time series data with relational static variables.
 
+See the source code repository on github: https://github.com/dmbee/seglearn
+
 
 .. toctree::
    :maxdepth: 2
@@ -65,15 +67,11 @@ all functions, and all parameters available for the algorithms.
 A set of examples illustrating the use of the different algorithms. It
 complements the `User Guide <user_guide.html>`_.
 
-
 `About seglearn <about.html>`_
 --------------------------------------
 
 Who we are, and how to cite us.
 
-
-
-See the source code repository on github: https://github.com/dmbee/seglearn
 
 
 Indices and tables

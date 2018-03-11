@@ -22,16 +22,16 @@ y = data['y']
 Xt = data['X']
 fs = 50 # sampling frequency
 
-# create time series data object with no static variables
+# create time series data object with no contextual variables
 X = make_ts_data(Xt)
 check_ts_data(X)
 
-# create time series data object with 2 static variables
+# create time series data object with 2 contextual variables
 Xs = np.column_stack([data['side'], data['subject']])
 X = make_ts_data(Xt, Xs)
 check_ts_data(X)
 
-# recover time series and static variables
+# recover time series and contextual variables
 Xt, Xs = get_ts_data_parts(X)
 
 # generate some statistics from the time series data

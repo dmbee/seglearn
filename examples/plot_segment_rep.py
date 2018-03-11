@@ -9,13 +9,11 @@ This is a basic example using a convolutional recurrent neural network to learn 
 # Author: David Burns
 # License: BSD
 
-from seglearn.transform import Segment
 from seglearn.pipe import SegPipe
 from seglearn.datasets import load_watch
 from seglearn.util import make_ts_data
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import f1_score
 from keras.layers import Dense, LSTM, Conv1D
 from keras.models import Sequential
 from keras.wrappers.scikit_learn import KerasClassifier
@@ -47,9 +45,8 @@ y = data['y']
 
 # create a segment learning pipeline
 width = 100
-feed = Segment(width=width, overlap=0.3)
 est = KerasClassifier(build_fn=crnn_model, epochs = 25, batch_size = 256, verbose = 0)
-pipe = SegPipe(feed, est)
+pipe = SegPipe(est)
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)

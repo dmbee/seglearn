@@ -6,49 +6,51 @@ This module has utilities for time series data input checking
 
 import numpy as np
 
-def make_ts_data(time_series, static_vars = None):
+def make_ts_data(time_series, context_vars = None):
     '''
-    Combines time series data and relational static variables into a structure compatible with ``SegPipe`` and related classes.
+    Combines time series data and relational contextual variables into a structure compatible with ``SegPipe`` and related classes.
 
     Parameters
     ----------
     time_series : array-like, shape [n_series, ]
         Time series data - each element (series) may have a different length
-    static_vars : array-like, shape [n_series, n_static_variables]
-        Static relational data
+    context_vars : array-like, shape [n_series, n_context_variables]
+        contextual relational data
 
     Returns
     -------
     X : array-like [n_series, ]
-        Object containing time series as first column and static data if any
+        Object containing time series as first column and contextual data if any in second column
     '''
-    if static_vars is not None:
-        return np.column_stack([np.array(time_series), np.row_stack(static_vars)])
+    if context_vars is not None:
+        return np.array([[time_series[i], context_vars[i]] for i in range(len(time_series))])
     else:
-        return time_series
+        return np.array(time_series)
 
 def get_ts_data_parts(X):
     '''
-    Separates time series data object into time series variables and static variables
+    Separates time series data object into time series variables and contextual variables
 
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
-       Time series data and (optionally) static data created as per ``make_ts_data``
+       Time series data and (optionally) contextual data created as per ``make_ts_data``
 
     Returns
     -------
     Xt : array-like, shape [n_series, ]
         Time series data from first column of X
-    Xs : array-like, shape [n_series, n_static_variables]
-        Static variables from columns 1:end of X
+    Xs : array-like, shape [n_series, n_contextd = np.colum _variables]
+        contextual variables from columns 2
 
     '''
-    if type(X) is list or X.ndim == 1:
-        return X, None
+    if X.dtype == np.object and X.ndim == 2:
+        irange = np.arange(len(X))
+        Xt = np.array([X[i,0] for i in irange])
+        Xs = np.array([X[i,1] for i in irange])
+        return Xt, Xs
     else:
-        return X[:,0], X[:,1:X.shape[1]]
-
+        return np.array(X), None
 
 
 def check_ts_data(X):
@@ -58,7 +60,7 @@ def check_ts_data(X):
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
-       Time series data and (optionally) static data created as per ``make_ts_data``
+       Time series data and (optionally) contextual data created as per ``make_ts_data``
 
     '''
     Xt, Xs = get_ts_data_parts(X)
@@ -74,7 +76,7 @@ def ts_stats(Xt, y, fs = 1.0, class_labels = None):
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
-       Time series data and (optionally) static data created as per ``make_ts_data``
+       Time series data and (optionally) contextual data created as per ``make_ts_data``
     y : array-like, shape [n_series]
         target data
     fs : float
@@ -115,7 +117,7 @@ def ts_stats(Xt, y, fs = 1.0, class_labels = None):
 
     T = np.sum(Ti)
 
-    total = {"n_series": N, "n_classes": C, "n_TS_vars": D, "n_static_vars": S, "Total_Time": T,
+    total = {"n_series": N, "n_classes": C, "n_TS_vars": D, "n_context_vars": S, "Total_Time": T,
               "Series_Time_Mean": np.mean(Ti),
               "Series_Time_Std": np.std(Ti),
               "Series_Time_Range": (np.min(Ti), np.max(Ti))}

@@ -9,8 +9,8 @@ This is a basic example using the pipeline to learn a feature representation of 
 # Author: David Burns
 # License: BSD
 
-from seglearn.feature_functions import base_features
-from seglearn.transform import SegFeatures, Segment
+
+from seglearn.transform import FeatureRep
 from seglearn.pipe import SegPipe
 from seglearn.datasets import load_watch
 from seglearn.util import make_ts_data
@@ -24,6 +24,7 @@ from sklearn.metrics import f1_score, make_scorer
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
+import numpy as np
 import pandas as pd
 
 # load the data
@@ -32,11 +33,11 @@ X = make_ts_data(data['X'])
 y = data['y']
 
 # create a feature representation pipeline
-feed = Pipeline([('segment', Segment()),
-                 ('features', SegFeatures(features = base_features()))])
-est = Pipeline([('scaler', StandardScaler()),
+
+est = Pipeline([('features', FeatureRep()),
+                ('scaler', StandardScaler()),
                 ('rf', RandomForestClassifier())])
-pipe = SegPipe(feed, est)
+pipe = SegPipe(est)
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
@@ -50,11 +51,18 @@ print("N segments in train: ", pipe.N_train)
 print("N segments in test: ", pipe.N_test)
 print("Accuracy score: ", score)
 
+# now lets add some contextual data
+Xc = np.column_stack((data['side'], data['subject']))
+X = make_ts_data(data['X'], Xc)
+y = data['y']
 
-# cross validation
+# and do a cross validation
 scoring = make_scorer(f1_score, average = 'macro')
 cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
 print("CV Scores: ", pd.DataFrame(cv_scores))
+
+# lets see what feature we used
+print("Features: ", pipe.est.steps[0][1].f_labels)
 
 img = mpimg.imread('feet.jpg')
 plt.imshow(img)

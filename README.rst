@@ -24,7 +24,7 @@ Installation
 Dependencies
 ~~~~~~~~~~~~
 
-imbalanced-learn is tested to work under Python 2.7 and Python 3.5.
+seglearn is tested to work under Python 2.7 and Python 3.5.
 The dependency requirements are based on the last scikit-learn release:
 
 * scipy(>=0.13.3)
@@ -33,8 +33,10 @@ The dependency requirements are based on the last scikit-learn release:
 * nose (nose>=1.1.2)
 
 Additionally, to run the examples, you need:
+
 * matplotlib(>=2.0.0)
 * keras (>=2.1.4) for the neural network examples
+* pandas
 
 The neural network examples were tested on keras using the tensorflow-gpu backend, which is recommended.
 
@@ -48,7 +50,7 @@ install it via `pip`::
 
 The package is release also in Anaconda Cloud platform::
 
-  conda install -c conda-forge imbalanced-learn
+  conda install -c conda-forge seglearn
 
 If you prefer, you can clone it and run the setup.py file. Use the following
 commands to get a copy from GitHub and install all dependencies::
@@ -79,15 +81,24 @@ of the scikit-learn community. Therefore, you can refer to their
 About
 -----
 
+This package was developed by::
+
+    David M. Burns MD, PhD(c)
+    Sunnybrook Research Institute
+    University of Toronto
+    Email: d.burns@utoronto.ca
+
+
+Citing seglearn
+---------------
+
 If you use seglearn in a scientific publication, we would appreciate
 citations to the following paper::
 
-  @article{JMLR:v18:16-365,
+  @article{arXiv:1802.01489
   author  = {David Burns, Nathan Leung, Michael Hardisty, Cari Whyne, Patrick Henry, Stewart McLachlin},
   title   = {Shoulder Physiotherapy Exercise Recognition: Machine Learning the Inertial Signals from a Smartwatch},
   journal = {arXiv},
   year    = {2018},
   url     = {https://arxiv.org/abs/1802.01489}
   }
-
-more discussion here....

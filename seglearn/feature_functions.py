@@ -1,15 +1,15 @@
 '''
-This module has functions that can be used to compute features from a segmented time series
+This module has functions that can be used to compute features from segmented time series data
 
-Sets of these functions can be passed in a dictionary object to initialize the ``SegFeatures`` transformer.
+Sets of these functions can be passed in a dictionary object to initialize the ``FeatureRep`` transformer.
 
 All functions follow the same template and process a single segmented time series instance:
 
     >>> def compute_feature(X):
     >>>     F = np.mean(X, axis = 1)
     >>>     return F
-    X : array-like shape [n_samples, segment_width, n_variables]
-    F : array-like [n_samples, n_features]
+    X : array-like shape [n_segments, segment_width, n_variables]
+    F : array-like [n_segments, n_features]
     The number of features returned (n_features) must be >= 1
 
     .. note:: ``np.atleast_3d`` is used if accessing the third dimension, as some datasets will have only a single time series variable. See ``hist4`` as an example.
@@ -17,8 +17,8 @@ All functions follow the same template and process a single segmented time serie
 Examples
 --------
 >>> from seglearn.feature_functions import all_features
->>> from seglearn.transform import SegFeatures
->>> FeatureTransform = SegFeatures(features=all_features())
+>>> from seglearn.transform import FeatureRep
+>>> FeatureTransform = FeatureRep(features=all_features())
 
 '''
 
@@ -30,9 +30,14 @@ from scipy import stats
 
 def base_features():
     ''' Returns dictionary of some basic features that can be calculated for segmented time series data '''
-    features = {'mean': mean,
+    features = {'mean' : mean,
                 'std': std,
                 'var': var,
+                'min': min,
+                'max': max,
+                'skew': skew,
+                'kurt': kurt,
+                'mse': mse,
                 'mnx': mean_crossings}
     return features
 
@@ -48,9 +53,9 @@ def all_features():
                 'max': max,
                 'skew': skew,
                 'kurt': kurt,
-                'hist4': hist4,
                 'mse': mse,
                 'mnx': mean_crossings,
+                'hist4': hist4,
                 'corr': corr2}
     return features
 

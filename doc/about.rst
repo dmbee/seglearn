@@ -1,12 +1,13 @@
 About us
 ========
 
-This package was developed by:
+This package was developed by::
 
-David M. Burns MD, PhD(c)
-Sunnybrook Research Institute
-University of Toronto
-Email: d.burns@utoronto.ca
+    David M. Burns MD, PhD(c)
+    Sunnybrook Research Institute
+    University of Toronto
+    Email: d.burns@utoronto.ca
+
 
 Citing seglearn
 ---------------
