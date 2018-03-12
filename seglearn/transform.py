@@ -23,7 +23,50 @@ class XyTransformerMixin(object):
 
 
 
-class Segment(BaseEstimator, XyTransformerMixin):
+
+class TsExpand(BaseEstimator, XyTransformerMixin):
+
+    def __init__(self):
+        pass
+
+    def fit(self, X, y = None):
+        return self
+
+    def transform(self, X, y, sample_weight = None, **fit_params):
+        ''' aligns target vector (y) and sample_weight to align with segments '''
+        Xt, Xc = get_ts_data_parts(X)
+        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
+        Xt = np.concatenate(Xt)
+
+        if y is not None:
+            y = self._expand_target_to_segments(y, Nt)
+
+        if sample_weight is not None:
+            sample_weight = self._expand_target_to_segments(sample_weight, Nt)
+
+        if Xc is None:
+            return Xt, y, sample_weight
+        else:
+            Xc = self._expand_variables_to_segments(Xc, Nt)
+            X = make_ts_data(Xt, Xc)
+            return X, y, sample_weight
+
+
+    def _expand_target_to_segments(self, y, Nt):
+        ''' expands variable vector v, by repeating each instance as specified in Nt '''
+        y_e = np.concatenate([np.full(Nt[i], y[i]) for i in np.arange(len(y))])
+        return y_e
+
+    def _expand_variables_to_segments(self, v, Nt):
+        ''' expands contextual variables v, by repeating each instance as specified in Nt '''
+        N_v = len(np.atleast_1d(v[0]))
+        return np.concatenate([np.full((Nt[i], N_v), v[i]) for i in np.arange(len(v))])
+
+
+
+
+
+class Segment(BaseEstimator, TransformerMixin):
     '''
     Transformer for sliding window segmentation
 
@@ -108,40 +151,12 @@ class Segment(BaseEstimator, XyTransformerMixin):
         else:
             Xt = np.array([sliding_window(Xt[i], self.width, self.step) for i in np.arange(N)])
 
-        return self._ts_expand(Xt, Xc, y, sample_weight)
-
-
-    def _expand_target_to_segments(self, y, Nt):
-        ''' expands variable vector v, by repeating each instance as specified in Nt '''
-        y_e = np.concatenate([np.full(Nt[i], y[i]) for i in np.arange(len(y))])
-        return y_e
-
-    def _expand_variables_to_segments(self, v, Nt):
-        ''' expands contextual variables v, by repeating each instance as specified in Nt '''
-        N_v = len(np.atleast_1d(v[0]))
-        return np.concatenate([np.full((Nt[i], N_v), v[i]) for i in np.arange(len(v))])
-
-
-    def _ts_expand(self, Xt, Xc, y, sample_weight):
-        ''' aligns target vector (y) and sample_weight to align with segments '''
-        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
-        Xt = np.concatenate(Xt)
-
-        if y is not None:
-            y = self._expand_target_to_segments(y, Nt)
-
-        if sample_weight is not None:
-            sample_weight = self._expand_target_to_segments(sample_weight, Nt)
-
         if Xc is None:
-            return Xt, y, sample_weight
+            return Xt
         else:
-            Xc = self._expand_variables_to_segments(Xc, Nt)
-            X = make_ts_data(Xt, Xc)
-            return X, y, sample_weight
+            return make_ts_data(Xt, Xc)
 
-
-
+        
 
 def sliding_window(time_series, width, step):
     '''
