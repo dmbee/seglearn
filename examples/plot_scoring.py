@@ -14,7 +14,7 @@ segments (not series') as instances of the data.
 # License: BSD
 
 
-from seglearn.transform import FeatureRep, Segment
+from seglearn.transform import FeatureRep, SegmentX
 from seglearn.pipe import SegPipe
 from seglearn.datasets import load_watch
 from seglearn.util import make_ts_data
@@ -141,7 +141,7 @@ print("CV F1 Scores: ", pd.DataFrame(cv_scores))
 # The disadvantage of this is that the parameters of the ``seg`` pipeline cannot be
 # optimized with this approach
 
-segmenter = Segment()
+segmenter = SegmentX()
 X_seg, y_seg, _ = segmenter.fit_transform(X, y)
 scoring = ['accuracy','precision_macro','recall_macro','f1_macro']
 cv_scores = cross_validate(est, X_seg, y_seg,

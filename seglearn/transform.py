@@ -12,7 +12,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
 
 
-__all__ = ['Segment', 'FeatureRep']
+__all__ = ['SegmentX', 'SegmentXY', 'FeatureRep']
 
 
 class XyTransformerMixin(object):
@@ -21,54 +21,20 @@ class XyTransformerMixin(object):
     def fit_transform(self, X, y, sample_weight = None, **fit_params):
         return self.fit(X, y, **fit_params).transform(X, y, sample_weight)
 
+def last(y):
+    ''' Returns the last column from 2d matrix '''
+    return y[:, (y.shape[1] - 1)]
+
+def middle(y):
+    ''' Returns the middle column from 2d matrix '''
+    return y[:, y.shape[1]//2]
 
 
-
-class TsExpand(BaseEstimator, XyTransformerMixin):
-
-    def __init__(self):
-        pass
-
-    def fit(self, X, y = None):
-        return self
-
-    def transform(self, X, y, sample_weight = None, **fit_params):
-        ''' aligns target vector (y) and sample_weight to align with segments '''
-        Xt, Xc = get_ts_data_parts(X)
-        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
-        Xt = np.concatenate(Xt)
-
-        if y is not None:
-            y = self._expand_target_to_segments(y, Nt)
-
-        if sample_weight is not None:
-            sample_weight = self._expand_target_to_segments(sample_weight, Nt)
-
-        if Xc is None:
-            return Xt, y, sample_weight
-        else:
-            Xc = self._expand_variables_to_segments(Xc, Nt)
-            X = make_ts_data(Xt, Xc)
-            return X, y, sample_weight
-
-
-    def _expand_target_to_segments(self, y, Nt):
-        ''' expands variable vector v, by repeating each instance as specified in Nt '''
-        y_e = np.concatenate([np.full(Nt[i], y[i]) for i in np.arange(len(y))])
-        return y_e
-
-    def _expand_variables_to_segments(self, v, Nt):
-        ''' expands contextual variables v, by repeating each instance as specified in Nt '''
-        N_v = len(np.atleast_1d(v[0]))
-        return np.concatenate([np.full((Nt[i], N_v), v[i]) for i in np.arange(len(v))])
-
-
-
-
-
-class Segment(BaseEstimator, TransformerMixin):
+class SegmentX(BaseEstimator, XyTransformerMixin):
     '''
-    Transformer for sliding window segmentation
+    Transformer for sliding window segmentation for datasets where
+    X is time series data, optionally with contextual variables
+    and each time series in X has a single target value y
 
     Parameters
     ----------
@@ -138,8 +104,118 @@ class Segment(BaseEstimator, TransformerMixin):
             expanded target vector
         sample_weight_new : array-like shape [n_segments]
             expanded sample weights
+        '''
+        check_is_fitted(self, 'step')
+        Xt, Xc = get_ts_data_parts(X)
+        N = len(Xt)
 
-        .. note:: The input data ``X`` must have the time series data in column 0. Each element of ``X[:,0]`` will have shape [n_samples, n_variables]. Each element of ``X_new[:,0]`` will have shape [n_segments, width, n_variables].
+        if Xt[0].ndim > 1:
+            Xt = np.array([sliding_tensor(Xt[i], self.width, self.step) for i in np.arange(N)])
+        else:
+            Xt = np.array([sliding_window(Xt[i], self.width, self.step) for i in np.arange(N)])
+
+        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
+        Xt = np.concatenate(Xt)
+
+        if y is not None:
+            y = self._expand_target_to_segments(y, Nt)
+
+        if sample_weight is not None:
+            sample_weight = self._expand_target_to_segments(sample_weight, Nt)
+
+        if Xc is None:
+            return Xt, y, sample_weight
+        else:
+            Xc = expand_variables_to_segments(Xc, Nt)
+            X = make_ts_data(Xt, Xc)
+            return X, y, sample_weight
+
+
+    def _expand_target_to_segments(self, y, Nt):
+        ''' expands variable vector v, by repeating each instance as specified in Nt '''
+        y_e = np.concatenate([np.full(Nt[i], y[i]) for i in np.arange(len(y))])
+        return y_e
+
+
+
+class SegmentXY(BaseEstimator, XyTransformerMixin):
+    '''
+    Transformer for sliding window segmentation for datasets where
+    X is time series data, optionally with contextual variables
+    and y is also time series data with the same sampling interval as X
+
+
+    Parameters
+    ----------
+    X : array-like, shape [n_series, ...]
+        Time series data and (optionally) contextual data created as per ``make_ts_data``
+    y : None
+        There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+    y_func : function
+        returns target vector from array of target segments (eg see ``last``)
+
+    Returns
+    -------
+    self : object
+        Returns self.
+    '''
+
+    def __init__(self, width = 100, overlap = 0.5, y_func = last):
+        self.width = width
+        self.overlap = overlap
+        self.y_func = y_func
+
+    def fit(self, X, y = None):
+        '''
+        Fit the transform
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+        '''
+        self._reset()
+        assert self.width > 0
+        assert self.overlap >= 0. and self.overlap <= 1.
+        self.step = int(self.width * (1. - self.overlap))
+        self.step = self.step if self.step >= 1 else 1
+        return self
+
+    def _reset(self):
+        ''' Resets internal data-dependent state of the transformer. __init__ parameters not touched. '''
+        if hasattr(self, 'step'):
+            del self.step
+
+    def transform(self, X, y = None, sample_weight = None):
+        '''
+        Transforms the time series data into segments
+        Note this transformation changes the number of samples in the data
+        If y is provided, it is segmented and transformed to align to the new samples as per ``y_func``
+        Currently sample weights always returned as None
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : array-like shape [n_series], default = None
+            target vector
+        sample_weight : array-like shape [n_series], default = None
+            sample weights
+
+        Returns
+        -------
+        X_new : array-like, shape [n_segments, ]
+            transformed time series data
+        y_new : array-like, shape [n_segments]
+            expanded target vector
+        sample_weight_new : None
 
         '''
         check_is_fitted(self, 'step')
@@ -151,12 +227,26 @@ class Segment(BaseEstimator, TransformerMixin):
         else:
             Xt = np.array([sliding_window(Xt[i], self.width, self.step) for i in np.arange(N)])
 
-        if Xc is None:
-            return Xt
-        else:
-            return make_ts_data(Xt, Xc)
+        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
+        Xt = np.concatenate(Xt)
 
-        
+        if y is not None:
+            y = np.array([sliding_window(y[i], self.width, self.step) for i in np.arange(N)])
+            y = np.concatenate(y)
+            y = self.y_func(y)
+
+        if Xc is None:
+            return Xt, y, None
+        else:
+            Xc = expand_variables_to_segments(Xc, Nt)
+            X = make_ts_data(Xt, Xc)
+            return X, y, None
+
+
+def expand_variables_to_segments(v, Nt):
+    ''' expands contextual variables v, by repeating each instance as specified in Nt '''
+    N_v = len(np.atleast_1d(v[0]))
+    return np.concatenate([np.full((Nt[i], N_v), v[i]) for i in np.arange(len(v))])
 
 def sliding_window(time_series, width, step):
     '''

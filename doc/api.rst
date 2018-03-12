@@ -7,3 +7,4 @@ API Documentation
 * :doc:`util`
 * :doc:`split`
 * :doc:`datasets`
+* :doc:`base`

@@ -1,7 +1,7 @@
 '''
-This module has functions that can be used to compute features from segmented time series data
+This module has functions or callable objects that can be used to compute features from segmented time series data
 
-Sets of these functions can be passed in a dictionary object to initialize the ``FeatureRep`` transformer.
+Sets of these functions or callables can be passed in a dictionary object to initialize the ``FeatureRep`` transformer.
 
 All functions follow the same template and process a single segmented time series instance:
 
@@ -13,6 +13,8 @@ All functions follow the same template and process a single segmented time serie
     The number of features returned (n_features) must be >= 1
 
     .. note:: ``np.atleast_3d`` is used if accessing the third dimension, as some datasets will have only a single time series variable. See ``hist4`` as an example.
+
+See hist for an example of a callable object
 
 Examples
 --------
@@ -55,7 +57,7 @@ def all_features():
                 'kurt': kurt,
                 'mse': mse,
                 'mnx': mean_crossings,
-                'hist4': hist4,
+                'hist4': hist(),
                 'corr': corr2}
     return features
 
@@ -87,21 +89,27 @@ def kurt(X):
     ''' kurtosis for each variable in a segmented time series '''
     return stats.kurtosis(X, axis = 1)
 
-def hist4(X):
-    ''' 4 bin histogram for each variable in a segmented time series
+class hist(object):
+    ''' histogram for each variable in a segmented time series
 
     .. note:: this feature is expensive to compute with the current implementation
     '''
-    X = np.atleast_3d(X)
-    N = X.shape[0]
-    D = X.shape[2]
-    bins = 4
-    hist = np.zeros((N, D * bins))
-    for i in np.arange(N):
-        for j in np.arange(D):
-            # for each variable, advance by bins
-            hist[i,(j*bins):((j+1)*bins)] = np.histogram(X[i,:,j],bins = bins, density=True)[0]
-    return hist
+
+    def __init__(self, bins = 4):
+        assert bins > 1
+        self.bins = bins
+
+    def __call__(self, X):
+        X = np.atleast_3d(X)
+        N = X.shape[0]
+        D = X.shape[2]
+        hist = np.zeros((N, D * self.bins))
+        for i in np.arange(N):
+            for j in np.arange(D):
+                # for each variable, advance by bins
+                hist[i, (j * self.bins):((j + 1) * self.bins)] = np.histogram(X[i, :, j], bins=self.bins, density=True)[0]
+
+        return hist
 
 def mse(X):
     ''' computes mean spectral energy for each variable in a segmented time series '''
@@ -129,11 +137,14 @@ def corr2(X):
     X = np.atleast_3d(X)
     N = X.shape[0]
     D = X.shape[2]
-    assert D > 1
-    trii = np.triu_indices(D, k=1)
-    DD = len(trii[0])
-    r = np.zeros((N, DD))
-    for i in np.arange(N):
-        rmat = np.corrcoef(X[i])  # get the ith window from each signal, result will be DxD
-        r[i] = rmat[trii]
-    return r
+
+    if D == 1:
+        return np.zeros(N, dtype=np.float)
+    else:
+        trii = np.triu_indices(D, k=1)
+        DD = len(trii[0])
+        r = np.zeros((N, DD))
+        for i in np.arange(N):
+            rmat = np.corrcoef(X[i])  # get the ith window from each signal, result will be DxD
+            r[i] = rmat[trii]
+        return r

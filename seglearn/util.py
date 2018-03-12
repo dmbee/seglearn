@@ -4,11 +4,14 @@ This module has utilities for time series data input checking
 # Author: David Burns
 # License: BSD
 
+from seglearn.base import TS_Data
+
 import numpy as np
+
 
 def make_ts_data(time_series, context_vars = None):
     '''
-    Combines time series data and relational contextual variables into a structure compatible with ``SegPipe`` and related classes.
+    Combines time series data and relational contextual variables into an ``TS_Data`` object compatible with ``SegPipe`` and related classes. If context_vars are none, a numpy array is returned.
 
     Parameters
     ----------
@@ -20,10 +23,10 @@ def make_ts_data(time_series, context_vars = None):
     Returns
     -------
     X : array-like [n_series, ]
-        Object containing time series as first column and contextual data if any in second column
+        ``TS_Data object containing time series and contextual data
     '''
     if context_vars is not None:
-        return np.array([[time_series[i], context_vars[i]] for i in range(len(time_series))])
+        return TS_Data(time_series, context_vars)
     else:
         return np.array(time_series)
 
@@ -39,16 +42,13 @@ def get_ts_data_parts(X):
     Returns
     -------
     Xt : array-like, shape [n_series, ]
-        Time series data from first column of X
+        Time series data
     Xs : array-like, shape [n_series, n_contextd = np.colum _variables]
-        contextual variables from columns 2
+        contextual variables
 
     '''
-    if X.dtype == np.object and X.ndim == 2:
-        irange = np.arange(len(X))
-        Xt = np.array([X[i,0] for i in irange])
-        Xs = np.array([X[i,1] for i in irange])
-        return Xt, Xs
+    if type(X) is TS_Data:
+        return X.ts_data, X.context_data
     else:
         return np.array(X), None
 

@@ -5,8 +5,7 @@ time series data and sequences using a sliding window segmentation
 # Author: David Burns
 # License: BSD
 
-from .util import make_ts_data, get_ts_data_parts
-from .transform import Segment
+from .transform import SegmentX
 
 import numpy as np
 from sklearn.utils.metaestimators import _BaseComposition
@@ -20,11 +19,13 @@ class SegPipe(_BaseComposition):
 
     The pipeline is applied in 2 steps, when methods ``fit``, ``transform``, ``predict``, or ``score`` is called
 
-    Step 1: sliding window segmentation and time series expansion performed by the ``Segment`` transformer.
+    Step 1: sliding window segmentation performed by the ``segmenter`` object.
 
     Step 2: ``est`` estimator pipeline (or estimator) called
 
     The time series data (X) is input to the pipeline as a numpy object array, length n_series. The first column holds the time series data, and second column (optional) can hold relational contextual variables. Each element of the time series data is array-like with shape [n_samples, n_time_variables]. n_samples can be different for each element (series). Each element of the contextual variable data is array-like with shape [n_context_variables]. The ``util`` module has functions to help create the necessary data structure.
+
+    The target y can be like a contextual variable, with one value per time series, in which case ``SegmentX`` should be used as the segmenter. Or if the target variable y is itself a time series, than ``SegmentXY`` should be used.
 
     The API for setting parameters for the segmenter and ``est`` pipelines are similar to sklearn but slightly different. It is compatible with sklearn parameter optimization tools (eg GridSearchCV). See the set_params method, and examples for details.
 
@@ -33,6 +34,8 @@ class SegPipe(_BaseComposition):
     est : sklearn estimator or pipeline or None
         | for feature processing (optional) and applying the final estimator
         | if None, only segmentation and expansion is done
+    segmenter : object
+        Segmentation transformer to convert time series data to segmented time series data
     shuffle : bool, optional
         shuffle the segments before fitting the ``est`` pipeline (recommended)
     scorer : callable, optional
@@ -64,12 +67,10 @@ class SegPipe(_BaseComposition):
     >>> print(pipe.score(X, y))
 
     '''
-    def __init__(self, est, width = 100, overlap = 0.5, shuffle = True, scorer = None):
+    def __init__(self, est, segmenter = SegmentX(), shuffle = True, scorer = None):
         self.est = est
-        self.width = width
-        self.overlap = overlap
+        self.segmenter = segmenter
         self.shuffle = shuffle
-        self.segmenter = Segment(width=width, overlap = overlap)
         self.scorer = scorer
 
     def fit(self, X, y, **fit_params):
@@ -93,7 +94,9 @@ class SegPipe(_BaseComposition):
 
         '''
         self._reset()
-        X, y, _ = self.segmenter.fit_transform(X, y)
+        self.segmenter.fit(X, y, **fit_params)
+        X, y, _ = self.segmenter.transform(X, y)
+
         self.N_train = len(y)
 
         if self.shuffle is True:

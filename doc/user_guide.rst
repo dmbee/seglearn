@@ -21,7 +21,11 @@ Sequential classification problems typically have a target variable associated w
 
 Regression datasets can similarly have a single target variable for each sequence (eg estimation of a song's sales on itunes).
 
-Some classification and regression datasets will have a target that varies continuously within the sequence. In some cases, the goal may be to predict a future value (time series forecasting) which is equivalent. Currently, I have only used this package on datasets where the target variable is fixed for each sequence. It should be relatively straightforward to extend the work to datasets with continuously varying target.
+Some classification and regression datasets will have a target that is itself a time series - as it varies continuously within the sequence. In these cases, both the time series variables and target variable need to be segmented. A decision needs to be made about where the target variable y should be sampled from for each instance in the segmented data set. Perhaps the target should be taken to be the middle value from the segment, the average over the segment, or maybe the value at the end of the segment. Maybe the target should be a sequence itself.
+
+This package supports time series data sets with or without contextual information, and supports a target variable that is either fixed for each time series in the data set, or is itself a time series.
+
+A final class of time series problems is forecasting. In which case, the goal may be to predict a future value or values of the target at some time remote to the segment. Currently this package does not support this applicaiton, but it would be relatively simple to do so by creating a new segmenter class using the existing classes as a template.
 
 
 Why this Package
@@ -39,7 +43,8 @@ What this Package Includes
 
 The main contributions of this package are:
 
-1) ``Segment`` - class for performing the time series / sequence segmentation
+1) ``SegmentX`` - class for performing the time series / sequence segmentation when the target is contextual
+2) ``SegmentXY`` - class for performing the time series / sequence segmentation when the target is a time series
 2) ``FeatureRep`` - class for computing a feature representation from segment data, and
 3) ``SegPipe`` - pipeline for integrating this for use with scikit learn machine learning algorithms and evaluation tools
 

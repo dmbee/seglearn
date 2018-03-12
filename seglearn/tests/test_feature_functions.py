@@ -25,7 +25,6 @@ def test_uv_feature_functions():
     uv_data = np.random.rand(N, W)
 
     ftr_funcs = feature_functions.all_features()
-    del ftr_funcs['corr']
 
     for f in ftr_funcs:
         uvf = ftr_funcs[f](uv_data)

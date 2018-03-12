@@ -53,8 +53,9 @@ print("Accuracy score: ", score)
 
 # now lets add some contextual data
 Xc = np.column_stack((data['side'], data['subject']))
-X = make_ts_data(data['X'], Xc)
-y = data['y']
+Xt = np.array(data['X'])
+X = make_ts_data(Xt, Xc)
+y = np.array(data['y'])
 
 # and do a cross validation
 scoring = make_scorer(f1_score, average = 'macro')
