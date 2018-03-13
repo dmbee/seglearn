@@ -26,4 +26,6 @@ setup(name='seglearn',
       include_package_data=True,
       install_requires=INSTALL_REQUIRES,
       author_email='david.mo.burns@gmail.com',
+      url = 'https://github.com/dmbee/seglearn',
+      license = 'BSD'
       )
