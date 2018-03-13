@@ -91,7 +91,7 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series...">
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we use the pipeline to learn a continuous time series target with a regressor">
 
 .. only:: html
 

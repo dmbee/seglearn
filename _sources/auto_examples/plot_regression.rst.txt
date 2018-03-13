@@ -7,7 +7,7 @@
 Continuous Target and Time Series Regression
 ============================================
 
-This is a basic example using the pipeline to learn a feature representation of the time series data
+In this example, we use the pipeline to learn a continuous time series target with a regressor
 
 
 
@@ -25,11 +25,11 @@ This is a basic example using the pipeline to learn a feature representation of 
     ('N series in test: ', 1)
     ('N segments in train: ', 299)
     ('N segments in test: ', 99)
-    ('Score: ', -0.30956857195213217)
+    ('Score: ', -0.30956771325098664)
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.004894    0.002097   -1.063152     0.037469
-    1  0.004666    0.002099   -0.129287     0.059716
-    2  0.004749    0.002020   -0.946624     0.042977)
+    0  0.004729    0.002048   -1.063143     0.037469
+    1  0.004602    0.001982   -0.129286     0.059716
+    2  0.004616    0.001970   -0.946624     0.042977)
 
 
 
@@ -105,7 +105,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.077 seconds)
+**Total running time of the script:** ( 0 minutes  0.076 seconds)
 
 
 
