@@ -4,7 +4,10 @@
 
 .. _scikit-learn-contrib: https://github.com/scikit-learn-contrib
 
-|PythonVersion|_ |Pypi|_ |CircleCI|_
+|Travis|_ |Pypi|_ |PythonVersion|_ |CircleCI|_ |Coveralls|_
+
+.. |Travis| image:: https://travis-ci.org/dmbee/seglearn.svg?branch=master
+.. _Travis: https://travis-ci.org/dmbee/seglearn
 
 .. |Pypi| image:: https://badge.fury.io/py/seglearn.svg
 .. _Pypi: https://badge.fury.io/py/seglearn
@@ -14,6 +17,10 @@
 
 .. |CircleCI| image:: https://circleci.com/gh/dmbee/seglearn.svg?style=shield&circle-token=:circle-token
 .. _CircleCI: https://circleci.com/gh/dmbee/seglearn/tree/master
+
+.. |Coveralls| image:: https://coveralls.io/repos/github/dmbee/seglearn/badge.svg?branch=master
+.. _Coveralls: https://coveralls.io/github/dmbee/seglearn?branch=master
+
 
 seglearn
 ========
