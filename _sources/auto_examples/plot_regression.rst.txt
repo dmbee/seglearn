@@ -25,11 +25,11 @@ This is a basic example using the pipeline to learn a feature representation of 
     ('N series in test: ', 1)
     ('N segments in train: ', 299)
     ('N segments in test: ', 99)
-    ('Score: ', -0.3095677132509862)
+    ('Score: ', -0.30956857195213217)
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.004881    0.002042   -1.063142     0.037469
-    1  0.004612    0.001991   -0.129287     0.059716
-    2  0.004616    0.002031   -0.946204     0.042975)
+    0  0.004894    0.002097   -1.063152     0.037469
+    1  0.004666    0.002099   -0.129287     0.059716
+    2  0.004749    0.002020   -0.946624     0.042977)
 
 
 
@@ -105,7 +105,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.081 seconds)
+**Total running time of the script:** ( 0 minutes  0.077 seconds)
 
 
 

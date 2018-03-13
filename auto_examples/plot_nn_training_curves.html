@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Classifying Segments Directly with a Neural Network &mdash; seglearn 0.1.0 documentation</title>
+  <title>Plotting Neural Network Training Curves &mdash; seglearn 0.1.0 documentation</title>
   
 
   
@@ -112,7 +112,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Classifying Segments Directly with a Neural Network</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Neural Network Training Curves</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#simple-nn-model">Simple NN Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-training-history">Accessing training history</a></li>
@@ -174,7 +174,7 @@
         
           <li><a href="index.html">General examples</a> &raquo;</li>
         
-      <li>Classifying Segments Directly with a Neural Network</li>
+      <li>Plotting Neural Network Training Curves</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -193,8 +193,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="classifying-segments-directly-with-a-neural-network">
-<span id="sphx-glr-auto-examples-plot-nn-training-curves-py"></span><h1>Classifying Segments Directly with a Neural Network<a class="headerlink" href="#classifying-segments-directly-with-a-neural-network" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="plotting-neural-network-training-curves">
+<span id="sphx-glr-auto-examples-plot-nn-training-curves-py"></span><h1>Plotting Neural Network Training Curves<a class="headerlink" href="#plotting-neural-network-training-curves" title="Permalink to this headline">¶</a></h1>
 <p>This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
@@ -266,16 +266,16 @@
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">acc</span>      <span class="n">loss</span>   <span class="n">val_acc</span>  <span class="n">val_loss</span>
-<span class="mi">0</span>  <span class="mf">0.265364</span>  <span class="mf">1.786755</span>  <span class="mf">0.306818</span>  <span class="mf">1.558925</span>
-<span class="mi">1</span>  <span class="mf">0.493783</span>  <span class="mf">1.261715</span>  <span class="mf">0.595170</span>  <span class="mf">0.910462</span>
-<span class="mi">2</span>  <span class="mf">0.629130</span>  <span class="mf">0.829384</span>  <span class="mf">0.717330</span>  <span class="mf">0.640215</span>
-<span class="mi">3</span>  <span class="mf">0.699822</span>  <span class="mf">0.646435</span>  <span class="mf">0.730114</span>  <span class="mf">0.559004</span>
-<span class="mi">4</span>  <span class="mf">0.720426</span>  <span class="mf">0.580883</span>  <span class="mf">0.750000</span>  <span class="mf">0.505579</span>
-<span class="mi">5</span>  <span class="mf">0.752398</span>  <span class="mf">0.515205</span>  <span class="mf">0.757102</span>  <span class="mf">0.492666</span>
-<span class="mi">6</span>  <span class="mf">0.750266</span>  <span class="mf">0.488487</span>  <span class="mf">0.802557</span>  <span class="mf">0.429647</span>
-<span class="mi">7</span>  <span class="mf">0.774423</span>  <span class="mf">0.452926</span>  <span class="mf">0.811080</span>  <span class="mf">0.406426</span>
-<span class="mi">8</span>  <span class="mf">0.791829</span>  <span class="mf">0.421560</span>  <span class="mf">0.803977</span>  <span class="mf">0.399066</span>
-<span class="mi">9</span>  <span class="mf">0.799290</span>  <span class="mf">0.404130</span>  <span class="mf">0.801136</span>  <span class="mf">0.378544</span>
+<span class="mi">0</span>  <span class="mf">0.257904</span>  <span class="mf">1.768561</span>  <span class="mf">0.397727</span>  <span class="mf">1.465715</span>
+<span class="mi">1</span>  <span class="mf">0.534636</span>  <span class="mf">1.190896</span>  <span class="mf">0.592330</span>  <span class="mf">0.914622</span>
+<span class="mi">2</span>  <span class="mf">0.648668</span>  <span class="mf">0.803612</span>  <span class="mf">0.720170</span>  <span class="mf">0.638524</span>
+<span class="mi">3</span>  <span class="mf">0.678508</span>  <span class="mf">0.650617</span>  <span class="mf">0.724432</span>  <span class="mf">0.547983</span>
+<span class="mi">4</span>  <span class="mf">0.729307</span>  <span class="mf">0.586622</span>  <span class="mf">0.765625</span>  <span class="mf">0.514627</span>
+<span class="mi">5</span>  <span class="mf">0.736057</span>  <span class="mf">0.527867</span>  <span class="mf">0.747159</span>  <span class="mf">0.489782</span>
+<span class="mi">6</span>  <span class="mf">0.752753</span>  <span class="mf">0.513095</span>  <span class="mf">0.776989</span>  <span class="mf">0.439536</span>
+<span class="mi">7</span>  <span class="mf">0.759503</span>  <span class="mf">0.481408</span>  <span class="mf">0.795455</span>  <span class="mf">0.404257</span>
+<span class="mi">8</span>  <span class="mf">0.768739</span>  <span class="mf">0.463785</span>  <span class="mf">0.786932</span>  <span class="mf">0.403541</span>
+<span class="mi">9</span>  <span class="mf">0.732149</span>  <span class="mf">0.593421</span>  <span class="mf">0.778409</span>  <span class="mf">0.454236</span>
 </pre></div>
 </div>
 </div>
@@ -290,7 +290,7 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="align-center" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
-<p><strong>Total running time of the script:</strong> ( 2 minutes  4.482 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 2 minutes  6.978 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_nn_training_curves.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>

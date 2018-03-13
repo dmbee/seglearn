@@ -112,7 +112,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Scoring Time Series Estimators</a><ul>
@@ -275,7 +275,7 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;Accuracy score: &#39;</span><span class="p">,</span> <span class="mf">0.7521588946459413</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;Accuracy score: &#39;</span><span class="p">,</span> <span class="mf">0.7331606217616581</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -292,7 +292,7 @@ segments (not series’) as instances of the data.</p>
 </div>
 <img alt="../_images/sphx_glr_plot_scoring_001.png" class="align-center" src="../_images/sphx_glr_plot_scoring_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;F1 score: &#39;</span><span class="p">,</span> <span class="mf">0.7679233797931143</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;F1 score: &#39;</span><span class="p">,</span> <span class="mf">0.7514394861902375</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -317,10 +317,10 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
-<span class="mi">0</span>  <span class="mf">0.639985</span>    <span class="mf">0.133484</span>    <span class="mf">0.775000</span>     <span class="mf">0.999709</span>
-<span class="mi">1</span>  <span class="mf">0.636888</span>    <span class="mf">0.129782</span>    <span class="mf">0.708059</span>     <span class="mf">0.999422</span>
-<span class="mi">2</span>  <span class="mf">0.660488</span>    <span class="mf">0.122710</span>    <span class="mf">0.873965</span>     <span class="mf">0.998607</span>
-<span class="mi">3</span>  <span class="mf">0.655000</span>    <span class="mf">0.125032</span>    <span class="mf">0.734568</span>     <span class="mf">0.999153</span><span class="p">)</span>
+<span class="mi">0</span>  <span class="mf">0.630506</span>    <span class="mf">0.128597</span>    <span class="mf">0.815323</span>     <span class="mf">0.999127</span>
+<span class="mi">1</span>  <span class="mf">0.625662</span>    <span class="mf">0.126437</span>    <span class="mf">0.689145</span>     <span class="mf">0.999133</span>
+<span class="mi">2</span>  <span class="mf">0.647375</span>    <span class="mf">0.116317</span>    <span class="mf">0.882245</span>     <span class="mf">0.998050</span>
+<span class="mi">3</span>  <span class="mf">0.637840</span>    <span class="mf">0.117764</span>    <span class="mf">0.739859</span>     <span class="mf">0.999436</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -337,10 +337,10 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV F1 Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
-<span class="mi">0</span>  <span class="mf">0.636218</span>    <span class="mf">0.133742</span>    <span class="mf">0.774372</span>     <span class="mf">0.999761</span>
-<span class="mi">1</span>  <span class="mf">0.635273</span>    <span class="mf">0.132493</span>    <span class="mf">0.804996</span>     <span class="mf">0.999770</span>
-<span class="mi">2</span>  <span class="mf">0.654020</span>    <span class="mf">0.118705</span>    <span class="mf">0.880169</span>     <span class="mf">0.999296</span>
-<span class="mi">3</span>  <span class="mf">0.640589</span>    <span class="mf">0.121605</span>    <span class="mf">0.761119</span>     <span class="mf">0.999035</span><span class="p">)</span>
+<span class="mi">0</span>  <span class="mf">0.619175</span>    <span class="mf">0.127009</span>    <span class="mf">0.787513</span>     <span class="mf">0.999761</span>
+<span class="mi">1</span>  <span class="mf">0.614062</span>    <span class="mf">0.127433</span>    <span class="mf">0.774098</span>     <span class="mf">0.999310</span>
+<span class="mi">2</span>  <span class="mf">0.648090</span>    <span class="mf">0.117191</span>    <span class="mf">0.898369</span>     <span class="mf">0.998894</span>
+<span class="mi">3</span>  <span class="mf">0.633043</span>    <span class="mf">0.118518</span>    <span class="mf">0.751651</span>     <span class="mf">0.999759</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -364,19 +364,19 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV Scores (workaround): &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_accuracy</span>  <span class="n">test_f1_macro</span>  <span class="n">test_precision_macro</span>  \
-<span class="mi">0</span>  <span class="mf">0.513342</span>    <span class="mf">0.382216</span>       <span class="mf">0.802048</span>       <span class="mf">0.814065</span>              <span class="mf">0.821873</span>
-<span class="mi">1</span>  <span class="mf">0.517425</span>    <span class="mf">0.379908</span>       <span class="mf">0.822374</span>       <span class="mf">0.836144</span>              <span class="mf">0.850704</span>
-<span class="mi">2</span>  <span class="mf">0.512312</span>    <span class="mf">0.377898</span>       <span class="mf">0.792808</span>       <span class="mf">0.801762</span>              <span class="mf">0.815224</span>
-<span class="mi">3</span>  <span class="mf">0.511644</span>    <span class="mf">0.373001</span>       <span class="mf">0.766724</span>       <span class="mf">0.786303</span>              <span class="mf">0.796685</span>
+<span class="mi">0</span>  <span class="mf">0.511856</span>    <span class="mf">0.373819</span>       <span class="mf">0.802901</span>       <span class="mf">0.815946</span>              <span class="mf">0.819927</span>
+<span class="mi">1</span>  <span class="mf">0.513672</span>    <span class="mf">0.377978</span>       <span class="mf">0.789923</span>       <span class="mf">0.807044</span>              <span class="mf">0.812800</span>
+<span class="mi">2</span>  <span class="mf">0.518065</span>    <span class="mf">0.376112</span>       <span class="mf">0.801370</span>       <span class="mf">0.812783</span>              <span class="mf">0.823066</span>
+<span class="mi">3</span>  <span class="mf">0.512672</span>    <span class="mf">0.371758</span>       <span class="mf">0.795026</span>       <span class="mf">0.811014</span>              <span class="mf">0.823711</span>
 
    <span class="n">test_recall_macro</span>
-<span class="mi">0</span>           <span class="mf">0.820969</span>
-<span class="mi">1</span>           <span class="mf">0.840287</span>
-<span class="mi">2</span>           <span class="mf">0.805119</span>
-<span class="mi">3</span>           <span class="mf">0.785315</span>  <span class="p">)</span>
+<span class="mi">0</span>           <span class="mf">0.822290</span>
+<span class="mi">1</span>           <span class="mf">0.809255</span>
+<span class="mi">2</span>           <span class="mf">0.812304</span>
+<span class="mi">3</span>           <span class="mf">0.813655</span>  <span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  14.295 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  14.163 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_scoring.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
