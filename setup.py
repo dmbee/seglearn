@@ -19,7 +19,7 @@ except ImportError:
     sys.exit(1)
 
 setup(name='seglearn',
-      version='0.1',
+      version='0.1.1',
       description='Machine Learning with Time Series Segmentation',
       author='David Burns',
       packages=find_packages(),
@@ -27,5 +27,16 @@ setup(name='seglearn',
       install_requires=INSTALL_REQUIRES,
       author_email='david.mo.burns@gmail.com',
       url = 'https://github.com/dmbee/seglearn',
-      license = 'BSD'
+      CLASSIFIERS = ['Intended Audience :: Science/Research',
+               'Intended Audience :: Developers',
+               'License :: BSD',
+               'Programming Language :: Python',
+               'Topic :: Software Development',
+               'Topic :: Scientific/Engineering',
+               'Operating System :: Microsoft :: Windows',
+               'Operating System :: POSIX',
+               'Operating System :: Unix',
+               'Operating System :: MacOS',
+               'Programming Language :: Python :: 2.7',
+               'Programming Language :: Python :: 3.5']
       )
