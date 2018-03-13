@@ -2,5 +2,5 @@ include seglearn/data/*
 include examples/*
 include doc/*
 include requirements.txt
-include README.md
+include README.rst
 include LICENSE
