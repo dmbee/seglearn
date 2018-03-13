@@ -3,7 +3,7 @@
 Continuous Target and Time Series Regression
 ============================================
 
-This is a basic example using the pipeline to learn a feature representation of the time series data
+In this example, we use the pipeline to learn a continuous time series target with a regressor
 
 '''
 # Author: David Burns
