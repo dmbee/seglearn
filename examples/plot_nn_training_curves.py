@@ -17,9 +17,14 @@ from sklearn.model_selection import train_test_split
 from keras.layers import Dense, LSTM, Conv1D
 from keras.models import Sequential
 from keras.wrappers.scikit_learn import KerasClassifier
-import matplotlib.image as mpimg
+
+import numpy as np
+from pandas import DataFrame
 import matplotlib.pyplot as plt
 
+##############################################
+# Simple NN ModelSetup
+##############################################
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
                conv_filters=64, lstm_units=100):
@@ -38,28 +43,46 @@ def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
     return model
 
 
+##############################################
+# Setup
+##############################################
+
 # load the data
 data = load_watch()
 X = make_ts_data(data['X'])
 y = data['y']
 
-# create a segment learning pipeline
-width = 100
-est = KerasClassifier(build_fn=crnn_model, epochs = 15, batch_size = 256, verbose = 0)
-pipe = SegPipe(est)
-
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
+# create a segment learning pipeline
+width = 100
+est = KerasClassifier(build_fn=crnn_model, epochs = 15, batch_size = 256, verbose = 0, validation_split = 0.2)
+pipe = SegPipe(est)
+
+##############################################
+# Accessing training history
+##############################################
+
+# this is a bit of a hack, because history object is returned by the
+# keras wrapper when fit is called
+# this approach won't work with a more complex estimator pipeline, in which case
+# a callable class with the desired properties should be made passed to build_fn
+
 pipe.fit(X_train,y_train)
-score = pipe.score(X_test, y_test)
-
-print("N series in train: ", len(X_train))
-print("N series in test: ", len(X_test))
-print("N segments in train: ", pipe.N_train)
-print("N segments in test: ", pipe.N_test)
-print("Accuracy score: ", score)
+print(DataFrame(pipe.history.history))
+ac_train = pipe.history.history['acc']
+ac_val = pipe.history.history['val_acc']
+epoch = np.arange(len(ac_train))+1
 
 
-img = mpimg.imread('segments.jpg')
-plt.imshow(img)
+##############################################
+# Training Curves
+##############################################
+
+plt.plot(epoch, ac_train, 'o', label = "train")
+plt.plot(epoch, ac_val, '+', label = "validation")
+plt.xlabel("Epoch")
+plt.ylabel("Accuracy")
+plt.legend()
+plt.show()

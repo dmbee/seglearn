@@ -5,7 +5,10 @@ This module has two classes for splitting time series data temporally - where tr
 # License: BSD
 
 from .util import check_ts_data, get_ts_data_parts, make_ts_data
+from .base import TS_Data
+
 import numpy as np
+
 
 class TemporalKFold():
     '''
@@ -51,7 +54,7 @@ class TemporalKFold():
         ----------
         X : array-like, shape [n_series, ...]
            Time series data and (optionally) contextual data created as per ``make_ts_data``
-        y : array-like shape [n_series]
+        y : array-like shape [n_series, ]
             target vector
 
         Returns
@@ -64,40 +67,51 @@ class TemporalKFold():
             Splitting indices
         '''
 
-        check_ts_data(X)
+        check_ts_data(X, y)
         Xt, Xc = get_ts_data_parts(X)
-        N = len(Xt)
-        Xt_new = self._ts_slice(Xt)
+        Ns = len(Xt)
+        Xt_new, y_new = self._ts_slice(Xt, y)
 
         if Xc is not None:
             Xc_new = np.concatenate([Xc for i in range(self.n_splits)])
+            X_new = TS_Data(Xt_new, Xc_new)
         else:
-            Xc_new = None
+            X_new = np.array(Xt_new)
 
-        y_new = np.concatenate([y for i in range(self.n_splits)])
+        cv = self._make_indices(Ns)
 
-        cv = self._make_indices(N)
+        return X_new, y_new, cv
 
-        return make_ts_data(Xt_new, Xc_new), y_new, cv
-
-    def _ts_slice(self, Xt):
-        ''' takes a time series, splits each one into folds '''
-        N = len(Xt)
-        X_new = []
+    def _ts_slice(self, Xt, y):
+        ''' takes time series data, and splits each series into temporal folds '''
+        Ns = len(Xt)
+        Xt_new = []
         for i in range(self.n_splits):
-            for j in range(N):
+            for j in range(Ns):
                 Njs = int(len(Xt[j]) / self.n_splits)
-                X_new.append(Xt[j][(Njs * i):(Njs * (i + 1))])
+                Xt_new.append(Xt[j][(Njs * i):(Njs * (i + 1))])
+        Xt_new = np.array(Xt_new)
 
-        return X_new
+        if len(np.atleast_1d(y[0])) == len(Xt[0]):
+            # y is a time series
+            y_new = []
+            for i in range(self.n_splits):
+                for j in range(Ns):
+                    Njs = int(len(y[j]) / self.n_splits)
+                    y_new.append(y[j][(Njs * i):(Njs * (i + 1))])
+            y_new = np.array(y_new)
+        else:
+            y_new = np.concatenate([y for i in range(self.n_splits)])
 
-    def _make_indices(self, N):
+        return Xt_new, y_new
+
+    def _make_indices(self, Ns):
         ''' makes indices for cross validation '''
-        N_new = int(N * self.n_splits)
+        N_new = int(Ns * self.n_splits)
 
         test = [np.full(N_new, False) for i in range(self.n_splits)]
         for i in range(self.n_splits):
-            test[i][np.arange(N * i, N * (i + 1))] = True
+            test[i][np.arange(Ns * i, Ns * (i + 1))] = True
         train = [np.logical_not(test[i]) for i in range(self.n_splits)]
 
         test = [np.arange(N_new)[test[i]] for i in range(self.n_splits)]
@@ -107,11 +121,60 @@ class TemporalKFold():
         return cv
 
 
-# todo
-# inspiration: http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
-# def temporal_train_test_split():
-#     pass
-#
+def temporal_split(X, y, test_size = 0.25):
+    '''
+    Split time series or sequence data along the time axis.
+    Test data is drawn from the end of each series / sequence
+
+    Parameters
+    ----------
+    X : array-like, shape [n_series, ...]
+       Time series data and (optionally) contextual data created as per ``make_ts_data``
+    y : array-like shape [n_series, ]
+        target vector
+    test_size : float
+        between 0 and 1, amount to allocate to test
+
+    Returns
+    -------
+    X_train : array-like, shape [n_series, ]
+    X_test : array-like, shape [n_series, ]
+    y_train :  array-like, shape [n_series, ]
+    y_test :  array-like, shape [n_series, ]
+
+    '''
+
+    Ns = len(y) # number of series
+    check_ts_data(X, y)
+    Xt, Xc = get_ts_data_parts(X)
+
+    assert test_size >= 0. and test_size <= 1.
+    train_size = 1. - test_size
+
+    train_ind = [np.arange(0, int(train_size * len(Xt[i]))) for i in range(Ns)]
+    test_ind = [np.arange(len(train_ind[i]), len(Xt[i])) for i in range(Ns)]
+
+    Xt_train = [Xt[i][train_ind[i]] for i in range(Ns)]
+    Xt_test = [Xt[i][test_ind[i]] for i in range(Ns)]
+    X_train = make_ts_data(Xt_train, Xc)
+    X_test = make_ts_data(Xt_test, Xc)
+
+    if len(np.atleast_1d(y[0])) == len(Xt[0]):
+        # y is a time series
+        y_train = [y[i][train_ind[i]] for i in range(Ns)]
+        y_test = [y[i][test_ind[i]] for i in range(Ns)]
+    else:
+        # y is contextual
+        y_train = y
+        y_test = y
+
+    return X_train, X_test, y_train, y_test
+
+
+
+
+
+
 
 
 

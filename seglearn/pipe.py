@@ -6,6 +6,7 @@ time series data and sequences using a sliding window segmentation
 # License: BSD
 
 from .transform import SegmentX
+from .util import check_ts_data
 
 import numpy as np
 from sklearn.utils.metaestimators import _BaseComposition
@@ -94,6 +95,7 @@ class SegPipe(_BaseComposition):
 
         '''
         self._reset()
+        check_ts_data(X, y)
         self.segmenter.fit(X, y, **fit_params)
         X, y, _ = self.segmenter.transform(X, y)
 
@@ -102,7 +104,11 @@ class SegPipe(_BaseComposition):
         if self.shuffle is True:
             X, y = self._shuffle(X, y)
 
-        self.est.fit(X, y, **fit_params)
+        fitres = self.est.fit(X, y, **fit_params)
+
+        # for keras scikit learn api
+        if hasattr(fitres,'history'):
+            self.history = fitres
 
         return self
 
@@ -126,6 +132,7 @@ class SegPipe(_BaseComposition):
             expanded target vector
         '''
         check_is_fitted(self, 'N_train')
+        check_ts_data(X, y)
         X, y, _ = self.segmenter.transform(X, y)
         X = self.est.transform(X)
         return X, y
@@ -174,7 +181,7 @@ class SegPipe(_BaseComposition):
 
         '''
         check_is_fitted(self, 'N_train')
-
+        check_ts_data(X, y)
         X, y, _ = self.segmenter.transform(X, y)
         yp = self.est.predict(X)
         self.N_test = len(y)
@@ -199,6 +206,7 @@ class SegPipe(_BaseComposition):
         score : float
         '''
         check_is_fitted(self, 'N_train')
+        check_ts_data(X, y)
         X, y, sample_weight = self.segmenter.transform(X, y, sample_weight)
 
         score_params = {}

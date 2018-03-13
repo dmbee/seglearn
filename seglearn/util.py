@@ -53,7 +53,7 @@ def get_ts_data_parts(X):
         return np.array(X), None
 
 
-def check_ts_data(X):
+def check_ts_data(X, y = None):
     '''
     Checks time series data is good. If not raises assertion error.
 
@@ -63,11 +63,22 @@ def check_ts_data(X):
        Time series data and (optionally) contextual data created as per ``make_ts_data``
 
     '''
-    Xt, Xs = get_ts_data_parts(X)
-    if Xs is not None:
-        assert len(Xt) == len(Xs)
-    N_tvars = np.array([np.row_stack(Xt[i]).shape[1] for i in range(len(Xt))])
-    assert len(np.unique(N_tvars)) == 1
+    Ns = len(X)
+    Ntx = np.array([len(X[i]) for i in np.arange(Ns)])
+
+    if y is not None:
+        assert Ns == len(y)
+        Nty = np.array([len(np.atleast_1d(y[i])) for i in np.arange(Ns)])
+
+
+        if np.count_nonzero(Nty == 1) == Ns:
+            return
+        elif np.count_nonzero(Nty == Ntx) == Ns:
+            return
+        else:
+            raise TypeError
+
+
 
 def ts_stats(Xt, y, fs = 1.0, class_labels = None):
     '''

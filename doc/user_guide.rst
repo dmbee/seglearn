@@ -43,16 +43,58 @@ What this Package Includes
 
 The main contributions of this package are:
 
-1) ``SegmentX`` - class for performing the time series / sequence segmentation when the target is contextual
-2) ``SegmentXY`` - class for performing the time series / sequence segmentation when the target is a time series
-2) ``FeatureRep`` - class for computing a feature representation from segment data, and
-3) ``SegPipe`` - pipeline for integrating this for use with scikit learn machine learning algorithms and evaluation tools
-
+1) ``SegmentX`` - transformer class for performing the time series / sequence segmentation when the target is contextual
+2) ``SegmentXY`` - transformer class for performing the time series / sequence segmentation when the target is a time series
+3) ``FeatureRep`` - transformer class for computing a feature representation from segment data, and
+4) ``SegPipe`` - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools
+5) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
+6) ``split`` - a module for splitting time series or sequences along the temporal axis
 
 What this Package Doesn't Include
 ---------------------------------
 
 For now, this package does not include tools to help label time series data - which is a separate challenge.
+
+
+Valid Sequence Data Representations
+-----------------------------------
+
+Time series data can be represented as a list or array of arrays as follows::
+
+    >>> from numpy.random import rand
+    >>> from np import array
+
+    >>> # multivariate time series data: (N = 3, variables = 5)
+    >>> X = [rand(100,5), rand(200,5), rand(50,5)]
+    >>> # or equivalently as a numpy array
+    >>> X = array([rand(100,5), rand(200,5), rand(50,5)])
+
+The target, as a contextual variable (again N = 3) is represented as an array or list::
+
+    >>> y = [2,1,3]
+    >>> # or
+    >>> y = array([2,1,3])
+
+
+The target, as a continous variable (again N = 3), will have the same shape as the time series data::
+
+    >>> y = [rand(100), rand(200), rand(50)]
+
+The ``TS_Data`` class is provided as an indexable / iterable that can store time series & contextual data::
+
+    >>> from seglearn.base import TS_Data
+    >>> Xt = array([rand(100,5), rand(200,5), rand(50,5)])
+    >>> # create 2 context variables
+    >>> Xc = rand(3,2)
+    >>> X = TS_Data(Xt, Xc)
+
+There is a caveat for datasets that are a single time series. For compatibility with the seglearn segmenter classes, they need to be represented as a list::
+
+    >>> X = [rand(1000,10)]
+    >>> y = [rand(1000)]
+
+If you want to split a single time series for train / test or cross validation - make sure to use one of the temporal splitting tools in ``split``. If you have many time series` in the dataset, you can use the sklearn splitters to split the data by series. This is demonstrated in the examples.
+
 
 Using Seglearn
 --------------

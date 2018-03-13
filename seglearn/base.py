@@ -30,6 +30,7 @@ class TS_Data(object):
         return self
 
     def __getitem__(self, indices):
+
         return TS_Data(self.ts_data[indices], self.context_data[indices])
 
     def __next__(self):

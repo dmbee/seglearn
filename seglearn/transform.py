@@ -107,7 +107,8 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         '''
         check_is_fitted(self, 'step')
         Xt, Xc = get_ts_data_parts(X)
-        N = len(Xt)
+
+        N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
             Xt = np.array([sliding_tensor(Xt[i], self.width, self.step) for i in np.arange(N)])
@@ -220,7 +221,12 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         '''
         check_is_fitted(self, 'step')
         Xt, Xc = get_ts_data_parts(X)
-        N = len(Xt)
+
+        # if only one time series is learned
+        if len(Xt[0]) == 1:
+            Xt = [Xt]
+
+        N = len(Xt) # number of time series
 
         if Xt[0].ndim > 1:
             Xt = np.array([sliding_tensor(Xt[i], self.width, self.step) for i in np.arange(N)])

@@ -49,7 +49,7 @@ Xs, ys, cv = splitter.split(X,y)
 
 # create a segment learning pipeline
 width = 100
-est = KerasClassifier(build_fn=crnn_model, epochs = 25, batch_size = 256, verbose = 0)
+est = KerasClassifier(build_fn=crnn_model, epochs = 15, batch_size = 256, verbose = 0)
 pipe = SegPipe(est)
 
 # create a parameter dictionary using the SegPipe API - which is similar to the sklearn API
