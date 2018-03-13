@@ -4,6 +4,17 @@
 
 .. _scikit-learn-contrib: https://github.com/scikit-learn-contrib
 
+|PythonVersion|_ |Pypi|_ |CircleCI|_
+
+.. |Pypi| image:: https://badge.fury.io/py/seglearn.svg
+.. _Pypi: https://badge.fury.io/py/seglearn
+
+.. |PythonVersion| image:: https://img.shields.io/pypi/pyversions/seglearn.svg
+.. _PythonVersion: https://img.shields.io/pypi/pyversions/seglearn.svg
+
+.. |CircleCI| image:: https://circleci.com/gh/dmbee/seglearn.svg?style=shield&circle-token=:circle-token
+.. _CircleCI: https://circleci.com/gh/dmbee/seglearn/tree/master
+
 seglearn
 ========
 

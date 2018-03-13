@@ -23,7 +23,7 @@ from pandas import DataFrame
 import matplotlib.pyplot as plt
 
 ##############################################
-# Simple NN ModelSetup
+# Simple NN Model
 ##############################################
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
@@ -57,7 +57,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 
 # create a segment learning pipeline
 width = 100
-est = KerasClassifier(build_fn=crnn_model, epochs = 15, batch_size = 256, verbose = 0, validation_split = 0.2)
+est = KerasClassifier(build_fn=crnn_model, epochs = 10, batch_size = 256, verbose = 0, validation_split = 0.2)
 pipe = SegPipe(est)
 
 ##############################################

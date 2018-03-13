@@ -45,7 +45,7 @@ y = data['y']
 
 # create a segment learning pipeline
 width = 100
-est = KerasClassifier(build_fn=crnn_model, epochs = 15, batch_size = 256, verbose = 0)
+est = KerasClassifier(build_fn=crnn_model, epochs = 10, batch_size = 256, verbose = 0)
 pipe = SegPipe(est)
 
 # split the data
