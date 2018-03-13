@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Time Series Transforms &mdash; seglearn 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="seglearn 0.1.0 documentation" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">General examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">seglearn</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Time Series Transforms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/transform.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-seglearn.transform">
+<span id="time-series-transforms"></span><h1>Time Series Transforms<a class="headerlink" href="#module-seglearn.transform" title="Permalink to this headline">¶</a></h1>
+<p>This module is for transforming time series data.</p>
+<dl class="class">
+<dt id="seglearn.transform.SegmentX">
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentX</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformer for sliding window segmentation for datasets where
+X is time series data, optionally with contextual variables
+and each time series in X has a single target value y</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>width</strong> : int &gt; 0</p>
+<blockquote>
+<div><p>width of segments (number of samples)</p>
+</div></blockquote>
+<p><strong>overlap</strong> : float range [0,1)</p>
+<blockquote class="last">
+<div><p>amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="seglearn.transform.SegmentX.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
+<blockquote>
+<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</div></blockquote>
+<p><strong>y</strong> : None</p>
+<blockquote>
+<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
+<blockquote class="last">
+<div><p>Returns self.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.SegmentX.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the time series data into segments (temporal tensor)
+Note this transformation changes the number of samples in the data
+If y and sample_weight are provided, they are transformed to align to the new samples</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
+<blockquote>
+<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</div></blockquote>
+<p><strong>y</strong> : array-like shape [n_series], default = None</p>
+<blockquote>
+<div><p>target vector</p>
+</div></blockquote>
+<p><strong>sample_weight</strong> : array-like shape [n_series], default = None</p>
+<blockquote>
+<div><p>sample weights</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : array-like, shape [n_segments, ]</p>
+<blockquote>
+<div><p>transformed time series data</p>
+</div></blockquote>
+<p><strong>y_new</strong> : array-like, shape [n_segments]</p>
+<blockquote>
+<div><p>expanded target vector</p>
+</div></blockquote>
+<p><strong>sample_weight_new</strong> : array-like shape [n_segments]</p>
+<blockquote class="last">
+<div><p>expanded sample weights</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="seglearn.transform.SegmentXY">
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXY</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>y_func=&lt;function last&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformer for sliding window segmentation for datasets where
+X is time series data, optionally with contextual variables
+and y is also time series data with the same sampling interval as X</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
+<blockquote>
+<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</div></blockquote>
+<p><strong>y</strong> : None</p>
+<blockquote>
+<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</div></blockquote>
+<p><strong>y_func</strong> : function</p>
+<blockquote>
+<div><p>returns target vector from array of target segments (eg see <code class="docutils literal notranslate"><span class="pre">last</span></code>)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
+<blockquote class="last">
+<div><p>Returns self.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="seglearn.transform.SegmentXY.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
+<blockquote>
+<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</div></blockquote>
+<p><strong>y</strong> : None</p>
+<blockquote>
+<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
+<blockquote class="last">
+<div><p>Returns self.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.SegmentXY.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the time series data into segments
+Note this transformation changes the number of samples in the data
+If y is provided, it is segmented and transformed to align to the new samples as per <code class="docutils literal notranslate"><span class="pre">y_func</span></code>
+Currently sample weights always returned as None</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
+<blockquote>
+<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</div></blockquote>
+<p><strong>y</strong> : array-like shape [n_series], default = None</p>
+<blockquote>
+<div><p>target vector</p>
+</div></blockquote>
+<p><strong>sample_weight</strong> : array-like shape [n_series], default = None</p>
+<blockquote>
+<div><p>sample weights</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : array-like, shape [n_segments, ]</p>
+<blockquote>
+<div><p>transformed time series data</p>
+</div></blockquote>
+<p><strong>y_new</strong> : array-like, shape [n_segments]</p>
+<blockquote>
+<div><p>expanded target vector</p>
+</div></blockquote>
+<p class="last"><strong>sample_weight_new</strong> : None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="seglearn.transform.FeatureRep">
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2abfdb1a6230&gt;</em>, <em>'max': &lt;function max at 0x2abfdb1a6140&gt;</em>, <em>'mean': &lt;function mean at 0x2abfdb1b0ed8&gt;</em>, <em>'min': &lt;function min at 0x2abfdb1a60c8&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2abfdb1a6410&gt;</em>, <em>'mse': &lt;function mse at 0x2abfdb1a62a8&gt;</em>, <em>'skew': &lt;function skew at 0x2abfdb1a61b8&gt;</em>, <em>'std': &lt;function std at 0x2abfdb1b0f50&gt;</em>, <em>'var': &lt;function var at 0x2abfdb1a6050&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
+<dd><p>A transformer for calculating a feature representation from segmented time series data.</p>
+<p>This transformer generates tabular feature data from the segmented time series’, by computing the same feature set for each segment from each time series in the data set. This transformer, if used, follows the Segment transformer in the <code class="docutils literal notranslate"><span class="pre">feed</span></code> pipeline for the <code class="docutils literal notranslate"><span class="pre">SegPipe</span></code> class.</p>
+<p>The input data <code class="docutils literal notranslate"><span class="pre">X</span></code> contains segmented time series data, where each elements have shape [n_segments, width, n_variables]. n_segments is different for each element. If <code class="docutils literal notranslate"><span class="pre">X</span></code> also contains contextual variables, the segmented time series data must be in column 0. The transform method of this class generates a feature representation <code class="docutils literal notranslate"><span class="pre">X_new</span></code>, where each element has shape [n_segments, n_features] and includes the computed features and contextual data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>features</strong> : dict, optional</p>
+<blockquote>
+<div><p>Dictionary of functions for calculating features from a segmented time series.
+Each function in the dictionary is specified to compute features from a
+multivariate segmented time series along axis 1 (the segment) eg:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>   <span class="k">return</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+<span class="go">X : array-like shape [n_samples, segment_width, n_variables]</span>
+<span class="go">F : array-like [n_samples, n_features]</span>
+<span class="go">The number of features returned (n_features) must be &gt;= 1</span>
+</pre></div>
+</div>
+<p>If features is not specified, a default feature dictionary will be used (see base_features). See <code class="docutils literal notranslate"><span class="pre">feature_functions</span></code> for example implementations.</p>
+</div></blockquote>
+<p><strong>multithread: bool, optional</strong></p>
+<blockquote class="last">
+<div><p>If true, will use multithreading to compute the features</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.feature_functions</span> <span class="k">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skew</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">SegPipe</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.util</span> <span class="k">import</span> <span class="n">make_ts_data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">make_ts_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fts</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">var</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="n">std</span><span class="p">,</span> <span class="s1">&#39;skew&#39;</span><span class="p">:</span> <span class="n">skew</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;ftr&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span> <span class="o">=</span> <span class="n">fts</span><span class="p">)),(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span><span class="n">RandomForestClassifier</span><span class="p">())])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>f_labels</strong></td>
+<td>(list of string feature labels (in order) corresponding to the computed features)</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="seglearn.transform.FeatureRep.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
+<blockquote>
+<div><p>Segmented time series data and (optionally) contextual data</p>
+</div></blockquote>
+<p><strong>y</strong> : None</p>
+<blockquote>
+<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
+<blockquote class="last">
+<div><p>Returns self.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.FeatureRep.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the segmented time series data into feature data.
+If contextual data is included in X, it is returned with the feature data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
+<blockquote>
+<div><p>Segmented time series data and (optionally) contextual data</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : array shape [n_series, …]</p>
+<blockquote class="last">
+<div><p>Feature representation of segmented time series data and contextual data</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

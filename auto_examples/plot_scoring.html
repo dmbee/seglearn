@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Scoring Time Series Estimators &mdash; seglearn 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="../about.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="seglearn 0.1.0 documentation" href="../index.html"/>
+        <link rel="up" title="General examples" href="index.html"/>
+        <link rel="next" title="About us" href="../about.html"/>
+        <link rel="prev" title="Hyperparameter Selection 2" href="plot_model_selection2.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Scoring Time Series Estimators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#confusion-plot">CONFUSION PLOT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup">SETUP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-1-use-the-score-segpipe-score-method">OPTION 1: Use the score SegPipe score method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-2-generate-true-and-predicted-target-values-for-the-segments">OPTION 2: generate true and predicted target values for the segments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-3-scoring-during-model-selection">OPTION 3: scoring during model selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-workaround-1-use-another-scorer-function">SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-workaround-2-work-outside-the-pipeline">SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About us</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">seglearn</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">General examples</a> &raquo;</li>
+        
+      <li>Scoring Time Series Estimators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/plot_scoring.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scoring-time-series-estimators">
+<span id="sphx-glr-auto-examples-plot-scoring-py"></span><h1>Scoring Time Series Estimators<a class="headerlink" href="#scoring-time-series-estimators" title="Permalink to this headline">¶</a></h1>
+<p>This examples demonstrates some of the caveats / issues when trying to
+calculate performance scores for time series estimators.</p>
+<p>This pipeline has been designed to evaluate performance using
+segments (not series’) as instances of the data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
+<span class="c1"># License: BSD</span>
+
+
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">SegPipe</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.util</span> <span class="kn">import</span> <span class="n">make_ts_data</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">make_scorer</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+</pre></div>
+</div>
+<div class="section" id="confusion-plot">
+<h2>CONFUSION PLOT<a class="headerlink" href="#confusion-plot" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span>
+                          <span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                          <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; plots confusion matrix &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">cm</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">cm</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+    <span class="n">tick_marks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">tick_marks</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">tick_marks</span><span class="p">,</span> <span class="n">classes</span><span class="p">)</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;.2f&#39;</span> <span class="k">if</span> <span class="n">normalize</span> <span class="k">else</span> <span class="s1">&#39;d&#39;</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">format</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">fmt</span><span class="p">),</span>
+                 <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+                 <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span> <span class="k">if</span> <span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">thresh</span> <span class="k">else</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;True label&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Predicted label&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setup">
+<h2>SETUP<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">make_ts_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+
+<span class="c1"># create a feature representation pipeline</span>
+<span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
+                <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+                <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())])</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">)</span>
+
+<span class="c1"># split the data</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="option-1-use-the-score-segpipe-score-method">
+<h2>OPTION 1: Use the score SegPipe score method<a class="headerlink" href="#option-1-use-the-score-segpipe-score-method" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;Accuracy score: &#39;</span><span class="p">,</span> <span class="mf">0.7521588946459413</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="option-2-generate-true-and-predicted-target-values-for-the-segments">
+<h2>OPTION 2: generate true and predicted target values for the segments<a class="headerlink" href="#option-2-generate-true-and-predicted-target-values-for-the-segments" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="c1"># use any of the sklearn scorers</span>
+<span class="n">f1_macro</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;F1 score: &quot;</span><span class="p">,</span> <span class="n">f1_macro</span><span class="p">)</span>
+
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y_labels&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_plot_scoring_001.png" class="align-center" src="../_images/sphx_glr_plot_scoring_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;F1 score: &#39;</span><span class="p">,</span> <span class="mf">0.7679233797931143</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="option-3-scoring-during-model-selection">
+<h2>OPTION 3: scoring during model selection<a class="headerlink" href="#option-3-scoring-during-model-selection" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model selection using the built-in score method for the final estimator</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+
+<span class="c1"># model selection with scoring functions / dictionaries</span>
+<span class="c1">#</span>
+<span class="c1"># unfortunately, this is not possible withing the current framework due to how</span>
+<span class="c1"># scoring is implemented within the model_selection functions / classes of sklearn</span>
+<span class="c1"># running the code below will cause an error, because the model_selection</span>
+<span class="c1"># functions / classes do not have access to y_true for the segments</span>
+<span class="c1">#</span>
+<span class="c1"># &gt;&gt;&gt; scoring = [&#39;accuracy&#39;,&#39;precision_macro&#39;,&#39;recall_macro&#39;,&#39;f1_macro&#39;]</span>
+<span class="c1"># &gt;&gt;&gt; cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True, scoring=scoring)</span>
+<span class="c1">#</span>
+<span class="c1"># workarounds for this issue are outlined below</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
+<span class="mi">0</span>  <span class="mf">0.639985</span>    <span class="mf">0.133484</span>    <span class="mf">0.775000</span>     <span class="mf">0.999709</span>
+<span class="mi">1</span>  <span class="mf">0.636888</span>    <span class="mf">0.129782</span>    <span class="mf">0.708059</span>     <span class="mf">0.999422</span>
+<span class="mi">2</span>  <span class="mf">0.660488</span>    <span class="mf">0.122710</span>    <span class="mf">0.873965</span>     <span class="mf">0.998607</span>
+<span class="mi">3</span>  <span class="mf">0.655000</span>    <span class="mf">0.125032</span>    <span class="mf">0.734568</span>     <span class="mf">0.999153</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scoring-workaround-1-use-another-scorer-function">
+<h2>SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION<a class="headerlink" href="#scoring-workaround-1-use-another-scorer-function" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ``SegPipe`` can be initialized with a scorer callable made with sklearn.metrics.make_scorer</span>
+<span class="c1"># this can be used to cross_validate or grid search with any 1 score</span>
+
+<span class="n">scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">scorer</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">)</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV F1 Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV F1 Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
+<span class="mi">0</span>  <span class="mf">0.636218</span>    <span class="mf">0.133742</span>    <span class="mf">0.774372</span>     <span class="mf">0.999761</span>
+<span class="mi">1</span>  <span class="mf">0.635273</span>    <span class="mf">0.132493</span>    <span class="mf">0.804996</span>     <span class="mf">0.999770</span>
+<span class="mi">2</span>  <span class="mf">0.654020</span>    <span class="mf">0.118705</span>    <span class="mf">0.880169</span>     <span class="mf">0.999296</span>
+<span class="mi">3</span>  <span class="mf">0.640589</span>    <span class="mf">0.121605</span>    <span class="mf">0.761119</span>     <span class="mf">0.999035</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scoring-workaround-2-work-outside-the-pipeline">
+<h2>SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE<a class="headerlink" href="#scoring-workaround-2-work-outside-the-pipeline" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to have multiple score computed, the only way is as follows</span>
+<span class="c1">#</span>
+<span class="c1"># First transform the time series data into segments and then score the ``est`` part of the</span>
+<span class="c1"># pipeline.</span>
+<span class="c1">#</span>
+<span class="c1"># The disadvantage of this is that the parameters of the ``seg`` pipeline cannot be</span>
+<span class="c1"># optimized with this approach</span>
+
+<span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentX</span><span class="p">()</span>
+<span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">scoring</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;precision_macro&#39;</span><span class="p">,</span><span class="s1">&#39;recall_macro&#39;</span><span class="p">,</span><span class="s1">&#39;f1_macro&#39;</span><span class="p">]</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span>
+                           <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores (workaround): &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV Scores (workaround): &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_accuracy</span>  <span class="n">test_f1_macro</span>  <span class="n">test_precision_macro</span>  \
+<span class="mi">0</span>  <span class="mf">0.513342</span>    <span class="mf">0.382216</span>       <span class="mf">0.802048</span>       <span class="mf">0.814065</span>              <span class="mf">0.821873</span>
+<span class="mi">1</span>  <span class="mf">0.517425</span>    <span class="mf">0.379908</span>       <span class="mf">0.822374</span>       <span class="mf">0.836144</span>              <span class="mf">0.850704</span>
+<span class="mi">2</span>  <span class="mf">0.512312</span>    <span class="mf">0.377898</span>       <span class="mf">0.792808</span>       <span class="mf">0.801762</span>              <span class="mf">0.815224</span>
+<span class="mi">3</span>  <span class="mf">0.511644</span>    <span class="mf">0.373001</span>       <span class="mf">0.766724</span>       <span class="mf">0.786303</span>              <span class="mf">0.796685</span>
+
+   <span class="n">test_recall_macro</span>
+<span class="mi">0</span>           <span class="mf">0.820969</span>
+<span class="mi">1</span>           <span class="mf">0.840287</span>
+<span class="mi">2</span>           <span class="mf">0.805119</span>
+<span class="mi">3</span>           <span class="mf">0.785315</span>  <span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  14.295 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_scoring.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/plot_scoring.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_scoring.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../about.html" class="btn btn-neutral float-right" title="About us" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="plot_model_selection2.html" class="btn btn-neutral" title="Hyperparameter Selection 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
