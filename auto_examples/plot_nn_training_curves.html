@@ -111,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Neural Network Training Curves</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#simple-nn-model">Simple NN Model</a></li>
@@ -265,16 +266,16 @@
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">acc</span>      <span class="n">loss</span>   <span class="n">val_acc</span>  <span class="n">val_loss</span>
-<span class="mi">0</span>  <span class="mf">0.241918</span>  <span class="mf">1.801665</span>  <span class="mf">0.330966</span>  <span class="mf">1.538432</span>
-<span class="mi">1</span>  <span class="mf">0.457904</span>  <span class="mf">1.207841</span>  <span class="mf">0.589489</span>  <span class="mf">0.879384</span>
-<span class="mi">2</span>  <span class="mf">0.601776</span>  <span class="mf">0.833640</span>  <span class="mf">0.681818</span>  <span class="mf">0.691850</span>
-<span class="mi">3</span>  <span class="mf">0.663233</span>  <span class="mf">0.706210</span>  <span class="mf">0.717330</span>  <span class="mf">0.625557</span>
-<span class="mi">4</span>  <span class="mf">0.705861</span>  <span class="mf">0.615614</span>  <span class="mf">0.740057</span>  <span class="mf">0.538256</span>
-<span class="mi">5</span>  <span class="mf">0.711545</span>  <span class="mf">0.576610</span>  <span class="mf">0.738636</span>  <span class="mf">0.512866</span>
-<span class="mi">6</span>  <span class="mf">0.754885</span>  <span class="mf">0.512135</span>  <span class="mf">0.772727</span>  <span class="mf">0.483306</span>
-<span class="mi">7</span>  <span class="mf">0.755950</span>  <span class="mf">0.489971</span>  <span class="mf">0.794034</span>  <span class="mf">0.420893</span>
-<span class="mi">8</span>  <span class="mf">0.770870</span>  <span class="mf">0.464516</span>  <span class="mf">0.796875</span>  <span class="mf">0.408012</span>
-<span class="mi">9</span>  <span class="mf">0.778330</span>  <span class="mf">0.440588</span>  <span class="mf">0.812500</span>  <span class="mf">0.373851</span>
+<span class="mi">0</span>  <span class="mf">0.260746</span>  <span class="mf">1.752927</span>  <span class="mf">0.470170</span>  <span class="mf">1.465460</span>
+<span class="mi">1</span>  <span class="mf">0.559147</span>  <span class="mf">1.142748</span>  <span class="mf">0.578125</span>  <span class="mf">0.877999</span>
+<span class="mi">2</span>  <span class="mf">0.640497</span>  <span class="mf">0.778296</span>  <span class="mf">0.647727</span>  <span class="mf">0.718154</span>
+<span class="mi">3</span>  <span class="mf">0.689876</span>  <span class="mf">0.658703</span>  <span class="mf">0.704545</span>  <span class="mf">0.589871</span>
+<span class="mi">4</span>  <span class="mf">0.727886</span>  <span class="mf">0.605959</span>  <span class="mf">0.741477</span>  <span class="mf">0.535941</span>
+<span class="mi">5</span>  <span class="mf">0.754174</span>  <span class="mf">0.519731</span>  <span class="mf">0.747159</span>  <span class="mf">0.482683</span>
+<span class="mi">6</span>  <span class="mf">0.774423</span>  <span class="mf">0.482008</span>  <span class="mf">0.784091</span>  <span class="mf">0.463876</span>
+<span class="mi">7</span>  <span class="mf">0.787567</span>  <span class="mf">0.445481</span>  <span class="mf">0.762784</span>  <span class="mf">0.454816</span>
+<span class="mi">8</span>  <span class="mf">0.806039</span>  <span class="mf">0.431613</span>  <span class="mf">0.778409</span>  <span class="mf">0.472969</span>
+<span class="mi">9</span>  <span class="mf">0.801066</span>  <span class="mf">0.418838</span>  <span class="mf">0.769886</span>  <span class="mf">0.453079</span>
 </pre></div>
 </div>
 </div>
@@ -289,7 +290,7 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="align-center" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
-<p><strong>Total running time of the script:</strong> ( 2 minutes  9.848 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 2 minutes  7.876 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_nn_training_curves.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>

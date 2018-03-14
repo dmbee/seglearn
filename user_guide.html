@@ -198,7 +198,7 @@
 <p>Regression datasets can similarly have a single target variable for each sequence (eg estimation of a song’s sales on itunes).</p>
 <p>Some classification and regression datasets will have a target that is itself a time series - as it varies continuously within the sequence. In these cases, both the time series variables and target variable need to be segmented. A decision needs to be made about where the target variable y should be sampled from for each instance in the segmented data set. Perhaps the target should be taken to be the middle value from the segment, the average over the segment, or maybe the value at the end of the segment. Maybe the target should be a sequence itself.</p>
 <p>This package supports time series data sets with or without contextual information, and supports a target variable that is either fixed for each time series in the data set, or is itself a time series.</p>
-<p>A final class of time series problems is forecasting. In which case, the goal may be to predict a future value or values of the target at some time remote to the segment. Currently this package does not support this applicaiton, but it would be relatively simple to do so by creating a new segmenter class using the existing classes as a template.</p>
+<p>A final class of time series problems is forecasting. In which case, the goal may be to predict a future value or values of the target at some time remote to a given segment. This class of problems has continuous (time series) targets. In the sliding window segmentation approach, this problem can be conceptualized as predicting future segments (or segment values) from the current segment. Again contextual variables, or averaging variables can be used to bring information about segments prior to current segment into the forecast.</p>
 </div>
 <div class="section" id="why-this-package">
 <h2>Why this Package<a class="headerlink" href="#why-this-package" title="Permalink to this headline">¶</a></h2>
@@ -211,7 +211,7 @@
 <p>The main contributions of this package are:</p>
 <ol class="arabic simple">
 <li><code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> - transformer class for performing the time series / sequence segmentation when the target is contextual</li>
-<li><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence segmentation when the target is a time series</li>
+<li><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence segmentation when the target is a time series. also handles forecasting.</li>
 <li><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data, and</li>
 <li><code class="docutils literal notranslate"><span class="pre">SegPipe</span></code> - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools</li>
 <li><code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> - an indexable / iterable class for storing time series &amp; contextual data</li>

@@ -7,7 +7,7 @@
 Welcome to seglearn documentation!
 ##################################
 
-This project is an sklearn extension for machine learning time series or sequences using a sliding window segmentation. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and a final estimator compatible with sklearn model evaluation and parameter optimization tools. Seglearn provides a flexible approach to multivariate time series and contextual data.
+This project is an sklearn extension for machine learning time series or sequences using a sliding window segmentation. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and a final estimator compatible with sklearn model evaluation and parameter optimization tools.Seglearn provides a flexible approach to multivariate time series and contextual data for classification, regression, and forecasting problems.
 
 See the source code repository on github: https://github.com/dmbee/seglearn
 

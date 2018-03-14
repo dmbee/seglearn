@@ -271,7 +271,7 @@ If y and sample_weight are provided, they are transformed to align to the new sa
 
 <dl class="class">
 <dt id="seglearn.transform.SegmentXY">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXY</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>y_func=&lt;function last&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXY</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>y_func=&lt;function last&gt;</em>, <em>forecast=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformer for sliding window segmentation for datasets where
 X is time series data, optionally with contextual variables
 and y is also time series data with the same sampling interval as X</p>
@@ -289,7 +289,11 @@ and y is also time series data with the same sampling interval as X</p>
 </div></blockquote>
 <p><strong>y_func</strong> : function</p>
 <blockquote>
-<div><p>returns target vector from array of target segments (eg see <code class="docutils literal notranslate"><span class="pre">last</span></code>)</p>
+<div><p>returns target from array of target segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, <code class="docutils literal notranslate"><span class="pre">middle</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
+</div></blockquote>
+<p><strong>forecast</strong> : int, default = None</p>
+<blockquote>
+<div><p>if set, will shift target by this number of segments forward in time</p>
 </div></blockquote>
 </td>
 </tr>
@@ -374,7 +378,7 @@ Currently sample weights always returned as None</p>
 
 <dl class="class">
 <dt id="seglearn.transform.FeatureRep">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2ab16f477230&gt;</em>, <em>'max': &lt;function max at 0x2ab16f477140&gt;</em>, <em>'mean': &lt;function mean at 0x2ab16f481ed8&gt;</em>, <em>'min': &lt;function min at 0x2ab16f4770c8&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2ab16f477410&gt;</em>, <em>'mse': &lt;function mse at 0x2ab16f4772a8&gt;</em>, <em>'skew': &lt;function skew at 0x2ab16f4771b8&gt;</em>, <em>'std': &lt;function std at 0x2ab16f481f50&gt;</em>, <em>'var': &lt;function var at 0x2ab16f477050&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2ad5cd1e92a8&gt;</em>, <em>'max': &lt;function max at 0x2ad5cd1e91b8&gt;</em>, <em>'mean': &lt;function mean at 0x2ad5cd1f3f50&gt;</em>, <em>'min': &lt;function min at 0x2ad5cd1e9140&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2ad5cd1e9488&gt;</em>, <em>'mse': &lt;function mse at 0x2ad5cd1e9320&gt;</em>, <em>'skew': &lt;function skew at 0x2ad5cd1e9230&gt;</em>, <em>'std': &lt;function std at 0x2ad5cd1e9050&gt;</em>, <em>'var': &lt;function var at 0x2ad5cd1e90c8&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
 <dd><p>A transformer for calculating a feature representation from segmented time series data.</p>
 <p>This transformer generates tabular feature data from the segmented time series’, by computing the same feature set for each segment from each time series in the data set. This transformer, if used, follows the Segment transformer in the <code class="docutils literal notranslate"><span class="pre">feed</span></code> pipeline for the <code class="docutils literal notranslate"><span class="pre">SegPipe</span></code> class.</p>
 <p>The input data <code class="docutils literal notranslate"><span class="pre">X</span></code> contains segmented time series data, where each elements have shape [n_segments, width, n_variables]. n_segments is different for each element. If <code class="docutils literal notranslate"><span class="pre">X</span></code> also contains contextual variables, the segmented time series data must be in column 0. The transform method of this class generates a feature representation <code class="docutils literal notranslate"><span class="pre">X_new</span></code>, where each element has shape [n_segments, n_features] and includes the computed features and contextual data.</p>
