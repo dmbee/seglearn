@@ -19,7 +19,7 @@
 .. _CircleCI: https://circleci.com/gh/dmbee/seglearn/tree/master
 
 .. |Coveralls| image:: https://coveralls.io/repos/github/dmbee/seglearn/badge.svg?branch=master
-.. _Coveralls: https://coveralls.io/github/dmbee/seglearn?branch=master
+.. _Coveralls: https://coveralls.io/github/dmbee/seglearn?branch=master&service=github
 
 
 seglearn
