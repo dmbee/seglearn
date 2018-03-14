@@ -1,5 +1,5 @@
 from __future__ import print_function
-import sys
+import sys, codecs
 from setuptools import setup, find_packages
 
 with open('requirements.txt') as f:
@@ -18,8 +18,11 @@ except ImportError:
     print('scipy is required during installation')
     sys.exit(1)
 
+with codecs.open('README.rst', encoding='utf-8-sig') as f:
+    LONG_DESCRIPTION = f.read()
+
 setup(name='seglearn',
-      version='0.1.1',
+      version='0.1.2',
       description='Machine Learning with Time Series Segmentation',
       author='David Burns',
       packages=find_packages(),
@@ -28,9 +31,10 @@ setup(name='seglearn',
       author_email='david.mo.burns@gmail.com',
       url = 'https://github.com/dmbee/seglearn',
       download_url = 'https://github.com/dmbee/seglearn',
-      CLASSIFIERS = ['Intended Audience :: Science/Research',
+      long_description=LONG_DESCRIPTION,
+      classifiers = ['Intended Audience :: Science/Research',
                'Intended Audience :: Developers',
-               'License :: BSD',
+               'License :: OSI Approved :: BSD License',
                'Programming Language :: Python',
                'Topic :: Software Development',
                'Topic :: Scientific/Engineering',
