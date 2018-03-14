@@ -25,11 +25,11 @@ In this example, we use the pipeline to learn a continuous time series target wi
     ('N series in test: ', 1)
     ('N segments in train: ', 299)
     ('N segments in test: ', 99)
-    ('Score: ', -0.308710767199301)
+    ('Score: ', -0.3095683817650605)
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.004774    0.002048   -1.063143     0.037469
-    1  0.004546    0.002012   -0.129287     0.059716
-    2  0.004518    0.002004   -0.946204     0.042975)
+    0  0.004723    0.002044   -1.063145     0.037469
+    1  0.004553    0.002016   -0.129286     0.059716
+    2  0.004574    0.002010   -0.947039     0.042978)
 
 
 

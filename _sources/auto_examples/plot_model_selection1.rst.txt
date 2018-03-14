@@ -101,7 +101,7 @@ This example demonstrates how to do model selection in a feature representation 
 
 
 
-**Total running time of the script:** ( 0 minutes  21.538 seconds)
+**Total running time of the script:** ( 0 minutes  21.585 seconds)
 
 
 
