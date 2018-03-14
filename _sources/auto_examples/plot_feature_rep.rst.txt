@@ -25,12 +25,12 @@ This is a basic example using the pipeline to learn a feature representation of 
     ('N series in test: ', 35)
     ('N segments in train: ', 3519)
     ('N segments in test: ', 1158)
-    ('Accuracy score: ', 0.7521588946459413)
+    ('Accuracy score: ', 0.7711571675302246)
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.628050    0.131724    0.795968     0.999127
-    1  0.639338    0.134931    0.681743     0.999711
-    2  0.650484    0.123225    0.877645     0.998329
-    3  0.635371    0.125400    0.741623     0.999436)
+    0  0.601374    0.124946    0.769355     0.999418
+    1  0.607263    0.128678    0.694079     0.999711
+    2  0.631697    0.114717    0.906164     0.999164
+    3  0.612164    0.117967    0.753086     0.999436)
     ('Features: ', ['std_0', 'std_1', 'std_2', 'std_3', 'std_4', 'std_5', 'mnx_0', 'mnx_1', 'mnx_2', 'mnx_3', 'mnx_4', 'mnx_5', 'min_0', 'min_1', 'min_2', 'min_3', 'min_4', 'min_5', 'max_0', 'max_1', 'max_2', 'max_3', 'max_4', 'max_5', 'skew_0', 'skew_1', 'skew_2', 'skew_3', 'skew_4', 'skew_5', 'var_0', 'var_1', 'var_2', 'var_3', 'var_4', 'var_5', 'mse_0', 'mse_1', 'mse_2', 'mse_3', 'mse_4', 'mse_5', 'kurt_0', 'kurt_1', 'kurt_2', 'kurt_3', 'kurt_4', 'kurt_5', 'mean_0', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5'])
 
 
@@ -48,7 +48,7 @@ This is a basic example using the pipeline to learn a feature representation of 
     from seglearn.transform import FeatureRep
     from seglearn.pipe import SegPipe
     from seglearn.datasets import load_watch
-    from seglearn.util import make_ts_data
+    from seglearn.base import TS_Data
 
     from sklearn.pipeline import Pipeline
     from sklearn.ensemble import RandomForestClassifier
@@ -64,7 +64,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 
     # load the data
     data = load_watch()
-    X = make_ts_data(data['X'])
+    X = data['X']
     y = data['y']
 
     # create a feature representation pipeline
@@ -89,7 +89,7 @@ This is a basic example using the pipeline to learn a feature representation of 
     # now lets add some contextual data
     Xc = np.column_stack((data['side'], data['subject']))
     Xt = np.array(data['X'])
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     y = np.array(data['y'])
 
     # and do a cross validation
@@ -102,7 +102,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 
     img = mpimg.imread('feet.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 0 minutes  5.670 seconds)
+**Total running time of the script:** ( 0 minutes  5.397 seconds)
 
 
 

@@ -13,7 +13,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 from seglearn.transform import FeatureRep
 from seglearn.pipe import SegPipe
 from seglearn.datasets import load_watch
-from seglearn.util import make_ts_data
+from seglearn.base import TS_Data
 
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
@@ -29,7 +29,7 @@ import pandas as pd
 
 # load the data
 data = load_watch()
-X = make_ts_data(data['X'])
+X = data['X']
 y = data['y']
 
 # create a feature representation pipeline
@@ -54,7 +54,7 @@ print("Accuracy score: ", score)
 # now lets add some contextual data
 Xc = np.column_stack((data['side'], data['subject']))
 Xt = np.array(data['X'])
-X = make_ts_data(Xt, Xc)
+X = TS_Data(Xt, Xc)
 y = np.array(data['y'])
 
 # and do a cross validation

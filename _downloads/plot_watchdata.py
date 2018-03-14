@@ -10,7 +10,8 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
 # License: BSD
 
 from seglearn.datasets import load_watch
-from seglearn.util import make_ts_data, check_ts_data, ts_stats, get_ts_data_parts
+from seglearn.util import check_ts_data, ts_stats
+from seglearn.base import TS_Data
 
 import numpy as np
 import pandas as pd
@@ -23,16 +24,17 @@ Xt = data['X']
 fs = 50 # sampling frequency
 
 # create time series data object with no contextual variables
-X = make_ts_data(Xt)
-check_ts_data(X)
+
+check_ts_data(Xt)
 
 # create time series data object with 2 contextual variables
 Xs = np.column_stack([data['side'], data['subject']])
-X = make_ts_data(Xt, Xs)
+X = TS_Data(Xt, Xs)
 check_ts_data(X)
 
 # recover time series and contextual variables
-Xt, Xs = get_ts_data_parts(X)
+Xt = X.ts_data
+Xs = X.context_data
 
 # generate some statistics from the time series data
 results = ts_stats(X, y, fs = fs, class_labels = data['y_labels'])

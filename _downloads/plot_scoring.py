@@ -17,7 +17,6 @@ segments (not series') as instances of the data.
 from seglearn.transform import FeatureRep, SegmentX
 from seglearn.pipe import SegPipe
 from seglearn.datasets import load_watch
-from seglearn.util import make_ts_data
 
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
@@ -63,7 +62,7 @@ def plot_confusion_matrix(cm, classes,
 
 # load the data
 data = load_watch()
-X = make_ts_data(data['X'])
+X = data['X']
 y = data['y']
 
 # create a feature representation pipeline

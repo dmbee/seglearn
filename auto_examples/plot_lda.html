@@ -222,7 +222,7 @@
 
 <span class="c1"># load the data</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">load_watch</span><span class="p">()</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">make_ts_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
 
 <span class="c1"># create a pipeline for LDA transformation of the feature representation</span>
@@ -235,7 +235,7 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.176 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.971 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_lda.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lda.py</span></code></a></div>

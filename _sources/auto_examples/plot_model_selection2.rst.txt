@@ -27,7 +27,6 @@ This example demonstrates how to do model selection in a pipeline where segments
 
     from seglearn.pipe import SegPipe
     from seglearn.datasets import load_watch
-    from seglearn.util import make_ts_data
     from seglearn.split import TemporalKFold
 
     from sklearn.model_selection import GridSearchCV
@@ -56,7 +55,7 @@ This example demonstrates how to do model selection in a pipeline where segments
 
     # load the data
     data = load_watch()
-    X = make_ts_data(data['X'])
+    X = data['X']
     y = data['y']
 
     # temporal splitting of data
@@ -97,7 +96,7 @@ This example demonstrates how to do model selection in a pipeline where segments
     plt.fill_between(par_grid['s$width'], scores - stds, scores + stds, alpha=0.2, color = 'navy')
     plt.show()
 
-**Total running time of the script:** ( 6 minutes  52.757 seconds)
+**Total running time of the script:** ( 6 minutes  52.356 seconds)
 
 
 

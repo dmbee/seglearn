@@ -25,7 +25,6 @@ segments (not series') as instances of the data.
     from seglearn.transform import FeatureRep, SegmentX
     from seglearn.pipe import SegPipe
     from seglearn.datasets import load_watch
-    from seglearn.util import make_ts_data
 
     from sklearn.pipeline import Pipeline
     from sklearn.ensemble import RandomForestClassifier
@@ -91,7 +90,7 @@ SETUP
 
     # load the data
     data = load_watch()
-    X = make_ts_data(data['X'])
+    X = data['X']
     y = data['y']
 
     # create a feature representation pipeline
@@ -129,7 +128,7 @@ OPTION 1: Use the score SegPipe score method
 
  Out::
 
-    ('Accuracy score: ', 0.7651122625215889)
+    ('Accuracy score: ', 0.7996545768566494)
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -159,7 +158,7 @@ OPTION 2: generate true and predicted target values for the segments
 
  Out::
 
-    ('F1 score: ', 0.7818492686733106)
+    ('F1 score: ', 0.8135881231634794)
 
 
 OPTION 3: scoring during model selection
@@ -196,10 +195,10 @@ OPTION 3: scoring during model selection
  Out::
 
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.694580    0.146217    0.802419     0.999709
-    1  0.691696    0.136161    0.677632     0.999422
-    2  0.673959    0.119303    0.875805     0.998329
-    3  0.679283    0.125351    0.753968     0.999718)
+    0  0.651806    0.144439    0.783065     0.999709
+    1  0.694125    0.144138    0.685033     0.999711
+    2  0.699070    0.122044    0.880405     0.998329
+    3  0.640607    0.122867    0.738977     0.999153)
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -228,10 +227,10 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
  Out::
 
     ('CV F1 Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.633608    0.131013    0.784184     1.000000
-    1  0.643248    0.135753    0.772666     0.999540
-    2  0.679690    0.123057    0.867373     0.998834
-    3  0.658542    0.126217    0.770719     0.999501)
+    0  0.637613    0.132792    0.792680     0.998403
+    1  0.631908    0.137439    0.804727     1.000000
+    2  0.658928    0.120341    0.883492     0.999034
+    3  0.658668    0.130800    0.755694     0.999501)
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -266,19 +265,19 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
  Out::
 
     ('CV Scores (workaround): ',    fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  \
-    0  0.533030    0.402536       0.767065       0.778481              0.785985   
-    1  0.543591    0.418068       0.801879       0.815209              0.827757   
-    2  0.562668    0.402880       0.805651       0.814717              0.821839   
-    3  0.529740    0.386833       0.781304       0.795669              0.807456   
+    0  0.515585    0.385404       0.732935       0.740680              0.756896   
+    1  0.522213    0.391859       0.814688       0.828125              0.838615   
+    2  0.642678    0.381802       0.813356       0.826001              0.837010   
+    3  0.519320    0.433784       0.784734       0.800161              0.811601   
 
        test_recall_macro  
-    0           0.782993  
-    1           0.820109  
-    2           0.817086  
-    3           0.799282  )
+    0           0.748303  
+    1           0.831718  
+    2           0.824010  
+    3           0.802771  )
 
 
-**Total running time of the script:** ( 0 minutes  14.936 seconds)
+**Total running time of the script:** ( 0 minutes  14.822 seconds)
 
 
 

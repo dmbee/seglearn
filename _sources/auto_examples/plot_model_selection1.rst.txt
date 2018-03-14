@@ -62,7 +62,7 @@ This example demonstrates how to do model selection in a feature representation 
 
     # load the data
     data = sgl.load_watch()
-    X = sgl.make_ts_data(data['X'])
+    X = data['X']
     y = data['y']
     g = data['subject']
 
@@ -101,7 +101,7 @@ This example demonstrates how to do model selection in a feature representation 
 
 
 
-**Total running time of the script:** ( 0 minutes  21.619 seconds)
+**Total running time of the script:** ( 0 minutes  22.118 seconds)
 
 
 

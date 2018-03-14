@@ -46,7 +46,7 @@ def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_
 
 # load the data
 data = sgl.load_watch()
-X = sgl.make_ts_data(data['X'])
+X = data['X']
 y = data['y']
 g = data['subject']
 

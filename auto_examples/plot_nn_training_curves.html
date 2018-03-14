@@ -201,7 +201,6 @@
 
 <span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">SegPipe</span>
 <span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.util</span> <span class="kn">import</span> <span class="n">make_ts_data</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Conv1D</span>
@@ -237,7 +236,7 @@
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">make_ts_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
 
 <span class="c1"># split the data</span>
@@ -266,16 +265,16 @@
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">acc</span>      <span class="n">loss</span>   <span class="n">val_acc</span>  <span class="n">val_loss</span>
-<span class="mi">0</span>  <span class="mf">0.260036</span>  <span class="mf">1.765439</span>  <span class="mf">0.321023</span>  <span class="mf">1.521267</span>
-<span class="mi">1</span>  <span class="mf">0.475666</span>  <span class="mf">1.210630</span>  <span class="mf">0.607955</span>  <span class="mf">0.922345</span>
-<span class="mi">2</span>  <span class="mf">0.646536</span>  <span class="mf">0.835640</span>  <span class="mf">0.704545</span>  <span class="mf">0.666317</span>
-<span class="mi">3</span>  <span class="mf">0.688455</span>  <span class="mf">0.677553</span>  <span class="mf">0.723011</span>  <span class="mf">0.592562</span>
-<span class="mi">4</span>  <span class="mf">0.710835</span>  <span class="mf">0.632518</span>  <span class="mf">0.754261</span>  <span class="mf">0.511383</span>
-<span class="mi">5</span>  <span class="mf">0.739254</span>  <span class="mf">0.542346</span>  <span class="mf">0.774148</span>  <span class="mf">0.453704</span>
-<span class="mi">6</span>  <span class="mf">0.752398</span>  <span class="mf">0.510454</span>  <span class="mf">0.822443</span>  <span class="mf">0.410782</span>
-<span class="mi">7</span>  <span class="mf">0.774778</span>  <span class="mf">0.470536</span>  <span class="mf">0.830966</span>  <span class="mf">0.378192</span>
-<span class="mi">8</span>  <span class="mf">0.786501</span>  <span class="mf">0.435421</span>  <span class="mf">0.835227</span>  <span class="mf">0.351604</span>
-<span class="mi">9</span>  <span class="mf">0.790409</span>  <span class="mf">0.424464</span>  <span class="mf">0.838068</span>  <span class="mf">0.343515</span>
+<span class="mi">0</span>  <span class="mf">0.241918</span>  <span class="mf">1.801665</span>  <span class="mf">0.330966</span>  <span class="mf">1.538432</span>
+<span class="mi">1</span>  <span class="mf">0.457904</span>  <span class="mf">1.207841</span>  <span class="mf">0.589489</span>  <span class="mf">0.879384</span>
+<span class="mi">2</span>  <span class="mf">0.601776</span>  <span class="mf">0.833640</span>  <span class="mf">0.681818</span>  <span class="mf">0.691850</span>
+<span class="mi">3</span>  <span class="mf">0.663233</span>  <span class="mf">0.706210</span>  <span class="mf">0.717330</span>  <span class="mf">0.625557</span>
+<span class="mi">4</span>  <span class="mf">0.705861</span>  <span class="mf">0.615614</span>  <span class="mf">0.740057</span>  <span class="mf">0.538256</span>
+<span class="mi">5</span>  <span class="mf">0.711545</span>  <span class="mf">0.576610</span>  <span class="mf">0.738636</span>  <span class="mf">0.512866</span>
+<span class="mi">6</span>  <span class="mf">0.754885</span>  <span class="mf">0.512135</span>  <span class="mf">0.772727</span>  <span class="mf">0.483306</span>
+<span class="mi">7</span>  <span class="mf">0.755950</span>  <span class="mf">0.489971</span>  <span class="mf">0.794034</span>  <span class="mf">0.420893</span>
+<span class="mi">8</span>  <span class="mf">0.770870</span>  <span class="mf">0.464516</span>  <span class="mf">0.796875</span>  <span class="mf">0.408012</span>
+<span class="mi">9</span>  <span class="mf">0.778330</span>  <span class="mf">0.440588</span>  <span class="mf">0.812500</span>  <span class="mf">0.373851</span>
 </pre></div>
 </div>
 </div>
@@ -290,7 +289,7 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="align-center" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
-<p><strong>Total running time of the script:</strong> ( 2 minutes  8.488 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 2 minutes  9.848 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_nn_training_curves.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>

@@ -19,7 +19,6 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
     from seglearn.pipe import SegPipe
     from seglearn.datasets import load_watch
-    from seglearn.util import make_ts_data
 
     from sklearn.model_selection import train_test_split
     from keras.layers import Dense, LSTM, Conv1D
@@ -77,7 +76,7 @@ Setup
 
     # load the data
     data = load_watch()
-    X = make_ts_data(data['X'])
+    X = data['X']
     y = data['y']
 
     # split the data
@@ -123,16 +122,16 @@ Accessing training history
  Out::
 
     acc      loss   val_acc  val_loss
-    0  0.260036  1.765439  0.321023  1.521267
-    1  0.475666  1.210630  0.607955  0.922345
-    2  0.646536  0.835640  0.704545  0.666317
-    3  0.688455  0.677553  0.723011  0.592562
-    4  0.710835  0.632518  0.754261  0.511383
-    5  0.739254  0.542346  0.774148  0.453704
-    6  0.752398  0.510454  0.822443  0.410782
-    7  0.774778  0.470536  0.830966  0.378192
-    8  0.786501  0.435421  0.835227  0.351604
-    9  0.790409  0.424464  0.838068  0.343515
+    0  0.241918  1.801665  0.330966  1.538432
+    1  0.457904  1.207841  0.589489  0.879384
+    2  0.601776  0.833640  0.681818  0.691850
+    3  0.663233  0.706210  0.717330  0.625557
+    4  0.705861  0.615614  0.740057  0.538256
+    5  0.711545  0.576610  0.738636  0.512866
+    6  0.754885  0.512135  0.772727  0.483306
+    7  0.755950  0.489971  0.794034  0.420893
+    8  0.770870  0.464516  0.796875  0.408012
+    9  0.778330  0.440588  0.812500  0.373851
 
 
 Training Curves
@@ -157,7 +156,7 @@ Training Curves
 
 
 
-**Total running time of the script:** ( 2 minutes  8.488 seconds)
+**Total running time of the script:** ( 2 minutes  9.848 seconds)
 
 
 
