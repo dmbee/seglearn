@@ -17,4 +17,4 @@ script:
   - nosetests -s --with-coverage --cover-package=seglearn seglearn/tests
 
 after_success:
-  - coveralls
+  - coveralls || echo "Coveralls upload failed"
