@@ -97,7 +97,7 @@ This example demonstrates how to do model selection in a pipeline where segments
     plt.fill_between(par_grid['s$width'], scores - stds, scores + stds, alpha=0.2, color = 'navy')
     plt.show()
 
-**Total running time of the script:** ( 6 minutes  32.680 seconds)
+**Total running time of the script:** ( 6 minutes  33.001 seconds)
 
 
 

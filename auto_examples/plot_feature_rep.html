@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Basic Feature Representation Classification Pipeline &mdash; seglearn 0.1.0 documentation</title>
+  <title>Basic Feature Representation Classification Pipeline &mdash; seglearn 0.1.1 documentation</title>
   
 
   
@@ -39,7 +39,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="seglearn 0.1.0 documentation" href="../index.html"/>
+    <link rel="top" title="seglearn 0.1.1 documentation" href="../index.html"/>
         <link rel="up" title="General examples" href="index.html"/>
         <link rel="next" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html"/>
         <link rel="prev" title="Working with Time Series Data" href="plot_watchdata.html"/> 
@@ -196,12 +196,12 @@
 <span class="p">(</span><span class="s1">&#39;N series in test: &#39;</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;N segments in train: &#39;</span><span class="p">,</span> <span class="mi">3519</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;N segments in test: &#39;</span><span class="p">,</span> <span class="mi">1158</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;Accuracy score: &#39;</span><span class="p">,</span> <span class="mf">0.7530224525043178</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;Accuracy score: &#39;</span><span class="p">,</span> <span class="mf">0.7590673575129534</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;CV Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
-<span class="mi">0</span>  <span class="mf">0.618073</span>    <span class="mf">0.128851</span>    <span class="mf">0.779032</span>     <span class="mf">0.998545</span>
-<span class="mi">1</span>  <span class="mf">0.627919</span>    <span class="mf">0.132412</span>    <span class="mf">0.651316</span>     <span class="mf">0.999422</span>
-<span class="mi">2</span>  <span class="mf">0.641841</span>    <span class="mf">0.120931</span>    <span class="mf">0.886845</span>     <span class="mf">0.999164</span>
-<span class="mi">3</span>  <span class="mf">0.636275</span>    <span class="mf">0.121262</span>    <span class="mf">0.733686</span>     <span class="mf">0.999436</span><span class="p">)</span>
+<span class="mi">0</span>  <span class="mf">0.622099</span>    <span class="mf">0.132224</span>    <span class="mf">0.787903</span>     <span class="mf">0.999418</span>
+<span class="mi">1</span>  <span class="mf">0.628230</span>    <span class="mf">0.133700</span>    <span class="mf">0.680921</span>     <span class="mf">0.999711</span>
+<span class="mi">2</span>  <span class="mf">0.645590</span>    <span class="mf">0.120475</span>    <span class="mf">0.879485</span>     <span class="mf">0.999443</span>
+<span class="mi">3</span>  <span class="mf">0.627726</span>    <span class="mf">0.122168</span>    <span class="mf">0.735450</span>     <span class="mf">0.999153</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;Features: &#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;std_0&#39;</span><span class="p">,</span> <span class="s1">&#39;std_1&#39;</span><span class="p">,</span> <span class="s1">&#39;std_2&#39;</span><span class="p">,</span> <span class="s1">&#39;std_3&#39;</span><span class="p">,</span> <span class="s1">&#39;std_4&#39;</span><span class="p">,</span> <span class="s1">&#39;std_5&#39;</span><span class="p">,</span> <span class="s1">&#39;mnx_0&#39;</span><span class="p">,</span> <span class="s1">&#39;mnx_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mnx_2&#39;</span><span class="p">,</span> <span class="s1">&#39;mnx_3&#39;</span><span class="p">,</span> <span class="s1">&#39;mnx_4&#39;</span><span class="p">,</span> <span class="s1">&#39;mnx_5&#39;</span><span class="p">,</span> <span class="s1">&#39;min_0&#39;</span><span class="p">,</span> <span class="s1">&#39;min_1&#39;</span><span class="p">,</span> <span class="s1">&#39;min_2&#39;</span><span class="p">,</span> <span class="s1">&#39;min_3&#39;</span><span class="p">,</span> <span class="s1">&#39;min_4&#39;</span><span class="p">,</span> <span class="s1">&#39;min_5&#39;</span><span class="p">,</span> <span class="s1">&#39;max_0&#39;</span><span class="p">,</span> <span class="s1">&#39;max_1&#39;</span><span class="p">,</span> <span class="s1">&#39;max_2&#39;</span><span class="p">,</span> <span class="s1">&#39;max_3&#39;</span><span class="p">,</span> <span class="s1">&#39;max_4&#39;</span><span class="p">,</span> <span class="s1">&#39;max_5&#39;</span><span class="p">,</span> <span class="s1">&#39;skew_0&#39;</span><span class="p">,</span> <span class="s1">&#39;skew_1&#39;</span><span class="p">,</span> <span class="s1">&#39;skew_2&#39;</span><span class="p">,</span> <span class="s1">&#39;skew_3&#39;</span><span class="p">,</span> <span class="s1">&#39;skew_4&#39;</span><span class="p">,</span> <span class="s1">&#39;skew_5&#39;</span><span class="p">,</span> <span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="s1">&#39;var_3&#39;</span><span class="p">,</span> <span class="s1">&#39;var_4&#39;</span><span class="p">,</span> <span class="s1">&#39;var_5&#39;</span><span class="p">,</span> <span class="s1">&#39;mse_0&#39;</span><span class="p">,</span> <span class="s1">&#39;mse_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mse_2&#39;</span><span class="p">,</span> <span class="s1">&#39;mse_3&#39;</span><span class="p">,</span> <span class="s1">&#39;mse_4&#39;</span><span class="p">,</span> <span class="s1">&#39;mse_5&#39;</span><span class="p">,</span> <span class="s1">&#39;kurt_0&#39;</span><span class="p">,</span> <span class="s1">&#39;kurt_1&#39;</span><span class="p">,</span> <span class="s1">&#39;kurt_2&#39;</span><span class="p">,</span> <span class="s1">&#39;kurt_3&#39;</span><span class="p">,</span> <span class="s1">&#39;kurt_4&#39;</span><span class="p">,</span> <span class="s1">&#39;kurt_5&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_0&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_1&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_2&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_3&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_4&#39;</span><span class="p">,</span> <span class="s1">&#39;mean_5&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -271,7 +271,7 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  5.558 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  5.553 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_feature_rep.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_feature_rep.py</span></code></a></div>
@@ -325,7 +325,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.1.0',
+            VERSION:'0.1.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

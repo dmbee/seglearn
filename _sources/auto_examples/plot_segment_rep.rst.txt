@@ -25,7 +25,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
     ('N series in test: ', 35)
     ('N segments in train: ', 3519)
     ('N segments in test: ', 1158)
-    ('Accuracy score: ', 0.5500863548593405)
+    ('Accuracy score: ', 0.6753022475152024)
 
 
 
@@ -92,7 +92,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
     img = mpimg.imread('segments.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 2 minutes  31.063 seconds)
+**Total running time of the script:** ( 2 minutes  30.272 seconds)
 
 
 
