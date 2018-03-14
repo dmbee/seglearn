@@ -37,7 +37,7 @@ def plot_embedding(emb, y, y_labels):
 
 # load the data
 data = sgl.load_watch()
-X = sgl.make_ts_data(data['X'])
+X = data['X']
 y = data['y']
 
 # create a pipeline for LDA transformation of the feature representation

@@ -11,7 +11,6 @@ This example demonstrates how to do model selection in a pipeline where segments
 
 from seglearn.pipe import SegPipe
 from seglearn.datasets import load_watch
-from seglearn.util import make_ts_data
 from seglearn.split import TemporalKFold
 
 from sklearn.model_selection import GridSearchCV
@@ -40,7 +39,7 @@ def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
 
 # load the data
 data = load_watch()
-X = make_ts_data(data['X'])
+X = data['X']
 y = data['y']
 
 # temporal splitting of data
