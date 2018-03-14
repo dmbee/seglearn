@@ -25,12 +25,12 @@ This is a basic example using the pipeline to learn a feature representation of 
     ('N series in test: ', 35)
     ('N segments in train: ', 3519)
     ('N segments in test: ', 1158)
-    ('Accuracy score: ', 0.7417962003454232)
+    ('Accuracy score: ', 0.7202072538860104)
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.638725    0.139777    0.783065     0.999418
-    1  0.635309    0.132374    0.675164     0.999422
-    2  0.657017    0.125359    0.889604     0.998607
-    3  0.648758    0.129969    0.728395     0.999153)
+    0  0.600846    0.132762    0.774194     0.998836
+    1  0.589806    0.127765    0.655428     1.000000
+    2  0.613153    0.117813    0.885925     0.999164
+    3  0.595090    0.120781    0.733686     0.998589)
     ('Features: ', ['std_0', 'std_1', 'std_2', 'std_3', 'std_4', 'std_5', 'mnx_0', 'mnx_1', 'mnx_2', 'mnx_3', 'mnx_4', 'mnx_5', 'min_0', 'min_1', 'min_2', 'min_3', 'min_4', 'min_5', 'max_0', 'max_1', 'max_2', 'max_3', 'max_4', 'max_5', 'skew_0', 'skew_1', 'skew_2', 'skew_3', 'skew_4', 'skew_5', 'var_0', 'var_1', 'var_2', 'var_3', 'var_4', 'var_5', 'mse_0', 'mse_1', 'mse_2', 'mse_3', 'mse_4', 'mse_5', 'kurt_0', 'kurt_1', 'kurt_2', 'kurt_3', 'kurt_4', 'kurt_5', 'mean_0', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5'])
 
 
@@ -102,7 +102,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 
     img = mpimg.imread('feet.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 0 minutes  5.714 seconds)
+**Total running time of the script:** ( 0 minutes  5.349 seconds)
 
 
 
