@@ -26,7 +26,7 @@ target with a regressor
     ('N series in test: ', 1)
     ('N segments in train: ', 141)
     ('N segments in test: ', 41)
-    ('Score: ', 0.8665244809536196)
+    ('Score: ', 0.8666328463567354)
 
 
 
