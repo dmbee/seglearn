@@ -64,7 +64,7 @@ This example demonstrates how the pipeline can be used to perform transformation
     X2, y2 = pipe.fit_transform(X, y)
     plot_embedding(X2, y2.astype(int), data['y_labels'])
     plt.show()
-**Total running time of the script:** ( 0 minutes  2.117 seconds)
+**Total running time of the script:** ( 0 minutes  2.022 seconds)
 
 
 
