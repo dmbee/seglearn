@@ -25,7 +25,7 @@ Some classification and regression datasets will have a target that is itself a 
 
 This package supports time series data sets with or without contextual information, and supports a target variable that is either fixed for each time series in the data set, or is itself a time series.
 
-A final class of time series problems is forecasting. In which case, the goal may be to predict a future value or values of the target at some time remote to the segment. Currently this package does not support this applicaiton, but it would be relatively simple to do so by creating a new segmenter class using the existing classes as a template.
+A final class of time series problems is forecasting. In which case, the goal may be to predict a future value or values of the target at some time remote to a given segment. This class of problems has continuous (time series) targets. In the sliding window segmentation approach, this problem can be conceptualized as predicting future segments (or segment values) from the current segment. Again contextual variables, or averaging variables can be used to bring information about segments prior to current segment into the forecast.
 
 
 Why this Package
@@ -44,7 +44,7 @@ What this Package Includes
 The main contributions of this package are:
 
 1) ``SegmentX`` - transformer class for performing the time series / sequence segmentation when the target is contextual
-2) ``SegmentXY`` - transformer class for performing the time series / sequence segmentation when the target is a time series
+2) ``SegmentXY`` - transformer class for performing the time series / sequence segmentation when the target is a time series. also handles forecasting.
 3) ``FeatureRep`` - transformer class for computing a feature representation from segment data, and
 4) ``SegPipe`` - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools
 5) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data

@@ -58,7 +58,6 @@ y, y_p = pipe.predict(X_test, y_test)
 x = np.arange(len(y))
 plt.plot(x, y, '.', label = "actual")
 plt.plot(x, y, label = "predicted")
-# now lets add some contextual data
 plt.legend()
 
 # now try a cross validation

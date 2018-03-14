@@ -29,6 +29,10 @@ def middle(y):
     ''' Returns the middle column from 2d matrix '''
     return y[:, y.shape[1]//2]
 
+def mean(y):
+    ''' returns average along axis 1'''
+    return np.mean(y, axis=1)
+
 
 class SegmentX(BaseEstimator, XyTransformerMixin):
     '''
@@ -153,7 +157,9 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     y : None
         There is no need of a target in a transformer, yet the pipeline API requires this parameter.
     y_func : function
-        returns target vector from array of target segments (eg see ``last``)
+        returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
+    forecast : int, default = None
+        if set, will shift target by this number of segments forward in time
 
     Returns
     -------
@@ -161,10 +167,11 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Returns self.
     '''
 
-    def __init__(self, width = 100, overlap = 0.5, y_func = last):
+    def __init__(self, width = 100, overlap = 0.5, y_func = last, forecast = None):
         self.width = width
         self.overlap = overlap
         self.y_func = y_func
+        self.forecast = forecast
 
     def fit(self, X, y = None):
         '''
@@ -183,8 +190,6 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             Returns self.
         '''
         self._reset()
-        assert self.width > 0
-        assert self.overlap >= 0. and self.overlap <= 1.
         self.step = int(self.width * (1. - self.overlap))
         self.step = self.step if self.step >= 1 else 1
         return self
@@ -193,6 +198,12 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         ''' Resets internal data-dependent state of the transformer. __init__ parameters not touched. '''
         if hasattr(self, 'step'):
             del self.step
+
+    def _validate_params(self):
+        assert self.width > 0
+        assert self.overlap >= 0. and self.overlap <= 1.
+        if self.forecast is not None:
+            assert self.forecast > 0
 
     def transform(self, X, y = None, sample_weight = None):
         '''
@@ -236,17 +247,23 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
         Xt = np.concatenate(Xt)
 
-        if y is not None:
-            y = np.array([sliding_window(y[i], self.width, self.step) for i in np.arange(N)])
-            y = np.concatenate(y)
-            y = self.y_func(y)
-
         if Xc is None:
-            return Xt, y, None
+            X = Xt
         else:
             Xc = expand_variables_to_segments(Xc, Nt)
             X = make_ts_data(Xt, Xc)
-            return X, y, None
+
+        if y is not None:
+            y = np.array([sliding_window(y[i], self.width, self.step) for i in np.arange(N)])
+            y = np.concatenate(y)
+
+            if self.forecast is not None:
+                X = X[0:(len(X) - self.forecast)]
+                y = y[self.forecast:len(y)]
+
+            y = self.y_func(y)
+
+        return X, y, None
 
 
 def expand_variables_to_segments(v, Nt):
