@@ -18,8 +18,8 @@
 .. |CircleCI| image:: https://circleci.com/gh/dmbee/seglearn.svg?style=shield&circle-token=:circle-token
 .. _CircleCI: https://circleci.com/gh/dmbee/seglearn/tree/master
 
-.. |Coveralls| image:: https://coveralls.io/repos/github/dmbee/seglearn/badge.svg?branch=master&bust=1
-.. _Coveralls: https://coveralls.io/github/dmbee/seglearn?branch=master&bust=1
+.. |Coveralls| image:: https://coveralls.io/repos/github/dmbee/seglearn/badge.svg?branch=master&&service=github
+.. _Coveralls: https://coveralls.io/github/dmbee/seglearn?branch=master&service=github
 
 
 seglearn

@@ -13,8 +13,7 @@ install:
   - pip install coverage coveralls
 
 script:
-  - pytest
-  - nosetests -s --with-coverage --cover-package=seglearn seglearn/tests
+  - nosetests -s --with-coverage --cover-package=seglearn seglearn/tests/
 
 after_success:
   - coveralls || echo "Coveralls upload failed"
