@@ -14,7 +14,7 @@ install:
 
 script:
   - pytest
-  - nosetests -s seglearn/tests/
+  - nosetests -s --with-coverage --cover-package=seglearn seglearn/tests
 
 after_success:
   - coveralls
