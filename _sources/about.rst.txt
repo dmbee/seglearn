@@ -6,7 +6,7 @@ This package was developed by::
     David M. Burns MD, PhD(c)
     Sunnybrook Research Institute
     University of Toronto
-    Email: d.burns@utoronto.ca
+    Email: david.mo.burns@gmail.com
 
 
 Citing seglearn
