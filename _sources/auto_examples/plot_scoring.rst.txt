@@ -128,7 +128,7 @@ OPTION 1: Use the score SegPipe score method
 
  Out::
 
-    ('Accuracy score: ', 0.7357512953367875)
+    ('Accuracy score: ', 0.7694300518134715)
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -158,7 +158,7 @@ OPTION 2: generate true and predicted target values for the segments
 
  Out::
 
-    ('F1 score: ', 0.7438014447288553)
+    ('F1 score: ', 0.783197118842361)
 
 
 OPTION 3: scoring during model selection
@@ -195,10 +195,10 @@ OPTION 3: scoring during model selection
  Out::
 
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.610811    0.127219    0.807258     0.999418
-    1  0.607990    0.127248    0.673520     0.999133
-    2  0.669263    0.119493    0.882245     0.999721
-    3  0.622603    0.114715    0.747795     0.999153)
+    0  0.629725    0.130834    0.785484     0.999418
+    1  0.629918    0.129623    0.701480     1.000000
+    2  0.658292    0.118798    0.879485     0.998329
+    3  0.649561    0.125567    0.732804     0.999436)
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -227,10 +227,10 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
  Out::
 
     ('CV F1 Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.593409    0.125252    0.784829     0.999761
-    1  0.596342    0.120251    0.785101     0.999311
-    2  0.617841    0.116114    0.859798     0.999075
-    3  0.603057    0.124957    0.748162     0.999518)
+    0  0.628258    0.129081    0.761585     0.999522
+    1  0.627101    0.128812    0.791938     0.999285
+    2  0.657961    0.118130    0.870394     0.999075
+    3  0.639918    0.121196    0.757210     0.999259)
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -265,19 +265,19 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
  Out::
 
     ('CV Scores (workaround): ',    fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  \
-    0  0.566872    0.359509       0.803754       0.816741              0.819900   
-    1  0.490822    0.360560       0.805295       0.820753              0.833342   
-    2  0.487911    0.358922       0.814212       0.825897              0.829537   
-    3  0.486112    0.358508       0.777873       0.797324              0.808679   
+    0  0.520114    0.383329       0.756826       0.770317              0.779497   
+    1  0.518476    0.396013       0.795047       0.811099              0.819945   
+    2  0.518876    0.380260       0.804795       0.810555              0.823166   
+    3  0.512971    0.378231       0.787307       0.802160              0.816516   
 
        test_recall_macro  
-    0           0.822592  
-    1           0.823946  
-    2           0.826322  
-    3           0.795186  )
+    0           0.777968  
+    1           0.814572  
+    2           0.814636  
+    3           0.805457  )
 
 
-**Total running time of the script:** ( 0 minutes  13.785 seconds)
+**Total running time of the script:** ( 0 minutes  14.237 seconds)
 
 
 

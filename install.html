@@ -183,19 +183,22 @@
 <h1>Install and contribution<a class="headerlink" href="#install-and-contribution" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>seglearn is tested to work under Python 2.7 and Python 3.5.
+<p>Seglearn is tested to work under Python 2.7 and Python 3.5.
 The dependency requirements are based on the last scikit-learn release:</p>
 <ul class="simple">
-<li>scipy (&gt;=0.13.3)</li>
-<li>numpy (&gt;=1.8.2)</li>
-<li>scikit-learn (&gt;=0.19.0)</li>
-<li>nose (nose&gt;=1.1.2)</li>
+<li>scipy(&gt;=0.13.3)</li>
+<li>numpy(&gt;=1.8.2)</li>
+<li>scikit-learn(&gt;=0.19.0)</li>
 </ul>
 <p>Additionally, to run the examples, you need:</p>
 <ul class="simple">
-<li>matplotlib (&gt;=2.0.0)</li>
+<li>matplotlib(&gt;=2.0.0)</li>
 <li>keras (&gt;=2.1.4) for the neural network examples</li>
 <li>pandas</li>
+</ul>
+<p>In order to run the test cases, you need:</p>
+<ul class="simple">
+<li>pytest</li>
 </ul>
 <p>The neural network examples were tested on keras using the tensorflow-gpu backend, which is recommended.</p>
 </div>
@@ -224,8 +227,8 @@ commands to get a copy from GitHub and install all dependencies:</p>
 </div>
 <div class="section" id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
-<p>After installation, you can use <cite>nose</cite> to run the test suite:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nosetests</span> <span class="n">seglearn</span><span class="o">/</span><span class="n">tests</span><span class="o">/</span><span class="n">test_</span><span class="o">*</span>
+<p>After installation, you can use <cite>pytest</cite> to run the test suite from seglearn’s root directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
 </pre></div>
 </div>
 </div>
