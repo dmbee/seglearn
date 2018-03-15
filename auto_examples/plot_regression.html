@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="seglearn 0.1.1 documentation" href="../index.html"/>
         <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html"/>
-        <link rel="prev" title="Time Series Forecasting" href="plot_forecast.html"/> 
+        <link rel="next" title="Hyperparameter Selection 1" href="plot_model_selection1.html"/>
+        <link rel="prev" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -112,8 +112,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Continuous Target and Time Series Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Continuous Target and Time Series Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
@@ -195,13 +195,13 @@
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;N series in train: &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;N series in test: &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;N segments in train: &#39;</span><span class="p">,</span> <span class="mi">299</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;N segments in test: &#39;</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;Score: &#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.30956817524387126</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;N segments in train: &#39;</span><span class="p">,</span> <span class="mi">74</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;N segments in test: &#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;Score: &#39;</span><span class="p">,</span> <span class="mf">0.9744288294253693</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;CV Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
-<span class="mi">0</span>  <span class="mf">0.004489</span>    <span class="mf">0.002007</span>   <span class="o">-</span><span class="mf">1.063142</span>     <span class="mf">0.037469</span>
-<span class="mi">1</span>  <span class="mf">0.004287</span>    <span class="mf">0.001956</span>   <span class="o">-</span><span class="mf">0.129286</span>     <span class="mf">0.059716</span>
-<span class="mi">2</span>  <span class="mf">0.004277</span>    <span class="mf">0.001906</span>   <span class="o">-</span><span class="mf">0.946624</span>     <span class="mf">0.042977</span><span class="p">)</span>
+<span class="mi">0</span>  <span class="mf">0.005870</span>    <span class="mf">0.002579</span>   <span class="o">-</span><span class="mf">0.342113</span>     <span class="mf">0.036777</span>
+<span class="mi">1</span>  <span class="mf">0.005561</span>    <span class="mf">0.002524</span>   <span class="o">-</span><span class="mf">0.149984</span>     <span class="mf">0.126310</span>
+<span class="mi">2</span>  <span class="mf">0.005554</span>    <span class="mf">0.002567</span>   <span class="o">-</span><span class="mf">0.239356</span>     <span class="mf">0.097838</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="line-block">
@@ -216,8 +216,7 @@
 <span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">temporal_split</span><span class="p">,</span> <span class="n">TemporalKFold</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Ridge</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_validate</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -226,22 +225,21 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
 <span class="c1"># for a single time series, we need to make it a list</span>
-<span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4000</span><span class="p">)</span><span class="o">/</span><span class="mf">100.</span><span class="p">]</span>
-<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span><span class="o">/</span><span class="mf">100.</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span> <span class="o">+</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
 <span class="c1"># split the data along the time axis (our only option since we have only 1 time series)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">temporal_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="c1"># create a feature representation pipeline</span>
 <span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
-                <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
-                <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">Ridge</span><span class="p">())])</span>
+                <span class="p">(</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">())])</span>
 
 <span class="c1"># SegmentXY segments both X and y (as the name implies)</span>
 <span class="c1"># setting y_func = last, selects the last value from each y segment as the target</span>
 <span class="c1"># other options include transform.middle, or you can make your own function</span>
 <span class="c1"># see the API documentation for further details</span>
-<span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentXY</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+<span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentXY</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">segmenter</span><span class="p">)</span>
 
 <span class="c1"># fit and score</span>
@@ -254,12 +252,22 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">pipe</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 
-<span class="c1"># lets plot the amazing results</span>
-<span class="n">y</span><span class="p">,</span> <span class="n">y_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;actual&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;predicted&quot;</span><span class="p">)</span>
+
+<span class="c1"># generate some predictions</span>
+<span class="n">ytr</span><span class="p">,</span> <span class="n">ytr_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> <span class="c1"># training predictions</span>
+<span class="n">yte</span><span class="p">,</span> <span class="n">yte_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="c1"># test predictions</span>
+<span class="n">xtr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">))</span> <span class="c1"># segment number</span>
+<span class="n">xte</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yte</span><span class="p">))</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+
+<span class="c1"># plot the amazing results</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xtr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;training&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xte</span><span class="p">,</span> <span class="n">yte</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;actual&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xte</span><span class="p">,</span> <span class="n">yte_p</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;predicted&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Segment Number&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Target&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
 
 <span class="c1"># now try a cross validation</span>
 <span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4000</span><span class="p">)</span><span class="o">/</span><span class="mf">100.</span><span class="p">]</span>
@@ -271,7 +279,7 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.069 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.086 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_regression.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_regression.py</span></code></a></div>
@@ -291,10 +299,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_nn_training_curves.html" class="btn btn-neutral float-right" title="Plotting Neural Network Training Curves" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_model_selection1.html" class="btn btn-neutral float-right" title="Hyperparameter Selection 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_forecast.html" class="btn btn-neutral" title="Time Series Forecasting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_nn_training_curves.html" class="btn btn-neutral" title="Plotting Neural Network Training Curves" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
