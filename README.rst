@@ -47,13 +47,16 @@ The dependency requirements are based on the last scikit-learn release:
 * scipy(>=0.13.3)
 * numpy(>=1.8.2)
 * scikit-learn(>=0.19.0)
-* nose (nose>=1.1.2)
 
 Additionally, to run the examples, you need:
 
 * matplotlib(>=2.0.0)
 * keras (>=2.1.4) for the neural network examples
 * pandas
+
+In order to run the test cases, you need:
+
+* pytest
 
 The neural network examples were tested on keras using the tensorflow-gpu backend, which is recommended.
 
@@ -83,9 +86,9 @@ Or install using pip and GitHub::
 Testing
 ~~~~~~~
 
-After installation, you can use `nose` to run the test suite::
+After installation, you can use `pytest` to run the test suite from seglearn's root directory::
 
-  nosetests seglearn/tests/test_*
+  pytest
 
 Development
 -----------
