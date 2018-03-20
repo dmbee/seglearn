@@ -9,10 +9,11 @@ from .transform import SegmentX
 from .util import check_ts_data
 
 import numpy as np
-from sklearn.utils.metaestimators import _BaseComposition
+from sklearn.base import BaseEstimator
+
 from sklearn.utils.validation import check_is_fitted
 
-class SegPipe(_BaseComposition):
+class SegPipe(BaseEstimator):
     '''
     The pipeline supports learning multi-variate time series with or without relational contextual variables (see introduction).
 
