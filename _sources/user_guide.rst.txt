@@ -15,17 +15,13 @@ Learning multivariate sequential data with the sliding window method is useful i
 Time Series Data
 ----------------
 
-This package supports multivariate sequential data, which in the case of time series data requires a regular sampling interval. Some time series datasets have irregular sampling and need time labels for each instance (eg purchase history on amazon.com). The methods available in this package are not suited to learning irregularly sampled time series, unless those time series would be amenable to re-sampling at regular intervals.
+Sequence and time series data have a general formulation as sequence pairs :math:`\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}`, where each :math:`\mathbf{X}_i` is a multivariate sequence with :math:`T_i` samples :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle` and each :math:`\mathbf{y}_i` target is a univariate sequence with :math:`T_i` samples :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle` and each :math:`\mathbf{y}_i` target is a univariate sequence with :math:`T_i` samples :math:`\langle y_{i,1}, y_{i,2},..., y_{i,T_i} \rangle`. The targets :math:`\mathbf{y}_i` can either be sequences of categorical class labels (for classification problems), or sequences of continuous data (for regression problems). The number of samples :math:`T_i` varies between the sequence pairs in the data set.
 
-Sequential classification problems typically have a target variable associated with each sequence in the dataset (eg classification of song music genre). Similarly, contextual information may be associated with each time series (eg Artist) that doesn't change for the duration of the sequence and may be known to the classifier. Some classification problems may have a target that varies within a sequence (eg classification of which musical instruments are currently being played) - in this case, the sequence can be divided up into sub-sequences that have a constant target.
+Important sub-classes of the general sequence learning problem are sequence classification and sequence prediction. In sequence classification problems (eg song genre classification), the target for each sequence is a fixed class label :math:`y_i` and the data takes the form :math:`\{(\mathbf{X}_i, y_i)\}_{i=1}^{N}`. Sequence prediction involves predicting a future value of the target :math:`(y_{i,t+f})` or future values :math:`\langle y_{i,t+1}, y_{i,t+2},..., y_{i,t+f} \rangle`, given :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,t} \rangle, \langle y_{i,1}, y_{i,2},..., y_{i,t} \rangle`, and sometimes also :math:`\langle \mathbf{x}_{i,t+1}, \mathbf{x}_{i,t+2},...,\mathbf{x}_{i,t+f} \rangle`.
 
-Regression datasets can similarly have a single target variable for each sequence (eg estimation of a song's sales on itunes).
+A final important generalization is the case where contextual data associated with each sequence, but not varying within the sequence, exists to support the machine learning algorithm performance. Perhaps the algorithm for reading electrocardiograms will be given access to laboratory data, the patient's age, or known medical diagnoses to assist with classifying the sequential data recovered from the leads.
 
-Some classification and regression datasets will have a target that is itself a time series - as it varies continuously within the sequence. In these cases, both the time series variables and target variable need to be segmented. A decision needs to be made about where the target variable y should be sampled from for each instance in the segmented data set. Perhaps the target should be taken to be the middle value from the segment, the average over the segment, or maybe the value at the end of the segment. Maybe the target should be a sequence itself.
-
-This package supports time series data sets with or without contextual information, and supports a target variable that is either fixed for each time series in the data set, or is itself a time series.
-
-A final class of time series problems is forecasting. In which case, the goal may be to predict a future value or values of the target at some time remote to a given segment. This class of problems has continuous (time series) targets. In the sliding window segmentation approach, this problem can be conceptualized as predicting future segments (or segment values) from the current segment. Again contextual variables, or averaging variables can be used to bring information about segments prior to current segment into the forecast.
+seglearn provides a flexible, user-friendly framework for learning time series and sequences in all of the above contexts using the sliding window segmentation approach. Sliding window segmentation converts the sequence data :math:`\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}` into segment data :math:`\{(\mathbf{X}_j,\mathbf{y}_j)\}_{j=1}^{M}` where the number of data points in each segment :math:`T_j` is the same for all segments. This approach permits utilization of many classical and modern machine learning algorithms that require fixed length inputs. The segments can either be learned directly with various neural network architectures, or a feature representation can be computed for each segment, allowing classical algorithms to learn the feature representation.
 
 
 Why this Package
@@ -44,11 +40,13 @@ What this Package Includes
 The main contributions of this package are:
 
 1) ``SegmentX`` - transformer class for performing the time series / sequence segmentation when the target is contextual
-2) ``SegmentXY`` - transformer class for performing the time series / sequence segmentation when the target is a time series. also handles forecasting.
-3) ``FeatureRep`` - transformer class for computing a feature representation from segment data, and
-4) ``SegPipe`` - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools
-5) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
-6) ``split`` - a module for splitting time series or sequences along the temporal axis
+2) ``SegmentXY`` - transformer class for performing the time series / sequence segmentation when the target is a time series or sequence.
+3) ``SegmentXYForecast`` - transformer class for performing the time series / sequence segmentation when the target is future values of a time series or sequence.
+4) ``FeatureRep`` - transformer class for computing a feature representation from segment data, and
+5) ``SegPipe`` - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools
+6) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
+7) ``split`` - a module for splitting time series or sequences along the temporal axis
+
 
 What this Package Doesn't Include
 ---------------------------------
@@ -106,3 +104,12 @@ First see the `Examples <auto_examples/index.html>`_
 If more details are needed, have a look at the `API Documentation <api.html>`_.
 
 
+References
+----------
+
+.. [1] Christopher M. Bishop. Pattern Recognition and Machine Learning.
+        Springer, New York. 2nd Edition, April 2011. ISBN 978-0-387-31073-2.
+
+.. [2] Thomas G. Dietterich. Machine Learning for Sequential Data: A Review.
+        In Structural, Syntactic, and Statistical Pattern Recognition.
+        Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5

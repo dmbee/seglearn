@@ -91,26 +91,6 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we use a feature representation pipeline to forecast a continuous time series ...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_forecast_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_forecast.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_forecast
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct...">
 
 .. only:: html
@@ -148,6 +128,26 @@ General-purpose and introductory examples for the `seglearn` toolbox.
    :hidden:
 
    /auto_examples/plot_regression
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we use a feature representation pipeline to forecast a continuous time series ...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_forecast_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_forecast.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_forecast
 
 .. raw:: html
 

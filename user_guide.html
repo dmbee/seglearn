@@ -108,6 +108,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#what-this-package-doesn-t-include">What this Package Doesn’t Include</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#valid-sequence-data-representations">Valid Sequence Data Representations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-seglearn">Using Seglearn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
@@ -193,12 +194,10 @@
 </div>
 <div class="section" id="time-series-data">
 <h2>Time Series Data<a class="headerlink" href="#time-series-data" title="Permalink to this headline">¶</a></h2>
-<p>This package supports multivariate sequential data, which in the case of time series data requires a regular sampling interval. Some time series datasets have irregular sampling and need time labels for each instance (eg purchase history on amazon.com). The methods available in this package are not suited to learning irregularly sampled time series, unless those time series would be amenable to re-sampling at regular intervals.</p>
-<p>Sequential classification problems typically have a target variable associated with each sequence in the dataset (eg classification of song music genre). Similarly, contextual information may be associated with each time series (eg Artist) that doesn’t change for the duration of the sequence and may be known to the classifier. Some classification problems may have a target that varies within a sequence (eg classification of which musical instruments are currently being played) - in this case, the sequence can be divided up into sub-sequences that have a constant target.</p>
-<p>Regression datasets can similarly have a single target variable for each sequence (eg estimation of a song’s sales on itunes).</p>
-<p>Some classification and regression datasets will have a target that is itself a time series - as it varies continuously within the sequence. In these cases, both the time series variables and target variable need to be segmented. A decision needs to be made about where the target variable y should be sampled from for each instance in the segmented data set. Perhaps the target should be taken to be the middle value from the segment, the average over the segment, or maybe the value at the end of the segment. Maybe the target should be a sequence itself.</p>
-<p>This package supports time series data sets with or without contextual information, and supports a target variable that is either fixed for each time series in the data set, or is itself a time series.</p>
-<p>A final class of time series problems is forecasting. In which case, the goal may be to predict a future value or values of the target at some time remote to a given segment. This class of problems has continuous (time series) targets. In the sliding window segmentation approach, this problem can be conceptualized as predicting future segments (or segment values) from the current segment. Again contextual variables, or averaging variables can be used to bring information about segments prior to current segment into the forecast.</p>
+<p>Sequence and time series data have a general formulation as sequence pairs <img class="math" src="_images/math/6d636e1d90c17d2e1e208bd7327464353008bd31.png" alt="\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}"/>, where each <img class="math" src="_images/math/925bd8b766b4999fe4377713989fd144ec2fac8c.png" alt="\mathbf{X}_i"/> is a multivariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/d0f26c703def1e44a401ea8f6ce3cf67a7f25a6d.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle"/> and each <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> target is a univariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/d0f26c703def1e44a401ea8f6ce3cf67a7f25a6d.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle"/> and each <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> target is a univariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/8c68c53cead5c55c2f3deabc2311503c78d3211c.png" alt="\langle y_{i,1}, y_{i,2},..., y_{i,T_i} \rangle"/>. The targets <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> can either be sequences of categorical class labels (for classification problems), or sequences of continuous data (for regression problems). The number of samples <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> varies between the sequence pairs in the data set.</p>
+<p>Important sub-classes of the general sequence learning problem are sequence classification and sequence prediction. In sequence classification problems (eg song genre classification), the target for each sequence is a fixed class label <img class="math" src="_images/math/07f6018e00c747406442bb3912e0209766fc9090.png" alt="y_i"/> and the data takes the form <img class="math" src="_images/math/8779cac103ab80aa52af5b1c46f15605dc4b5ff5.png" alt="\{(\mathbf{X}_i, y_i)\}_{i=1}^{N}"/>. Sequence prediction involves predicting a future value of the target <img class="math" src="_images/math/6bfea9d91249b6ed79b7f7f4488fbf61c0e06a6f.png" alt="(y_{i,t+f})"/> or future values <img class="math" src="_images/math/6ab83bae8dcc08c941c6c62ae83ca7273a063ca9.png" alt="\langle y_{i,t+1}, y_{i,t+2},..., y_{i,t+f} \rangle"/>, given <img class="math" src="_images/math/cbaf238de3b86f76f78f4b7eace63233c5332e8b.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,t} \rangle, \langle y_{i,1}, y_{i,2},..., y_{i,t} \rangle"/>, and sometimes also <img class="math" src="_images/math/9cf813368b23e19f9fdc2770bb97e44f2c92bafe.png" alt="\langle \mathbf{x}_{i,t+1}, \mathbf{x}_{i,t+2},...,\mathbf{x}_{i,t+f} \rangle"/>.</p>
+<p>A final important generalization is the case where contextual data associated with each sequence, but not varying within the sequence, exists to support the machine learning algorithm performance. Perhaps the algorithm for reading electrocardiograms will be given access to laboratory data, the patient’s age, or known medical diagnoses to assist with classifying the sequential data recovered from the leads.</p>
+<p>seglearn provides a flexible, user-friendly framework for learning time series and sequences in all of the above contexts using the sliding window segmentation approach. Sliding window segmentation converts the sequence data <img class="math" src="_images/math/6d636e1d90c17d2e1e208bd7327464353008bd31.png" alt="\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}"/> into segment data <img class="math" src="_images/math/80c493a219161b9ea9e1bd5090f31f3b6eb6f4fb.png" alt="\{(\mathbf{X}_j,\mathbf{y}_j)\}_{j=1}^{M}"/> where the number of data points in each segment <img class="math" src="_images/math/f1aa64d8c73a6d30bc3b2110f5b9c377d111de00.png" alt="T_j"/> is the same for all segments. This approach permits utilization of many classical and modern machine learning algorithms that require fixed length inputs. The segments can either be learned directly with various neural network architectures, or a feature representation can be computed for each segment, allowing classical algorithms to learn the feature representation.</p>
 </div>
 <div class="section" id="why-this-package">
 <h2>Why this Package<a class="headerlink" href="#why-this-package" title="Permalink to this headline">¶</a></h2>
@@ -211,7 +210,8 @@
 <p>The main contributions of this package are:</p>
 <ol class="arabic simple">
 <li><code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> - transformer class for performing the time series / sequence segmentation when the target is contextual</li>
-<li><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence segmentation when the target is a time series. also handles forecasting.</li>
+<li><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence segmentation when the target is a time series or sequence.</li>
+<li><code class="docutils literal notranslate"><span class="pre">SegmentXYForecast</span></code> - transformer class for performing the time series / sequence segmentation when the target is future values of a time series or sequence.</li>
 <li><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data, and</li>
 <li><code class="docutils literal notranslate"><span class="pre">SegPipe</span></code> - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools</li>
 <li><code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> - an indexable / iterable class for storing time series &amp; contextual data</li>
@@ -264,6 +264,24 @@
 <p>The package is relatively straightforward to use.</p>
 <p>First see the <a class="reference external" href="auto_examples/index.html">Examples</a></p>
 <p>If more details are needed, have a look at the <a class="reference external" href="api.html">API Documentation</a>.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>Christopher M. Bishop. Pattern Recognition and Machine Learning.
+Springer, New York. 2nd Edition, April 2011. ISBN 978-0-387-31073-2.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td>Thomas G. Dietterich. Machine Learning for Sequential Data: A Review.
+In Structural, Syntactic, and Statistical Pattern Recognition.
+Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 

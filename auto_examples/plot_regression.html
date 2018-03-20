@@ -41,7 +41,7 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="seglearn 0.1.1 documentation" href="../index.html"/>
         <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="Hyperparameter Selection 1" href="plot_model_selection1.html"/>
+        <link rel="next" title="Time Series Forecasting" href="plot_forecast.html"/>
         <link rel="prev" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html"/> 
 
   
@@ -111,9 +111,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Continuous Target and Time Series Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
@@ -197,11 +197,11 @@
 <span class="p">(</span><span class="s1">&#39;N series in test: &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;N segments in train: &#39;</span><span class="p">,</span> <span class="mi">74</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;N segments in test: &#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;Score: &#39;</span><span class="p">,</span> <span class="mf">0.9744288294260263</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;Score: &#39;</span><span class="p">,</span> <span class="mf">0.97442882942564</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;CV Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
-<span class="mi">0</span>  <span class="mf">0.006009</span>    <span class="mf">0.002777</span>   <span class="o">-</span><span class="mf">0.342113</span>     <span class="mf">0.036777</span>
-<span class="mi">1</span>  <span class="mf">0.005882</span>    <span class="mf">0.002699</span>   <span class="o">-</span><span class="mf">0.149984</span>     <span class="mf">0.126310</span>
-<span class="mi">2</span>  <span class="mf">0.005844</span>    <span class="mf">0.002667</span>   <span class="o">-</span><span class="mf">0.239356</span>     <span class="mf">0.097838</span><span class="p">)</span>
+<span class="mi">0</span>  <span class="mf">0.005616</span>    <span class="mf">0.002604</span>   <span class="o">-</span><span class="mf">0.342113</span>     <span class="mf">0.036777</span>
+<span class="mi">1</span>  <span class="mf">0.005430</span>    <span class="mf">0.002449</span>   <span class="o">-</span><span class="mf">0.149984</span>     <span class="mf">0.126310</span>
+<span class="mi">2</span>  <span class="mf">0.005345</span>    <span class="mf">0.002510</span>   <span class="o">-</span><span class="mf">0.239356</span>     <span class="mf">0.097838</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="line-block">
@@ -279,7 +279,7 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.091 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.087 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_regression.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_regression.py</span></code></a></div>
@@ -299,7 +299,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_model_selection1.html" class="btn btn-neutral float-right" title="Hyperparameter Selection 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_forecast.html" class="btn btn-neutral float-right" title="Time Series Forecasting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="plot_nn_training_curves.html" class="btn btn-neutral" title="Plotting Neural Network Training Curves" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

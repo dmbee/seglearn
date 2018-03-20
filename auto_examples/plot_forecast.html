@@ -41,8 +41,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="seglearn 0.1.1 documentation" href="../index.html"/>
         <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html"/>
-        <link rel="prev" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html"/> 
+        <link rel="next" title="Hyperparameter Selection 1" href="plot_model_selection1.html"/>
+        <link rel="prev" title="Continuous Target and Time Series Regression" href="plot_regression.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -111,9 +111,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
@@ -192,7 +192,7 @@
 <span id="sphx-glr-auto-examples-plot-forecast-py"></span><h1>Time Series Forecasting<a class="headerlink" href="#time-series-forecasting" title="Permalink to this headline">¶</a></h1>
 <p>In this example, we use a feature representation pipeline to forecast a continuous time series
 target with a regressor.</p>
-<p>In this example, we train the algorithm from the features and targets in the training set.
+<p>The algorithm is trained from the target from the features and targets in the training set.
 Then predict (future segments) from the features in the test set.</p>
 <p>We do not sequentially retrain the algorithm as we move through the test set - which is an
 approach you will sometimes see with time series forecasting (and which may or may not be
@@ -201,9 +201,9 @@ useful in your application).</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;N series in train: &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="p">(</span><span class="s1">&#39;N series in test: &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;N segments in train: &#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;N segments in test: &#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="p">(</span><span class="s1">&#39;Score: &#39;</span><span class="p">,</span> <span class="o">-</span><span class="mf">19.01060865321624</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;N segments in train: &#39;</span><span class="p">,</span> <span class="mi">34</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;N segments in test: &#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="p">(</span><span class="s1">&#39;Score: &#39;</span><span class="p">,</span> <span class="mf">0.9961701854260537</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="line-block">
@@ -213,7 +213,7 @@ useful in your application).</p>
 <span class="c1"># License: BSD</span>
 
 
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentXY</span><span class="p">,</span> <span class="n">mean</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentXYForecast</span><span class="p">,</span> <span class="n">last</span>
 <span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">SegPipe</span>
 <span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">temporal_split</span>
 
@@ -224,9 +224,15 @@ useful in your application).</p>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="c1"># remember for a single time series, we need to make it a list</span>
-<span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5000</span><span class="p">)</span><span class="o">/</span><span class="mf">100.</span><span class="p">]</span>
-<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">2.5</span> <span class="o">+</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5000</span><span class="p">)</span><span class="o">/</span><span class="mf">100.</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="o">*</span><span class="mf">2.5</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="n">t</span>
+
+<span class="c1"># with forecasting, X can include the target</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># remember for a single time series, we need to make a list</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">]</span>
 
 <span class="c1"># split the data along the time axis (our only option since we have only 1 time series)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">temporal_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
@@ -235,10 +241,11 @@ useful in your application).</p>
 <span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
                 <span class="p">(</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">())])</span>
 
-<span class="c1"># setting y_func = mean, selects the mean from each y segment as the target</span>
-<span class="c1"># forecast = 8 with overlap 0.5 means we are predicting 4 segments ahead (800 time points)</span>
+<span class="c1"># setting y_func = last, and forecast = 200 makes us predict the value of y</span>
+<span class="c1"># 200 samples ahead of the segment</span>
+<span class="c1"># other reasonable options for y_func are ``mean``, ``all`` (or create your own function)</span>
 <span class="c1"># see the API documentation for further details</span>
-<span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentXY</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">mean</span><span class="p">,</span> <span class="n">forecast</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentXYForecast</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">,</span> <span class="n">forecast</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">segmenter</span><span class="p">)</span>
 
 <span class="c1"># fit and score</span>
@@ -256,24 +263,30 @@ useful in your application).</p>
 <span class="n">ytr</span><span class="p">,</span> <span class="n">ytr_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> <span class="c1"># training predictions</span>
 <span class="n">yte</span><span class="p">,</span> <span class="n">yte_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="c1"># test predictions</span>
 
-<span class="c1"># for demonstration, we&#39;ll use the complete prediction set</span>
-<span class="c1"># to avoid a discontinuity in the plot</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">):</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)]</span>
-<span class="n">y_p</span> <span class="o">=</span> <span class="n">y_p</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">):</span><span class="nb">len</span><span class="p">(</span><span class="n">y_p</span><span class="p">)]</span>
-<span class="n">xtr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">))</span> <span class="c1"># segment number</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+
+<span class="c1"># note - the first few segments in the test set won&#39;t have predictions (gap)</span>
+<span class="c1"># we plot the &#39;gap&#39; for the visualization to hopefully make the situation clear</span>
+<span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Ns</span><span class="p">)</span> <span class="c1"># segment number</span>
+<span class="n">ttr</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">)]</span>
+<span class="n">tte</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[(</span><span class="n">Ns</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">yte</span><span class="p">)):</span><span class="n">Ns</span><span class="p">]</span>
+<span class="n">tga</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">):(</span><span class="n">Ns</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">yte</span><span class="p">))]</span>
+<span class="n">yga</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">):(</span><span class="n">Ns</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">yte</span><span class="p">))]</span>
+
 
 <span class="c1"># plot the results</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xtr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;training&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;actual&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_p</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;predicted&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ttr</span><span class="p">,</span> <span class="n">ytr</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tga</span><span class="p">,</span> <span class="n">yga</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;gap&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tte</span><span class="p">,</span> <span class="n">yte</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tte</span><span class="p">,</span> <span class="n">yte_p</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s2">&quot;predicted&quot;</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Segment Number&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Target&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.041 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.060 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_forecast.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_forecast.py</span></code></a></div>
@@ -293,10 +306,10 @@ useful in your application).</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_nn_training_curves.html" class="btn btn-neutral float-right" title="Plotting Neural Network Training Curves" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_model_selection1.html" class="btn btn-neutral float-right" title="Hyperparameter Selection 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_segment_rep.html" class="btn btn-neutral" title="Classifying Segments Directly with a Neural Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_regression.html" class="btn btn-neutral" title="Continuous Target and Time Series Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
