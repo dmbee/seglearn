@@ -1,3 +1,4 @@
+from seglearn.datasets import load_watch
 from seglearn.base import TS_Data
 import numpy as np
 
@@ -24,3 +25,8 @@ def test_ts_data():
 
     data = TS_Data(sts, c)
     assert type(data[4:10]) == TS_Data
+
+def test_watch():
+    df = load_watch()
+
+    data = TS_Data(df['X'], df['side'])

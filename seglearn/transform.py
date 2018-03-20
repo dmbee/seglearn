@@ -12,7 +12,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
 
 
-__all__ = ['SegmentX', 'SegmentXY', 'FeatureRep']
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'FeatureRep']
 
 
 class XyTransformerMixin(object):
@@ -32,6 +32,10 @@ def middle(y):
 def mean(y):
     ''' returns average along axis 1'''
     return np.mean(y, axis=1)
+
+def all(y):
+    ''' Returns all values (sequences) of y '''
+    return y
 
 
 class SegmentX(BaseEstimator, XyTransformerMixin):
@@ -152,14 +156,12 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
 
     Parameters
     ----------
-    X : array-like, shape [n_series, ...]
-        Time series data and (optionally) contextual data created as per ``make_ts_data``
-    y : None
-        There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+    width : int > 0
+        width of segments (number of samples)
+    overlap : float range [0,1)
+        amount of overlap between segments. must be in range: 0 <= overlap < 1.
     y_func : function
         returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
-    forecast : int, default = None
-        if set, will shift target by this number of segments forward in time
 
     Returns
     -------
@@ -167,11 +169,11 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Returns self.
     '''
 
-    def __init__(self, width = 100, overlap = 0.5, y_func = last, forecast = None):
+    def __init__(self, width = 100, overlap = 0.5, y_func = last):
         self.width = width
         self.overlap = overlap
         self.y_func = y_func
-        self.forecast = forecast
+        self._validate_params()
 
     def fit(self, X, y = None):
         '''
@@ -184,12 +186,13 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         y : None
             There is no need of a target in a transformer, yet the pipeline API requires this parameter.
 
-        Returns
+        Returnsself._validate_params()
         -------
         self : object
             Returns self.
         '''
         self._reset()
+        self._validate_params()
         self.step = int(self.width * (1. - self.overlap))
         self.step = self.step if self.step >= 1 else 1
         return self
@@ -202,8 +205,6 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     def _validate_params(self):
         assert self.width > 0
         assert self.overlap >= 0. and self.overlap <= 1.
-        if self.forecast is not None:
-            assert self.forecast > 0
 
     def transform(self, X, y = None, sample_weight = None):
         '''
@@ -231,6 +232,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
 
         '''
         check_is_fitted(self, 'step')
+
         Xt, Xc = get_ts_data_parts(X)
 
         # if only one time series is learned
@@ -256,14 +258,130 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         if y is not None:
             y = np.array([sliding_window(y[i], self.width, self.step) for i in np.arange(N)])
             y = np.concatenate(y)
-
-            if self.forecast is not None:
-                X = X[0:(len(X) - self.forecast)]
-                y = y[self.forecast:len(y)]
-
             y = self.y_func(y)
 
         return X, y, None
+
+
+class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
+    '''
+    Forecast sliding window segmentation for time series or sequence datasets
+
+    Parameters
+    ----------
+    width : int > 0
+        width of segments (number of samples)
+    overlap : float range [0,1)
+        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+    forecast : int
+        The number of samples ahead in time to forecast
+    y_func : function
+        returns target from array of target forecast segments (eg ``last``, or ``mean``)
+
+    Returns
+    -------
+    self : object
+        Returns self.
+    '''
+
+    def __init__(self, width = 100, overlap = 0.5, forecast = 10, y_func = last):
+        self.width = width
+        self.overlap = overlap
+        self.forecast = forecast
+        self.y_func = y_func
+        self._validate_params()
+
+    def fit(self, X = None, y = None):
+        '''
+        Fit the transform
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+        '''
+        self._reset()
+        self._validate_params()
+        self.step = int(self.width * (1. - self.overlap))
+        self.step = self.step if self.step >= 1 else 1
+        return self
+
+    def _reset(self):
+        ''' Resets internal data-dependent state of the transformer. __init__ parameters not touched. '''
+        if hasattr(self, 'step'):
+            del self.step
+
+    def _validate_params(self):
+        assert self.width > 0
+        assert self.overlap >= 0. and self.overlap <= 1.
+        assert self.forecast > 0
+
+    def transform(self, X, y, sample_weight = None):
+        '''
+        Forecast sliding window segmentation for time series or sequence datasets.
+        Note this transformation changes the number of samples in the data.
+        Currently sample weights always returned as None.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : array-like shape [n_series]
+            target vector
+        sample_weight : array-like shape [n_series], default = None
+            sample weights
+
+        Returns
+        -------
+        X_new : array-like, shape [n_segments, ]
+            segmented X data
+        y_new : array-like, shape [n_segments]
+            forecast y data
+        sample_weight_new : None
+
+        '''
+        check_is_fitted(self, 'step')
+
+        Xt, Xc = get_ts_data_parts(X)
+
+        # if only one time series is learned
+        if len(Xt[0]) == 1:
+            Xt = [Xt]
+
+        N = len(Xt) # number of time series
+
+        if Xt[0].ndim > 1:
+            Xt = np.array([sliding_tensor(Xt[i], self.width+self.forecast, self.step) for i in np.arange(N)])
+        else:
+            Xt = np.array([sliding_window(Xt[i], self.width+self.forecast, self.step) for i in np.arange(N)])
+
+        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
+        Xt = np.concatenate(Xt)
+
+        # todo: implement advance X
+        Xt = Xt[:,0:self.width]
+
+        if Xc is None:
+            X = Xt
+        else:
+            Xc = expand_variables_to_segments(Xc, Nt)
+            X = make_ts_data(Xt, Xc)
+
+        if y is not None:
+            y = np.array([sliding_window(y[i], self.width+self.forecast, self.step) for i in np.arange(N)])
+            y = np.concatenate(y)
+            y = y[:, self.width:(self.width + self.forecast)]  # target y
+            y = self.y_func(y)
+
+        return X, y, None
+
 
 
 def expand_variables_to_segments(v, Nt):

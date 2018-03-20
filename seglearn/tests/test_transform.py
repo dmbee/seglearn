@@ -195,8 +195,13 @@ def test_segmentxy():
     assert Xst.shape == (N, width, vars)
     assert Xsc.shape == (N, 5)
 
+def test_segmentxyforecast():
+    Nt = 100
+    width = 5
+    vars = 5
+
     # lets do a forecast test
-    seg = transform.SegmentXY(width=width, forecast=5)
+    seg = transform.SegmentXYForecast(width=width, forecast=5)
     Xt = [np.random.rand(Nt, vars), np.random.rand(2 * Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3, 4)
     y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
@@ -207,3 +212,14 @@ def test_segmentxy():
     N = len(ys)
     assert Xst.shape == (N, width, vars)
     assert Xsc.shape == (N, 4)
+
+    # univariate X
+    vars = 1
+    seg = transform.SegmentXYForecast(width=width, forecast=5)
+    X = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
+    y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    Xst, Xsc = get_ts_data_parts(Xs)
+    N = len(ys)
+    assert Xst.shape == (N, width)
