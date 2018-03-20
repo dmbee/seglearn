@@ -1,3 +1,6 @@
+# Author: David Burns
+# License: BSD
+
 from seglearn.split import TemporalKFold, temporal_split
 from seglearn.base import TS_Data
 

@@ -2,6 +2,8 @@
 This module has some base classes for time series data
 '''
 
+# Author: David Burns
+# License: BSD
 
 class TS_Data(object):
     '''

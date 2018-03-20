@@ -1,3 +1,6 @@
+# Author: David Burns
+# License: BSD
+
 from seglearn.pipe import SegPipe
 from seglearn.transform import FeatureRep, SegmentX, SegmentXY, SegmentXYForecast
 from seglearn.util import make_ts_data

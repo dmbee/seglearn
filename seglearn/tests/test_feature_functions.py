@@ -1,3 +1,6 @@
+# Author: David Burns
+# License: BSD
+
 from seglearn import feature_functions
 
 import numpy as np

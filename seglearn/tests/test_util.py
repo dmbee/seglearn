@@ -1,3 +1,6 @@
+# Author: David Burns
+# License: BSD
+
 from seglearn.datasets import load_watch
 from seglearn import util
 

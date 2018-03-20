@@ -1,3 +1,6 @@
+# Author: David Burns
+# License: BSD
+
 import seglearn.transform as transform
 from seglearn.feature_functions import all_features, mean
 from seglearn.util import make_ts_data, get_ts_data_parts

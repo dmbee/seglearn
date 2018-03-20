@@ -1,3 +1,6 @@
+# Author: David Burns
+# License: BSD
+
 from .pipe import SegPipe
 from .transform import SegmentX, SegmentXY, SegmentXYForecast, FeatureRep
 from .split import TemporalKFold, temporal_split
