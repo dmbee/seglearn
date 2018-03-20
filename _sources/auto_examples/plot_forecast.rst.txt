@@ -33,7 +33,7 @@ useful in your application).
     ('N series in test: ', 1)
     ('N segments in train: ', 34)
     ('N segments in test: ', 9)
-    ('Score: ', 0.9961701854260537)
+    ('Score: ', 0.9961701854248022)
 
 
 
@@ -120,7 +120,7 @@ useful in your application).
     plt.show()
 
 
-**Total running time of the script:** ( 0 minutes  0.060 seconds)
+**Total running time of the script:** ( 0 minutes  0.063 seconds)
 
 
 
