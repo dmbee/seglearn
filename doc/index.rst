@@ -7,7 +7,7 @@
 Welcome to seglearn documentation!
 ##################################
 
-This project is an sklearn extension for machine learning time series or sequences. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and a final estimator compatible with sklearn model evaluation and parameter optimization tools. Seglearn provides a flexible approach to multivariate time series and contextual data for classification, regression, and forecasting problems.
+This project is an sklearn extension for machine learning time series or sequences. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and a final estimator compatible with sklearn model evaluation and parameter optimization tools. Seglearn provides a flexible approach to multivariate time series and contextual data for classification, regression, and forecasting problems. Support and examples are provided for learning time series with classical machine learning and deep learning models. 
 
 See the source code repository on github: https://github.com/dmbee/seglearn
 
