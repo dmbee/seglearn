@@ -98,7 +98,7 @@ Version 2.0:
 * Implemented random_state initialization for SegPipe
 * Corrected documentation for FeatureRep
 
-Version 1.7:
+Version 1.6:
 
 * First stable version
 
