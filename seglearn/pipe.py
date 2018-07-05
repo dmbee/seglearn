@@ -12,6 +12,7 @@ import numpy as np
 from sklearn.base import BaseEstimator
 
 from sklearn.utils.validation import check_is_fitted
+from sklearn.utils import check_random_state
 
 class SegPipe(BaseEstimator):
     '''
@@ -42,6 +43,8 @@ class SegPipe(BaseEstimator):
         shuffle the segments before fitting the ``est`` pipeline (recommended)
     scorer : callable, optional
         scorer callable made with sklearn.metrics.make_scorer, can only return 1 score
+    random_state : int, default = None
+        Randomized segment shuffling will return different results for each call to ``fit``. If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set ``random_state`` to an integer.
 
 
     Attributes
@@ -68,11 +71,12 @@ class SegPipe(BaseEstimator):
     >>> print(pipe.score(X, y))
 
     '''
-    def __init__(self, est, segmenter = SegmentX(), shuffle = True, scorer = None):
+    def __init__(self, est, segmenter = SegmentX(), scorer = None, shuffle = True, random_state = None):
         self.est = est
         self.segmenter = segmenter
-        self.shuffle = shuffle
         self.scorer = scorer
+        self.shuffle = shuffle
+        self.random_state = random_state
 
     def fit(self, X, y, **fit_params):
         '''
@@ -269,10 +273,12 @@ class SegPipe(BaseEstimator):
 
     def _shuffle(self, X, y):
         ''' shuffles X and y '''
-        ind = np.arange(len(y), dtype=np.int)
-        np.random.shuffle(ind)
-        X = X[ind]
-        y = y[ind]
+        if len(y) > 1:
+            check_random_state(self.random_state)
+            ind = np.arange(len(y), dtype=np.int)
+            np.random.shuffle(ind)
+            X = X[ind]
+            y = y[ind]
         return X, y
 
 

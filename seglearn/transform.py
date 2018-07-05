@@ -12,13 +12,34 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
 
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'FeatureRep']
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'FeatureRep']
 
 
 class XyTransformerMixin(object):
     ''' Base class for transformer that transforms data and target '''
 
     def fit_transform(self, X, y, sample_weight = None, **fit_params):
+        '''
+        Fit the data and transform (required by sklearn API)
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : array-like shape [n_series], default = None
+            target vector
+        sample_weight : array-like shape [n_series], default = None
+            sample weights
+
+        Returns
+        -------
+        X_new : array-like, shape [n_segments, ]
+            transformed time series data
+        y_new : array-like, shape [n_segments]
+            expanded target vector
+        sample_weight_new : array-like shape [n_segments]
+            expanded sample weights
+        '''
         return self.fit(X, y, **fit_params).transform(X, y, sample_weight)
 
 def last(y):
@@ -432,15 +453,97 @@ def sliding_tensor(mv_time_series, width, step):
     data = [sliding_window(mv_time_series[:, j], width, step) for j in range(D)]
     return np.stack(data, axis = 2)
 
+class PadTrunc(BaseEstimator, XyTransformerMixin):
+    '''
+    Transformer for using padding and truncation to enforce fixed length on all time
+    series in the dataset. Series' longer than ``width`` are truncated to length ``width``.
+    Series' shorter than length ``width`` are padded at the end with zeros up to length ``width``.
+
+    Parameters
+    ----------
+    width : int >= 1
+        width of segments (number of samples)
+    '''
+    def __init__(self, width = 100):
+        assert width >= 1
+        self.width = width
+
+    def _mv_resize(self, v):
+        N = len(v)
+        if v[0].ndim > 1:
+            D = v[0].shape[1]
+            w = np.zeros((N,self.width,D))
+        else:
+            w = np.zeros((N,self.width))
+        for i in np.arange(N):
+            Ni = min(self.width, len(v[i]))
+            w[i,0:Ni] = v[i][0:Ni]
+        return w
+
+    def fit(self, X, y = None):
+        '''
+        Fit the transform. Does nothing, for compatibility with sklearn API.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+        '''
+        return self
+
+    def transform(self, X, y = None, sample_weight = None):
+        '''
+        Transforms the time series data into fixed length segments using padding and or truncation
+        If y is a time series and passed, it will be transformed as well
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : array-like shape [n_series], default = None
+            target vector
+        sample_weight : array-like shape [n_series], default = None
+            sample weights
+
+        Returns
+        -------
+        X_new : array-like, shape [n_series, ]
+            transformed time series data
+        y_new : array-like, shape [n_series]
+            expanded target vector
+        sample_weight_new : None
+
+        '''
+        Xt, Xc = get_ts_data_parts(X)
+
+        Xt = self._mv_resize(Xt)
+
+        if y is not None and len(np.atleast_1d(y[0])) > 1:
+            y = self._mv_resize(y)
+        elif y is not None:
+            y = np.array(y)
+
+        if Xc is None:
+            return Xt, y, sample_weight
+        else:
+            X = make_ts_data(Xt, Xc)
+            return X, y, sample_weight
+
 
 class FeatureRep(BaseEstimator, TransformerMixin):
     '''
     A transformer for calculating a feature representation from segmented time series data.
 
-    This transformer generates tabular feature data from the segmented time series', by computing the same feature set for each segment from each time series in the data set. This transformer, if used, follows the Segment transformer in the ``feed`` pipeline for the ``SegPipe`` class.
+    This transformer calculates features from the segmented time series', by computing the same feature set for each segment from each time series in the data set.
 
-    The input data ``X`` contains segmented time series data, where each elements have shape [n_segments, width, n_variables]. n_segments is different for each element. If ``X`` also contains contextual variables, the segmented time series data must be in column 0. The transform method of this class generates a feature representation ``X_new``, where each element has shape [n_segments, n_features] and includes the computed features and contextual data.
-
+    The ``features`` computed are a parameter of this transformer, defined by a dict of functions. The seglearn package includes some useful features, but this basic feature set can be easily extended.
 
     Parameters
     ----------
@@ -456,9 +559,6 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             The number of features returned (n_features) must be >= 1
 
         If features is not specified, a default feature dictionary will be used (see base_features). See ``feature_functions`` for example implementations.
-
-    multithread: bool, optional
-        If true, will use multithreading to compute the features
 
     Attributes
     ----------
@@ -504,6 +604,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         '''
 
         self._reset()
+        print("X Shape: ", X.shape)
         self.f_labels = self._generate_feature_labels(X)
         return self
 

@@ -226,3 +226,100 @@ def test_segmentxyforecast():
     Xst, Xsc = get_ts_data_parts(Xs)
     N = len(ys)
     assert Xst.shape == (N, width)
+
+def test_pad_trunc():
+    Nt = 100
+    width = 5
+    vars = 5
+    seg = transform.PadTrunc(width = width)
+
+    # multivariate ts data without context data
+    Xt = [np.random.rand(Nt, vars), np.random.rand(Nt, vars), np.random.rand(Nt, vars)]
+    y = [np.random.rand(Nt), np.random.rand(Nt), np.random.rand(Nt)]
+    X = make_ts_data(Xt)
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    N = len(ys)
+    assert Xs.shape == (N, width, vars)
+
+    # univariate ts data without context data
+    Xt = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
+    y = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
+    X = make_ts_data(Xt)
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    N = len(ys)
+    assert Xs.shape == (N, width)
+
+    # multivariate ts data with context data
+    Xt = [np.random.rand(Nt, vars), np.random.rand(2*Nt, vars), np.random.rand(Nt, vars)]
+    Xc = np.random.rand(3, 4)
+    y = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(Nt)]
+    X = make_ts_data(Xt, Xc)
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    Xst, Xsc = get_ts_data_parts(Xs)
+    N = len(ys)
+    assert Xst.shape == (N, width, vars)
+    assert Xsc.shape == (N, 4)
+
+    # ts data with univariate context data
+    Xt = [np.random.rand(Nt, vars), np.random.rand(2 * Nt, vars), np.random.rand(Nt, vars)]
+    Xc = np.random.rand(3)
+    y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
+    X = make_ts_data(Xt, Xc)
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    Xst, Xsc = get_ts_data_parts(Xs)
+    N = len(ys)
+    assert Xst.shape == (N, width, vars)
+    assert Xsc.shape == (N, )
+
+
+    # same number as context vars and time vars
+    # this would cause broadcasting failure before implementation of TS_Data class
+    Xt = [np.random.rand(Nt, vars), np.random.rand(2*Nt, vars), np.random.rand(Nt, vars)]
+    Xc = np.random.rand(3, vars)
+    y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
+    X = make_ts_data(Xt, Xc)
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    Xst, Xsc = get_ts_data_parts(Xs)
+    N = len(ys)
+    assert Xst.shape == (N, width, vars)
+    assert Xsc.shape == (N, 5)
+
+
+    width = 5
+    vars = 5
+    seg = transform.PadTrunc(width = width)
+
+    # multivariate ts data without context data
+    Xt = [np.random.rand(100, vars), np.random.rand(100, vars), np.random.rand(100, vars)]
+    y = np.random.rand(3)
+    X = make_ts_data(Xt)
+    seg.fit(X,y)
+    Xs, ys, _ = seg.transform(X, y)
+    N = len(ys)
+    assert Xs.shape == (N, width, vars)
+
+    # univariate ts data without context
+    Xt = [np.random.rand(100), np.random.rand(100), np.random.rand(100)]
+    y = np.random.rand(3)
+    X = make_ts_data(Xt)
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    N = len(ys)
+    assert Xs.shape == (N, width)
+
+    # multivariate ts data with context data
+    Xt = [np.random.rand(100, vars), np.random.rand(200, vars), np.random.rand(50, vars)]
+    Xc = np.random.rand(3, 4)
+    y = np.random.rand(3)
+    X = make_ts_data(Xt, Xc)
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    Xst, Xsc = get_ts_data_parts(Xs)
+    N = len(ys)
+    assert Xst.shape == (N, width, vars)
+    assert Xsc.shape == (N, 4)

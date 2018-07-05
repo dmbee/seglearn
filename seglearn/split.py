@@ -22,11 +22,6 @@ class TemporalKFold():
     ----------
     n_splits : int > 1
         number of folds
-    shuffle : bool, default = False
-        | if False, the first fold has data from the beginning of each series, the last fold from the end and so on
-        | if True, the mapping from part of series to fold is randomized
-    random_state : int, default = None
-        Randomized may splitting returns different results for each call to ``split``. If you have set ``shuffle`` to True and want the same result with each call to ``split``, set ``random_state`` to an integer.
 
     Examples
     --------
@@ -38,13 +33,9 @@ class TemporalKFold():
 
     '''
 
-    def __init__(self, n_splits = 3, shuffle = False, random_state=None):
+    def __init__(self, n_splits = 3):
         assert n_splits > 1
-
         self.n_splits = n_splits
-        self.shuffle = shuffle
-        self.random_state = None # not yet implemented
-
 
     def split(self, X, y):
         '''
@@ -101,6 +92,7 @@ class TemporalKFold():
                     y_new.append(y[j][(Njs * i):(Njs * (i + 1))])
             y_new = np.array(y_new)
         else:
+            # y is contextual to each series
             y_new = np.concatenate([y for i in range(self.n_splits)])
 
         return Xt_new, y_new

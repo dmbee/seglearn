@@ -74,11 +74,13 @@ def test_temporal_k_fold():
     check_folds(X, y, cv)
 
     # test with lots of series
+    splitter = TemporalKFold()
     Ns = 5
     X = np.array([rand(100, 10) for i in range(Ns)])
     y = rand(Ns)
     X, y, cv = splitter.split(X, y)
     check_folds(X, y, cv)
+
 
     X = np.array([rand(100, 10) for i in range(Ns)])
     y = np.array([rand(100) for i in range(Ns)])
