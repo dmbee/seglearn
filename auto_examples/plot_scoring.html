@@ -24,32 +24,21 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../about.html"/>
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="seglearn 0.1.1 documentation" href="../index.html"/>
-        <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="About us" href="../about.html"/>
-        <link rel="prev" title="Hyperparameter Selection 2" href="plot_model_selection2.html"/> 
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="About us" href="../about.html" />
+    <link rel="prev" title="Hyperparameter Selection 2" href="plot_model_selection2.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -108,6 +97,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
@@ -143,7 +133,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">seglearn</a>
@@ -151,9 +141,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -197,7 +188,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="scoring-time-series-estimators">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-scoring-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="scoring-time-series-estimators">
 <span id="sphx-glr-auto-examples-plot-scoring-py"></span><h1>Scoring Time Series Estimators<a class="headerlink" href="#scoring-time-series-estimators" title="Permalink to this headline">¶</a></h1>
 <p>This examples demonstrates some of the caveats / issues when trying to
 calculate performance scores for time series estimators.</p>
@@ -275,7 +270,8 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;Accuracy score: &#39;</span><span class="p">,</span> <span class="mf">0.7262521588946459</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3519, 100, 6))
+(&#39;Accuracy score: &#39;, 0.7435233160621761)
 </pre></div>
 </div>
 </div>
@@ -290,9 +286,9 @@ segments (not series’) as instances of the data.</p>
 <span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y_labels&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_scoring_001.png" class="align-center" src="../_images/sphx_glr_plot_scoring_001.png" />
+<img alt="../_images/sphx_glr_plot_scoring_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_scoring_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;F1 score: &#39;</span><span class="p">,</span> <span class="mf">0.7449191914823577</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;F1 score: &#39;, 0.7616346536567894)
 </pre></div>
 </div>
 </div>
@@ -316,11 +312,15 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
-<span class="mi">0</span>  <span class="mf">0.613518</span>    <span class="mf">0.126350</span>    <span class="mf">0.812903</span>     <span class="mf">0.998836</span>
-<span class="mi">1</span>  <span class="mf">0.602118</span>    <span class="mf">0.124368</span>    <span class="mf">0.694901</span>     <span class="mf">0.999422</span>
-<span class="mi">2</span>  <span class="mf">0.640387</span>    <span class="mf">0.115635</span>    <span class="mf">0.880405</span>     <span class="mf">0.998607</span>
-<span class="mi">3</span>  <span class="mf">0.608951</span>    <span class="mf">0.117251</span>    <span class="mf">0.745150</span>     <span class="mf">0.999436</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3437, 100, 6))
+(&#39;X Shape: &#39;, (3461, 100, 6))
+(&#39;X Shape: &#39;, (3590, 100, 6))
+(&#39;X Shape: &#39;, (3543, 100, 6))
+(&#39;CV Scores: &#39;,    fit_time  score_time  test_score  train_score
+0  0.614145    0.131608    0.809677     0.998836
+1  0.604185    0.127460    0.695724     1.000000
+2  0.625935    0.118739    0.869365     0.998329
+3  0.613238    0.120241    0.756614     0.999153)
 </pre></div>
 </div>
 </div>
@@ -336,11 +336,15 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV F1 Scores: &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_score</span>  <span class="n">train_score</span>
-<span class="mi">0</span>  <span class="mf">0.607482</span>    <span class="mf">0.126197</span>    <span class="mf">0.761222</span>     <span class="mf">0.998588</span>
-<span class="mi">1</span>  <span class="mf">0.607330</span>    <span class="mf">0.125398</span>    <span class="mf">0.791960</span>     <span class="mf">0.999770</span>
-<span class="mi">2</span>  <span class="mf">0.627931</span>    <span class="mf">0.116812</span>    <span class="mf">0.886962</span>     <span class="mf">0.998391</span>
-<span class="mi">3</span>  <span class="mf">0.612506</span>    <span class="mf">0.119345</span>    <span class="mf">0.776074</span>     <span class="mf">0.999518</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3437, 100, 6))
+(&#39;X Shape: &#39;, (3461, 100, 6))
+(&#39;X Shape: &#39;, (3590, 100, 6))
+(&#39;X Shape: &#39;, (3543, 100, 6))
+(&#39;CV F1 Scores: &#39;,    fit_time  score_time  test_score  train_score
+0  0.598765    0.129310    0.797545     0.998990
+1  0.598120    0.126968    0.805511     1.000000
+2  0.624070    0.118691    0.868033     0.999779
+3  0.614644    0.122049    0.763875     0.999259)
 </pre></div>
 </div>
 </div>
@@ -363,21 +367,21 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;CV Scores (workaround): &#39;</span><span class="p">,</span>    <span class="n">fit_time</span>  <span class="n">score_time</span>  <span class="n">test_accuracy</span>  <span class="n">test_f1_macro</span>  <span class="n">test_precision_macro</span>  \
-<span class="mi">0</span>  <span class="mf">0.494574</span>    <span class="mf">0.367079</span>       <span class="mf">0.809727</span>       <span class="mf">0.822425</span>              <span class="mf">0.827594</span>
-<span class="mi">1</span>  <span class="mf">0.498785</span>    <span class="mf">0.368376</span>       <span class="mf">0.808711</span>       <span class="mf">0.824057</span>              <span class="mf">0.837972</span>
-<span class="mi">2</span>  <span class="mf">0.491381</span>    <span class="mf">0.372429</span>       <span class="mf">0.803082</span>       <span class="mf">0.812406</span>              <span class="mf">0.819614</span>
-<span class="mi">3</span>  <span class="mf">0.504176</span>    <span class="mf">0.380211</span>       <span class="mf">0.790738</span>       <span class="mf">0.807432</span>              <span class="mf">0.813079</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3505, 100, 6))
+(&#39;X Shape: &#39;, (3506, 100, 6))
+(&#39;X Shape: &#39;, (3509, 100, 6))
+(&#39;X Shape: &#39;, (3511, 100, 6))
+(&#39;CV Scores (workaround): &#39;,    fit_time        ...          test_recall_macro
+0  0.490906        ...                   0.792567
+1  0.484882        ...                   0.843509
+2  0.480453        ...                   0.807619
+3  0.478063        ...                   0.801529
 
-   <span class="n">test_recall_macro</span>
-<span class="mi">0</span>           <span class="mf">0.827654</span>
-<span class="mi">1</span>           <span class="mf">0.827420</span>
-<span class="mi">2</span>           <span class="mf">0.814729</span>
-<span class="mi">3</span>           <span class="mf">0.808092</span>  <span class="p">)</span>
+[4 rows x 6 columns])
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  13.854 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  13.597 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_scoring.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -389,9 +393,7 @@ segments (not series’) as instances of the data.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -413,7 +415,7 @@ segments (not series’) as instances of the data.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -432,6 +434,7 @@ segments (not series’) as instances of the data.</p>
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
             VERSION:'0.1.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -444,19 +447,13 @@ segments (not series’) as instances of the data.</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

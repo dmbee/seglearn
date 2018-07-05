@@ -24,32 +24,21 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../about.html"/>
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="seglearn 0.1.1 documentation" href="../index.html"/>
-        <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="Basic Feature Representation Classification Pipeline" href="plot_feature_rep.html"/>
-        <link rel="prev" title="Linear Discriminant Analysis" href="plot_lda.html"/> 
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Basic Feature Representation Classification Pipeline" href="plot_feature_rep.html" />
+    <link rel="prev" title="Pipeline using Time Series Padding and Truncation" href="plot_padtrunc.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -108,6 +97,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
@@ -134,7 +124,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">seglearn</a>
@@ -142,9 +132,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -188,32 +179,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="working-with-time-series-data">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-watchdata-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="working-with-time-series-data">
 <span id="sphx-glr-auto-examples-plot-watchdata-py"></span><h1>Working with Time Series Data<a class="headerlink" href="#working-with-time-series-data" title="Permalink to this headline">¶</a></h1>
 <p>This example shows how to load the included smartwatch inertial sensor dataset, and create time series data objects compatible with the <cite>seglearn</cite> pipeline.</p>
-<img alt="../_images/sphx_glr_plot_watchdata_001.png" class="align-center" src="../_images/sphx_glr_plot_watchdata_001.png" />
+<img alt="../_images/sphx_glr_plot_watchdata_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_watchdata_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DATA</span> <span class="n">STATS</span> <span class="o">-</span> <span class="n">AGGREGATED</span>
-<span class="p">{</span><span class="s1">&#39;Total_Time&#39;</span><span class="p">:</span> <span class="mf">4882.04</span><span class="p">,</span> <span class="s1">&#39;Series_Time_Range&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">18.94</span><span class="p">,</span> <span class="mf">52.36</span><span class="p">),</span> <span class="s1">&#39;n_classes&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;n_series&#39;</span><span class="p">:</span> <span class="mi">140</span><span class="p">,</span> <span class="s1">&#39;Series_Time_Mean&#39;</span><span class="p">:</span> <span class="mf">34.87171428571428</span><span class="p">,</span> <span class="s1">&#39;Series_Time_Std&#39;</span><span class="p">:</span> <span class="mf">8.757850351285423</span><span class="p">,</span> <span class="s1">&#39;n_TS_vars&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;n_context_vars&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>DATA STATS - AGGREGATED
+{&#39;Total_Time&#39;: 4882.04, &#39;Series_Time_Range&#39;: (18.94, 52.36), &#39;n_classes&#39;: 7, &#39;n_series&#39;: 140, &#39;Series_Time_Mean&#39;: 34.87171428571428, &#39;Series_Time_Std&#39;: 8.757850351285423, &#39;n_TS_vars&#39;: 6, &#39;n_context_vars&#39;: 2}
 
-<span class="n">DATA</span> <span class="n">STATS</span> <span class="o">-</span> <span class="n">BY</span> <span class="n">CLASS</span>
-  <span class="n">Class_labels</span>  <span class="n">Series_Time_Max</span>  <span class="n">Series_Time_Mean</span>  <span class="n">Series_Time_Min</span>  \
-<span class="mi">0</span>          <span class="n">PEN</span>            <span class="mf">31.10</span>            <span class="mf">26.622</span>            <span class="mf">21.28</span>
-<span class="mi">1</span>          <span class="n">ABD</span>            <span class="mf">49.10</span>            <span class="mf">39.905</span>            <span class="mf">22.48</span>
-<span class="mi">2</span>          <span class="n">FEL</span>            <span class="mf">50.84</span>            <span class="mf">40.498</span>            <span class="mf">22.30</span>
-<span class="mi">3</span>           <span class="n">IR</span>            <span class="mf">52.36</span>            <span class="mf">37.395</span>            <span class="mf">19.40</span>
-<span class="mi">4</span>           <span class="n">ER</span>            <span class="mf">49.24</span>            <span class="mf">37.604</span>            <span class="mf">21.30</span>
-<span class="mi">5</span>         <span class="n">TRAP</span>            <span class="mf">45.12</span>            <span class="mf">30.578</span>            <span class="mf">19.26</span>
-<span class="mi">6</span>          <span class="n">ROW</span>            <span class="mf">38.66</span>            <span class="mf">31.500</span>            <span class="mf">18.94</span>
+DATA STATS - BY CLASS
+  Class_labels  Series_Time_Max    ...     Total_Time  n_series
+0          PEN            31.10    ...         532.44        20
+1          ABD            49.10    ...         798.10        20
+2          FEL            50.84    ...         809.96        20
+3           IR            52.36    ...         747.90        20
+4           ER            49.24    ...         752.08        20
+5         TRAP            45.12    ...         611.56        20
+6          ROW            38.66    ...         630.00        20
 
-   <span class="n">Series_Time_Std</span>  <span class="n">Total_Time</span>  <span class="n">n_series</span>
-<span class="mi">0</span>         <span class="mf">2.720845</span>      <span class="mf">532.44</span>        <span class="mi">20</span>
-<span class="mi">1</span>         <span class="mf">8.055554</span>      <span class="mf">798.10</span>        <span class="mi">20</span>
-<span class="mi">2</span>         <span class="mf">8.772099</span>      <span class="mf">809.96</span>        <span class="mi">20</span>
-<span class="mi">3</span>         <span class="mf">9.085212</span>      <span class="mf">747.90</span>        <span class="mi">20</span>
-<span class="mi">4</span>         <span class="mf">7.983878</span>      <span class="mf">752.08</span>        <span class="mi">20</span>
-<span class="mi">5</span>         <span class="mf">6.099252</span>      <span class="mf">611.56</span>        <span class="mi">20</span>
-<span class="mi">6</span>         <span class="mf">5.957100</span>      <span class="mf">630.00</span>        <span class="mi">20</span>
+[7 rows x 7 columns]
 </pre></div>
 </div>
 <div class="line-block">
@@ -280,8 +268,8 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.457 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.473 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-watchdata-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_watchdata.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_watchdata.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -292,9 +280,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -303,7 +289,7 @@
         <a href="plot_feature_rep.html" class="btn btn-neutral float-right" title="Basic Feature Representation Classification Pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_lda.html" class="btn btn-neutral" title="Linear Discriminant Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_padtrunc.html" class="btn btn-neutral" title="Pipeline using Time Series Padding and Truncation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -316,7 +302,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -335,6 +321,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
             VERSION:'0.1.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -347,19 +334,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

@@ -24,29 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="about.html"/>
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="seglearn 0.1.1 documentation" href="index.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -119,7 +109,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">seglearn</a>
@@ -127,9 +117,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -182,10 +173,11 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote class="last">
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -200,20 +192,21 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>Xt</strong> : array-like, shape [n_series, ]</p>
-<blockquote>
-<div><p>Time series data</p>
-</div></blockquote>
-<p><strong>Xs</strong> : array-like, shape [n_series, n_contextd = np.colum _variables]</p>
-<blockquote class="last">
-<div><p>contextual variables</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
+<dd><p class="first last">Time series data</p>
+</dd>
+<dt><strong>Xs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, n_contextd = np.colum _variables]</span></dt>
+<dd><p class="first last">contextual variables</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -228,20 +221,21 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>time_series</strong> : array-like, shape [n_series, ]</p>
-<blockquote>
-<div><p>Time series data - each element (series) may have a different length</p>
-</div></blockquote>
-<p><strong>context_vars</strong> : array-like, shape [n_series, n_context_variables]</p>
-<blockquote>
-<div><p>contextual relational data</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>time_series</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
+<dd><p class="first last">Time series data - each element (series) may have a different length</p>
+</dd>
+<dt><strong>context_vars</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, n_context_variables]</span></dt>
+<dd><p class="first last">contextual relational data</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like [n_series, ]</p>
-<blockquote class="last">
-<div><p><a href="#id1"><span class="problematic" id="id2">``</span></a>TS_Data object containing time series and contextual data</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like [n_series, ]</span></dt>
+<dd><p class="first last"><a href="#id1"><span class="problematic" id="id2">``</span></a>TS_Data object containing time series and contextual data</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -256,32 +250,31 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
-<p><strong>y</strong> : array-like, shape [n_series]</p>
-<blockquote>
-<div><p>target data</p>
-</div></blockquote>
-<p><strong>fs</strong> : float</p>
-<blockquote>
-<div><p>sampling frequency</p>
-</div></blockquote>
-<p><strong>class_labels</strong> : list of strings, default None</p>
-<blockquote>
-<div><p>List of target class names</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series]</span></dt>
+<dd><p class="first last">target data</p>
+</dd>
+<dt><strong>fs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">sampling frequency</p>
+</dd>
+<dt><strong>class_labels</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings, default None</span></dt>
+<dd><p class="first last">List of target class names</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>results</strong> : dict</p>
-<blockquote class="last">
-<div><div class="line-block">
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
+<dd><div class="first last line-block">
 <div class="line">Dictionary of relevant statistics for the time series data</div>
 <div class="line">results[‘total’] has stats for the whole data set</div>
 <div class="line">results[‘by_class’] has stats segragated by target class</div>
 </div>
-</div></blockquote>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -292,9 +285,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -307,7 +298,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -326,6 +317,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.1.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -338,19 +330,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

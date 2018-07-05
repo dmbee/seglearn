@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_auto_examples_plot_regression.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_auto_examples_plot_regression.py:
 
@@ -14,22 +18,28 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_regression_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
 
+ .. code-block:: none
+
+    ('X Shape: ', (74, 200))
     ('N series in train: ', 1)
     ('N series in test: ', 1)
     ('N segments in train: ', 74)
     ('N segments in test: ', 24)
-    ('Score: ', 0.9744288294258969)
+    ('Score: ', 0.9744288294256207)
+    ('X Shape: ', (24, 200))
+    ('X Shape: ', (24, 200))
+    ('X Shape: ', (24, 200))
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.005661    0.002647   -0.342113     0.036777
-    1  0.005355    0.002516   -0.149984     0.126310
-    2  0.005449    0.002566   -0.239356     0.097838)
+    0  0.005654    0.002504   -0.342113     0.036777
+    1  0.005398    0.002465   -0.149984     0.126310
+    2  0.005351    0.002482   -0.239356     0.097838)
 
 
 
@@ -112,13 +122,17 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 
 
-**Total running time of the script:** ( 0 minutes  0.087 seconds)
+**Total running time of the script:** ( 0 minutes  0.092 seconds)
 
+
+.. _sphx_glr_download_auto_examples_plot_regression.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

@@ -24,30 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../../about.html"/>
-        <link rel="index" title="Index"
-              href="../../genindex.html"/>
-        <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="seglearn 0.1.1 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/> 
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -120,7 +109,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">seglearn</a>
@@ -128,9 +117,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -159,8 +149,6 @@
     
     
       <li class="wy-breadcrumbs-aside">
-        
-            
         
       </li>
     
@@ -215,8 +203,8 @@
                 <span class="s1">&#39;skew&#39;</span><span class="p">:</span> <span class="n">skew</span><span class="p">,</span>
                 <span class="s1">&#39;kurt&#39;</span><span class="p">:</span> <span class="n">kurt</span><span class="p">,</span>
                 <span class="s1">&#39;mse&#39;</span><span class="p">:</span> <span class="n">mse</span><span class="p">,</span>
-                <span class="s1">&#39;mnx&#39;</span><span class="p">:</span> <span class="n">mean_crossings</span><span class="p">}</span></div>
-    <span class="k">return</span> <span class="n">features</span>
+                <span class="s1">&#39;mnx&#39;</span><span class="p">:</span> <span class="n">mean_crossings</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">features</span></div>
 
 <div class="viewcode-block" id="all_features"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.all_features">[docs]</a><span class="k">def</span> <span class="nf">all_features</span><span class="p">():</span>
     <span class="sd">&#39;&#39;&#39; Returns dictionary of all features in the module</span>
@@ -233,36 +221,36 @@
                 <span class="s1">&#39;mse&#39;</span><span class="p">:</span> <span class="n">mse</span><span class="p">,</span>
                 <span class="s1">&#39;mnx&#39;</span><span class="p">:</span> <span class="n">mean_crossings</span><span class="p">,</span>
                 <span class="s1">&#39;hist4&#39;</span><span class="p">:</span> <span class="n">hist</span><span class="p">(),</span>
-                <span class="s1">&#39;corr&#39;</span><span class="p">:</span> <span class="n">corr2</span><span class="p">}</span></div>
-    <span class="k">return</span> <span class="n">features</span>
+                <span class="s1">&#39;corr&#39;</span><span class="p">:</span> <span class="n">corr2</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">features</span></div>
 
 <div class="viewcode-block" id="mean"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean">[docs]</a><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical mean for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; statistical mean for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="std"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.std">[docs]</a><span class="k">def</span> <span class="nf">std</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical standard deviation for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; statistical standard deviation for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="var"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.var">[docs]</a><span class="k">def</span> <span class="nf">var</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical variance for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; statistical variance for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="min"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.min">[docs]</a><span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; minimum value for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; minimum value for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="max"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.max">[docs]</a><span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; maximum value for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; maximum value for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="skew"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.skew">[docs]</a><span class="k">def</span> <span class="nf">skew</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; skewness for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; skewness for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="kurt"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.kurt">[docs]</a><span class="k">def</span> <span class="nf">kurt</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; kurtosis for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; kurtosis for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="hist"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.hist">[docs]</a><span class="k">class</span> <span class="nc">hist</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; histogram for each variable in a segmented time series</span>
@@ -283,12 +271,12 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
                 <span class="c1"># for each variable, advance by bins</span>
                 <span class="n">hist</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">):((</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-</div>
-        <span class="k">return</span> <span class="n">hist</span>
+
+        <span class="k">return</span> <span class="n">hist</span></div>
 
 <div class="viewcode-block" id="mse"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mse">[docs]</a><span class="k">def</span> <span class="nf">mse</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; computes mean spectral energy for each variable in a segmented time series &#39;&#39;&#39;</span></div>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39; computes mean spectral energy for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="mean_crossings"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean_crossings">[docs]</a><span class="k">def</span> <span class="nf">mean_crossings</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Computes number of mean crossings for each variable in a segmented time series &#39;&#39;&#39;</span>
@@ -300,8 +288,8 @@
         <span class="n">pos</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
         <span class="n">npos</span> <span class="o">=</span> <span class="o">~</span><span class="n">pos</span>
         <span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">npos</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:])</span> <span class="o">|</span> <span class="p">(</span><span class="n">npos</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">pos</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:])</span>
-        <span class="n">mnx</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
-    <span class="k">return</span> <span class="n">mnx</span>
+        <span class="n">mnx</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mnx</span></div>
 
 
 <div class="viewcode-block" id="corr2"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.corr2">[docs]</a><span class="k">def</span> <span class="nf">corr2</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -321,14 +309,12 @@
         <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">DD</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="n">rmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># get the ith window from each signal, result will be DxD</span>
-            <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmat</span><span class="p">[</span><span class="n">trii</span><span class="p">]</span></div>
-        <span class="k">return</span> <span class="n">r</span>
+            <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmat</span><span class="p">[</span><span class="n">trii</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">r</span></div>
 </pre></div>
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -341,7 +327,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -360,6 +346,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
             VERSION:'0.1.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -372,19 +359,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

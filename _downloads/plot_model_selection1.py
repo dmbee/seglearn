@@ -41,7 +41,7 @@ def plot_grid_search(cv_results, grid_param_1, grid_param_2, name_param_1, name_
     ax.set_xlabel(name_param_1, fontsize=16)
     ax.set_ylabel('CV Average Score', fontsize=16)
     ax.legend(loc="best", fontsize=15)
-    ax.grid('on')
+    ax.grid(True)
 
 
 # load the data

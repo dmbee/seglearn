@@ -24,32 +24,21 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../about.html"/>
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="seglearn 0.1.1 documentation" href="../index.html"/>
-        <link rel="up" title="General examples" href="index.html"/>
-        <link rel="next" title="Continuous Target and Time Series Regression" href="plot_regression.html"/>
-        <link rel="prev" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html"/> 
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Continuous Target and Time Series Regression" href="plot_regression.html" />
+    <link rel="prev" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -108,6 +97,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
@@ -140,7 +130,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">seglearn</a>
@@ -148,9 +138,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -194,7 +185,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="plotting-neural-network-training-curves">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-nn-training-curves-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="plotting-neural-network-training-curves">
 <span id="sphx-glr-auto-examples-plot-nn-training-curves-py"></span><h1>Plotting Neural Network Training Curves<a class="headerlink" href="#plotting-neural-network-training-curves" title="Permalink to this headline">¶</a></h1>
 <p>This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
@@ -265,17 +260,17 @@
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">acc</span>      <span class="n">loss</span>   <span class="n">val_acc</span>  <span class="n">val_loss</span>
-<span class="mi">0</span>  <span class="mf">0.230551</span>  <span class="mf">1.794971</span>  <span class="mf">0.360795</span>  <span class="mf">1.553061</span>
-<span class="mi">1</span>  <span class="mf">0.502664</span>  <span class="mf">1.256697</span>  <span class="mf">0.578125</span>  <span class="mf">0.951633</span>
-<span class="mi">2</span>  <span class="mf">0.612433</span>  <span class="mf">0.868454</span>  <span class="mf">0.654830</span>  <span class="mf">0.782083</span>
-<span class="mi">3</span>  <span class="mf">0.655773</span>  <span class="mf">0.739070</span>  <span class="mf">0.681818</span>  <span class="mf">0.664417</span>
-<span class="mi">4</span>  <span class="mf">0.704440</span>  <span class="mf">0.617122</span>  <span class="mf">0.747159</span>  <span class="mf">0.536675</span>
-<span class="mi">5</span>  <span class="mf">0.712611</span>  <span class="mf">0.577092</span>  <span class="mf">0.731534</span>  <span class="mf">0.560640</span>
-<span class="mi">6</span>  <span class="mf">0.733215</span>  <span class="mf">0.535367</span>  <span class="mf">0.781250</span>  <span class="mf">0.460366</span>
-<span class="mi">7</span>  <span class="mf">0.761634</span>  <span class="mf">0.476174</span>  <span class="mf">0.781250</span>  <span class="mf">0.462567</span>
-<span class="mi">8</span>  <span class="mf">0.777620</span>  <span class="mf">0.447345</span>  <span class="mf">0.805398</span>  <span class="mf">0.433891</span>
-<span class="mi">9</span>  <span class="mf">0.797869</span>  <span class="mf">0.416351</span>  <span class="mf">0.809659</span>  <span class="mf">0.413538</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>acc      loss   val_acc  val_loss
+0  0.252220  1.788851  0.365057  1.517711
+1  0.463943  1.237079  0.585227  0.924037
+2  0.619893  0.872408  0.684659  0.724301
+3  0.669272  0.740347  0.713068  0.624920
+4  0.724689  0.612670  0.728693  0.534813
+5  0.717584  0.573105  0.765625  0.489564
+6  0.764831  0.503158  0.784091  0.464532
+7  0.776909  0.468189  0.811080  0.403667
+8  0.801776  0.428079  0.819602  0.393613
+9  0.807460  0.402546  0.813920  0.382988
 </pre></div>
 </div>
 </div>
@@ -289,9 +284,9 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="align-center" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
-<p><strong>Total running time of the script:</strong> ( 2 minutes  2.259 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
+<p><strong>Total running time of the script:</strong> ( 1 minutes  57.570 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-nn-training-curves-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_nn_training_curves.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -303,9 +298,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -327,7 +320,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -346,6 +339,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
             VERSION:'0.1.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -358,19 +352,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

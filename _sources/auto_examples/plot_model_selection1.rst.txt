@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_auto_examples_plot_model_selection1.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_auto_examples_plot_model_selection1.py:
 
@@ -13,10 +17,39 @@ This example demonstrates how to do model selection in a feature representation 
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_model_selection1_001.png
-    :align: center
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    ('X Shape: ', (2862, 50, 6))
+    ('X Shape: ', (3509, 50, 6))
+    ('X Shape: ', (3263, 50, 6))
+    ('X Shape: ', (1408, 100, 6))
+    ('X Shape: ', (1726, 100, 6))
+    ('X Shape: ', (1604, 100, 6))
+    ('X Shape: ', (682, 200, 6))
+    ('X Shape: ', (839, 200, 6))
+    ('X Shape: ', (777, 200, 6))
+    ('X Shape: ', (5678, 50, 6))
+    ('X Shape: ', (6963, 50, 6))
+    ('X Shape: ', (6471, 50, 6))
+    ('X Shape: ', (2778, 100, 6))
+    ('X Shape: ', (3411, 100, 6))
+    ('X Shape: ', (3165, 100, 6))
+    ('X Shape: ', (1324, 200, 6))
+    ('X Shape: ', (1628, 200, 6))
+    ('X Shape: ', (1506, 200, 6))
+    ('X Shape: ', (1149, 200, 6))
 
 
 
+
+|
 
 
 .. code-block:: python
@@ -57,7 +90,7 @@ This example demonstrates how to do model selection in a feature representation 
         ax.set_xlabel(name_param_1, fontsize=16)
         ax.set_ylabel('CV Average Score', fontsize=16)
         ax.legend(loc="best", fontsize=15)
-        ax.grid('on')
+        ax.grid(True)
 
 
     # load the data
@@ -101,13 +134,17 @@ This example demonstrates how to do model selection in a feature representation 
 
 
 
-**Total running time of the script:** ( 0 minutes  20.445 seconds)
+**Total running time of the script:** ( 0 minutes  20.353 seconds)
 
+
+.. _sphx_glr_download_auto_examples_plot_model_selection1.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

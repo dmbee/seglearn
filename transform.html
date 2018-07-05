@@ -24,29 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="about.html"/>
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="seglearn 0.1.1 documentation" href="index.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -119,7 +109,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">seglearn</a>
@@ -127,9 +117,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -184,19 +175,42 @@ and each time series in X has a single target value y</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>width</strong> : int &gt; 0</p>
-<blockquote>
-<div><p>width of segments (number of samples)</p>
-</div></blockquote>
-<p><strong>overlap</strong> : float range [0,1)</p>
-<blockquote class="last">
-<div><p>amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>width</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0</span></dt>
+<dd><p class="first last">width of segments (number of samples)</p>
+</dd>
+<dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1)</span></dt>
+<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.SegmentX.fit" title="seglearn.transform.SegmentX.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the transform</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Fit the data and transform (required by sklearn API)</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.SegmentX.transform" title="seglearn.transform.SegmentX.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[,&nbsp;y,&nbsp;sample_weight])</td>
+<td>Transforms the time series data into segments (temporal tensor) Note this transformation changes the number of samples in the data If y and sample_weight are provided, they are transformed to align to the new samples</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="seglearn.transform.SegmentX.fit">
 <code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX.fit" title="Permalink to this definition">¶</a></dt>
@@ -205,20 +219,21 @@ and each time series in X has a single target value y</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
-<p><strong>y</strong> : None</p>
-<blockquote>
-<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -235,32 +250,30 @@ If y and sample_weight are provided, they are transformed to align to the new sa
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
-<p><strong>y</strong> : array-like shape [n_series], default = None</p>
-<blockquote>
-<div><p>target vector</p>
-</div></blockquote>
-<p><strong>sample_weight</strong> : array-like shape [n_series], default = None</p>
-<blockquote>
-<div><p>sample weights</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">target vector</p>
+</dd>
+<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">sample weights</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : array-like, shape [n_segments, ]</p>
-<blockquote>
-<div><p>transformed time series data</p>
-</div></blockquote>
-<p><strong>y_new</strong> : array-like, shape [n_segments]</p>
-<blockquote>
-<div><p>expanded target vector</p>
-</div></blockquote>
-<p><strong>sample_weight_new</strong> : array-like shape [n_segments]</p>
-<blockquote class="last">
-<div><p>expanded sample weights</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
+<dd><p class="first last">transformed time series data</p>
+</dd>
+<dt><strong>y_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
+<dd><p class="first last">expanded target vector</p>
+</dd>
+<dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_segments]</span></dt>
+<dd><p class="first last">expanded sample weights</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -279,29 +292,52 @@ and y is also time series data with the same sampling interval as X</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>width</strong> : int &gt; 0</p>
-<blockquote>
-<div><p>width of segments (number of samples)</p>
-</div></blockquote>
-<p><strong>overlap</strong> : float range [0,1)</p>
-<blockquote>
-<div><p>amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
-</div></blockquote>
-<p><strong>y_func</strong> : function</p>
-<blockquote>
-<div><p>returns target from array of target segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, <code class="docutils literal notranslate"><span class="pre">middle</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>width</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0</span></dt>
+<dd><p class="first last">width of segments (number of samples)</p>
+</dd>
+<dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1)</span></dt>
+<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
+</dd>
+<dt><strong>y_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
+<dd><p class="first last">returns target from array of target segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, <code class="docutils literal notranslate"><span class="pre">middle</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.SegmentXY.fit" title="seglearn.transform.SegmentXY.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the transform</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Fit the data and transform (required by sklearn API)</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.SegmentXY.transform" title="seglearn.transform.SegmentXY.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[,&nbsp;y,&nbsp;sample_weight])</td>
+<td>Transforms the time series data into segments Note this transformation changes the number of samples in the data If y is provided, it is segmented and transformed to align to the new samples as per <code class="docutils literal notranslate"><span class="pre">y_func</span></code> Currently sample weights always returned as None</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="seglearn.transform.SegmentXY.fit">
 <code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY.fit" title="Permalink to this definition">¶</a></dt>
@@ -310,20 +346,21 @@ and y is also time series data with the same sampling interval as X</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
-<p><strong>y</strong> : None</p>
-<blockquote>
-<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
-</div></blockquote>
-<p><strong>Returnsself._validate_params()</strong></p>
-<p><strong>——-</strong></p>
-<p><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</dd>
+<dt><strong>Returnsself._validate_params()</strong></dt>
+<dd></dd>
+<dt><strong>——-</strong></dt>
+<dd></dd>
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -341,29 +378,29 @@ Currently sample weights always returned as None</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
-<p><strong>y</strong> : array-like shape [n_series], default = None</p>
-<blockquote>
-<div><p>target vector</p>
-</div></blockquote>
-<p><strong>sample_weight</strong> : array-like shape [n_series], default = None</p>
-<blockquote>
-<div><p>sample weights</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">target vector</p>
+</dd>
+<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">sample weights</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : array-like, shape [n_segments, ]</p>
-<blockquote>
-<div><p>transformed time series data</p>
-</div></blockquote>
-<p><strong>y_new</strong> : array-like, shape [n_segments]</p>
-<blockquote>
-<div><p>expanded target vector</p>
-</div></blockquote>
-<p class="last"><strong>sample_weight_new</strong> : None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
+<dd><p class="first last">transformed time series data</p>
+</dd>
+<dt><strong>y_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
+<dd><p class="first last">expanded target vector</p>
+</dd>
+<dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd></dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -380,33 +417,55 @@ Currently sample weights always returned as None</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>width</strong> : int &gt; 0</p>
-<blockquote>
-<div><p>width of segments (number of samples)</p>
-</div></blockquote>
-<p><strong>overlap</strong> : float range [0,1)</p>
-<blockquote>
-<div><p>amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
-</div></blockquote>
-<p><strong>forecast</strong> : int</p>
-<blockquote>
-<div><p>The number of samples ahead in time to forecast</p>
-</div></blockquote>
-<p><strong>y_func</strong> : function</p>
-<blockquote>
-<div><p>returns target from array of target forecast segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>width</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0</span></dt>
+<dd><p class="first last">width of segments (number of samples)</p>
+</dd>
+<dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1)</span></dt>
+<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
+</dd>
+<dt><strong>forecast</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The number of samples ahead in time to forecast</p>
+</dd>
+<dt><strong>y_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
+<dd><p class="first last">returns target from array of target forecast segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.SegmentXYForecast.fit" title="seglearn.transform.SegmentXYForecast.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>([X,&nbsp;y])</td>
+<td>Fit the transform</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Fit the data and transform (required by sklearn API)</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.SegmentXYForecast.transform" title="seglearn.transform.SegmentXYForecast.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Forecast sliding window segmentation for time series or sequence datasets.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="seglearn.transform.SegmentXYForecast.fit">
 <code class="descname">fit</code><span class="sig-paren">(</span><em>X=None</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXYForecast.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXYForecast.fit" title="Permalink to this definition">¶</a></dt>
@@ -415,20 +474,21 @@ Currently sample weights always returned as None</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
-<p><strong>y</strong> : None</p>
-<blockquote>
-<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -445,29 +505,141 @@ Currently sample weights always returned as None.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</div></blockquote>
-<p><strong>y</strong> : array-like shape [n_series]</p>
-<blockquote>
-<div><p>target vector</p>
-</div></blockquote>
-<p><strong>sample_weight</strong> : array-like shape [n_series], default = None</p>
-<blockquote>
-<div><p>sample weights</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series]</span></dt>
+<dd><p class="first last">target vector</p>
+</dd>
+<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">sample weights</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : array-like, shape [n_segments, ]</p>
-<blockquote>
-<div><p>segmented X data</p>
-</div></blockquote>
-<p><strong>y_new</strong> : array-like, shape [n_segments]</p>
-<blockquote>
-<div><p>forecast y data</p>
-</div></blockquote>
-<p class="last"><strong>sample_weight_new</strong> : None</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
+<dd><p class="first last">segmented X data</p>
+</dd>
+<dt><strong>y_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
+<dd><p class="first last">forecast y data</p>
+</dd>
+<dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="seglearn.transform.PadTrunc">
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">PadTrunc</code><span class="sig-paren">(</span><em>width=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#PadTrunc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.PadTrunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformer for using padding and truncation to enforce fixed length on all time
+series in the dataset. Series’ longer than <code class="docutils literal notranslate"><span class="pre">width</span></code> are truncated to length <code class="docutils literal notranslate"><span class="pre">width</span></code>.
+Series’ shorter than length <code class="docutils literal notranslate"><span class="pre">width</span></code> are padded at the end with zeros up to length <code class="docutils literal notranslate"><span class="pre">width</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>width</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int &gt;= 1</span></dt>
+<dd><p class="first last">width of segments (number of samples)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.PadTrunc.fit" title="seglearn.transform.PadTrunc.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Fit the data and transform (required by sklearn API)</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.PadTrunc.transform" title="seglearn.transform.PadTrunc.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[,&nbsp;y,&nbsp;sample_weight])</td>
+<td>Transforms the time series data into fixed length segments using padding and or truncation If y is a time series and passed, it will be transformed as well</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="seglearn.transform.PadTrunc.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#PadTrunc.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.PadTrunc.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the transform. Does nothing, for compatibility with sklearn API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.PadTrunc.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#PadTrunc.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.PadTrunc.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the time series data into fixed length segments using padding and or truncation
+If y is a time series and passed, it will be transformed as well</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">target vector</p>
+</dd>
+<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">sample weights</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
+<dd><p class="first last">transformed time series data</p>
+</dd>
+<dt><strong>y_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series]</span></dt>
+<dd><p class="first last">expanded target vector</p>
+</dd>
+<dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd></dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -478,17 +650,17 @@ Currently sample weights always returned as None.</p>
 
 <dl class="class">
 <dt id="seglearn.transform.FeatureRep">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2b719cff7398&gt;</em>, <em>'max': &lt;function max at 0x2b719cff72a8&gt;</em>, <em>'mean': &lt;function mean at 0x2b719cff70c8&gt;</em>, <em>'min': &lt;function min at 0x2b719cff7230&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2b719cff7578&gt;</em>, <em>'mse': &lt;function mse at 0x2b719cff7410&gt;</em>, <em>'skew': &lt;function skew at 0x2b719cff7320&gt;</em>, <em>'std': &lt;function std at 0x2b719cff7140&gt;</em>, <em>'var': &lt;function var at 0x2b719cff71b8&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2b6c9a96c9b0&gt;</em>, <em>'max': &lt;function max at 0x2b6c9a96c8c0&gt;</em>, <em>'mean': &lt;function mean at 0x2b6c9a96c6e0&gt;</em>, <em>'min': &lt;function min at 0x2b6c9a96c848&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2b6c9a96cb90&gt;</em>, <em>'mse': &lt;function mse at 0x2b6c9a96ca28&gt;</em>, <em>'skew': &lt;function skew at 0x2b6c9a96c938&gt;</em>, <em>'std': &lt;function std at 0x2b6c9a96c758&gt;</em>, <em>'var': &lt;function var at 0x2b6c9a96c7d0&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
 <dd><p>A transformer for calculating a feature representation from segmented time series data.</p>
-<p>This transformer generates tabular feature data from the segmented time series’, by computing the same feature set for each segment from each time series in the data set. This transformer, if used, follows the Segment transformer in the <code class="docutils literal notranslate"><span class="pre">feed</span></code> pipeline for the <code class="docutils literal notranslate"><span class="pre">SegPipe</span></code> class.</p>
-<p>The input data <code class="docutils literal notranslate"><span class="pre">X</span></code> contains segmented time series data, where each elements have shape [n_segments, width, n_variables]. n_segments is different for each element. If <code class="docutils literal notranslate"><span class="pre">X</span></code> also contains contextual variables, the segmented time series data must be in column 0. The transform method of this class generates a feature representation <code class="docutils literal notranslate"><span class="pre">X_new</span></code>, where each element has shape [n_segments, n_features] and includes the computed features and contextual data.</p>
+<p>This transformer calculates features from the segmented time series’, by computing the same feature set for each segment from each time series in the data set.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">features</span></code> computed are a parameter of this transformer, defined by a dict of functions. The seglearn package includes some useful features, but this basic feature set can be easily extended.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>features</strong> : dict, optional</p>
-<blockquote>
-<div><p>Dictionary of functions for calculating features from a segmented time series.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>features</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict, optional</span></dt>
+<dd><p class="first">Dictionary of functions for calculating features from a segmented time series.
 Each function in the dictionary is specified to compute features from a
 multivariate segmented time series along axis 1 (the segment) eg:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -499,12 +671,9 @@ multivariate segmented time series along axis 1 (the segment) eg:</p>
 <span class="go">The number of features returned (n_features) must be &gt;= 1</span>
 </pre></div>
 </div>
-<p>If features is not specified, a default feature dictionary will be used (see base_features). See <code class="docutils literal notranslate"><span class="pre">feature_functions</span></code> for example implementations.</p>
-</div></blockquote>
-<p><strong>multithread: bool, optional</strong></p>
-<blockquote class="last">
-<div><p>If true, will use multithreading to compute the features</p>
-</div></blockquote>
+<p class="last">If features is not specified, a default feature dictionary will be used (see base_features). See <code class="docutils literal notranslate"><span class="pre">feature_functions</span></code> for example implementations.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -526,19 +695,42 @@ multivariate segmented time series along axis 1 (the segment) eg:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
 </div>
-<p class="rubric">Attributes</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="13%" />
-<col width="87%" />
-</colgroup>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
 <tbody valign="top">
-<tr class="row-odd"><td><strong>f_labels</strong></td>
-<td>(list of string feature labels (in order) corresponding to the computed features)</td>
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>f_labels</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of string feature labels (in order) corresponding to the computed features</span></dt>
+<dd></dd>
+</dl>
+</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.FeatureRep.fit" title="seglearn.transform.FeatureRep.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the transform</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
+<td>Fit to data, then transform it.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.FeatureRep.transform" title="seglearn.transform.FeatureRep.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
+<td>Transform the segmented time series data into feature data.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="seglearn.transform.FeatureRep.fit">
 <code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep.fit" title="Permalink to this definition">¶</a></dt>
@@ -547,20 +739,21 @@ multivariate segmented time series along axis 1 (the segment) eg:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Segmented time series data and (optionally) contextual data</p>
-</div></blockquote>
-<p><strong>y</strong> : None</p>
-<blockquote>
-<div><p>There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Segmented time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>self</strong> : object</p>
-<blockquote class="last">
-<div><p>Returns self.</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -576,16 +769,18 @@ If contextual data is included in X, it is returned with the feature data.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>X</strong> : array-like, shape [n_series, …]</p>
-<blockquote>
-<div><p>Segmented time series data and (optionally) contextual data</p>
-</div></blockquote>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Segmented time series data and (optionally) contextual data</p>
+</dd>
+</dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>X_new</strong> : array shape [n_series, …]</p>
-<blockquote class="last">
-<div><p>Feature representation of segmented time series data and contextual data</p>
-</div></blockquote>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array shape [n_series, …]</span></dt>
+<dd><p class="first last">Feature representation of segmented time series data and contextual data</p>
+</dd>
+</dl>
 </td>
 </tr>
 </tbody>
@@ -598,9 +793,7 @@ If contextual data is included in X, it is returned with the feature data.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -613,7 +806,7 @@ If contextual data is included in X, it is returned with the feature data.</p>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -632,6 +825,7 @@ If contextual data is included in X, it is returned with the feature data.</p>
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.1.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -644,19 +838,13 @@ If contextual data is included in X, it is returned with the feature data.</p>
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_auto_examples_plot_scoring.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_auto_examples_plot_scoring.py:
 
@@ -126,9 +130,12 @@ OPTION 1: Use the score SegPipe score method
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
 
-    ('Accuracy score: ', 0.7262521588946459)
+ .. code-block:: none
+
+    ('X Shape: ', (3519, 100, 6))
+    ('Accuracy score: ', 0.7435233160621761)
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -151,14 +158,16 @@ OPTION 2: generate true and predicted target values for the segments
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_scoring_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
 
-    ('F1 score: ', 0.7449191914823577)
+ .. code-block:: none
+
+    ('F1 score: ', 0.7616346536567894)
 
 
 OPTION 3: scoring during model selection
@@ -192,13 +201,19 @@ OPTION 3: scoring during model selection
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
 
+ .. code-block:: none
+
+    ('X Shape: ', (3437, 100, 6))
+    ('X Shape: ', (3461, 100, 6))
+    ('X Shape: ', (3590, 100, 6))
+    ('X Shape: ', (3543, 100, 6))
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.613518    0.126350    0.812903     0.998836
-    1  0.602118    0.124368    0.694901     0.999422
-    2  0.640387    0.115635    0.880405     0.998607
-    3  0.608951    0.117251    0.745150     0.999436)
+    0  0.614145    0.131608    0.809677     0.998836
+    1  0.604185    0.127460    0.695724     1.000000
+    2  0.625935    0.118739    0.869365     0.998329
+    3  0.613238    0.120241    0.756614     0.999153)
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -224,13 +239,19 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
 
+ .. code-block:: none
+
+    ('X Shape: ', (3437, 100, 6))
+    ('X Shape: ', (3461, 100, 6))
+    ('X Shape: ', (3590, 100, 6))
+    ('X Shape: ', (3543, 100, 6))
     ('CV F1 Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.607482    0.126197    0.761222     0.998588
-    1  0.607330    0.125398    0.791960     0.999770
-    2  0.627931    0.116812    0.886962     0.998391
-    3  0.612506    0.119345    0.776074     0.999518)
+    0  0.598765    0.129310    0.797545     0.998990
+    1  0.598120    0.126968    0.805511     1.000000
+    2  0.624070    0.118691    0.868033     0.999779
+    3  0.614644    0.122049    0.763875     0.999259)
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -262,28 +283,34 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
 
-    ('CV Scores (workaround): ',    fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  \
-    0  0.494574    0.367079       0.809727       0.822425              0.827594   
-    1  0.498785    0.368376       0.808711       0.824057              0.837972   
-    2  0.491381    0.372429       0.803082       0.812406              0.819614   
-    3  0.504176    0.380211       0.790738       0.807432              0.813079   
+ .. code-block:: none
 
-       test_recall_macro  
-    0           0.827654  
-    1           0.827420  
-    2           0.814729  
-    3           0.808092  )
+    ('X Shape: ', (3505, 100, 6))
+    ('X Shape: ', (3506, 100, 6))
+    ('X Shape: ', (3509, 100, 6))
+    ('X Shape: ', (3511, 100, 6))
+    ('CV Scores (workaround): ',    fit_time        ...          test_recall_macro
+    0  0.490906        ...                   0.792567
+    1  0.484882        ...                   0.843509
+    2  0.480453        ...                   0.807619
+    3  0.478063        ...                   0.801529
+
+    [4 rows x 6 columns])
 
 
-**Total running time of the script:** ( 0 minutes  13.854 seconds)
+**Total running time of the script:** ( 0 minutes  13.597 seconds)
 
+
+.. _sphx_glr_download_auto_examples_plot_scoring.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

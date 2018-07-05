@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_auto_examples_plot_nn_training_curves.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_auto_examples_plot_nn_training_curves.py:
 
@@ -119,19 +123,21 @@ Accessing training history
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     acc      loss   val_acc  val_loss
-    0  0.230551  1.794971  0.360795  1.553061
-    1  0.502664  1.256697  0.578125  0.951633
-    2  0.612433  0.868454  0.654830  0.782083
-    3  0.655773  0.739070  0.681818  0.664417
-    4  0.704440  0.617122  0.747159  0.536675
-    5  0.712611  0.577092  0.731534  0.560640
-    6  0.733215  0.535367  0.781250  0.460366
-    7  0.761634  0.476174  0.781250  0.462567
-    8  0.777620  0.447345  0.805398  0.433891
-    9  0.797869  0.416351  0.809659  0.413538
+    0  0.252220  1.788851  0.365057  1.517711
+    1  0.463943  1.237079  0.585227  0.924037
+    2  0.619893  0.872408  0.684659  0.724301
+    3  0.669272  0.740347  0.713068  0.624920
+    4  0.724689  0.612670  0.728693  0.534813
+    5  0.717584  0.573105  0.765625  0.489564
+    6  0.764831  0.503158  0.784091  0.464532
+    7  0.776909  0.468189  0.811080  0.403667
+    8  0.801776  0.428079  0.819602  0.393613
+    9  0.807460  0.402546  0.813920  0.382988
 
 
 Training Curves
@@ -151,18 +157,22 @@ Training Curves
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_nn_training_curves_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 2 minutes  2.259 seconds)
+**Total running time of the script:** ( 1 minutes  57.570 seconds)
 
+
+.. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

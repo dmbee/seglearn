@@ -31,6 +31,26 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_padtrunc_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_padtrunc.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_padtrunc
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to load the included smartwatch inertial sensor dataset, and create time...">
 
 .. only:: html
@@ -217,6 +237,7 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-gallery
 
 
   .. container:: sphx-glr-download

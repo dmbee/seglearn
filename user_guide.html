@@ -24,31 +24,21 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-    <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="about.html"/>
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="seglearn 0.1.1 documentation" href="index.html"/>
-        <link rel="next" title="API Documentation" href="api.html"/>
-        <link rel="prev" title="Install and contribution" href="install.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Documentation" href="api.html" />
+    <link rel="prev" title="Install and contribution" href="install.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -108,6 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#what-this-package-doesn-t-include">What this Package Doesn’t Include</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#valid-sequence-data-representations">Valid Sequence Data Representations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-seglearn">Using Seglearn</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#change-log">Change Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
@@ -131,7 +122,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">seglearn</a>
@@ -139,9 +130,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -188,7 +180,7 @@
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>The seglearn python package is an extension to scikit-learn for multivariate sequential (or time series) data.</p>
-<p>This package implements a sliding window segmentation, to create fixed length segments from the time series data. The segments can be learned directly with a neural network, or can  learned from a feature representation with any classical supervised learning algorithm in scikit learn. This package also supports learning datasets that include a combination of time series (sequential) data, and contextual data that is time independent with respect to a given time series.</p>
+<p>Machine learning algorithms for sequences and time series typically learn from fixed length segments. This package supports a sliding window segmentation or padding &amp; truncation approach to processing sequential data sets into fixed length segments. The segments can be learned directly with a neural network, or can  learned from a feature representation with any classical supervised learning algorithm in scikit learn. This package also supports learning datasets that include a combination of time series (sequential) data, and contextual data that is time independent with respect to a given time series.</p>
 <p>This package provides an integrated pipeline from segmentation through to a final estimator that can be evaluated and optimized within the scikit learn framework.</p>
 <p>Learning multivariate sequential data with the sliding window method is useful in a number of applications, including human activity recognition, electrical power systems, voice recognition, music, and many others. In general, this method is useful when the machine learning problem is not dependent on time series data remote from the window. However, the use of contextual variables or synthetic temporal variables (eg a moving average) can mitigate this limitation.</p>
 </div>
@@ -197,11 +189,12 @@
 <p>Sequence and time series data have a general formulation as sequence pairs <img class="math" src="_images/math/6d636e1d90c17d2e1e208bd7327464353008bd31.png" alt="\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}"/>, where each <img class="math" src="_images/math/925bd8b766b4999fe4377713989fd144ec2fac8c.png" alt="\mathbf{X}_i"/> is a multivariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/d0f26c703def1e44a401ea8f6ce3cf67a7f25a6d.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle"/> and each <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> target is a univariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/d0f26c703def1e44a401ea8f6ce3cf67a7f25a6d.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle"/> and each <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> target is a univariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/8c68c53cead5c55c2f3deabc2311503c78d3211c.png" alt="\langle y_{i,1}, y_{i,2},..., y_{i,T_i} \rangle"/>. The targets <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> can either be sequences of categorical class labels (for classification problems), or sequences of continuous data (for regression problems). The number of samples <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> varies between the sequence pairs in the data set.</p>
 <p>Important sub-classes of the general sequence learning problem are sequence classification and sequence prediction. In sequence classification problems (eg song genre classification), the target for each sequence is a fixed class label <img class="math" src="_images/math/07f6018e00c747406442bb3912e0209766fc9090.png" alt="y_i"/> and the data takes the form <img class="math" src="_images/math/8779cac103ab80aa52af5b1c46f15605dc4b5ff5.png" alt="\{(\mathbf{X}_i, y_i)\}_{i=1}^{N}"/>. Sequence prediction involves predicting a future value of the target <img class="math" src="_images/math/6bfea9d91249b6ed79b7f7f4488fbf61c0e06a6f.png" alt="(y_{i,t+f})"/> or future values <img class="math" src="_images/math/6ab83bae8dcc08c941c6c62ae83ca7273a063ca9.png" alt="\langle y_{i,t+1}, y_{i,t+2},..., y_{i,t+f} \rangle"/>, given <img class="math" src="_images/math/cbaf238de3b86f76f78f4b7eace63233c5332e8b.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,t} \rangle, \langle y_{i,1}, y_{i,2},..., y_{i,t} \rangle"/>, and sometimes also <img class="math" src="_images/math/9cf813368b23e19f9fdc2770bb97e44f2c92bafe.png" alt="\langle \mathbf{x}_{i,t+1}, \mathbf{x}_{i,t+2},...,\mathbf{x}_{i,t+f} \rangle"/>.</p>
 <p>A final important generalization is the case where contextual data associated with each sequence, but not varying within the sequence, exists to support the machine learning algorithm performance. Perhaps the algorithm for reading electrocardiograms will be given access to laboratory data, the patient’s age, or known medical diagnoses to assist with classifying the sequential data recovered from the leads.</p>
-<p>seglearn provides a flexible, user-friendly framework for learning time series and sequences in all of the above contexts using the sliding window segmentation approach. Sliding window segmentation converts the sequence data <img class="math" src="_images/math/6d636e1d90c17d2e1e208bd7327464353008bd31.png" alt="\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}"/> into segment data <img class="math" src="_images/math/80c493a219161b9ea9e1bd5090f31f3b6eb6f4fb.png" alt="\{(\mathbf{X}_j,\mathbf{y}_j)\}_{j=1}^{M}"/> where the number of data points in each segment <img class="math" src="_images/math/f1aa64d8c73a6d30bc3b2110f5b9c377d111de00.png" alt="T_j"/> is the same for all segments. This approach permits utilization of many classical and modern machine learning algorithms that require fixed length inputs. The segments can either be learned directly with various neural network architectures, or a feature representation can be computed for each segment, allowing classical algorithms to learn the feature representation.</p>
+<p>seglearn provides a flexible, user-friendly framework for learning time series and sequences in all of the above contexts. Sliding window segmentation converts the sequence data <img class="math" src="_images/math/6d636e1d90c17d2e1e208bd7327464353008bd31.png" alt="\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}"/> into segment data <img class="math" src="_images/math/80c493a219161b9ea9e1bd5090f31f3b6eb6f4fb.png" alt="\{(\mathbf{X}_j,\mathbf{y}_j)\}_{j=1}^{M}"/> where the number of data points in each segment <img class="math" src="_images/math/f1aa64d8c73a6d30bc3b2110f5b9c377d111de00.png" alt="T_j"/> is the same for all segments. The padding &amp; truncation approach enforces a fixed length on each sequence, but does not alter the number of sequences in the data set.</p>
+<p>Fixed sequence / segment length permits utilization of many classical and modern machine learning algorithms that require fixed length inputs. The segments can either be learned directly with various neural network architectures, or a feature representation can be computed for each segment, allowing classical algorithms to learn the feature representation.</p>
 </div>
 <div class="section" id="why-this-package">
 <h2>Why this Package<a class="headerlink" href="#why-this-package" title="Permalink to this headline">¶</a></h2>
-<p>The algorithm to perform time series or sequence sliding window segmentation is straightforward. Without this package, segmentation can be performed outside of the scikit learn framework, and the machine learning algorithms applied to the segments directly or a feature representation of them with scikit-learn. However, algorithm performance is highly dependent on the sliding window segmentation parameters (window length, and overlap). This package integrates the segmentation into the pipeline so that parameter selection can be performed on the segmentation parameters, and the rest of the pipeline simultaneously.</p>
+<p>The algorithms to perform sliding window segmentation or padding &amp; truncation are straightforward. Without this package, pre-processing time series or sequence data to fixed length segments could be performed outside of the scikit learn framework, and the machine learning algorithms applied to the segments directly or a feature representation of them with scikit-learn. However, algorithm performance is highly dependent on the segmentation parameters (window length and overlap). This package integrates the segmentation into the pipeline so that parameter selection can be performed on the segmentation parameters, and the rest of the pipeline simultaneously.</p>
 <p>The reason a new package is required to do this, instead of just a new transformer, is that time series segmentation changes the number of samples (instances) in the dataset. The final estimator sees one instance for each segment - which involves changing the number of samples and the target mid pipeline.</p>
 <p>Changing the number of samples and the target vector mid-pipeline is not supported in scikit-learn - hence why this package is needed.</p>
 </div>
@@ -209,14 +202,15 @@
 <h2>What this Package Includes<a class="headerlink" href="#what-this-package-includes" title="Permalink to this headline">¶</a></h2>
 <p>The main contributions of this package are:</p>
 <ol class="arabic simple">
-<li><code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> - transformer class for performing the time series / sequence segmentation when the target is contextual</li>
-<li><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence segmentation when the target is a time series or sequence.</li>
-<li><code class="docutils literal notranslate"><span class="pre">SegmentXYForecast</span></code> - transformer class for performing the time series / sequence segmentation when the target is future values of a time series or sequence.</li>
-<li><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data, and</li>
-<li><code class="docutils literal notranslate"><span class="pre">SegPipe</span></code> - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> - an indexable / iterable class for storing time series &amp; contextual data</li>
-<li><code class="docutils literal notranslate"><span class="pre">split</span></code> - a module for splitting time series or sequences along the temporal axis</li>
+<li><code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is contextual</li>
+<li><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is a time series or sequence.</li>
+<li><code class="docutils literal notranslate"><span class="pre">SegmentXYForecast</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.</li>
 </ol>
+<p>4) <code class="docutils literal notranslate"><span class="pre">PadTrunc</span></code> - transformer class for fixing time series / sequence length using a combination of padding and truncation
+4) <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data, and
+5) <code class="docutils literal notranslate"><span class="pre">SegPipe</span></code> - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools
+6) <code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> - an indexable / iterable class for storing time series &amp; contextual data
+7) <code class="docutils literal notranslate"><span class="pre">split</span></code> - a module for splitting time series or sequences along the temporal axis</p>
 </div>
 <div class="section" id="what-this-package-doesn-t-include">
 <h2>What this Package Doesn’t Include<a class="headerlink" href="#what-this-package-doesn-t-include" title="Permalink to this headline">¶</a></h2>
@@ -265,6 +259,19 @@
 <p>First see the <a class="reference external" href="auto_examples/index.html">Examples</a></p>
 <p>If more details are needed, have a look at the <a class="reference external" href="api.html">API Documentation</a>.</p>
 </div>
+<div class="section" id="change-log">
+<h2>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h2>
+<p>Version 2.0:</p>
+<ul class="simple">
+<li>Added transformer for segmenting data set with padding and / or truncation</li>
+<li>Implemented random_state initialization for SegPipe</li>
+<li>Corrected documentation for FeatureRep</li>
+</ul>
+<p>Version 1.6:</p>
+<ul class="simple">
+<li>First stable version</li>
+</ul>
+</div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <table class="docutils footnote" frame="void" id="id1" rules="none">
@@ -287,9 +294,7 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -311,7 +316,7 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -330,6 +335,7 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.1.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -342,19 +348,13 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

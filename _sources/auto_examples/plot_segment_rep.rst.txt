@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_auto_examples_plot_segment_rep.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_auto_examples_plot_segment_rep.py:
 
@@ -14,18 +18,20 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_segment_rep_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     ('N series in train: ', 105)
     ('N series in test: ', 35)
     ('N segments in train: ', 3519)
     ('N segments in test: ', 1158)
-    ('Accuracy score: ', 0.7210708111267221)
+    ('Accuracy score: ', 0.6502590664310158)
 
 
 
@@ -91,13 +97,17 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
     img = mpimg.imread('segments.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 2 minutes  25.470 seconds)
+**Total running time of the script:** ( 2 minutes  20.779 seconds)
 
+
+.. _sphx_glr_download_auto_examples_plot_segment_rep.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download
