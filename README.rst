@@ -129,7 +129,7 @@ If you use seglearn in a scientific publication, we would appreciate
 citations to the following paper::
 
   @article{arXiv:1803.08118
-  author  = {David Burns, Nathan Leung, Michael Hardisty, Cari Whyne, Patrick Henry, Stewart McLachlin},
+  author  = {David Burns, Cari Whyne},
   title   = {Seglearn: A Python Package for Learning Sequences and Time Series},
   journal = {arXiv},
   year    = {2018},

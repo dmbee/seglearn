@@ -32,10 +32,6 @@ install it via `pip`::
 
   pip install -U seglearn
 
-The package is release also in Anaconda Cloud platform::
-
-  conda install -c conda-forge seglearn
-
 If you prefer, you can clone it and run the setup.py file. Use the following
 commands to get a copy from GitHub and install all dependencies::
 
