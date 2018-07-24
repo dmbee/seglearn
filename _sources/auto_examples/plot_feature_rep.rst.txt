@@ -38,10 +38,10 @@ This is a basic example using the pipeline to learn a feature representation of 
     ('X Shape: ', [3590])
     ('X Shape: ', [3543])
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.748038    0.135610    0.772581     0.998254
-    1  0.588448    0.124554    0.665296     0.999711
-    2  0.620563    0.118956    0.882245     0.998050
-    3  0.604255    0.120462    0.717813     0.999436)
+    0  0.587780    0.131593    0.772581     0.998254
+    1  0.595604    0.122980    0.665296     0.999711
+    2  0.621950    0.112752    0.882245     0.998050
+    3  0.614552    0.116920    0.717813     0.999436)
     ('Features: ', ['std_0', 'std_1', 'std_2', 'std_3', 'std_4', 'std_5', 'mnx_0', 'mnx_1', 'mnx_2', 'mnx_3', 'mnx_4', 'mnx_5', 'min_0', 'min_1', 'min_2', 'min_3', 'min_4', 'min_5', 'max_0', 'max_1', 'max_2', 'max_3', 'max_4', 'max_5', 'skew_0', 'skew_1', 'skew_2', 'skew_3', 'skew_4', 'skew_5', 'var_0', 'var_1', 'var_2', 'var_3', 'var_4', 'var_5', 'mse_0', 'mse_1', 'mse_2', 'mse_3', 'mse_4', 'mse_5', 'kurt_0', 'kurt_1', 'kurt_2', 'kurt_3', 'kurt_4', 'kurt_5', 'mean_0', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5'])
 
 
@@ -116,7 +116,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 
     img = mpimg.imread('feet.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 0 minutes  5.837 seconds)
+**Total running time of the script:** ( 0 minutes  5.328 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_feature_rep.py:

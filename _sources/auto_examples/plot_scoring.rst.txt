@@ -210,10 +210,10 @@ OPTION 3: scoring during model selection
     ('X Shape: ', (3590, 100, 6))
     ('X Shape: ', (3543, 100, 6))
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.606912    0.126596    0.809677     0.998836
-    1  0.596500    0.124857    0.695724     1.000000
-    2  0.627812    0.116130    0.869365     0.998329
-    3  0.614519    0.119970    0.756614     0.999153)
+    0  0.608282    0.125231    0.809677     0.998836
+    1  0.607614    0.127658    0.695724     1.000000
+    2  0.635143    0.117922    0.869365     0.998329
+    3  0.625822    0.118699    0.756614     0.999153)
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -248,10 +248,10 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
     ('X Shape: ', (3590, 100, 6))
     ('X Shape: ', (3543, 100, 6))
     ('CV F1 Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.598910    0.128657    0.797545     0.998990
-    1  0.593447    0.124378    0.805511     1.000000
-    2  0.623883    0.115408    0.868033     0.999779
-    3  1.050500    0.119604    0.763875     0.999259)
+    0  0.609956    0.126464    0.797545     0.998990
+    1  0.604173    0.123401    0.805511     1.000000
+    2  0.629102    0.114671    0.868033     0.999779
+    3  1.079864    0.120155    0.763875     0.999259)
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -292,15 +292,15 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
     ('X Shape: ', (3509, 100, 6))
     ('X Shape: ', (3511, 100, 6))
     ('CV Scores (workaround): ',    fit_time        ...          test_recall_macro
-    0  0.493164        ...                   0.792567
-    1  0.493860        ...                   0.843509
-    2  0.486345        ...                   0.807619
-    3  0.484988        ...                   0.801529
+    0  0.505737        ...                   0.792567
+    1  0.501532        ...                   0.843509
+    2  0.493912        ...                   0.807619
+    3  0.492230        ...                   0.801529
 
     [4 rows x 6 columns])
 
 
-**Total running time of the script:** ( 0 minutes  14.243 seconds)
+**Total running time of the script:** ( 0 minutes  14.281 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:
