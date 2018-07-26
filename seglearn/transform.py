@@ -10,7 +10,7 @@ from .feature_functions import base_features
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
-
+from scipy.interpolate import interp1d
 
 __all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'FeatureRep']
 
@@ -57,7 +57,6 @@ def mean(y):
 def all(y):
     ''' Returns all values (sequences) of y '''
     return y
-
 
 class SegmentX(BaseEstimator, XyTransformerMixin):
     '''
@@ -453,6 +452,7 @@ def sliding_tensor(mv_time_series, width, step):
     data = [sliding_window(mv_time_series[:, j], width, step) for j in range(D)]
     return np.stack(data, axis = 2)
 
+
 class PadTrunc(BaseEstimator, XyTransformerMixin):
     '''
     Transformer for using padding and truncation to enforce fixed length on all time
@@ -534,6 +534,107 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
             return Xt, y, sample_weight
         else:
             X = make_ts_data(Xt, Xc)
+            return X, y, sample_weight
+
+
+
+class Interp(BaseEstimator, XyTransformerMixin):
+    '''
+    Transformer for linear interpolation of irregularly sampled data (direct value interpolation).
+    Will re-sample the data to a fixed period .
+    If the target is a series, it will be resampled as well.
+    categorical_target should be set to true if the target series is a class.
+
+    Note the time dimension is removed, since this becomes a linear sequence.
+    If start time or similar is important to the estimator, use a context variable.
+
+    Parameters
+    ----------
+    sample_period : numeric
+        desired sampling period
+    categorical_target : bool
+        set to True for classification problems nearest use nearest instead of linear interp
+
+    '''
+    def __init__(self, sample_period, categorical_target = False):
+        self.sample_period = sample_period
+        self.categorical_target = categorical_target
+        assert self.sample_period > 0
+
+    def fit(self, X, y = None):
+        '''
+        Fit the transform. Does nothing, for compatibility with sklearn API.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+        '''
+        assert X[0].ndim > 1 # need 1 channel of values
+        return self
+
+    def transform(self, X, y=None, sample_weight=None):
+        '''
+        Transforms the time series data with linear direct value interpolation
+        If y is a time series and passed, it will be transformed as well
+        The time dimension is removed from the data
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) contextual data created as per ``make_ts_data``
+        y : array-like shape [n_series], default = None
+            target vector
+        sample_weight : array-like shape [n_series], default = None
+            sample weights
+
+        Returns
+        -------
+        X_new : array-like, shape [n_series, ]
+            transformed time series data
+        y_new : array-like, shape [n_series]
+            expanded target vector
+        sample_weight_new : None
+        '''
+        Xt, Xc = get_ts_data_parts(X)
+        N = len(Xt) # number of series
+        D = Xt[0].shape[1]-1 # number of data channels
+
+        # 1st channel is time
+        t_lin = [np.arange(Xt[i][0,0],Xt[i][-1,0],self.sample_period) for i in np.arange(N)]
+
+        if D == 1:
+            Xt_new = np.array([np.interp(t_lin[i], Xt[i][:,0], Xt[i][:,1]) for i in np.arange(N)])
+        elif D > 1:
+            Xt_new = np.array(
+                [np.column_stack([np.interp(t_lin[i], Xt[i][:,0], Xt[i][:,j]) for j in range(1,D)])
+                 for i in np.arange(N)])
+
+        if y is not None and len(np.atleast_1d(y[0])) > 1:
+            # y is a time series
+            if self.categorical_target is True:
+                y_new = []
+                for i in np.arange(N):
+                    nn_interp = interp1d(Xt[i][:,0],y[i],kind='nearest', copy=False, bounds_error = False,
+                                         fill_value="extrapolate", assume_sorted=True)
+                    y_new.append(nn_interp(t_lin[i]))
+                y = np.array(y_new)
+            else:
+                y = np.array([np.interp(t_lin[i], Xt[i][:,0], y[i]) for i in np.arange(N)])
+        elif y is not None:
+            y = np.array(y)
+
+        if Xc is None:
+            return Xt_new, y, sample_weight
+        else:
+            X = make_ts_data(Xt_new, Xc)
             return X, y, sample_weight
 
 

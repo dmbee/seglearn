@@ -282,3 +282,6 @@ class SegPipe(BaseEstimator):
         return X, y
 
 
+
+
+
