@@ -70,4 +70,7 @@ target/
 # pycharm
 .idea/*
 
+# testing
+.ipynb_checkpoints/
+testing.ipynb
 

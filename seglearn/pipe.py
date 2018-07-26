@@ -5,14 +5,171 @@ time series data and sequences using a sliding window segmentation
 # Author: David Burns
 # License: BSD
 
-from .transform import SegmentX
+from .transform import SegmentX, XyTransformerMixin
 from .util import check_ts_data
 
 import numpy as np
 from sklearn.base import BaseEstimator
-
+from sklearn.utils.metaestimators import _BaseComposition
+from sklearn.pipeline import Pipeline
+from sklearn.externals import six
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_random_state
+
+
+class Pype(Pipeline):
+    def __init__(self, steps, scorer = None, memory = None):
+        super(Pype, self).__init__(steps, memory)
+        self.scorer = scorer
+
+    def fit(self, X, y=None, **fit_params):
+        """
+        Fit the model
+
+        Fit all the transforms one after the other and transform the
+        data, then fit the transformed data using the final estimator.
+
+        Parameters
+        ----------
+        X : iterable
+            Training data. Must fulfill input requirements of first step of the
+            pipeline.
+        y : iterable, default=None
+            Training targets. Must fulfill label requirements for all steps of
+            the pipeline.
+        **fit_params : dict of string -> object
+            Parameters passed to the ``fit`` method of each step, where
+            each parameter name is prefixed such that parameter ``p`` for step
+            ``s`` has key ``s__p``.
+
+        Returns
+        -------
+        self : Pipeline
+            This estimator
+        """
+        Xt, yt, fit_params = self._fit(X, y, **fit_params)
+
+        self.N_fit = len(yt)
+
+        if self._final_estimator is not None:
+            fitres = self._final_estimator.fit(Xt, yt, **fit_params)
+            if hasattr(fitres, 'history'):
+                self.history = fitres
+
+        return self
+
+
+    def _fit(self, X, y, **fit_params):
+        self.steps = list(self.steps)
+        self._validate_steps()
+
+        fit_params_steps = dict((name, {}) for name, step in self.steps
+                                if step is not None)
+        for pname, pval in six.iteritems(fit_params):
+            step, param = pname.split('__', 1)
+            fit_params_steps[step][param] = pval
+
+        Xt = X
+        yt = y
+
+        for step_idx, (name, transformer) in enumerate(self.steps[:-1]): #iterate through all but last
+            if transformer is None:
+                pass
+            else:
+                # not doing cloning for now...
+                if isinstance(transformer, XyTransformerMixin):
+                    Xt, yt, _ = transformer.fit_transform(Xt, yt, sample_weight=None, **fit_params_steps[name])
+                else:
+                    Xt = transformer.fit_transform(Xt, yt, **fit_params_steps[name])
+
+        if self._final_estimator is None:
+                return Xt, yt, {}
+        return Xt, yt, fit_params_steps[self.steps[-1][0]]
+
+
+    def transform(self):
+        pass
+
+
+    def fit_transform(self, X, y=None, **fit_params):
+        """
+        Fit the model and transform with the final estimator
+        Fits all the transforms one after the other and transforms the
+        data, then uses fit_transform on transformed data with the final
+        estimator.
+
+        Parameters
+        ----------
+        X : iterable
+            Training data. Must fulfill input requirements of first step of the
+            pipeline.
+        y : iterable, default=None
+            Training targets. Must fulfill label requirements for all steps of
+            the pipeline.
+        **fit_params : dict of string -> object
+            Parameters passed to the ``fit`` method of each step, where
+            each parameter name is prefixed such that parameter ``p`` for step
+            ``s`` has key ``s__p``.
+
+        Returns
+        -------
+        Xt : array-like, shape = [n_samples, n_transformed_features]
+            Transformed samples
+        yt : array-like, shape = [n_samples]
+            Transformed target
+        """
+
+        Xt, yt, fit_params = self._fit(X, y, **fit_params)
+
+        if self._final_estimator is not None:
+            fitres = self._final_estimator.fit(Xt, yt, **fit_params)
+            if hasattr(fitres, 'history'):
+                self.history = fitres
+            if isinstance(self._final_estimator, XyTransformerMixin):
+                Xt, yt, _ = self._final_estimator.transform(Xt, yt)
+            else:
+                Xt = self._final_estimator.transform(Xt)
+
+        self.N_fit = len(yt)
+
+        return Xt, yt
+
+
+    def predict(self, X, y):
+        """
+        Apply transforms to the data, and predict with the final estimator
+
+        Parameters
+        ----------
+        X : iterable
+            Data to predict on. Must fulfill input requirements of first step
+            of the pipeline.
+        y : iterable
+            Target
+
+        Returns
+        -------
+        yt : array-like
+            Transformed target
+        y_pred : array-like
+            Predicted transformed target
+        """
+        Xt = X
+        yt = y
+        for name, transformer in self.steps[:-1]:
+            if transformer is not None:
+                if isinstance(transformer, XyTransformerMixin):
+                    Xt, yt, _ = transformer.transform(Xt, yt, sample_weight=None)
+                else:
+                    Xt = transformer.transform(Xt)
+
+        yp = self.steps[-1][-1].predict(Xt)
+        return yt, yp
+
+    def score(self):
+        pass
+
+
 
 class SegPipe(BaseEstimator):
     '''
