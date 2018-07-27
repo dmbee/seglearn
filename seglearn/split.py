@@ -4,7 +4,7 @@ This module has two classes for splitting time series data temporally - where tr
 # Author: David Burns
 # License: BSD
 
-from .util import check_ts_data, get_ts_data_parts, make_ts_data
+from .util import check_ts_data, get_ts_data_parts
 from .base import TS_Data
 
 import numpy as np
@@ -146,10 +146,12 @@ def temporal_split(X, y, test_size = 0.25):
     train_ind = [np.arange(0, int(train_size * len(Xt[i]))) for i in range(Ns)]
     test_ind = [np.arange(len(train_ind[i]), len(Xt[i])) for i in range(Ns)]
 
-    Xt_train = [Xt[i][train_ind[i]] for i in range(Ns)]
-    Xt_test = [Xt[i][test_ind[i]] for i in range(Ns)]
-    X_train = make_ts_data(Xt_train, Xc)
-    X_test = make_ts_data(Xt_test, Xc)
+    X_train = [Xt[i][train_ind[i]] for i in range(Ns)]
+    X_test = [Xt[i][test_ind[i]] for i in range(Ns)]
+
+    if Xc is not None:
+        X_train = TS_Data(X_train, Xc)
+        X_test = TS_Data(X_test, Xc)
 
     if len(np.atleast_1d(y[0])) == len(Xt[0]):
         # y is a time series

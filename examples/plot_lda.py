@@ -11,7 +11,6 @@ This example demonstrates how the pipeline can be used to perform transformation
 
 import seglearn as sgl
 
-from sklearn.pipeline import Pipeline
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,10 +40,10 @@ X = data['X']
 y = data['y']
 
 # create a pipeline for LDA transformation of the feature representation
-est = Pipeline([ ('ftr', sgl.FeatureRep()),
-    ('lda', LinearDiscriminantAnalysis(n_components=2))])
+clf = sgl.Pype([('segment',sgl.SegmentX()),
+                ('ftr', sgl.FeatureRep()),
+                ('lda', LinearDiscriminantAnalysis(n_components=2))])
 
-pipe = sgl.SegPipe(est)
-X2, y2 = pipe.fit_transform(X, y)
+X2, y2 = clf.fit_transform(X, y)
 plot_embedding(X2, y2.astype(int), data['y_labels'])
 plt.show()

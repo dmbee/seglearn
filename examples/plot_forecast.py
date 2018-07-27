@@ -19,7 +19,7 @@ useful in your application).
 
 
 from seglearn.transform import FeatureRep, SegmentXYForecast, last
-from seglearn.pipe import SegPipe
+from seglearn.pipe import Pype
 from seglearn.split import temporal_split
 
 from sklearn.pipeline import Pipeline
@@ -43,30 +43,28 @@ y = [y]
 X_train, X_test, y_train, y_test = temporal_split(X, y, test_size=0.25)
 
 # create a feature representation pipeline
-est = Pipeline([('features', FeatureRep()),
-                ('lin', LinearRegression())])
-
 # setting y_func = last, and forecast = 200 makes us predict the value of y
 # 200 samples ahead of the segment
 # other reasonable options for y_func are ``mean``, ``all`` (or create your own function)
 # see the API documentation for further details
-segmenter = SegmentXYForecast(width = 200, overlap=0.5, y_func=last, forecast=200)
-pipe = SegPipe(est, segmenter)
+clf = Pype([('segment', SegmentXYForecast(width = 200, overlap=0.5, y_func=last, forecast=200)),
+            ('features', FeatureRep()),
+            ('lin', LinearRegression())])
 
 # fit and score
-pipe.fit(X_train,y_train)
-score = pipe.score(X_test, y_test)
+clf.fit(X_train,y_train)
+score = clf.score(X_test, y_test)
 
 print("N series in train: ", len(X_train))
 print("N series in test: ", len(X_test))
-print("N segments in train: ", pipe.N_train)
-print("N segments in test: ", pipe.N_test)
+print("N segments in train: ", clf.N_train)
+print("N segments in test: ", clf.N_test)
 print("Score: ", score)
 
 # generate some predictions
-y, y_p = pipe.predict(X, y) # all predictions
-ytr, ytr_p = pipe.predict(X_train, y_train) # training predictions
-yte, yte_p = pipe.predict(X_test, y_test) # test predictions
+y, y_p = clf.transform_predict(X, y) # all predictions
+ytr, ytr_p = clf.transform_predict(X_train, y_train) # training predictions
+yte, yte_p = clf.transform_predict(X_test, y_test) # test predictions
 
 
 # note - the first few segments in the test set won't have predictions (gap)

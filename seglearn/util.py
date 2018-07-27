@@ -8,28 +8,6 @@ from seglearn.base import TS_Data
 
 import numpy as np
 
-
-def make_ts_data(time_series, context_vars = None):
-    '''
-    Combines time series data and relational contextual variables into an ``TS_Data`` object compatible with ``SegPipe`` and related classes. If context_vars are none, a numpy array is returned.
-
-    Parameters
-    ----------
-    time_series : array-like, shape [n_series, ]
-        Time series data - each element (series) may have a different length
-    context_vars : array-like, shape [n_series, n_context_variables]
-        contextual relational data
-
-    Returns
-    -------
-    X : array-like [n_series, ]
-        ``TS_Data object containing time series and contextual data
-    '''
-    if context_vars is not None:
-        return TS_Data(time_series, context_vars)
-    else:
-        return np.array(time_series)
-
 def get_ts_data_parts(X):
     '''
     Separates time series data object into time series variables and contextual variables
@@ -47,10 +25,13 @@ def get_ts_data_parts(X):
         contextual variables
 
     '''
+    # todo: remove np array
     if type(X) is TS_Data:
         return X.ts_data, X.context_data
     else:
         return np.array(X), None
+
+
 
 
 def check_ts_data(X, y = None):
