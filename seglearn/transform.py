@@ -576,7 +576,6 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         Xt = self._mv_resize(Xt)
 
         if Xc is not None:
-            Xc = expand_variables_to_segments(Xc, Nt)
             Xt = TS_Data(Xt, Xc)
 
         if yt is not None and len(np.atleast_1d(yt[0])) > 1:

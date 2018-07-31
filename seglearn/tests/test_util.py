@@ -2,12 +2,13 @@
 # License: BSD
 
 from seglearn.datasets import load_watch
+from seglearn.base import TS_Data
 from seglearn import util
 
 def test_util():
     df = load_watch()
 
-    data = util.make_ts_data(df['X'], df['side'])
+    data = TS_Data(df['X'], df['side'])
     util.get_ts_data_parts(data)
 
     util.check_ts_data(data, df['y'])

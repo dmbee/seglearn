@@ -2,8 +2,9 @@
 # License: BSD
 
 import seglearn.transform as transform
+from seglearn.base import TS_Data
 from seglearn.feature_functions import all_features, mean
-from seglearn.util import make_ts_data, get_ts_data_parts
+from seglearn.util import get_ts_data_parts
 
 import numpy as np
 
@@ -59,7 +60,7 @@ def test_feature_rep():
 
     # ts with multivariate contextual data
     frep = transform.FeatureRep(features=all_features())
-    X = make_ts_data(np.random.rand(100, 10, 5), np.random.rand(100,3))
+    X = TS_Data(np.random.rand(100, 10, 5), np.random.rand(100,3))
     y = np.ones(100)
     frep.fit(X, y)
     Xt = frep.transform(X)
@@ -67,7 +68,7 @@ def test_feature_rep():
     assert len(frep.f_labels) == Xt.shape[1]
 
     # ts with univariate contextual data
-    X = make_ts_data(np.random.rand(100, 10, 5), np.random.rand(100))
+    X = TS_Data(np.random.rand(100, 10, 5), np.random.rand(100))
     y = np.ones(100)
     frep.fit(X, y)
     Xt = frep.transform(X)
@@ -81,18 +82,16 @@ def test_segmentx():
     seg = transform.SegmentX(width = width)
 
     # multivariate ts data without context data
-    Xt = [np.random.rand(100, vars), np.random.rand(100, vars), np.random.rand(100, vars)]
+    X = [np.random.rand(100, vars), np.random.rand(100, vars), np.random.rand(100, vars)]
     y = np.random.rand(3)
-    X = make_ts_data(Xt)
     seg.fit(X,y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width, vars)
 
     # univariate ts data without context
-    Xt = [np.random.rand(100), np.random.rand(100), np.random.rand(100)]
+    X = [np.random.rand(100), np.random.rand(100), np.random.rand(100)]
     y = np.random.rand(3)
-    X = make_ts_data(Xt)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
@@ -102,7 +101,7 @@ def test_segmentx():
     Xt = [np.random.rand(100, vars), np.random.rand(200, vars), np.random.rand(50, vars)]
     Xc = np.random.rand(3, 4)
     y = np.random.rand(3)
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -114,7 +113,7 @@ def test_segmentx():
     Xt = [np.random.rand(100), np.random.rand(200), np.random.rand(50)]
     Xc = np.random.rand(3)
     y = np.random.rand(3)
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -127,7 +126,7 @@ def test_segmentx():
     Xt = [np.random.rand(100, vars), np.random.rand(200, vars), np.random.rand(50, vars)]
     Xc = np.random.rand(3, vars)
     y = np.random.rand(3)
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -143,18 +142,16 @@ def test_segmentxy():
     seg = transform.SegmentXY(width = width)
 
     # multivariate ts data without context data
-    Xt = [np.random.rand(Nt, vars), np.random.rand(Nt, vars), np.random.rand(Nt, vars)]
+    X = [np.random.rand(Nt, vars), np.random.rand(Nt, vars), np.random.rand(Nt, vars)]
     y = [np.random.rand(Nt), np.random.rand(Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width, vars)
 
     # univariate ts data without context data
-    Xt = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
+    X = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
     y = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
-    X = make_ts_data(Xt)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
@@ -164,7 +161,7 @@ def test_segmentxy():
     Xt = [np.random.rand(Nt, vars), np.random.rand(2*Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3, 4)
     y = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -176,7 +173,7 @@ def test_segmentxy():
     Xt = [np.random.rand(Nt, vars), np.random.rand(2 * Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3)
     y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -190,7 +187,7 @@ def test_segmentxy():
     Xt = [np.random.rand(Nt, vars), np.random.rand(2*Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3, vars)
     y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -208,7 +205,7 @@ def test_segmentxyforecast():
     Xt = [np.random.rand(Nt, vars), np.random.rand(2 * Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3, 4)
     y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -234,18 +231,16 @@ def test_pad_trunc():
     seg = transform.PadTrunc(width = width)
 
     # multivariate ts data without context data
-    Xt = [np.random.rand(Nt, vars), np.random.rand(Nt, vars), np.random.rand(Nt, vars)]
+    X = [np.random.rand(Nt, vars), np.random.rand(Nt, vars), np.random.rand(Nt, vars)]
     y = [np.random.rand(Nt), np.random.rand(Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width, vars)
 
     # univariate ts data without context data
-    Xt = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
+    X = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
     y = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(3*Nt)]
-    X = make_ts_data(Xt)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
@@ -255,7 +250,7 @@ def test_pad_trunc():
     Xt = [np.random.rand(Nt, vars), np.random.rand(2*Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3, 4)
     y = [np.random.rand(Nt), np.random.rand(2*Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -267,7 +262,7 @@ def test_pad_trunc():
     Xt = [np.random.rand(Nt, vars), np.random.rand(2 * Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3)
     y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -281,7 +276,7 @@ def test_pad_trunc():
     Xt = [np.random.rand(Nt, vars), np.random.rand(2*Nt, vars), np.random.rand(Nt, vars)]
     Xc = np.random.rand(3, vars)
     y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(Nt)]
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
@@ -295,18 +290,16 @@ def test_pad_trunc():
     seg = transform.PadTrunc(width = width)
 
     # multivariate ts data without context data
-    Xt = [np.random.rand(100, vars), np.random.rand(100, vars), np.random.rand(100, vars)]
+    X = [np.random.rand(100, vars), np.random.rand(100, vars), np.random.rand(100, vars)]
     y = np.random.rand(3)
-    X = make_ts_data(Xt)
     seg.fit(X,y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width, vars)
 
     # univariate ts data without context
-    Xt = [np.random.rand(100), np.random.rand(100), np.random.rand(100)]
+    X = [np.random.rand(100), np.random.rand(100), np.random.rand(100)]
     y = np.random.rand(3)
-    X = make_ts_data(Xt)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
@@ -316,7 +309,7 @@ def test_pad_trunc():
     Xt = [np.random.rand(100, vars), np.random.rand(200, vars), np.random.rand(50, vars)]
     Xc = np.random.rand(3, 4)
     y = np.random.rand(3)
-    X = make_ts_data(Xt, Xc)
+    X = TS_Data(Xt, Xc)
     seg.fit(X, y)
     Xs, ys, _ = seg.transform(X, y)
     Xst, Xsc = get_ts_data_parts(Xs)
