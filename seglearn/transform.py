@@ -593,11 +593,14 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
 
 class Interp(BaseEstimator, XyTransformerMixin):
     '''
-    Transformer for linear interpolation of irregularly sampled data (direct value interpolation).
-    Will re-sample the data to a fixed period .
+    Transformer for resampling time series data to a fixed period over closed interval (direct value interpolation).
+    Default interpolation is linear, but other types can be specified.
     If the target is a series, it will be resampled as well.
-    categorical_target should be set to true if the target series is a class.
 
+    categorical_target should be set to True if the target series is a class
+    The transformer will then use nearest neighbor interp on the target.
+
+    This transformer assumes the time dimension is column 0, i.e. X[0][:,0]
     Note the time dimension is removed, since this becomes a linear sequence.
     If start time or similar is important to the estimator, use a context variable.
 
@@ -605,12 +608,15 @@ class Interp(BaseEstimator, XyTransformerMixin):
     ----------
     sample_period : numeric
         desired sampling period
+    kind : string
+        interpolation type - valid types as per scipy.interpolate.interp1d
     categorical_target : bool
         set to True for classification problems nearest use nearest instead of linear interp
 
     '''
-    def __init__(self, sample_period, categorical_target = False):
+    def __init__(self, sample_period, kind = 'linear', categorical_target = False):
         self.sample_period = sample_period
+        self.kind = kind
         self.categorical_target = categorical_target
         assert self.sample_period > 0
 
@@ -632,6 +638,11 @@ class Interp(BaseEstimator, XyTransformerMixin):
         '''
         assert X[0].ndim > 1 # need 1 channel of values
         return self
+
+    def _interp(self, t_new, t, x, kind):
+        interpolator = interp1d(t, x, kind=kind, copy=False, bounds_error = False,
+                                         fill_value="extrapolate", assume_sorted=True)
+        return interpolator(t_new)
 
     def transform(self, X, y=None, sample_weight=None):
         '''
@@ -668,28 +679,20 @@ class Interp(BaseEstimator, XyTransformerMixin):
         t_lin = [np.arange(Xt[i][0,0],Xt[i][-1,0],self.sample_period) for i in np.arange(N)]
 
         if D == 1:
-            Xt = np.array([np.interp(t_lin[i], Xt[i][:,0], Xt[i][:,1]) for i in np.arange(N)])
+            Xt = [self._interp(t_lin, Xt[i][:,0], Xt[i][:,1], kind=self.kind) for i in np.arange(N)]
         elif D > 1:
-            Xt = np.array(
-                [np.column_stack([np.interp(t_lin[i], Xt[i][:,0], Xt[i][:,j]) for j in range(1,D)])
-                 for i in np.arange(N)])
-
+            Xt = [np.column_stack([self._interp(t_lin[i], Xt[i][:,0], Xt[i][:,j], kind=self.kind)
+                                   for j in range(1,D)]) for i in np.arange(N)]
         if Xc is not None:
-            Xc = expand_variables_to_segments(Xc, Nt)
             Xt = TS_Data(Xt, Xc)
 
         if yt is not None and len(np.atleast_1d(yt[0])) > 1:
             # y is a time series
             swt = None
             if self.categorical_target is True:
-                yt = []
-                for i in np.arange(N):
-                    nn_interp = interp1d(Xt[i][:,0],yt[i],kind='nearest', copy=False, bounds_error = False,
-                                         fill_value="extrapolate", assume_sorted=True)
-                    yt.append(nn_interp(t_lin[i]))
-                yt = np.array(yt)
+                yt = [self._interp(t_lin[i],Xt[i][:,0],yt[i],kind='nearest') for i in np.arange(N)]
             else:
-                yt = np.array([np.interp(t_lin[i], Xt[i][:,0], yt[i]) for i in np.arange(N)])
+                yt = [self._interp(t_lin[i], Xt[i][:,0], yt[i],kind=self.kind) for i in np.arange(N)]
         else:
             # y is static - leave y alone
             pass
