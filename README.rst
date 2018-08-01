@@ -92,13 +92,19 @@ After installation, you can use `pytest` to run the test suite from seglearn's r
 
 Change Log
 ----------
-Version 2.0:
+Version 1.0.0:
+
+* Major API change integrating preprocessing and estimation into single pipeline (Pype)
+* Note this is unfortunately not backwards compatible
+* Added Interp transformer for resampling time series
+
+Version 0.2.0:
 
 * Added transformer for segmenting data set with padding and / or truncation
 * Implemented random_state initialization for SegPipe
 * Corrected documentation for FeatureRep
 
-Version 1.6:
+Version 0.1.6:
 
 * First stable version
 
