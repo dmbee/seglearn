@@ -670,7 +670,6 @@ class Interp(BaseEstimator, XyTransformerMixin):
             None is returned if target is changed. Otherwise it is returned unchanged.
         '''
         Xt, Xc = get_ts_data_parts(X)
-        Xtt = Xt
         yt = y
         swt = sample_weight
 
@@ -683,27 +682,25 @@ class Interp(BaseEstimator, XyTransformerMixin):
 
 
         if D == 1:
-            Xtt = [self._interp(t_lin[i], t[i], Xt[i][:,1], kind=self.kind) for i in np.arange(N)]
+            Xt = [self._interp(t_lin[i], t[i], Xt[i][:,1], kind=self.kind) for i in np.arange(N)]
         elif D > 1:
-            Xtt = []
-            for i in np.arange(N):
-                Xtt.append(np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:,j], kind=self.kind) for j in range(1,D)]))
-
+            Xt = [np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:,j], kind=self.kind)
+                                   for j in range(1,D)]) for i in np.arange(N)]
         if Xc is not None:
-            Xtt = TS_Data(Xtt, Xc)
+            Xt = TS_Data(Xt, Xc)
 
-        if y is not None and len(np.atleast_1d(y[0])) > 1:
+        if yt is not None and len(np.atleast_1d(yt[0])) > 1:
             # y is a time series
             swt = None
             if self.categorical_target is True:
-                yt = [self._interp(t_lin[i],t[i], y[i],kind='nearest') for i in np.arange(N)]
+                yt = [self._interp(t_lin[i],t[i], yt[i],kind='nearest') for i in np.arange(N)]
             else:
-                yt = [self._interp(t_lin[i],t[i], y[i],kind=self.kind) for i in np.arange(N)]
+                yt = [self._interp(t_lin[i],t[i], yt[i],kind=self.kind) for i in np.arange(N)]
         else:
             # y is static - leave y alone
             pass
 
-        return Xtt, yt, swt
+        return Xt, yt, swt
 
 
 class FeatureRep(BaseEstimator, TransformerMixin):

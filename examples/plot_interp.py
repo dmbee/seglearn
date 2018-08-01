@@ -15,18 +15,14 @@ an optimal sampling frequency for the data
 from seglearn.datasets import load_watch
 from seglearn.transform import FeatureRep, SegmentX, Interp
 from seglearn.pipe import Pype
-from seglearn.base import TS_Data
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, cross_validate
-from sklearn.metrics import f1_score, make_scorer
+from sklearn.model_selection import train_test_split, validation_curve
 
-import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
 import numpy as np
-import pandas as pd
 
 # seed RNGESUS
 np.random.seed(123124)
@@ -41,7 +37,7 @@ y = data['y']
 # the Interp class assumes time is the first column in the series
 X = np.array([np.column_stack([np.arange(len(X[i]))/50.,X[i]]) for i in np.arange(len(X))])
 
-clf = Pype([('interp', Interp(1/.25, categorical_target=True)),
+clf = Pype([('interp', Interp(1./25., categorical_target=True)),
             ('segment', SegmentX()),
             ('features', FeatureRep()),
             ('scaler', StandardScaler()),
@@ -59,7 +55,26 @@ print("N segments in train: ", clf.N_train)
 print("N segments in test: ", clf.N_test)
 print("Accuracy score: ", score)
 
-# sampling frequency vs accuracy plot
+# lets try a few different sampling periods
+periods = [1./5., 1./10., 1./25., 1./50.]
+train_scores, test_scores = validation_curve(clf, X, y, param_name='interp__sample_period', param_range=periods, cv = 3)
+train_scores_mean = np.mean(train_scores, axis=1)
+train_scores_std = np.std(train_scores, axis=1)
+test_scores_mean = np.mean(test_scores, axis=1)
+test_scores_std = np.std(test_scores, axis=1)
 
-img = mpimg.imread('feet.jpg')
-plt.imshow(img)
+plt.title("Sample Period Validation Curve")
+plt.xlabel("Sample Period [s]")
+plt.ylabel("Accuracy")
+plt.ylim(0.0, 1.1)
+
+plt.plot(periods, train_scores_mean, label="Training score",color="darkorange", lw=2)
+plt.fill_between(periods, train_scores_mean - train_scores_std,
+                 train_scores_mean + train_scores_std, alpha=0.2,
+                 color="darkorange", lw=2)
+plt.plot(periods, test_scores_mean, label="Test score",color="navy", lw=2)
+plt.fill_between(periods, test_scores_mean - train_scores_std,
+                 test_scores_mean + train_scores_std, alpha=0.2,
+                 color="navy", lw=2)
+plt.legend(loc="best")
+plt.show()
