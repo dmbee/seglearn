@@ -62,16 +62,18 @@ def all(y):
 
 def shuffle_data(X, y = None, sample_weight = None):
     ''' Shuffles indices X, y, and sample_weight together'''
-    if len(y) > 1:
-        ind = np.arange(len(y), dtype=np.int)
+    if len(X) > 1:
+        ind = np.arange(len(X), dtype=np.int)
         np.random.shuffle(ind)
         Xt = X[ind]
-        if y is not None:
-            yt = y[ind]
-        if sample_weight is not None:
-            swt = sample_weight[ind]
-        else:
-            swt = None
+        yt = y
+        swt = sample_weight
+
+        if yt is not None:
+            yt = yt[ind]
+        if swt is not None:
+            swt = swt[ind]
+
         return Xt, yt, swt
     else:
         return X, y, sample_weight
@@ -668,6 +670,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
             None is returned if target is changed. Otherwise it is returned unchanged.
         '''
         Xt, Xc = get_ts_data_parts(X)
+        Xtt = Xt
         yt = y
         swt = sample_weight
 
@@ -675,28 +678,32 @@ class Interp(BaseEstimator, XyTransformerMixin):
         D = Xt[0].shape[1]-1 # number of data channels
 
         # 1st channel is time
+        t = [Xt[i][:,0] for i in np.arange(N)]
         t_lin = [np.arange(Xt[i][0,0],Xt[i][-1,0],self.sample_period) for i in np.arange(N)]
 
-        if D == 1:
-            Xt = [self._interp(t_lin, Xt[i][:,0], Xt[i][:,1], kind=self.kind) for i in np.arange(N)]
-        elif D > 1:
-            Xt = [np.column_stack([self._interp(t_lin[i], Xt[i][:,0], Xt[i][:,j], kind=self.kind)
-                                   for j in range(1,D)]) for i in np.arange(N)]
-        if Xc is not None:
-            Xt = TS_Data(Xt, Xc)
 
-        if yt is not None and len(np.atleast_1d(yt[0])) > 1:
+        if D == 1:
+            Xtt = [self._interp(t_lin[i], t[i], Xt[i][:,1], kind=self.kind) for i in np.arange(N)]
+        elif D > 1:
+            Xtt = []
+            for i in np.arange(N):
+                Xtt.append(np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:,j], kind=self.kind) for j in range(1,D)]))
+
+        if Xc is not None:
+            Xtt = TS_Data(Xtt, Xc)
+
+        if y is not None and len(np.atleast_1d(y[0])) > 1:
             # y is a time series
             swt = None
             if self.categorical_target is True:
-                yt = [self._interp(t_lin[i],Xt[i][:,0],yt[i],kind='nearest') for i in np.arange(N)]
+                yt = [self._interp(t_lin[i],t[i], y[i],kind='nearest') for i in np.arange(N)]
             else:
-                yt = [self._interp(t_lin[i], Xt[i][:,0], yt[i],kind=self.kind) for i in np.arange(N)]
+                yt = [self._interp(t_lin[i],t[i], y[i],kind=self.kind) for i in np.arange(N)]
         else:
             # y is static - leave y alone
             pass
 
-        return Xt, yt, swt
+        return Xtt, yt, swt
 
 
 class FeatureRep(BaseEstimator, TransformerMixin):

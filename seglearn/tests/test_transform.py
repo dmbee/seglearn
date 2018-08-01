@@ -316,3 +316,19 @@ def test_pad_trunc():
     N = len(ys)
     assert Xst.shape == (N, width, vars)
     assert Xsc.shape == (N, 4)
+
+def test_interp():
+    N = 100
+    t = np.arange(N) + np.random.rand(N)
+    X = [np.column_stack([t, np.random.rand(N)])]
+    y = [np.random.rand(N)]
+
+    interp = transform.Interp(2)
+    interp.fit(X)
+    interp.transform(X, y)
+
+    # y = [np.random.randint(0,5,N)]
+    # np.random.ra
+    # interp = transform.Interp(5, kind = 'cubic', categorical_target=True)
+    # interp.fit(X, y)
+    # interp.transform(X, y)
