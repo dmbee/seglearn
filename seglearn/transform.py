@@ -27,7 +27,7 @@ class XyTransformerMixin(object):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data
         y : array-like shape [n_series], default = None
             target vector
         sample_weight : array-like shape [n_series], default = None
@@ -116,7 +116,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-            Time series data and (optionally) contextual data created as per ``make_ts_data``
+            Time series data and (optionally) contextual data
         y : None
             There is no need of a target in a transformer, yet the pipeline API requires this parameter.
         shuffle : bool
@@ -149,7 +149,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data
         y : array-like shape [n_series], default = None
             target vector
         sample_weight : array-like shape [n_series], default = None
@@ -245,7 +245,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-            Time series data and (optionally) contextual data created as per ``make_ts_data``
+            Time series data and (optionally) contextual data
         y : None
             There is no need of a target in a transformer, yet the pipeline API requires this parameter.
 
@@ -279,7 +279,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data
         y : array-like shape [n_series], default = None
             target vector
         sample_weight : array-like shape [n_series], default = None
@@ -366,7 +366,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-            Time series data and (optionally) contextual data created as per ``make_ts_data``
+            Time series data and (optionally) contextual data
         y : None
             There is no need of a target in a transformer, yet the pipeline API requires this parameter.
 
@@ -400,7 +400,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data
         y : array-like shape [n_series]
             target vector
         sample_weight : array-like shape [n_series], default = None
@@ -537,7 +537,7 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-            Time series data and (optionally) contextual data created as per ``make_ts_data``
+            Time series data and (optionally) contextual data
         y : None
             There is no need of a target in a transformer, yet the pipeline API requires this parameter.
 
@@ -556,7 +556,7 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data
         y : array-like shape [n_series], default = None
             target vector
         sample_weight : array-like shape [n_series], default = None
@@ -628,7 +628,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-            Time series data and (optionally) contextual data created as per ``make_ts_data``
+            Time series data and (optionally) contextual data
         y : None
             There is no need of a target in a transformer, yet the pipeline API requires this parameter.
 
@@ -654,7 +654,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data
         y : array-like shape [n_series], default = None
             target vector
         sample_weight : array-like shape [n_series], default = None

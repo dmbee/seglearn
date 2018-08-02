@@ -44,7 +44,7 @@ class TemporalKFold():
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data created as per ``make_ts_data``
+           Time series data and (optionally) contextual data
         y : array-like shape [n_series, ]
             target vector
 
@@ -121,7 +121,7 @@ def temporal_split(X, y, test_size = 0.25):
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
-       Time series data and (optionally) contextual data created as per ``make_ts_data``
+       Time series data and (optionally) contextual data
     y : array-like shape [n_series, ]
         target vector
     test_size : float

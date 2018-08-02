@@ -15,7 +15,7 @@ def get_ts_data_parts(X):
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
-       Time series data and (optionally) contextual data created as per ``make_ts_data``
+       Time series data and (optionally) contextual data
 
     Returns
     -------
@@ -41,7 +41,7 @@ def check_ts_data(X, y = None):
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
-       Time series data and (optionally) contextual data created as per ``make_ts_data``
+       Time series data and (optionally) contextual data
 
     '''
     Ns = len(X)
@@ -68,7 +68,7 @@ def ts_stats(Xt, y, fs = 1.0, class_labels = None):
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
-       Time series data and (optionally) contextual data created as per ``make_ts_data``
+       Time series data and (optionally) contextual data
     y : array-like, shape [n_series]
         target data
     fs : float
