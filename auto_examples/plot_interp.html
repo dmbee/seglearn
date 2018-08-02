@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Basic Feature Representation Classification Pipeline &mdash; seglearn 0.1.1 documentation</title>
+  <title>Resampling Time Series Data &mdash; seglearn 0.1.1 documentation</title>
   
 
   
@@ -30,8 +30,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html" />
-    <link rel="prev" title="Working with Time Series Data" href="plot_watchdata.html" /> 
+    <link rel="next" title="Scoring Time Series Estimators" href="plot_scoring.html" />
+    <link rel="prev" title="Hyperparameter Selection 2" href="plot_model_selection2.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -99,14 +99,14 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Basic Feature Representation Classification Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Resampling Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
 </ul>
 </li>
@@ -161,13 +161,13 @@
         
           <li><a href="index.html">General examples</a> &raquo;</li>
         
-      <li>Basic Feature Representation Classification Pipeline</li>
+      <li>Resampling Time Series Data</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/auto_examples/plot_feature_rep.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/auto_examples/plot_interp.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -182,29 +182,34 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-feature-rep-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-interp-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="basic-feature-representation-classification-pipeline">
-<span id="sphx-glr-auto-examples-plot-feature-rep-py"></span><h1>Basic Feature Representation Classification Pipeline<a class="headerlink" href="#basic-feature-representation-classification-pipeline" title="Permalink to this headline">¶</a></h1>
-<p>This is a basic example using the pipeline to learn a feature representation of the time series data</p>
-<img alt="../_images/sphx_glr_plot_feature_rep_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_feature_rep_001.png" />
+<div class="sphx-glr-example-title section" id="resampling-time-series-data">
+<span id="sphx-glr-auto-examples-plot-interp-py"></span><h1>Resampling Time Series Data<a class="headerlink" href="#resampling-time-series-data" title="Permalink to this headline">¶</a></h1>
+<p>This is a basic example using the pipeline to learn resample a time series</p>
+<p>This may be useful for resampling irregularly sampled time series, or for determining
+an optimal sampling frequency for the data</p>
+<img alt="../_images/sphx_glr_plot_interp_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_interp_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3419, 100, 6))
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (1625, 100, 5))
 (&#39;N series in train: &#39;, 105)
 (&#39;N series in test: &#39;, 35)
-(&#39;N segments in train: &#39;, 3419)
-(&#39;N segments in test: &#39;, 1258)
-(&#39;Accuracy score: &#39;, 0.7567567567567568)
-(&#39;X Shape: &#39;, [3426])
-(&#39;X Shape: &#39;, [3557])
-(&#39;X Shape: &#39;, [3535])
-(&#39;X Shape: &#39;, [3513])
-(&#39;CV Scores: &#39;,    fit_time  score_time  test_score  train_score
-0  0.645799    0.135896    0.703437     0.998832
-1  0.575341    0.213793    0.812500     0.999157
-2  0.678480    0.130668    0.751313     0.999434
-3  0.562148    0.133981    0.747423     0.998292)
-(&#39;Features: &#39;, [&#39;std_0&#39;, &#39;std_1&#39;, &#39;std_2&#39;, &#39;std_3&#39;, &#39;std_4&#39;, &#39;std_5&#39;, &#39;mnx_0&#39;, &#39;mnx_1&#39;, &#39;mnx_2&#39;, &#39;mnx_3&#39;, &#39;mnx_4&#39;, &#39;mnx_5&#39;, &#39;min_0&#39;, &#39;min_1&#39;, &#39;min_2&#39;, &#39;min_3&#39;, &#39;min_4&#39;, &#39;min_5&#39;, &#39;max_0&#39;, &#39;max_1&#39;, &#39;max_2&#39;, &#39;max_3&#39;, &#39;max_4&#39;, &#39;max_5&#39;, &#39;skew_0&#39;, &#39;skew_1&#39;, &#39;skew_2&#39;, &#39;skew_3&#39;, &#39;skew_4&#39;, &#39;skew_5&#39;, &#39;var_0&#39;, &#39;var_1&#39;, &#39;var_2&#39;, &#39;var_3&#39;, &#39;var_4&#39;, &#39;var_5&#39;, &#39;mse_0&#39;, &#39;mse_1&#39;, &#39;mse_2&#39;, &#39;mse_3&#39;, &#39;mse_4&#39;, &#39;mse_5&#39;, &#39;kurt_0&#39;, &#39;kurt_1&#39;, &#39;kurt_2&#39;, &#39;kurt_3&#39;, &#39;kurt_4&#39;, &#39;kurt_5&#39;, &#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#39;, &#39;mean_4&#39;, &#39;mean_5&#39;])
+(&#39;N segments in train: &#39;, 1625)
+(&#39;N segments in test: &#39;, 604)
+(&#39;Accuracy score: &#39;, 0.7715231788079471)
+(&#39;X Shape: &#39;, (2882, 10, 5))
+(&#39;X Shape: &#39;, (2882, 10, 5))
+(&#39;X Shape: &#39;, (2882, 10, 5))
+(&#39;X Shape: &#39;, (2854, 20, 5))
+(&#39;X Shape: &#39;, (2854, 20, 5))
+(&#39;X Shape: &#39;, (2854, 20, 5))
+(&#39;X Shape: &#39;, (2840, 50, 5))
+(&#39;X Shape: &#39;, (2840, 50, 5))
+(&#39;X Shape: &#39;, (2840, 50, 5))
+(&#39;X Shape: &#39;, (2832, 100, 5))
+(&#39;X Shape: &#39;, (2832, 100, 5))
+(&#39;X Shape: &#39;, (2832, 100, 5))
+(&#39;X Shape: &#39;, (4248, 100, 5))
 </pre></div>
 </div>
 <div class="line-block">
@@ -214,31 +219,39 @@
 <span class="c1"># License: BSD</span>
 
 <span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">,</span> <span class="n">Interp</span>
 <span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">TemporalKFold</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">make_scorer</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">validation_curve</span><span class="p">,</span> <span class="n">GridSearchCV</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="kn">as</span> <span class="nn">mpimg</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="k">def</span> <span class="nf">calc_segment_width</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="c1"># number of samples in a 2 second period</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;interp__sample_period&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="mf">2.</span> <span class="o">/</span> <span class="n">period</span><span class="p">)</span>
+
 
 <span class="c1"># seed RNGESUS</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123124</span><span class="p">)</span>
 
 <span class="c1"># load the data</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
+
 <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
 
-<span class="c1"># create a feature representation pipeline</span>
-<span class="n">clf</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;segment&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
+<span class="c1"># I am adding in a column to represent time (50 Hz sampling), since my data doesn&#39;t include it</span>
+<span class="c1"># the Interp class assumes time is the first column in the series</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span><span class="o">/</span><span class="mf">50.</span><span class="p">,</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))])</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;interp&#39;</span><span class="p">,</span> <span class="n">Interp</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mf">25.</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">)),</span>
             <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
             <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
             <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())])</span>
@@ -255,30 +268,36 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 
-<span class="c1"># now lets add some contextual data</span>
-<span class="n">Xc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;side&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]))</span>
-<span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
 
-<span class="c1"># and do a cross validation</span>
-<span class="n">scoring</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">average</span> <span class="o">=</span> <span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+<span class="c1"># lets try a few different sampling periods</span>
+<span class="c1"># temporal splitting of data</span>
+<span class="n">splitter</span> <span class="o">=</span> <span class="n">TemporalKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
 
-<span class="c1"># lets see what feature we used</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Features: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">f_labels</span><span class="p">)</span>
+<span class="c1"># here we use a callable parameter to force the segmenter width to equal 2 seconds</span>
+<span class="c1"># note this is an extension of the sklearn api for setting class parameters</span>
+<span class="n">par_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;interp__sample_period&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">1.</span><span class="o">/</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">10.</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">25.</span><span class="p">,</span> <span class="mf">1.</span><span class="o">/</span><span class="mf">50.</span><span class="p">],</span>
+            <span class="s1">&#39;segment__width&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">calc_segment_width</span><span class="p">]}</span>
 
-<span class="n">img</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;feet.jpg&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">par_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;mean_test_score&#39;</span><span class="p">]</span>
+<span class="n">stds</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;std_test_score&#39;</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">par_grid</span><span class="p">[</span><span class="s1">&#39;interp__sample_period&#39;</span><span class="p">],</span> <span class="n">scores</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Grid Search Scores&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Sample Period [s]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;CV Average Score&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">par_grid</span><span class="p">[</span><span class="s1">&#39;interp__sample_period&#39;</span><span class="p">],</span> <span class="n">scores</span> <span class="o">-</span> <span class="n">stds</span><span class="p">,</span> <span class="n">scores</span> <span class="o">+</span> <span class="n">stds</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;navy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  5.973 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-feature-rep-py">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  13.988 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-interp-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_feature_rep.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_feature_rep.py</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_interp.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_interp.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_feature_rep.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_feature_rep.ipynb</span></code></a></div>
+<a class="reference download internal" href="../_downloads/plot_interp.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_interp.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -291,10 +310,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_segment_rep.html" class="btn btn-neutral float-right" title="Classifying Segments Directly with a Neural Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_scoring.html" class="btn btn-neutral float-right" title="Scoring Time Series Estimators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_watchdata.html" class="btn btn-neutral" title="Working with Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_model_selection2.html" class="btn btn-neutral" title="Hyperparameter Selection 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -12,7 +12,7 @@ using padding and truncation instead of sliding window segmentation.
 
 
 from seglearn.transform import FeatureRep, PadTrunc
-from seglearn.pipe import SegPipe
+from seglearn.pipe import Pype
 from seglearn.datasets import load_watch
 
 from sklearn.pipeline import Pipeline
@@ -33,14 +33,11 @@ y = data['y']
 # create a feature representation pipeline with PadTrunc segmentation
 # the time series are between 20-40 seconds
 # this truncates them all to the first 5 seconds (sampling rate is 50 Hz)
-truncator = PadTrunc(width = 250)
 
-estimator = Pipeline([('features', FeatureRep()),
-                 ('scaler', StandardScaler()),
-                 ('svc', LinearSVC())])
-
-# although optional, this shows how to set the RNG seed for SegPipe using random_state
-pipe = SegPipe(est = estimator, segmenter = truncator, shuffle=True, random_state=42)
+pipe = Pype([('trunc', PadTrunc(width=250)),
+             ('features', FeatureRep()),
+             ('scaler', StandardScaler()),
+             ('svc', LinearSVC())])
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, shuffle=True, random_state=42)

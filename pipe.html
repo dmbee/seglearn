@@ -167,39 +167,22 @@
 <p>This module is an sklearn compatible pipeline for machine learning
 time series data and sequences using a sliding window segmentation</p>
 <dl class="class">
-<dt id="seglearn.pipe.SegPipe">
-<em class="property">class </em><code class="descclassname">seglearn.pipe.</code><code class="descname">SegPipe</code><span class="sig-paren">(</span><em>est</em>, <em>segmenter=SegmentX(overlap=0.5</em>, <em>width=100)</em>, <em>scorer=None</em>, <em>shuffle=True</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#SegPipe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.SegPipe" title="Permalink to this definition">¶</a></dt>
-<dd><p>The pipeline supports learning multi-variate time series with or without relational contextual variables (see introduction).</p>
-<p>The purpose of this pipeline is to assemble the segmentation, feature extraction (optional), feature processing (optional), and final estimator steps into a single pipeline that can be cross validated together setting different parameters.</p>
-<p>The pipeline is applied in 2 steps, when methods <code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">transform</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, or <code class="docutils literal notranslate"><span class="pre">score</span></code> is called</p>
-<p>Step 1: sliding window segmentation performed by the <code class="docutils literal notranslate"><span class="pre">segmenter</span></code> object.</p>
-<p>Step 2: <code class="docutils literal notranslate"><span class="pre">est</span></code> estimator pipeline (or estimator) called</p>
-<p>The time series data (X) is input to the pipeline as a numpy object array, length n_series. The first column holds the time series data, and second column (optional) can hold relational contextual variables. Each element of the time series data is array-like with shape [n_samples, n_time_variables]. n_samples can be different for each element (series). Each element of the contextual variable data is array-like with shape [n_context_variables]. The <code class="docutils literal notranslate"><span class="pre">util</span></code> module has functions to help create the necessary data structure.</p>
-<p>The target y can be like a contextual variable, with one value per time series, in which case <code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> should be used as the segmenter. Or if the target variable y is itself a time series, than <code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> should be used.</p>
-<p>The API for setting parameters for the segmenter and <code class="docutils literal notranslate"><span class="pre">est</span></code> pipelines are similar to sklearn but slightly different. It is compatible with sklearn parameter optimization tools (eg GridSearchCV). See the set_params method, and examples for details.</p>
+<dt id="seglearn.pipe.Pype">
+<em class="property">class </em><code class="descclassname">seglearn.pipe.</code><code class="descname">Pype</code><span class="sig-paren">(</span><em>steps</em>, <em>scorer=None</em>, <em>memory=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype" title="Permalink to this definition">¶</a></dt>
+<dd><p>This pipeline extends the sklearn Pieline to support transformers that change X, y, sample_weight, and the number of samples.</p>
+<p>It also adds some new options for setting hyper-parameters with callables and in reference to other parameters (see examples).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>est</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn estimator or pipeline or None</span></dt>
-<dd><div class="first last line-block">
-<div class="line">for feature processing (optional) and applying the final estimator</div>
-<div class="line">if None, only segmentation and expansion is done</div>
-</div>
+<dt><strong>steps</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">List of (name, transform) tuples (implementing fit/transform) that are chained, in the order in which they are chained, with the last object an estimator.</p>
 </dd>
-<dt><strong>segmenter</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Segmentation transformer to convert time series data to segmented time series data</p>
-</dd>
-<dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
-<dd><p class="first last">shuffle the segments before fitting the <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline (recommended)</p>
-</dd>
-<dt><strong>scorer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable, optional</span></dt>
-<dd><p class="first last">scorer callable made with sklearn.metrics.make_scorer, can only return 1 score</p>
-</dd>
-<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default = None</span></dt>
-<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
-</dd>
+<dt><strong>scorer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn scorer object</span></dt>
+<dd></dd>
+<dt><strong>memory</strong> <span class="classifier-delimiter">:</span> <span class="classifier">currently not implemented</span></dt>
+<dd></dd>
 </dl>
 </td>
 </tr>
@@ -207,17 +190,13 @@ time series data and sequences using a sliding window segmentation</p>
 </table>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.feature_functions</span> <span class="k">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skew</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">SegPipe</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fts</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">var</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="n">std</span><span class="p">,</span> <span class="s1">&#39;skew&#39;</span><span class="p">:</span> <span class="n">skew</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;ftr&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span> <span class="o">=</span> <span class="n">fts</span><span class="p">)),(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span><span class="n">RandomForestClassifier</span><span class="p">())])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;segment&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
@@ -227,9 +206,9 @@ time series data and sequences using a sliding window segmentation</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>N_train</strong> <span class="classifier-delimiter">:</span> <span class="classifier">number of training segments - available after calling fit method</span></dt>
+<dt><strong>N_train</strong> <span class="classifier-delimiter">:</span> <span class="classifier">number of training samples - available after calling fit method</span></dt>
 <dd></dd>
-<dt><strong>N_test</strong> <span class="classifier-delimiter">:</span> <span class="classifier">number of testing segments - available after calling predict, or score methods</span></dt>
+<dt><strong>N_test</strong> <span class="classifier-delimiter">:</span> <span class="classifier">number of testing samples - available after calling predict, or score methods</span></dt>
 <dd></dd>
 </dl>
 </td>
@@ -243,54 +222,100 @@ time series data and sequences using a sliding window segmentation</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.SegPipe.fit" title="seglearn.pipe.SegPipe.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X,&nbsp;y,&nbsp;**fit_params)</td>
-<td>Fit the data.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.decision_function" title="seglearn.pipe.Pype.decision_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decision_function</span></code></a>(X)</td>
+<td>Apply transforms, and decision_function of the final estimator</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.SegPipe.fit_transform" title="seglearn.pipe.SegPipe.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X,&nbsp;y,&nbsp;**fit_params)</td>
-<td>Applies fit and transform methods to the full pipeline sequentially</td>
+<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.fit" title="seglearn.pipe.Pype.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the model</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_predict</span></code>(**kwargs)</td>
+<td>Applies fit_predict of last step in pipeline after transforms.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.fit_transform" title="seglearn.pipe.Pype.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the model and transform with the final estimator Fits all the transforms one after the other and transforms the data, then uses fit_transform on transformed data with the final estimator.</td>
 </tr>
 <tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.SegPipe.predict" title="seglearn.pipe.SegPipe.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X,&nbsp;y)</td>
-<td>Applies transform to <code class="docutils literal notranslate"><span class="pre">feed</span></code> pipeline, segment expansion, and predict on <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline.</td>
+<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.predict" title="seglearn.pipe.Pype.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</td>
+<td>Apply transforms to the data, and predict with the final estimator</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.SegPipe.score" title="seglearn.pipe.SegPipe.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X,&nbsp;y[,&nbsp;sample_weight])</td>
-<td>Applies transform and score with the final estimator or scorer function if set as init parameter</td>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.predict_log_proba" title="seglearn.pipe.Pype.predict_log_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_log_proba</span></code></a>(X)</td>
+<td>Apply transforms, and predict_log_proba of the final estimator</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.SegPipe.set_params" title="seglearn.pipe.SegPipe.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</td>
-<td>Set the parameters of of the pipeline.</td>
+<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.predict_proba" title="seglearn.pipe.Pype.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</td>
+<td>Apply transforms, and predict_proba of the final estimator</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.SegPipe.transform" title="seglearn.pipe.SegPipe.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[,&nbsp;y])</td>
-<td>Applies transform to <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.score" title="seglearn.pipe.Pype.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X[,&nbsp;y,&nbsp;sample_weight])</td>
+<td>Apply transforms, and score with the final estimator</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.set_params" title="seglearn.pipe.Pype.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.transform" title="seglearn.pipe.Pype.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[,&nbsp;y])</td>
+<td>Apply transforms, and transform with the final estimator This also works where final estimator is <code class="docutils literal notranslate"><span class="pre">None</span></code>: all prior transformations are applied.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.transform_predict" title="seglearn.pipe.Pype.transform_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_predict</span></code></a>(X,&nbsp;y)</td>
+<td>Apply transforms to the data, and predict with the final estimator.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
-<dt id="seglearn.pipe.SegPipe.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#SegPipe.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.SegPipe.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the data.
-Applies fit to <code class="docutils literal notranslate"><span class="pre">feed</span></code> pipeline, segment expansion, and fit on <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline.</p>
+<dt id="seglearn.pipe.Pype.decision_function">
+<code class="descname">decision_function</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.decision_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.decision_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transforms, and decision_function of the final estimator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series]</span></dt>
-<dd><p class="first last">target vector</p>
-</dd>
-<dt><strong>fit_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">optional parameters</span></dt>
-<dd><p class="first last">passed to <code class="docutils literal notranslate"><span class="pre">est</span></code> pipe fit method</p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Return self</p>
+<dt><strong>y_score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.pipe.Pype.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model</p>
+<p>Fit all the transforms one after the other and transform the
+data, then fit the transformed data using the final estimator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Training data. Must fulfill input requirements of first step of the
+pipeline.</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable, default=None</span></dt>
+<dd><p class="first last">Training targets. Must fulfill label requirements for all steps of
+the pipeline.</p>
+</dd>
+<dt><strong>**fit_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict of string -&gt; object</span></dt>
+<dd><p class="first last">Parameters passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method of each step, where
+each parameter name is prefixed such that parameter <code class="docutils literal notranslate"><span class="pre">p</span></code> for step
+<code class="docutils literal notranslate"><span class="pre">s</span></code> has key <code class="docutils literal notranslate"><span class="pre">s__p</span></code>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Pipeline</span></dt>
+<dd><p class="first last">This estimator</p>
 </dd>
 </dl>
 </td>
@@ -300,29 +325,39 @@ Applies fit to <code class="docutils literal notranslate"><span class="pre">feed
 </dd></dl>
 
 <dl class="method">
-<dt id="seglearn.pipe.SegPipe.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#SegPipe.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.SegPipe.fit_transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Applies fit and transform methods to the full pipeline sequentially</p>
+<dt id="seglearn.pipe.Pype.fit_transform">
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model and transform with the final estimator
+Fits all the transforms one after the other and transforms the
+data, then uses fit_transform on transformed data with the final
+estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Training data. Must fulfill input requirements of first step of the
+pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], optional</span></dt>
-<dd><p class="first last">target vector</p>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable, default=None</span></dt>
+<dd><p class="first last">Training targets. Must fulfill label requirements for all steps of
+the pipeline.</p>
+</dd>
+<dt><strong>**fit_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict of string -&gt; object</span></dt>
+<dd><p class="first last">Parameters passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method of each step, where
+each parameter name is prefixed such that parameter <code class="docutils literal notranslate"><span class="pre">p</span></code> for step
+<code class="docutils literal notranslate"><span class="pre">s</span></code> has key <code class="docutils literal notranslate"><span class="pre">s__p</span></code>.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
-<dd><p class="first last">transformed feature data</p>
+<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_transformed_features]</span></dt>
+<dd><p class="first last">Transformed samples</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
-<dd><p class="first last">expanded target vector</p>
+<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples]</span></dt>
+<dd><p class="first last">Transformed target</p>
 </dd>
 </dl>
 </td>
@@ -332,29 +367,24 @@ Applies fit to <code class="docutils literal notranslate"><span class="pre">feed
 </dd></dl>
 
 <dl class="method">
-<dt id="seglearn.pipe.SegPipe.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#SegPipe.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.SegPipe.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Applies transform to <code class="docutils literal notranslate"><span class="pre">feed</span></code> pipeline, segment expansion, and predict on <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline.</p>
+<dt id="seglearn.pipe.Pype.predict">
+<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transforms to the data, and predict with the final estimator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
-</dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], optional</span></dt>
-<dd><p class="first last">target vector</p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array like shape [n_segments]</span></dt>
-<dd><p class="first last">expanded target vector</p>
-</dd>
-<dt><strong>yp</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array like shape [n_segments]</span></dt>
-<dd><p class="first last">predicted (expanded) target vector</p>
+<dt><strong>yp</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">Predicted transformed target</p>
 </dd>
 </dl>
 </td>
@@ -364,22 +394,78 @@ Applies fit to <code class="docutils literal notranslate"><span class="pre">feed
 </dd></dl>
 
 <dl class="method">
-<dt id="seglearn.pipe.SegPipe.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#SegPipe.score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.SegPipe.score" title="Permalink to this definition">¶</a></dt>
-<dd><p>Applies transform and score with the final estimator or scorer function if set as init parameter</p>
+<dt id="seglearn.pipe.Pype.predict_log_proba">
+<code class="descname">predict_log_proba</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_log_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_log_proba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transforms, and predict_log_proba of the final estimator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], optional</span></dt>
-<dd><p class="first last">target vector</p>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>y_score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.pipe.Pype.predict_proba">
+<code class="descname">predict_proba</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_proba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transforms, and predict_proba of the final estimator</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
 </dd>
-<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
-<dd><p class="first last">If not none, this is expanded from a by-series to a by-segment representation and passed as a <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> keyword argument to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method of the <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline.</p>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>y_proba</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt>
+<dd><p class="first last">Predicted probability of each class</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.pipe.Pype.score">
+<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transforms, and score with the final estimator</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable, default=None</span></dt>
+<dd><p class="first last">Targets used for scoring. Must fulfill label requirements for all
+steps of the pipeline.</p>
+</dd>
+<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, default=None</span></dt>
+<dd><p class="first last">If not None, this argument is passed as <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> keyword
+argument to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method of the final estimator.</p>
 </dd>
 </dl>
 </td>
@@ -395,27 +481,51 @@ Applies fit to <code class="docutils literal notranslate"><span class="pre">feed
 </dd></dl>
 
 <dl class="method">
-<dt id="seglearn.pipe.SegPipe.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#SegPipe.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.SegPipe.set_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the parameters of of the pipeline.</p>
+<dt id="seglearn.pipe.Pype.set_params">
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this estimator.
+Valid parameter keys can be listed with <code class="docutils literal notranslate"><span class="pre">get_params()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.pipe.Pype.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transforms, and transform with the final estimator
+This also works where final estimator is <code class="docutils literal notranslate"><span class="pre">None</span></code>: all prior
+transformations are applied.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
-<dd><div class="first last line-block">
-<div class="line">parameter keys for the <code class="docutils literal notranslate"><span class="pre">feed</span></code> pipeline are preceeded by <code class="docutils literal notranslate"><span class="pre">f$</span></code></div>
-<div class="line">parameter keys for the <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline are preceded by <code class="docutils literal notranslate"><span class="pre">e$</span></code></div>
-<div class="line">parameter keys can be set to the value of another parameter using the key for that parameter as a value</div>
-</div>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Data to transform. Must fulfill input requirements of first step
+of the pipeline.</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">Target</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Returns self</p>
+<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_transformed_features]</span></dt>
+<dd><p class="first last">Transformed data</p>
+</dd>
+<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples]</span></dt>
+<dd><p class="first last">Transformed target</p>
 </dd>
 </dl>
 </td>
@@ -425,30 +535,31 @@ Applies fit to <code class="docutils literal notranslate"><span class="pre">feed
 </dd></dl>
 
 <dl class="method">
-<dt id="seglearn.pipe.SegPipe.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#SegPipe.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.SegPipe.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Applies transform to <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline.
-If the target vector y is supplied, the segmentation expansion will be performed on it and returned.</p>
+<dt id="seglearn.pipe.Pype.transform_predict">
+<code class="descname">transform_predict</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform_predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transforms to the data, and predict with the final estimator.
+Unlike predict, this also returns the transformed target</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
+<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], optional</span></dt>
-<dd><p class="first last">target vector</p>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">target</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
-<dd><p class="first last">transformed feature data</p>
+<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">Transformed target</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
-<dd><p class="first last">expanded target vector</p>
+<dt><strong>yp</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
+<dd><p class="first last">Predicted transformed target</p>
 </dd>
 </dl>
 </td>

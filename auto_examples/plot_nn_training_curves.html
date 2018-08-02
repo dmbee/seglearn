@@ -30,8 +30,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Continuous Target and Time Series Regression" href="plot_regression.html" />
-    <link rel="prev" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html" /> 
+    <link rel="next" title="Time Series Forecasting" href="plot_forecast.html" />
+    <link rel="prev" title="Hyperparameter Selection 1" href="plot_model_selection1.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -101,6 +101,8 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Neural Network Training Curves</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#simple-nn-model">Simple NN Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
@@ -108,10 +110,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#training-curves">Training Curves</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
 </ul>
 </li>
@@ -195,7 +196,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">SegPipe</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">SegmentX</span>
 <span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -240,8 +242,9 @@
 
 <span class="c1"># create a segment learning pipeline</span>
 <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">est</span> <span class="o">=</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">validation_split</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">)</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span><span class="n">SegmentX</span><span class="p">()),</span>
+             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                                      <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">validation_split</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">))])</span>
 </pre></div>
 </div>
 </div>
@@ -261,16 +264,16 @@
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>acc      loss   val_acc  val_loss
-0  0.252220  1.788852  0.365057  1.517707
-1  0.463943  1.237146  0.586648  0.928221
-2  0.606039  0.876796  0.669034  0.741350
-3  0.659680  0.738335  0.705966  0.653184
-4  0.710480  0.646987  0.737216  0.558477
-5  0.725400  0.594640  0.759943  0.542868
-6  0.763766  0.514429  0.769886  0.466165
-7  0.765897  0.479128  0.794034  0.421424
-8  0.787211  0.440142  0.796875  0.411768
-9  0.804973  0.420362  0.809659  0.383671
+0  0.239787  1.785685  0.262784  1.669287
+1  0.559503  1.192370  0.512784  1.025170
+2  0.641208  0.821876  0.461648  0.939865
+3  0.681705  0.704800  0.555398  0.810602
+4  0.721492  0.603601  0.538352  0.894402
+5  0.741385  0.528239  0.522727  0.962142
+6  0.761279  0.480942  0.653409  0.835637
+7  0.777620  0.450151  0.717330  0.652646
+8  0.806039  0.415766  0.589489  0.783538
+9  0.811368  0.389123  0.610795  0.866519
 </pre></div>
 </div>
 </div>
@@ -285,7 +288,7 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
-<p><strong>Total running time of the script:</strong> ( 2 minutes  4.874 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 2 minutes  8.747 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-nn-training-curves-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_nn_training_curves.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>
@@ -304,10 +307,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_regression.html" class="btn btn-neutral float-right" title="Continuous Target and Time Series Regression" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_forecast.html" class="btn btn-neutral float-right" title="Time Series Forecasting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_segment_rep.html" class="btn btn-neutral" title="Classifying Segments Directly with a Neural Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_model_selection1.html" class="btn btn-neutral" title="Hyperparameter Selection 1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

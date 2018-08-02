@@ -31,7 +31,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="About us" href="../about.html" />
-    <link rel="prev" title="Hyperparameter Selection 2" href="plot_model_selection2.html" /> 
+    <link rel="prev" title="Resampling Time Series Data" href="plot_interp.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -101,11 +101,12 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Scoring Time Series Estimators</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#confusion-plot">CONFUSION PLOT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setup">SETUP</a></li>
@@ -203,7 +204,7 @@ segments (not series’) as instances of the data.</p>
 
 
 <span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">SegPipe</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
 <span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
@@ -252,10 +253,12 @@ segments (not series’) as instances of the data.</p>
 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
 
 <span class="c1"># create a feature representation pipeline</span>
-<span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
-                <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
-                <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())])</span>
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">)</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
+         <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
+         <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+         <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())]</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
 
 <span class="c1"># split the data</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -271,13 +274,13 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3519, 100, 6))
-(&#39;Accuracy score: &#39;, 0.7435233160621761)
+(&#39;Accuracy score: &#39;, 0.7357512953367875)
 </pre></div>
 </div>
 </div>
 <div class="section" id="option-2-generate-true-and-predicted-target-values-for-the-segments">
 <h2>OPTION 2: generate true and predicted target values for the segments<a class="headerlink" href="#option-2-generate-true-and-predicted-target-values-for-the-segments" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transform_predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 <span class="c1"># use any of the sklearn scorers</span>
 <span class="n">f1_macro</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;F1 score: &quot;</span><span class="p">,</span> <span class="n">f1_macro</span><span class="p">)</span>
@@ -288,7 +291,7 @@ segments (not series’) as instances of the data.</p>
 </div>
 <img alt="../_images/sphx_glr_plot_scoring_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_scoring_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;F1 score: &#39;, 0.7616346536567894)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;F1 score: &#39;, 0.7415567232887338)
 </pre></div>
 </div>
 </div>
@@ -312,15 +315,15 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3437, 100, 6))
-(&#39;X Shape: &#39;, (3461, 100, 6))
-(&#39;X Shape: &#39;, (3590, 100, 6))
-(&#39;X Shape: &#39;, (3543, 100, 6))
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3426, 100, 6))
+(&#39;X Shape: &#39;, (3557, 100, 6))
+(&#39;X Shape: &#39;, (3535, 100, 6))
+(&#39;X Shape: &#39;, (3513, 100, 6))
 (&#39;CV Scores: &#39;,    fit_time  score_time  test_score  train_score
-0  0.608282    0.125231    0.809677     0.998836
-1  0.607614    0.127658    0.695724     1.000000
-2  0.635143    0.117922    0.869365     0.998329
-3  0.625822    0.118699    0.756614     0.999153)
+0  1.259788    0.138552    0.768185     0.998249
+1  0.751636    0.229721    0.806250     0.999719
+2  0.648345    0.124693    0.775832     0.999434
+3  0.581596    0.127480    0.743127     0.998292)
 </pre></div>
 </div>
 </div>
@@ -330,21 +333,21 @@ segments (not series’) as instances of the data.</p>
 <span class="c1"># this can be used to cross_validate or grid search with any 1 score</span>
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">scorer</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">)</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">scorer</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">)</span>
 <span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV F1 Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3437, 100, 6))
-(&#39;X Shape: &#39;, (3461, 100, 6))
-(&#39;X Shape: &#39;, (3590, 100, 6))
-(&#39;X Shape: &#39;, (3543, 100, 6))
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3426, 100, 6))
+(&#39;X Shape: &#39;, (3557, 100, 6))
+(&#39;X Shape: &#39;, (3535, 100, 6))
+(&#39;X Shape: &#39;, (3513, 100, 6))
 (&#39;CV F1 Scores: &#39;,    fit_time  score_time  test_score  train_score
-0  0.609956    0.126464    0.797545     0.998990
-1  0.604173    0.123401    0.805511     1.000000
-2  0.629102    0.114671    0.868033     0.999779
-3  1.079864    0.120155    0.763875     0.999259)
+0  0.575174    0.280526    0.774252     0.998932
+1  0.611179    0.120138    0.846115     0.998263
+2  0.584033    0.123031    0.809397     0.999239
+3  0.651527    0.124740    0.756664     0.999731)
 </pre></div>
 </div>
 </div>
@@ -352,16 +355,22 @@ segments (not series’) as instances of the data.</p>
 <h2>SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE<a class="headerlink" href="#scoring-workaround-2-work-outside-the-pipeline" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to have multiple score computed, the only way is as follows</span>
 <span class="c1">#</span>
-<span class="c1"># First transform the time series data into segments and then score the ``est`` part of the</span>
-<span class="c1"># pipeline.</span>
+<span class="c1"># First transform the time series data into segments and then use an sklearn Pipeline</span>
 <span class="c1">#</span>
-<span class="c1"># The disadvantage of this is that the parameters of the ``seg`` pipeline cannot be</span>
+<span class="c1"># The disadvantage of this is that the parameters of the segmentation cannot be</span>
 <span class="c1"># optimized with this approach</span>
 
 <span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentX</span><span class="p">()</span>
 <span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
+                <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+                <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())])</span>
+
+
+
 <span class="n">scoring</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;precision_macro&#39;</span><span class="p">,</span><span class="s1">&#39;recall_macro&#39;</span><span class="p">,</span><span class="s1">&#39;f1_macro&#39;</span><span class="p">]</span>
-<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span>
                            <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores (workaround): &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
@@ -372,15 +381,15 @@ segments (not series’) as instances of the data.</p>
 (&#39;X Shape: &#39;, (3509, 100, 6))
 (&#39;X Shape: &#39;, (3511, 100, 6))
 (&#39;CV Scores (workaround): &#39;,    fit_time        ...          test_recall_macro
-0  0.505737        ...                   0.792567
-1  0.501532        ...                   0.843509
-2  0.493912        ...                   0.807619
-3  0.492230        ...                   0.801529
+0  0.631923        ...                   0.807886
+1  0.650452        ...                   0.828609
+2  0.639566        ...                   0.798632
+3  0.596852        ...                   0.791970
 
 [4 rows x 6 columns])
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  14.281 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  16.344 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_scoring.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
@@ -402,7 +411,7 @@ segments (not series’) as instances of the data.</p>
         <a href="../about.html" class="btn btn-neutral float-right" title="About us" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_model_selection2.html" class="btn btn-neutral" title="Hyperparameter Selection 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_interp.html" class="btn btn-neutral" title="Resampling Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

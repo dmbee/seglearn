@@ -171,28 +171,6 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-
-<div class="viewcode-block" id="make_ts_data"><a class="viewcode-back" href="../../util.html#seglearn.util.make_ts_data">[docs]</a><span class="k">def</span> <span class="nf">make_ts_data</span><span class="p">(</span><span class="n">time_series</span><span class="p">,</span> <span class="n">context_vars</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Combines time series data and relational contextual variables into an ``TS_Data`` object compatible with ``SegPipe`` and related classes. If context_vars are none, a numpy array is returned.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    time_series : array-like, shape [n_series, ]</span>
-<span class="sd">        Time series data - each element (series) may have a different length</span>
-<span class="sd">    context_vars : array-like, shape [n_series, n_context_variables]</span>
-<span class="sd">        contextual relational data</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    X : array-like [n_series, ]</span>
-<span class="sd">        ``TS_Data object containing time series and contextual data</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">context_vars</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">time_series</span><span class="p">,</span> <span class="n">context_vars</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">time_series</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="get_ts_data_parts"><a class="viewcode-back" href="../../util.html#seglearn.util.get_ts_data_parts">[docs]</a><span class="k">def</span> <span class="nf">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Separates time series data object into time series variables and contextual variables</span>
@@ -210,10 +188,13 @@
 <span class="sd">        contextual variables</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c1"># todo: remove np array</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="ow">is</span> <span class="n">TS_Data</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">ts_data</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">context_data</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="kc">None</span></div>
+
+
 
 
 <div class="viewcode-block" id="check_ts_data"><a class="viewcode-back" href="../../util.html#seglearn.util.check_ts_data">[docs]</a><span class="k">def</span> <span class="nf">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>

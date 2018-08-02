@@ -167,7 +167,7 @@
 <p>This module is for transforming time series data.</p>
 <dl class="class">
 <dt id="seglearn.transform.SegmentX">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentX</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentX</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>shuffle=False</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformer for sliding window segmentation for datasets where
 X is time series data, optionally with contextual variables
 and each time series in X has a single target value y</p>
@@ -180,7 +180,15 @@ and each time series in X has a single target value y</p>
 <dd><p class="first last">width of segments (number of samples)</p>
 </dd>
 <dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1)</span></dt>
-<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
+<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.
+shuffle : bool, optional
+shuffle the segments before fitting the <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline (recommended)</p>
+</dd>
+<dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
+</dd>
+<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default = None</span></dt>
+<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
 </dd>
 </dl>
 </td>
@@ -226,6 +234,9 @@ and each time series in X has a single target value y</p>
 <dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
 <dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
 </dd>
+<dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">Shuffles data after transformation</p>
+</dd>
 </dl>
 </td>
 </tr>
@@ -264,10 +275,10 @@ If y and sample_weight are provided, they are transformed to align to the new sa
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
+<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
 <dd><p class="first last">transformed time series data</p>
 </dd>
-<dt><strong>y_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
+<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
 <dd><p class="first last">expanded target vector</p>
 </dd>
 <dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_segments]</span></dt>
@@ -284,7 +295,7 @@ If y and sample_weight are provided, they are transformed to align to the new sa
 
 <dl class="class">
 <dt id="seglearn.transform.SegmentXY">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXY</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>y_func=&lt;function last&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXY</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>y_func=&lt;function last&gt;</em>, <em>shuffle=False</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformer for sliding window segmentation for datasets where
 X is time series data, optionally with contextual variables
 and y is also time series data with the same sampling interval as X</p>
@@ -301,6 +312,12 @@ and y is also time series data with the same sampling interval as X</p>
 </dd>
 <dt><strong>y_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
 <dd><p class="first last">returns target from array of target segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, <code class="docutils literal notranslate"><span class="pre">middle</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
+</dd>
+<dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
+</dd>
+<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default = None</span></dt>
+<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
 </dd>
 </dl>
 </td>
@@ -392,10 +409,10 @@ Currently sample weights always returned as None</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
+<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments, ]</span></dt>
 <dd><p class="first last">transformed time series data</p>
 </dd>
-<dt><strong>y_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
+<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_segments]</span></dt>
 <dd><p class="first last">expanded target vector</p>
 </dd>
 <dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
@@ -411,7 +428,7 @@ Currently sample weights always returned as None</p>
 
 <dl class="class">
 <dt id="seglearn.transform.SegmentXYForecast">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXYForecast</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>forecast=10</em>, <em>y_func=&lt;function last&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXYForecast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXYForecast" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXYForecast</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>forecast=10</em>, <em>y_func=&lt;function last&gt;</em>, <em>shuffle=False</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXYForecast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXYForecast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forecast sliding window segmentation for time series or sequence datasets</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -429,6 +446,12 @@ Currently sample weights always returned as None</p>
 </dd>
 <dt><strong>y_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
 <dd><p class="first last">returns target from array of target forecast segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
+</dd>
+<dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
+</dd>
+<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default = None</span></dt>
+<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
 </dd>
 </dl>
 </td>
@@ -649,8 +672,133 @@ If y is a time series and passed, it will be transformed as well</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="seglearn.transform.Interp">
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">Interp</code><span class="sig-paren">(</span><em>sample_period</em>, <em>kind='linear'</em>, <em>categorical_target=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#Interp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.Interp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transformer for resampling time series data to a fixed period over closed interval (direct value interpolation).
+Default interpolation is linear, but other types can be specified.
+If the target is a series, it will be resampled as well.</p>
+<p>categorical_target should be set to True if the target series is a class
+The transformer will then use nearest neighbor interp on the target.</p>
+<p>This transformer assumes the time dimension is column 0, i.e. X[0][:,0]
+Note the time dimension is removed, since this becomes a linear sequence.
+If start time or similar is important to the estimator, use a context variable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>sample_period</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numeric</span></dt>
+<dd><p class="first last">desired sampling period</p>
+</dd>
+<dt><strong>kind</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">interpolation type - valid types as per scipy.interpolate.interp1d</p>
+</dd>
+<dt><strong>categorical_target</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">set to True for classification problems nearest use nearest instead of linear interp</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.Interp.fit" title="seglearn.transform.Interp.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
+<td>Fit the data and transform (required by sklearn API)</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.Interp.transform" title="seglearn.transform.Interp.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[,&nbsp;y,&nbsp;sample_weight])</td>
+<td>Transforms the time series data with linear direct value interpolation If y is a time series and passed, it will be transformed as well The time dimension is removed from the data</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="seglearn.transform.Interp.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#Interp.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.Interp.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the transform. Does nothing, for compatibility with sklearn API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.Interp.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#Interp.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.Interp.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the time series data with linear direct value interpolation
+If y is a time series and passed, it will be transformed as well
+The time dimension is removed from the data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data created as per <code class="docutils literal notranslate"><span class="pre">make_ts_data</span></code></p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">target vector</p>
+</dd>
+<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
+<dd><p class="first last">sample weights</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
+<dd><p class="first last">transformed time series data</p>
+</dd>
+<dt><strong>y_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series]</span></dt>
+<dd><p class="first last">expanded target vector</p>
+</dd>
+<dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like or None</span></dt>
+<dd><p class="first last">None is returned if target is changed. Otherwise it is returned unchanged.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="seglearn.transform.FeatureRep">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2b5c9959a758&gt;</em>, <em>'max': &lt;function max at 0x2b5c9959a668&gt;</em>, <em>'mean': &lt;function mean at 0x2b5c9959a488&gt;</em>, <em>'min': &lt;function min at 0x2b5c9959a5f0&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2b5c9959a938&gt;</em>, <em>'mse': &lt;function mse at 0x2b5c9959a7d0&gt;</em>, <em>'skew': &lt;function skew at 0x2b5c9959a6e0&gt;</em>, <em>'std': &lt;function std at 0x2b5c9959a500&gt;</em>, <em>'var': &lt;function var at 0x2b5c9959a578&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2ab502d23320&gt;</em>, <em>'max': &lt;function max at 0x2ab502d23230&gt;</em>, <em>'mean': &lt;function mean at 0x2ab502d23050&gt;</em>, <em>'min': &lt;function min at 0x2ab502d231b8&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2ab502d23500&gt;</em>, <em>'mse': &lt;function mse at 0x2ab502d23398&gt;</em>, <em>'skew': &lt;function skew at 0x2ab502d232a8&gt;</em>, <em>'std': &lt;function std at 0x2ab502d230c8&gt;</em>, <em>'var': &lt;function var at 0x2ab502d23140&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
 <dd><p>A transformer for calculating a feature representation from segmented time series data.</p>
 <p>This transformer calculates features from the segmented time series’, by computing the same feature set for each segment from each time series in the data set.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">features</span></code> computed are a parameter of this transformer, defined by a dict of functions. The seglearn package includes some useful features, but this basic feature set can be easily extended.</p>

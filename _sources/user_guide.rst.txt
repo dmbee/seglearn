@@ -15,23 +15,20 @@ Learning multivariate sequential data with the sliding window method is useful i
 Time Series Data
 ----------------
 
-Sequence and time series data have a general formulation as sequence pairs :math:`\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}`, where each :math:`\mathbf{X}_i` is a multivariate sequence with :math:`T_i` samples :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle` and each :math:`\mathbf{y}_i` target is a univariate sequence with :math:`T_i` samples :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle` and each :math:`\mathbf{y}_i` target is a univariate sequence with :math:`T_i` samples :math:`\langle y_{i,1}, y_{i,2},..., y_{i,T_i} \rangle`. The targets :math:`\mathbf{y}_i` can either be sequences of categorical class labels (for classification problems), or sequences of continuous data (for regression problems). The number of samples :math:`T_i` varies between the sequence pairs in the data set.
+Sequence and time series data have a general formulation as sequence pairs :math:`\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}`, where each :math:`\mathbf{X}_i` is a multivariate sequence with :math:`T_i` samples :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle` and each :math:`\mathbf{y}_i` target is a univariate sequence with :math:`T_i` samples :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle` and each :math:`\mathbf{y}_i` target is a univariate sequence with :math:`T_i` samples :math:`\langle y_{i,1}, y_{i,2},..., y_{i,T_i} \rangle`. The targets :math:`\mathbf{y}_i` can either be sequences of categorical class labels (for classification problems), or sequences of continuous data (for regression problems). The number of samples :math:`T_i` varies between the sequence pairs in the data set. Time series' with a regular sampling period may be treated equivalently to sequences. Irregularly sampled time series are formulated with an additional sequence variable :math:`\mathbf{t}_i` that increases monotonically and indicates the timing of samples in the data set :math:`\{(\mathbf{t}_i, \mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}`.
 
 Important sub-classes of the general sequence learning problem are sequence classification and sequence prediction. In sequence classification problems (eg song genre classification), the target for each sequence is a fixed class label :math:`y_i` and the data takes the form :math:`\{(\mathbf{X}_i, y_i)\}_{i=1}^{N}`. Sequence prediction involves predicting a future value of the target :math:`(y_{i,t+f})` or future values :math:`\langle y_{i,t+1}, y_{i,t+2},..., y_{i,t+f} \rangle`, given :math:`\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,t} \rangle, \langle y_{i,1}, y_{i,2},..., y_{i,t} \rangle`, and sometimes also :math:`\langle \mathbf{x}_{i,t+1}, \mathbf{x}_{i,t+2},...,\mathbf{x}_{i,t+f} \rangle`.
 
 A final important generalization is the case where contextual data associated with each sequence, but not varying within the sequence, exists to support the machine learning algorithm performance. Perhaps the algorithm for reading electrocardiograms will be given access to laboratory data, the patient's age, or known medical diagnoses to assist with classifying the sequential data recovered from the leads.
 
-seglearn provides a flexible, user-friendly framework for learning time series and sequences in all of the above contexts. Sliding window segmentation converts the sequence data :math:`\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}` into segment data :math:`\{(\mathbf{X}_j,\mathbf{y}_j)\}_{j=1}^{M}` where the number of data points in each segment :math:`T_j` is the same for all segments. The padding & truncation approach enforces a fixed length on each sequence, but does not alter the number of sequences in the data set.
-
-Fixed sequence / segment length permits utilization of many classical and modern machine learning algorithms that require fixed length inputs. The segments can either be learned directly with various neural network architectures, or a feature representation can be computed for each segment, allowing classical algorithms to learn the feature representation.
-
+seglearn provides a flexible, user-friendly framework for learning time series and sequences in all of the above contexts. Transforms for sequence padding, truncation, and sliding window segmentation are implemented to fix sample number across all sequences in the data set. This permits utilization of many classical and modern machine learning algorithms that require fixed length inputs. Sliding window segmentation transforms the sequence data into a piecewise representation (segments), which is particularly effective for learning periodized sequences. An interpolation transform is implemented for resampling time series'. The sequence or time series data can be learned directly with various neural network architectures, or via a feature representation which greatly enhances performance of classical algorithms.
 
 Why this Package
 ----------------
 
-The algorithms to perform sliding window segmentation or padding & truncation are straightforward. Without this package, pre-processing time series or sequence data to fixed length segments could be performed outside of the scikit learn framework, and the machine learning algorithms applied to the segments directly or a feature representation of them with scikit-learn. However, algorithm performance is highly dependent on the segmentation parameters (window length and overlap). This package integrates the segmentation into the pipeline so that parameter selection can be performed on the segmentation parameters, and the rest of the pipeline simultaneously.
+The algorithms to perform sliding window segmentation, padding & truncation, etc are straightforward. Without this package, pre-processing time series or sequence data to fixed length segments could be performed outside of the scikit learn framework, and the machine learning algorithms applied to the segments directly or a feature representation of them with scikit-learn. However, estimator performance is highly dependent on the hyper-parameters of the pre-processing algorithms (eg segmentation window length and overlap). seglearn lets you optimizing everything together.
 
-The reason a new package is required to do this, instead of just a new transformer, is that time series segmentation changes the number of samples (instances) in the dataset. The final estimator sees one instance for each segment - which involves changing the number of samples and the target mid pipeline.
+The reason a new package is required to do this, instead of just a new transformer, is that time series segmentation and other transforms change the number of samples (instances) in the dataset. The final estimator sees one instance for each segment - which involves changing the number of samples and the target mid pipeline.
 
 Changing the number of samples and the target vector mid-pipeline is not supported in scikit-learn - hence why this package is needed.
 
@@ -45,10 +42,11 @@ The main contributions of this package are:
 2) ``SegmentXY`` - transformer class for performing the time series / sequence sliding window segmentation when the target is a time series or sequence.
 3) ``SegmentXYForecast`` - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.
 4) ``PadTrunc`` - transformer class for fixing time series / sequence length using a combination of padding and truncation
-4) ``FeatureRep`` - transformer class for computing a feature representation from segment data, and
-5) ``SegPipe`` - pipeline class for integrating this for use with scikit learn machine learning algorithms and evaluation tools
-6) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
-7) ``split`` - a module for splitting time series or sequences along the temporal axis
+5) ``Interp`` - transformer class for resampling time series data
+6) ``FeatureRep`` - transformer class for computing a feature representation from segment data, and
+7) ``Pype`` - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples
+8) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
+9) ``split`` - a module for splitting time series or sequences along the temporal axis
 
 
 What this Package Doesn't Include
@@ -109,13 +107,19 @@ If more details are needed, have a look at the `API Documentation <api.html>`_.
 
 Change Log
 ----------
-Version 2.0:
+Version 1.0.0:
+
+* Major API change integrating preprocessing and estimation into single pipeline (Pype)
+* Note this is unfortunately not backwards compatible
+* Added Interp transformer for resampling time series
+
+Version 0.2.0:
 
 * Added transformer for segmenting data set with padding and / or truncation
 * Implemented random_state initialization for SegPipe
 * Corrected documentation for FeatureRep
 
-Version 1.6:
+Version 0.1.6:
 
 * First stable version
 

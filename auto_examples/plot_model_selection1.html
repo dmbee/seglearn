@@ -30,8 +30,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Hyperparameter Selection 2" href="plot_model_selection2.html" />
-    <link rel="prev" title="Time Series Forecasting" href="plot_forecast.html" /> 
+    <link rel="next" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html" />
+    <link rel="prev" title="Continuous Target and Time Series Regression" href="plot_regression.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -101,11 +101,12 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Hyperparameter Selection 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
 </ul>
 </li>
@@ -217,7 +218,6 @@
 
 <span class="kn">import</span> <span class="nn">seglearn</span> <span class="kn">as</span> <span class="nn">sgl</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 <span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span><span class="p">,</span> <span class="n">GroupKFold</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
@@ -261,36 +261,27 @@
 <span class="n">cv</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">groups</span> <span class="o">=</span> <span class="n">g</span><span class="p">)</span>
 
 <span class="c1"># create a feature representation pipeline</span>
-<span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">sgl</span><span class="o">.</span><span class="n">FeatureRep</span><span class="p">()),</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">sgl</span><span class="o">.</span><span class="n">SegmentX</span><span class="p">()),</span>
+                <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">sgl</span><span class="o">.</span><span class="n">FeatureRep</span><span class="p">()),</span>
                 <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
                 <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())])</span>
 
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">sgl</span><span class="o">.</span><span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">)</span>
-
-
-<span class="c1"># create a parameter dictionary using the SegPipe API - which is similar to the sklearn API</span>
-<span class="c1">#</span>
-<span class="c1"># parameters passed to an estimator in the ``feed`` pipeline are keyed ``f$estimator__parameter``</span>
-<span class="c1"># parameters passed to an estimator in the ``est`` pipeline are keyed ``e$estimator__parameter``</span>
-<span class="c1">#</span>
-<span class="c1"># when the ``feed`` or ``est`` pipeline is not a pipeline, but just a single estimator</span>
-<span class="c1"># the parameter would be keyed f$parameter or e$parameter respectively</span>
-<span class="c1">#</span>
+<span class="c1"># create a parameter dictionary using the sklearn API</span>
 <span class="c1"># note that if you want to set a parameter to a single value, it will still need to be as a list</span>
 
-<span class="n">par_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;s$width&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span>
-            <span class="s1">&#39;s$overlap&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+<span class="n">par_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;seg__width&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span>
+            <span class="s1">&#39;seg__overlap&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
             <span class="s1">&#39;rf__n_estimators&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">]}</span>
 
 <span class="n">clf</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">par_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-<span class="n">plot_grid_search</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">,</span> <span class="n">par_grid</span><span class="p">[</span><span class="s1">&#39;s$width&#39;</span><span class="p">],</span>
-                 <span class="n">par_grid</span><span class="p">[</span><span class="s1">&#39;s$overlap&#39;</span><span class="p">],</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;overlap&#39;</span><span class="p">)</span>
+<span class="n">plot_grid_search</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">,</span> <span class="n">par_grid</span><span class="p">[</span><span class="s1">&#39;seg__width&#39;</span><span class="p">],</span>
+                 <span class="n">par_grid</span><span class="p">[</span><span class="s1">&#39;seg__overlap&#39;</span><span class="p">],</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;overlap&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  21.827 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  21.180 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-model-selection1-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_model_selection1.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_selection1.py</span></code></a></div>
@@ -308,10 +299,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_model_selection2.html" class="btn btn-neutral float-right" title="Hyperparameter Selection 2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_nn_training_curves.html" class="btn btn-neutral float-right" title="Plotting Neural Network Training Curves" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_forecast.html" class="btn btn-neutral" title="Time Series Forecasting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_regression.html" class="btn btn-neutral" title="Continuous Target and Time Series Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

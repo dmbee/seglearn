@@ -11,7 +11,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 
 from seglearn.transform import FeatureRep, SegmentXY, last
-from seglearn.pipe import SegPipe
+from seglearn.pipe import Pype
 from seglearn.split import temporal_split, TemporalKFold
 
 from sklearn.pipeline import Pipeline
@@ -30,16 +30,14 @@ y = [np.sin(X[0])*X[0]*3 + X[0]*X[0]]
 # split the data along the time axis (our only option since we have only 1 time series)
 X_train, X_test, y_train, y_test = temporal_split(X, y)
 
-# create a feature representation pipeline
-est = Pipeline([('features', FeatureRep()),
-                ('lin', LinearRegression())])
-
 # SegmentXY segments both X and y (as the name implies)
 # setting y_func = last, selects the last value from each y segment as the target
 # other options include transform.middle, or you can make your own function
 # see the API documentation for further details
-segmenter = SegmentXY(width = 200, overlap=0.5, y_func=last)
-pipe = SegPipe(est, segmenter)
+
+pipe = Pype([('seg', SegmentXY(width = 200, overlap=0.5, y_func=last)),
+             ('features', FeatureRep()),
+             ('lin', LinearRegression())])
 
 # fit and score
 pipe.fit(X_train,y_train)
@@ -53,8 +51,8 @@ print("Score: ", score)
 
 
 # generate some predictions
-ytr, ytr_p = pipe.predict(X_train, y_train) # training predictions
-yte, yte_p = pipe.predict(X_test, y_test) # test predictions
+ytr, ytr_p = pipe.transform_predict(X_train, y_train) # training predictions
+yte, yte_p = pipe.transform_predict(X_test, y_test) # test predictions
 xtr = np.arange(len(ytr)) # segment number
 xte = np.arange(len(yte)) + len(xtr)
 

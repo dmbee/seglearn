@@ -32,16 +32,16 @@ This is a basic example using the pipeline to learn a feature representation of 
     ('N series in test: ', 35)
     ('N segments in train: ', 3419)
     ('N segments in test: ', 1258)
-    ('Accuracy score: ', 0.6589825119236884)
-    ('X Shape: ', [3437])
-    ('X Shape: ', [3461])
-    ('X Shape: ', [3590])
-    ('X Shape: ', [3543])
+    ('Accuracy score: ', 0.7567567567567568)
+    ('X Shape: ', [3426])
+    ('X Shape: ', [3557])
+    ('X Shape: ', [3535])
+    ('X Shape: ', [3513])
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.587780    0.131593    0.772581     0.998254
-    1  0.595604    0.122980    0.665296     0.999711
-    2  0.621950    0.112752    0.882245     0.998050
-    3  0.614552    0.116920    0.717813     0.999436)
+    0  0.645799    0.135896    0.703437     0.998832
+    1  0.575341    0.213793    0.812500     0.999157
+    2  0.678480    0.130668    0.751313     0.999434
+    3  0.562148    0.133981    0.747423     0.998292)
     ('Features: ', ['std_0', 'std_1', 'std_2', 'std_3', 'std_4', 'std_5', 'mnx_0', 'mnx_1', 'mnx_2', 'mnx_3', 'mnx_4', 'mnx_5', 'min_0', 'min_1', 'min_2', 'min_3', 'min_4', 'min_5', 'max_0', 'max_1', 'max_2', 'max_3', 'max_4', 'max_5', 'skew_0', 'skew_1', 'skew_2', 'skew_3', 'skew_4', 'skew_5', 'var_0', 'var_1', 'var_2', 'var_3', 'var_4', 'var_5', 'mse_0', 'mse_1', 'mse_2', 'mse_3', 'mse_4', 'mse_5', 'kurt_0', 'kurt_1', 'kurt_2', 'kurt_3', 'kurt_4', 'kurt_5', 'mean_0', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5'])
 
 
@@ -55,13 +55,11 @@ This is a basic example using the pipeline to learn a feature representation of 
     # Author: David Burns
     # License: BSD
 
-
-    from seglearn.transform import FeatureRep
-    from seglearn.pipe import SegPipe
     from seglearn.datasets import load_watch
+    from seglearn.transform import FeatureRep, SegmentX
+    from seglearn.pipe import Pype
     from seglearn.base import TS_Data
 
-    from sklearn.pipeline import Pipeline
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.preprocessing import StandardScaler
     from sklearn.model_selection import train_test_split, cross_validate
@@ -82,22 +80,21 @@ This is a basic example using the pipeline to learn a feature representation of 
     y = data['y']
 
     # create a feature representation pipeline
-
-    est = Pipeline([('features', FeatureRep()),
-                    ('scaler', StandardScaler()),
-                    ('rf', RandomForestClassifier())])
-    pipe = SegPipe(est)
+    clf = Pype([('segment', SegmentX()),
+                ('features', FeatureRep()),
+                ('scaler', StandardScaler()),
+                ('rf', RandomForestClassifier())])
 
     # split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
-    pipe.fit(X_train,y_train)
-    score = pipe.score(X_test, y_test)
+    clf.fit(X_train,y_train)
+    score = clf.score(X_test, y_test)
 
     print("N series in train: ", len(X_train))
     print("N series in test: ", len(X_test))
-    print("N segments in train: ", pipe.N_train)
-    print("N segments in test: ", pipe.N_test)
+    print("N segments in train: ", clf.N_train)
+    print("N segments in test: ", clf.N_test)
     print("Accuracy score: ", score)
 
     # now lets add some contextual data
@@ -108,15 +105,15 @@ This is a basic example using the pipeline to learn a feature representation of 
 
     # and do a cross validation
     scoring = make_scorer(f1_score, average = 'macro')
-    cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
+    cv_scores = cross_validate(clf, X, y, cv = 4, return_train_score=True)
     print("CV Scores: ", pd.DataFrame(cv_scores))
 
     # lets see what feature we used
-    print("Features: ", pipe.est.steps[0][1].f_labels)
+    print("Features: ", clf.steps[1][1].f_labels)
 
     img = mpimg.imread('feet.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 0 minutes  5.328 seconds)
+**Total running time of the script:** ( 0 minutes  5.973 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_feature_rep.py:

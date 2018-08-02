@@ -30,8 +30,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Time Series Forecasting" href="plot_forecast.html" />
-    <link rel="prev" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html" /> 
+    <link rel="next" title="Hyperparameter Selection 1" href="plot_model_selection1.html" />
+    <link rel="prev" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -101,11 +101,12 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
 </ul>
 </li>
@@ -193,14 +194,14 @@
 (&#39;N series in test: &#39;, 1)
 (&#39;N segments in train: &#39;, 74)
 (&#39;N segments in test: &#39;, 24)
-(&#39;Score: &#39;, 0.9744288294256207)
+(&#39;Score: &#39;, 0.9744288294258036)
 (&#39;X Shape: &#39;, (24, 200))
 (&#39;X Shape: &#39;, (24, 200))
 (&#39;X Shape: &#39;, (24, 200))
 (&#39;CV Scores: &#39;,    fit_time  score_time  test_score  train_score
-0  0.005949    0.002528   -0.342113     0.036777
-1  0.005780    0.002593   -0.149984     0.126310
-2  0.005721    0.002472   -0.239356     0.097838)
+0  0.005755    0.002592   -0.342113     0.036777
+1  0.005594    0.002639   -0.149984     0.126310
+2  0.005505    0.002506   -0.239356     0.097838)
 </pre></div>
 </div>
 <div class="line-block">
@@ -211,7 +212,7 @@
 
 
 <span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentXY</span><span class="p">,</span> <span class="n">last</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">SegPipe</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
 <span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">temporal_split</span><span class="p">,</span> <span class="n">TemporalKFold</span>
 
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
@@ -230,16 +231,14 @@
 <span class="c1"># split the data along the time axis (our only option since we have only 1 time series)</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">temporal_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-<span class="c1"># create a feature representation pipeline</span>
-<span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
-                <span class="p">(</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">())])</span>
-
 <span class="c1"># SegmentXY segments both X and y (as the name implies)</span>
 <span class="c1"># setting y_func = last, selects the last value from each y segment as the target</span>
 <span class="c1"># other options include transform.middle, or you can make your own function</span>
 <span class="c1"># see the API documentation for further details</span>
-<span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentXY</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">,</span> <span class="n">segmenter</span><span class="p">)</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentXY</span><span class="p">(</span><span class="n">width</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">)),</span>
+             <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
+             <span class="p">(</span><span class="s1">&#39;lin&#39;</span><span class="p">,</span> <span class="n">LinearRegression</span><span class="p">())])</span>
 
 <span class="c1"># fit and score</span>
 <span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
@@ -253,8 +252,8 @@
 
 
 <span class="c1"># generate some predictions</span>
-<span class="n">ytr</span><span class="p">,</span> <span class="n">ytr_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> <span class="c1"># training predictions</span>
-<span class="n">yte</span><span class="p">,</span> <span class="n">yte_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="c1"># test predictions</span>
+<span class="n">ytr</span><span class="p">,</span> <span class="n">ytr_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transform_predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span> <span class="c1"># training predictions</span>
+<span class="n">yte</span><span class="p">,</span> <span class="n">yte_p</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transform_predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="c1"># test predictions</span>
 <span class="n">xtr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ytr</span><span class="p">))</span> <span class="c1"># segment number</span>
 <span class="n">xte</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yte</span><span class="p">))</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
 
@@ -278,7 +277,7 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.095 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.103 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-regression-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/plot_regression.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_regression.py</span></code></a></div>
@@ -296,10 +295,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_forecast.html" class="btn btn-neutral float-right" title="Time Series Forecasting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_model_selection1.html" class="btn btn-neutral float-right" title="Hyperparameter Selection 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_nn_training_curves.html" class="btn btn-neutral" title="Plotting Neural Network Training Curves" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_segment_rep.html" class="btn btn-neutral" title="Classifying Segments Directly with a Neural Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -15,7 +15,7 @@ segments (not series') as instances of the data.
 
 
 from seglearn.transform import FeatureRep, SegmentX
-from seglearn.pipe import SegPipe
+from seglearn.pipe import Pype
 from seglearn.datasets import load_watch
 
 from sklearn.pipeline import Pipeline
@@ -66,10 +66,12 @@ X = data['X']
 y = data['y']
 
 # create a feature representation pipeline
-est = Pipeline([('features', FeatureRep()),
-                ('scaler', StandardScaler()),
-                ('rf', RandomForestClassifier())])
-pipe = SegPipe(est)
+steps = [('seg', SegmentX()),
+         ('features', FeatureRep()),
+         ('scaler', StandardScaler()),
+         ('rf', RandomForestClassifier())]
+
+pipe = Pype(steps)
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
@@ -86,7 +88,7 @@ print("Accuracy score: ", score)
 # OPTION 2: generate true and predicted target values for the segments
 ######################################################################
 
-y_true, y_pred = pipe.predict(X_test, y_test)
+y_true, y_pred = pipe.transform_predict(X_test, y_test)
 # use any of the sklearn scorers
 f1_macro = f1_score(y_true, y_pred, average='macro')
 print("F1 score: ", f1_macro)
@@ -123,7 +125,7 @@ print("CV Scores: ", pd.DataFrame(cv_scores))
 # this can be used to cross_validate or grid search with any 1 score
 
 scorer = make_scorer(f1_score, average='macro')
-pipe = SegPipe(est, scorer = scorer)
+pipe = Pype(steps, scorer = scorer)
 cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
 print("CV F1 Scores: ", pd.DataFrame(cv_scores))
 
@@ -134,16 +136,22 @@ print("CV F1 Scores: ", pd.DataFrame(cv_scores))
 
 # If you want to have multiple score computed, the only way is as follows
 #
-# First transform the time series data into segments and then score the ``est`` part of the
-# pipeline.
+# First transform the time series data into segments and then use an sklearn Pipeline
 #
-# The disadvantage of this is that the parameters of the ``seg`` pipeline cannot be
+# The disadvantage of this is that the parameters of the segmentation cannot be
 # optimized with this approach
 
 segmenter = SegmentX()
 X_seg, y_seg, _ = segmenter.fit_transform(X, y)
+
+clf = Pipeline([('features', FeatureRep()),
+                ('scaler', StandardScaler()),
+                ('rf', RandomForestClassifier())])
+
+
+
 scoring = ['accuracy','precision_macro','recall_macro','f1_macro']
-cv_scores = cross_validate(est, X_seg, y_seg,
+cv_scores = cross_validate(clf, X_seg, y_seg,
                            cv=4, return_train_score=False, scoring=scoring)
 print("CV Scores (workaround): ", pd.DataFrame(cv_scores))
 

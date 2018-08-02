@@ -21,7 +21,8 @@ This is a basic example using a convolutional recurrent neural network to learn 
     # Author: David Burns
     # License: BSD
 
-    from seglearn.pipe import SegPipe
+    from seglearn.pipe import Pype
+    from seglearn.transform import SegmentX
     from seglearn.datasets import load_watch
 
     from sklearn.model_selection import train_test_split
@@ -88,8 +89,9 @@ Setup
 
     # create a segment learning pipeline
     width = 100
-    est = KerasClassifier(build_fn=crnn_model, epochs = 10, batch_size = 256, verbose = 0, validation_split = 0.2)
-    pipe = SegPipe(est)
+    pipe = Pype([('seg',SegmentX()),
+                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs = 10, batch_size = 256,
+                                          verbose = 0, validation_split = 0.2))])
 
 
 
@@ -128,16 +130,16 @@ Accessing training history
  .. code-block:: none
 
     acc      loss   val_acc  val_loss
-    0  0.252220  1.788852  0.365057  1.517707
-    1  0.463943  1.237146  0.586648  0.928221
-    2  0.606039  0.876796  0.669034  0.741350
-    3  0.659680  0.738335  0.705966  0.653184
-    4  0.710480  0.646987  0.737216  0.558477
-    5  0.725400  0.594640  0.759943  0.542868
-    6  0.763766  0.514429  0.769886  0.466165
-    7  0.765897  0.479128  0.794034  0.421424
-    8  0.787211  0.440142  0.796875  0.411768
-    9  0.804973  0.420362  0.809659  0.383671
+    0  0.239787  1.785685  0.262784  1.669287
+    1  0.559503  1.192370  0.512784  1.025170
+    2  0.641208  0.821876  0.461648  0.939865
+    3  0.681705  0.704800  0.555398  0.810602
+    4  0.721492  0.603601  0.538352  0.894402
+    5  0.741385  0.528239  0.522727  0.962142
+    6  0.761279  0.480942  0.653409  0.835637
+    7  0.777620  0.450151  0.717330  0.652646
+    8  0.806039  0.415766  0.589489  0.783538
+    9  0.811368  0.389123  0.610795  0.866519
 
 
 Training Curves
@@ -162,7 +164,7 @@ Training Curves
 
 
 
-**Total running time of the script:** ( 2 minutes  4.874 seconds)
+**Total running time of the script:** ( 2 minutes  8.747 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

@@ -27,7 +27,7 @@ segments (not series') as instances of the data.
 
 
     from seglearn.transform import FeatureRep, SegmentX
-    from seglearn.pipe import SegPipe
+    from seglearn.pipe import Pype
     from seglearn.datasets import load_watch
 
     from sklearn.pipeline import Pipeline
@@ -98,10 +98,12 @@ SETUP
     y = data['y']
 
     # create a feature representation pipeline
-    est = Pipeline([('features', FeatureRep()),
-                    ('scaler', StandardScaler()),
-                    ('rf', RandomForestClassifier())])
-    pipe = SegPipe(est)
+    steps = [('seg', SegmentX()),
+             ('features', FeatureRep()),
+             ('scaler', StandardScaler()),
+             ('rf', RandomForestClassifier())]
+
+    pipe = Pype(steps)
 
     # split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
@@ -135,7 +137,7 @@ OPTION 1: Use the score SegPipe score method
  .. code-block:: none
 
     ('X Shape: ', (3519, 100, 6))
-    ('Accuracy score: ', 0.7435233160621761)
+    ('Accuracy score: ', 0.7357512953367875)
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -146,7 +148,7 @@ OPTION 2: generate true and predicted target values for the segments
 .. code-block:: python
 
 
-    y_true, y_pred = pipe.predict(X_test, y_test)
+    y_true, y_pred = pipe.transform_predict(X_test, y_test)
     # use any of the sklearn scorers
     f1_macro = f1_score(y_true, y_pred, average='macro')
     print("F1 score: ", f1_macro)
@@ -167,7 +169,7 @@ OPTION 2: generate true and predicted target values for the segments
 
  .. code-block:: none
 
-    ('F1 score: ', 0.7616346536567894)
+    ('F1 score: ', 0.7415567232887338)
 
 
 OPTION 3: scoring during model selection
@@ -205,15 +207,15 @@ OPTION 3: scoring during model selection
 
  .. code-block:: none
 
-    ('X Shape: ', (3437, 100, 6))
-    ('X Shape: ', (3461, 100, 6))
-    ('X Shape: ', (3590, 100, 6))
-    ('X Shape: ', (3543, 100, 6))
+    ('X Shape: ', (3426, 100, 6))
+    ('X Shape: ', (3557, 100, 6))
+    ('X Shape: ', (3535, 100, 6))
+    ('X Shape: ', (3513, 100, 6))
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.608282    0.125231    0.809677     0.998836
-    1  0.607614    0.127658    0.695724     1.000000
-    2  0.635143    0.117922    0.869365     0.998329
-    3  0.625822    0.118699    0.756614     0.999153)
+    0  1.259788    0.138552    0.768185     0.998249
+    1  0.751636    0.229721    0.806250     0.999719
+    2  0.648345    0.124693    0.775832     0.999434
+    3  0.581596    0.127480    0.743127     0.998292)
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -228,7 +230,7 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
     # this can be used to cross_validate or grid search with any 1 score
 
     scorer = make_scorer(f1_score, average='macro')
-    pipe = SegPipe(est, scorer = scorer)
+    pipe = Pype(steps, scorer = scorer)
     cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
     print("CV F1 Scores: ", pd.DataFrame(cv_scores))
 
@@ -243,15 +245,15 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
 
  .. code-block:: none
 
-    ('X Shape: ', (3437, 100, 6))
-    ('X Shape: ', (3461, 100, 6))
-    ('X Shape: ', (3590, 100, 6))
-    ('X Shape: ', (3543, 100, 6))
+    ('X Shape: ', (3426, 100, 6))
+    ('X Shape: ', (3557, 100, 6))
+    ('X Shape: ', (3535, 100, 6))
+    ('X Shape: ', (3513, 100, 6))
     ('CV F1 Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.609956    0.126464    0.797545     0.998990
-    1  0.604173    0.123401    0.805511     1.000000
-    2  0.629102    0.114671    0.868033     0.999779
-    3  1.079864    0.120155    0.763875     0.999259)
+    0  0.575174    0.280526    0.774252     0.998932
+    1  0.611179    0.120138    0.846115     0.998263
+    2  0.584033    0.123031    0.809397     0.999239
+    3  0.651527    0.124740    0.756664     0.999731)
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -264,16 +266,22 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
     # If you want to have multiple score computed, the only way is as follows
     #
-    # First transform the time series data into segments and then score the ``est`` part of the
-    # pipeline.
+    # First transform the time series data into segments and then use an sklearn Pipeline
     #
-    # The disadvantage of this is that the parameters of the ``seg`` pipeline cannot be
+    # The disadvantage of this is that the parameters of the segmentation cannot be
     # optimized with this approach
 
     segmenter = SegmentX()
     X_seg, y_seg, _ = segmenter.fit_transform(X, y)
+
+    clf = Pipeline([('features', FeatureRep()),
+                    ('scaler', StandardScaler()),
+                    ('rf', RandomForestClassifier())])
+
+
+
     scoring = ['accuracy','precision_macro','recall_macro','f1_macro']
-    cv_scores = cross_validate(est, X_seg, y_seg,
+    cv_scores = cross_validate(clf, X_seg, y_seg,
                                cv=4, return_train_score=False, scoring=scoring)
     print("CV Scores (workaround): ", pd.DataFrame(cv_scores))
 
@@ -292,15 +300,15 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
     ('X Shape: ', (3509, 100, 6))
     ('X Shape: ', (3511, 100, 6))
     ('CV Scores (workaround): ',    fit_time        ...          test_recall_macro
-    0  0.505737        ...                   0.792567
-    1  0.501532        ...                   0.843509
-    2  0.493912        ...                   0.807619
-    3  0.492230        ...                   0.801529
+    0  0.631923        ...                   0.807886
+    1  0.650452        ...                   0.828609
+    2  0.639566        ...                   0.798632
+    3  0.596852        ...                   0.791970
 
     [4 rows x 6 columns])
 
 
-**Total running time of the script:** ( 0 minutes  14.281 seconds)
+**Total running time of the script:** ( 0 minutes  16.344 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:

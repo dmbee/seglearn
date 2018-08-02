@@ -111,26 +111,6 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_nn_training_curves_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_nn_training_curves
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="In this example, we use the pipeline to learn a continuous time series target with a regressor">
 
 .. only:: html
@@ -148,26 +128,6 @@ General-purpose and introductory examples for the `seglearn` toolbox.
    :hidden:
 
    /auto_examples/plot_regression
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we use a feature representation pipeline to forecast a continuous time series ...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_forecast_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_forecast.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_forecast
 
 .. raw:: html
 
@@ -191,6 +151,46 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_nn_training_curves_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_nn_training_curves
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example, we use a feature representation pipeline to forecast a continuous time series ...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_forecast_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_forecast.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_forecast
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to do model selection in a pipeline where segments are learned di...">
 
 .. only:: html
@@ -208,6 +208,26 @@ General-purpose and introductory examples for the `seglearn` toolbox.
    :hidden:
 
    /auto_examples/plot_model_selection2
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn resample a time series">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_interp_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_interp.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_interp
 
 .. raw:: html
 
