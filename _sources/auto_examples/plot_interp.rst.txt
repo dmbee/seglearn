@@ -134,7 +134,7 @@ an optimal sampling frequency for the data
     plt.fill_between(par_grid['interp__sample_period'], scores - stds, scores + stds, alpha=0.2, color = 'navy')
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  14.683 seconds)
+**Total running time of the script:** ( 0 minutes  14.141 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_interp.py:

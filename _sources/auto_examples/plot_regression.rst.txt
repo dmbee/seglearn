@@ -37,9 +37,9 @@ In this example, we use the pipeline to learn a continuous time series target wi
     ('X Shape: ', (24, 200))
     ('X Shape: ', (24, 200))
     ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.005720    0.002530   -0.342113     0.036777
-    1  0.005476    0.002544   -0.149984     0.126310
-    2  0.005498    0.002530   -0.239356     0.097838)
+    0  0.005622    0.002497   -0.342113     0.036777
+    1  0.005464    0.002479   -0.149984     0.126310
+    2  0.005403    0.002446   -0.239356     0.097838)
 
 
 
@@ -120,7 +120,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 
 
-**Total running time of the script:** ( 0 minutes  0.136 seconds)
+**Total running time of the script:** ( 0 minutes  0.118 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_regression.py:
