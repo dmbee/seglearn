@@ -35,9 +35,6 @@ documentation_.
 
 .. _documentation: https://dmbee.github.io/seglearn/
 
-Installation
-------------
-
 Dependencies
 ~~~~~~~~~~~~
 
