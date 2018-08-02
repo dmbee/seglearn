@@ -322,7 +322,11 @@ class Pype(Pipeline):
                 # replace an estimator
                 self._replace_estimator('steps', name, params.pop(name))
 
-            if params[name] in keys:
+            if callable(params[name]):
+                # use a callable or function to set parameters
+                params[name] = params[name](params)
+
+            elif params[name] in keys:
                 # set one arg from another
                 params[name] = params[params[name]]
 

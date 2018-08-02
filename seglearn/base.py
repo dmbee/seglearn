@@ -19,11 +19,12 @@ class TS_Data(object):
 
     '''
 
-    def __init__(self, ts_data, context_data):
+    def __init__(self, ts_data, context_data, sample_period = 1):
         N = len(ts_data)
         # assert len(context_data) == N
         self.ts_data = ts_data
         self.context_data = context_data
+        self.sample_period = 1
         self.index = 0
         self.N = N
         self.shape = [N] # need for safe_indexing with sklearn
@@ -43,3 +44,4 @@ class TS_Data(object):
 
     def __len__(self):
         return self.N
+
