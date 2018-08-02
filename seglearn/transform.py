@@ -102,7 +102,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     ----
     separate fit and predict overlap parameters
     '''
-    def __init__(self, width = 100, overlap = 0.5, shuffle = True, random_state = None):
+    def __init__(self, width = 100, overlap = 0.5, shuffle = False, random_state = None):
         self.width = width
         self.overlap = overlap
         self.shuffle = shuffle
