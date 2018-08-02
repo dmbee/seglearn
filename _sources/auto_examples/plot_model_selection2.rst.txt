@@ -95,7 +95,7 @@ This example demonstrates how to do model selection in a pipeline where segments
     plt.fill_between(par_grid['seg__width'], scores - stds, scores + stds, alpha=0.2, color = 'navy')
     plt.show()
 
-**Total running time of the script:** ( 6 minutes  32.028 seconds)
+**Total running time of the script:** ( 6 minutes  31.259 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection2.py:

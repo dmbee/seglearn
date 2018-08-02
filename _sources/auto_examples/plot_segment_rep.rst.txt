@@ -31,7 +31,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
     ('N series in test: ', 35)
     ('N segments in train: ', 3519)
     ('N segments in test: ', 1158)
-    ('Accuracy score: ', 0.7020725372129977)
+    ('Accuracy score: ', 0.7055267703965538)
 
 
 
@@ -99,7 +99,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
     img = mpimg.imread('segments.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 2 minutes  29.959 seconds)
+**Total running time of the script:** ( 2 minutes  36.787 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_segment_rep.py:
