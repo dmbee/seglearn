@@ -28,9 +28,7 @@ import numpy as np
 def calc_segment_width(params):
     # number of samples in a 2 second period
     period = params['interp__sample_period']
-    w = int(2. / period)
-    print("setting width to: ", w)
-    return w
+    return int(2. / period)
 
 
 # seed RNGESUS
