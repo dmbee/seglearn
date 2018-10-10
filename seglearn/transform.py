@@ -4,15 +4,14 @@ This module is for transforming time series data.
 # Author: David Burns
 # License: BSD
 
+import numpy as np
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.utils import check_random_state
+from scipy.interpolate import interp1d
+
 from .feature_functions import base_features
 from .base import TS_Data
 from .util import get_ts_data_parts
-
-import numpy as np
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.utils.validation import check_is_fitted
-from sklearn.utils import check_random_state
-from scipy.interpolate import interp1d
 
 __all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep']
 
@@ -20,7 +19,7 @@ __all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', '
 class XyTransformerMixin(object):
     ''' Base class for transformer that transforms data and target '''
 
-    def fit_transform(self, X, y, sample_weight = None, **fit_params):
+    def fit_transform(self, X, y, sample_weight=None, **fit_params):
         '''
         Fit the data and transform (required by sklearn API)
 
@@ -44,23 +43,28 @@ class XyTransformerMixin(object):
         '''
         return self.fit(X, y, **fit_params).transform(X, y, sample_weight)
 
+
 def last(y):
     ''' Returns the last column from 2d matrix '''
     return y[:, (y.shape[1] - 1)]
 
+
 def middle(y):
     ''' Returns the middle column from 2d matrix '''
-    return y[:, y.shape[1]//2]
+    return y[:, y.shape[1] // 2]
+
 
 def mean(y):
     ''' returns average along axis 1'''
     return np.mean(y, axis=1)
 
-def all(y):
+
+def every(y):
     ''' Returns all values (sequences) of y '''
     return y
 
-def shuffle_data(X, y = None, sample_weight = None):
+
+def shuffle_data(X, y=None, sample_weight=None):
     ''' Shuffles indices X, y, and sample_weight together'''
     if len(X) > 1:
         ind = np.arange(len(X), dtype=np.int)
@@ -96,20 +100,28 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
-        Randomized segment shuffling will return different results for each call to ``transform``. If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set ``random_state`` to an integer.
+        Randomized segment shuffling will return different results for each call to
+        ``transform``. If you have set ``shuffle`` to True and want the same result
+        with each call to ``fit``, set ``random_state`` to an integer.
 
     Todo
     ----
     separate fit and predict overlap parameters
     '''
-    def __init__(self, width = 100, overlap = 0.5, shuffle = False, random_state = None):
+
+    def __init__(self, width=100, overlap=0.5, shuffle=False, random_state=None):
+        assert width > 0
+        assert overlap >= 0. and overlap <= 1
+
         self.width = width
         self.overlap = overlap
         self.shuffle = shuffle
         self.random_state = random_state
         self.f_labels = None
+        self.step = int(self.width * (1. - self.overlap))
+        self.step = self.step if self.step >= 1 else 1
 
-    def fit(self, X, y = None):
+    def fit(self, X, y=None):
         '''
         Fit the transform
 
@@ -118,7 +130,8 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         X : array-like, shape [n_series, ...]
             Time series data and (optionally) contextual data
         y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+            There is no need of a target in a transformer, yet the pipeline API requires
+            this parameter.
         shuffle : bool
             Shuffles data after transformation
 
@@ -127,19 +140,9 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         self : object
             Returns self.
         '''
-        self._reset()
-        assert self.width > 0
-        assert self.overlap >= 0. and self.overlap <= 1
-        self.step = int(self.width * (1. - self.overlap))
-        self.step = self.step if self.step >= 1 else 1
         return self
 
-    def _reset(self):
-        ''' Resets internal data-dependent state of the transformer. __init__ parameters not touched. '''
-        if hasattr(self, 'step'):
-            del self.step
-
-    def transform(self, X, y = None, sample_weight = None):
+    def transform(self, X, y=None, sample_weight=None):
         '''
         Transforms the time series data into segments (temporal tensor)
         Note this transformation changes the number of samples in the data
@@ -164,8 +167,6 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         sample_weight_new : array-like shape [n_segments]
             expanded sample weights
         '''
-        check_is_fitted(self, 'step')
-
         Xt, Xc = get_ts_data_parts(X)
         yt = y
         swt = sample_weight
@@ -181,10 +182,10 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         Xt = np.concatenate(Xt)
 
         if yt is not None:
-            yt = self._expand_target_to_segments(yt, Nt)
+            yt = expand_variables_to_segments(yt, Nt).ravel()
 
         if swt is not None:
-            swt = self._expand_target_to_segments(swt, Nt)
+            swt = expand_variables_to_segments(swt, Nt).ravel()
 
         if Xc is not None:
             Xc = expand_variables_to_segments(Xc, Nt)
@@ -193,14 +194,8 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         if self.shuffle is True:
             check_random_state(self.random_state)
             return shuffle_data(Xt, yt, swt)
-        else:
-            return Xt, yt, swt
 
-    def _expand_target_to_segments(self, y, Nt):
-        ''' expands variable vector v, by repeating each instance as specified in Nt '''
-        y_e = np.concatenate([np.full(Nt[i], y[i]) for i in np.arange(len(y))])
-        return y_e
-
+        return Xt, yt, swt
 
 
 class SegmentXY(BaseEstimator, XyTransformerMixin):
@@ -221,7 +216,9 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
-        Randomized segment shuffling will return different results for each call to ``transform``. If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set ``random_state`` to an integer.
+        Randomized segment shuffling will return different results for each call to ``transform``.
+        If you have set ``shuffle`` to True and want the same result with each call to ``fit``,
+        set ``random_state`` to an integer.
 
     Returns
     -------
@@ -229,7 +226,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Returns self.
     '''
 
-    def __init__(self, width = 100, overlap = 0.5, y_func = last, shuffle = False, random_state = None):
+    def __init__(self, width=100, overlap=0.5, y_func=last, shuffle=False, random_state=None):
         self.width = width
         self.overlap = overlap
         self.y_func = y_func
@@ -237,8 +234,14 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self.random_state = random_state
         self._validate_params()
 
+        self.step = int(self.width * (1. - self.overlap))
+        self.step = self.step if self.step >= 1 else 1
 
-    def fit(self, X, y = None):
+    def _validate_params(self):
+        assert self.width > 0
+        assert self.overlap >= 0. and self.overlap <= 1.
+
+    def fit(self, X, y=None):
         '''
         Fit the transform
 
@@ -247,33 +250,22 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         X : array-like, shape [n_series, ...]
             Time series data and (optionally) contextual data
         y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
 
         Returnsself._validate_params()
         -------
         self : object
             Returns self.
         '''
-        self._reset()
-        self._validate_params()
-        self.step = int(self.width * (1. - self.overlap))
-        self.step = self.step if self.step >= 1 else 1
         return self
 
-    def _reset(self):
-        ''' Resets internal data-dependent state of the transformer. __init__ parameters not touched. '''
-        if hasattr(self, 'step'):
-            del self.step
-
-    def _validate_params(self):
-        assert self.width > 0
-        assert self.overlap >= 0. and self.overlap <= 1.
-
-    def transform(self, X, y = None, sample_weight = None):
+    def transform(self, X, y=None, sample_weight=None):
         '''
         Transforms the time series data into segments
         Note this transformation changes the number of samples in the data
-        If y is provided, it is segmented and transformed to align to the new samples as per ``y_func``
+        If y is provided, it is segmented and transformed to align to the new samples as per
+        ``y_func``
         Currently sample weights always returned as None
 
         Parameters
@@ -294,12 +286,10 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         sample_weight_new : None
 
         '''
-        check_is_fitted(self, 'step')
-
         Xt, Xc = get_ts_data_parts(X)
         yt = y
 
-        N = len(Xt) # number of time series
+        N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
             Xt = np.array([sliding_tensor(Xt[i], self.width, self.step) for i in np.arange(N)])
@@ -342,7 +332,9 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
-        Randomized segment shuffling will return different results for each call to ``transform``. If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set ``random_state`` to an integer.
+        Randomized segment shuffling will return different results for each call to ``transform``.
+        If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set
+        ``random_state`` to an integer.
 
     Returns
     -------
@@ -350,7 +342,8 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         Returns self.
     '''
 
-    def __init__(self, width = 100, overlap = 0.5, forecast = 10, y_func = last, shuffle = False, random_state = None):
+    def __init__(self, width=100, overlap=0.5, forecast=10, y_func=last, shuffle=False,
+                 random_state=None):
         self.width = width
         self.overlap = overlap
         self.forecast = forecast
@@ -359,7 +352,15 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         self.random_state = random_state
         self._validate_params()
 
-    def fit(self, X = None, y = None):
+        self.step = int(self.width * (1. - self.overlap))
+        self.step = self.step if self.step >= 1 else 1
+
+    def _validate_params(self):
+        assert self.width > 0
+        assert self.overlap >= 0. and self.overlap <= 1.
+        assert self.forecast > 0
+
+    def fit(self, X=None, y=None):
         '''
         Fit the transform
 
@@ -368,30 +369,17 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         X : array-like, shape [n_series, ...]
             Time series data and (optionally) contextual data
         y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
 
         Returns
         -------
         self : object
             Returns self.
         '''
-        self._reset()
-        self._validate_params()
-        self.step = int(self.width * (1. - self.overlap))
-        self.step = self.step if self.step >= 1 else 1
         return self
 
-    def _reset(self):
-        ''' Resets internal data-dependent state of the transformer. __init__ parameters not touched. '''
-        if hasattr(self, 'step'):
-            del self.step
-
-    def _validate_params(self):
-        assert self.width > 0
-        assert self.overlap >= 0. and self.overlap <= 1.
-        assert self.forecast > 0
-
-    def transform(self, X, y, sample_weight = None):
+    def transform(self, X, y, sample_weight=None):
         '''
         Forecast sliding window segmentation for time series or sequence datasets.
         Note this transformation changes the number of samples in the data.
@@ -415,8 +403,6 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         sample_weight_new : None
 
         '''
-        check_is_fitted(self, 'step')
-
         Xt, Xc = get_ts_data_parts(X)
         yt = y
 
@@ -424,25 +410,28 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         if len(Xt[0]) == 1:
             Xt = [Xt]
 
-        N = len(Xt) # number of time series
+        N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width+self.forecast, self.step) for i in np.arange(N)])
+            Xt = np.array([sliding_tensor(Xt[i], self.width + self.forecast, self.step) for i in
+                           np.arange(N)])
         else:
-            Xt = np.array([sliding_window(Xt[i], self.width+self.forecast, self.step) for i in np.arange(N)])
+            Xt = np.array([sliding_window(Xt[i], self.width + self.forecast, self.step) for i in
+                           np.arange(N)])
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
         Xt = np.concatenate(Xt)
 
         # todo: implement advance X
-        Xt = Xt[:,0:self.width]
+        Xt = Xt[:, 0:self.width]
 
         if Xc is not None:
             Xc = expand_variables_to_segments(Xc, Nt)
             Xt = TS_Data(Xt, Xc)
 
         if yt is not None:
-            yt = np.array([sliding_window(yt[i], self.width+self.forecast, self.step) for i in np.arange(N)])
+            yt = np.array([sliding_window(yt[i], self.width + self.forecast, self.step) for i in
+                           np.arange(N)])
             yt = np.concatenate(yt)
             yt = yt[:, self.width:(self.width + self.forecast)]  # target y
             yt = self.y_func(yt)
@@ -458,6 +447,7 @@ def expand_variables_to_segments(v, Nt):
     ''' expands contextual variables v, by repeating each instance as specified in Nt '''
     N_v = len(np.atleast_1d(v[0]))
     return np.concatenate([np.full((Nt[i], N_v), v[i]) for i in np.arange(len(v))])
+
 
 def sliding_window(time_series, width, step):
     '''
@@ -478,7 +468,8 @@ def sliding_window(time_series, width, step):
         resampled time series segments
     '''
     w = np.hstack(time_series[i:1 + i - width or None:step] for i in range(0, width))
-    return w.reshape((int(len(w)/width),width),order='F')
+    return w.reshape((int(len(w) / width), width), order='F')
+
 
 def sliding_tensor(mv_time_series, width, step):
     '''
@@ -500,7 +491,7 @@ def sliding_tensor(mv_time_series, width, step):
     '''
     D = mv_time_series.shape[1]
     data = [sliding_window(mv_time_series[:, j], width, step) for j in range(D)]
-    return np.stack(data, axis = 2)
+    return np.stack(data, axis=2)
 
 
 class PadTrunc(BaseEstimator, XyTransformerMixin):
@@ -514,7 +505,8 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
     width : int >= 1
         width of segments (number of samples)
     '''
-    def __init__(self, width = 100):
+
+    def __init__(self, width=100):
         assert width >= 1
         self.width = width
 
@@ -522,15 +514,15 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         N = len(v)
         if v[0].ndim > 1:
             D = v[0].shape[1]
-            w = np.zeros((N,self.width,D))
+            w = np.zeros((N, self.width, D))
         else:
-            w = np.zeros((N,self.width))
+            w = np.zeros((N, self.width))
         for i in np.arange(N):
             Ni = min(self.width, len(v[i]))
-            w[i,0:Ni] = v[i][0:Ni]
+            w[i, 0:Ni] = v[i][0:Ni]
         return w
 
-    def fit(self, X, y = None):
+    def fit(self, X, y=None):
         '''
         Fit the transform. Does nothing, for compatibility with sklearn API.
 
@@ -539,7 +531,8 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         X : array-like, shape [n_series, ...]
             Time series data and (optionally) contextual data
         y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
 
         Returns
         -------
@@ -548,7 +541,7 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         '''
         return self
 
-    def transform(self, X, y = None, sample_weight = None):
+    def transform(self, X, y=None, sample_weight=None):
         '''
         Transforms the time series data into fixed length segments using padding and or truncation
         If y is a time series and passed, it will be transformed as well
@@ -585,16 +578,16 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
             yt = self._mv_resize(yt)
             swt = None
         elif yt is not None:
-            #todo: is this needed?
+            # todo: is this needed?
             yt = np.array(yt)
 
         return Xt, yt, swt
 
 
-
 class Interp(BaseEstimator, XyTransformerMixin):
     '''
-    Transformer for resampling time series data to a fixed period over closed interval (direct value interpolation).
+    Transformer for resampling time series data to a fixed period over closed interval
+    (direct value interpolation).
     Default interpolation is linear, but other types can be specified.
     If the target is a series, it will be resampled as well.
 
@@ -615,13 +608,14 @@ class Interp(BaseEstimator, XyTransformerMixin):
         set to True for classification problems nearest use nearest instead of linear interp
 
     '''
-    def __init__(self, sample_period, kind = 'linear', categorical_target = False):
+
+    def __init__(self, sample_period, kind='linear', categorical_target=False):
         self.sample_period = sample_period
         self.kind = kind
         self.categorical_target = categorical_target
         assert self.sample_period > 0
 
-    def fit(self, X, y = None):
+    def fit(self, X, y=None):
         '''
         Fit the transform. Does nothing, for compatibility with sklearn API.
 
@@ -630,19 +624,20 @@ class Interp(BaseEstimator, XyTransformerMixin):
         X : array-like, shape [n_series, ...]
             Time series data and (optionally) contextual data
         y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
 
         Returns
         -------
         self : object
             Returns self.
         '''
-        assert X[0].ndim > 1 # need 1 channel of values
+        assert X[0].ndim > 1  # need 1 channel of values
         return self
 
     def _interp(self, t_new, t, x, kind):
-        interpolator = interp1d(t, x, kind=kind, copy=False, bounds_error = False,
-                                         fill_value="extrapolate", assume_sorted=True)
+        interpolator = interp1d(t, x, kind=kind, copy=False, bounds_error=False,
+                                fill_value="extrapolate", assume_sorted=True)
         return interpolator(t_new)
 
     def transform(self, X, y=None, sample_weight=None):
@@ -673,19 +668,18 @@ class Interp(BaseEstimator, XyTransformerMixin):
         yt = y
         swt = sample_weight
 
-        N = len(Xt) # number of series
-        D = Xt[0].shape[1]-1 # number of data channels
+        N = len(Xt)  # number of series
+        D = Xt[0].shape[1] - 1  # number of data channels
 
         # 1st channel is time
-        t = [Xt[i][:,0] for i in np.arange(N)]
-        t_lin = [np.arange(Xt[i][0,0],Xt[i][-1,0],self.sample_period) for i in np.arange(N)]
-
+        t = [Xt[i][:, 0] for i in np.arange(N)]
+        t_lin = [np.arange(Xt[i][0, 0], Xt[i][-1, 0], self.sample_period) for i in np.arange(N)]
 
         if D == 1:
-            Xt = [self._interp(t_lin[i], t[i], Xt[i][:,1], kind=self.kind) for i in np.arange(N)]
+            Xt = [self._interp(t_lin[i], t[i], Xt[i][:, 1], kind=self.kind) for i in np.arange(N)]
         elif D > 1:
-            Xt = [np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:,j], kind=self.kind)
-                                   for j in range(1,D)]) for i in np.arange(N)]
+            Xt = [np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:, j], kind=self.kind)
+                                   for j in range(1, D)]) for i in np.arange(N)]
         if Xc is not None:
             Xt = TS_Data(Xt, Xc)
 
@@ -693,9 +687,9 @@ class Interp(BaseEstimator, XyTransformerMixin):
             # y is a time series
             swt = None
             if self.categorical_target is True:
-                yt = [self._interp(t_lin[i],t[i], yt[i],kind='nearest') for i in np.arange(N)]
+                yt = [self._interp(t_lin[i], t[i], yt[i], kind='nearest') for i in np.arange(N)]
             else:
-                yt = [self._interp(t_lin[i],t[i], yt[i],kind=self.kind) for i in np.arange(N)]
+                yt = [self._interp(t_lin[i], t[i], yt[i], kind=self.kind) for i in np.arange(N)]
         else:
             # y is static - leave y alone
             pass
@@ -707,9 +701,12 @@ class FeatureRep(BaseEstimator, TransformerMixin):
     '''
     A transformer for calculating a feature representation from segmented time series data.
 
-    This transformer calculates features from the segmented time series', by computing the same feature set for each segment from each time series in the data set.
+    This transformer calculates features from the segmented time series', by computing the same
+    feature set for each segment from each time series in the data set.
 
-    The ``features`` computed are a parameter of this transformer, defined by a dict of functions. The seglearn package includes some useful features, but this basic feature set can be easily extended.
+    The ``features`` computed are a parameter of this transformer, defined by a dict of functions.
+    The seglearn package includes some useful features, but this basic feature set can be easily
+    extended.
 
     Parameters
     ----------
@@ -724,7 +721,8 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             F : array-like [n_samples, n_features]
             The number of features returned (n_features) must be >= 1
 
-        If features is not specified, a default feature dictionary will be used (see base_features). See ``feature_functions`` for example implementations.
+        If features is not specified, a default feature dictionary will be used (see base_features).
+         See ``feature_functions`` for example implementations.
 
     Attributes
     ----------
@@ -733,26 +731,33 @@ class FeatureRep(BaseEstimator, TransformerMixin):
     Examples
     --------
 
-    >>> from seglearn.transform import FeatureRep
+    >>> from seglearn.transform import FeatureRep, SegmentX
+    >>> from seglearn.pipe import Pype
     >>> from seglearn.feature_functions import mean, var, std, skew
-    >>> from seglearn.pipe import SegPipe
     >>> from seglearn.datasets import load_watch
-    >>> from sklearn.pipeline import Pipeline
     >>> from sklearn.ensemble import RandomForestClassifier
     >>> data = load_watch()
     >>> X = data['X']
     >>> y = data['y']
     >>> fts = {'mean': mean, 'var': var, 'std': std, 'skew': skew}
-    >>> est = Pipeline([('ftr', FeatureRep(features = fts)),('rf',RandomForestClassifier())])
-    >>> pipe = SegPipe(est)
-    >>> pipe.fit(X, y)
-    >>> print(pipe.score(X, y))
+    >>> clf = Pype([('seg', SegmentX()),
+    >>>             ('ftr', FeatureRep(features = fts))),
+    >>>             ('rf',RandomForestClassifier())])
+    >>> clf.fit(X, y)
+    >>> print(clf.score(X, y))
 
     '''
-    def __init__(self, features = base_features()):
-        self.features = features
 
-    def fit(self, X, y = None):
+    def __init__(self, features='default'):
+        if features == 'default':
+            self.features = base_features()
+        else:
+            assert isinstance(features, dict)
+            self.features = features
+
+        self.f_labels = None
+
+    def fit(self, X, y=None):
         '''
         Fit the transform
 
@@ -761,7 +766,8 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         X : array-like, shape [n_series, ...]
             Segmented time series data and (optionally) contextual data
         y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this parameter.
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
 
         Returns
         -------
@@ -790,18 +796,21 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             Feature representation of segmented time series data and contextual data
 
         '''
-        check_is_fitted(self,'f_labels')
+        self._check_if_fitted()
 
         Xt, Xc = get_ts_data_parts(X)
         fts = np.column_stack([self.features[f](Xt) for f in self.features])
         if Xc is not None:
-            fts = np.column_stack([fts,Xc])
+            fts = np.column_stack([fts, Xc])
         return fts
 
     def _reset(self):
-        ''' Resets internal data-dependent state of the transformer. __init__ parameters not touched. '''
-        if hasattr(self, 'f_labels'):
-            del self.f_labels
+        ''' Resets internal data-dependent state of the transformer. __init__ parameters not
+        touched. '''
+        self.f_labels = None
+
+    def _check_if_fitted(self):
+        assert self.f_labels is not None
 
     def _check_features(self, features, Xti):
         '''
@@ -827,9 +836,8 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             fshapes[i] = np.row_stack(features[keys[i]](Xti)).shape
 
         # make sure each feature returns an array shape [N, ]
-        assert np.count_nonzero(fshapes[:,0] == N)
-        return {keys[i]:fshapes[i,1] for i in range(N_fts)}
-
+        assert np.count_nonzero(fshapes[:, 0] == N)
+        return {keys[i]: fshapes[i, 1] for i in range(N_fts)}
 
     def _generate_feature_labels(self, X):
         '''
@@ -843,14 +851,12 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         # calculated features
         for key in ftr_sizes:
             for i in range(ftr_sizes[key]):
-                f_labels += [key+'_'+str(i)]
+                f_labels += [key + '_' + str(i)]
 
         # contextual features
         if Xc is not None:
             Ns = len(np.atleast_1d(Xc[0]))
-            s_labels = ["context_"+str(i) for i in range(Ns)]
+            s_labels = ["context_" + str(i) for i in range(Ns)]
             f_labels += s_labels
 
         return f_labels
-
-

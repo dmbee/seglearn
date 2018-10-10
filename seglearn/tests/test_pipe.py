@@ -1,20 +1,20 @@
 # Author: David Burns
 # License: BSD
 
-from seglearn.pipe import Pype
-from seglearn.transform import FeatureRep, SegmentX, SegmentXY, SegmentXYForecast, PadTrunc
-from seglearn.base import TS_Data
-
+import numpy as np
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import cross_validate
-import numpy as np
+
+from seglearn.pipe import Pype
+from seglearn.transform import FeatureRep, SegmentX, SegmentXY, SegmentXYForecast, PadTrunc
+from seglearn.base import TS_Data
 
 
 def test_pipe_classification():
     # no context data, single time series
-    X = [np.random.rand(1000,10)]
+    X = [np.random.rand(1000, 10)]
     y = [5]
 
     pipe = Pype([('seg', SegmentX()),
@@ -41,9 +41,9 @@ def test_pipe_classification():
 
     # multiple time series
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
-    Xc = np.random.rand(3,3)
+    Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
-    y = [1,2,3]
+    y = [1, 2, 3]
 
     pipe.fit(X, y)
     pipe.transform_predict(X, y)
@@ -54,7 +54,7 @@ def test_pipe_classification():
     Xt = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
     Xc = np.random.rand(3)
     X = TS_Data(Xt, Xc)
-    y = [1,2,3]
+    y = [1, 2, 3]
 
     pipe.fit(X, y)
     pipe.transform_predict(X, y)
@@ -67,9 +67,9 @@ def test_pipe_classification():
                  ('scaler', StandardScaler())])
 
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
-    Xc = np.random.rand(3,3)
+    Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
-    y = [1,2,3]
+    y = [1, 2, 3]
 
     pipe.fit(X, y)
     pipe.transform(X, y)
@@ -78,7 +78,7 @@ def test_pipe_classification():
 
 def test_pipe_regression():
     # no context data, single time series
-    X = [np.random.rand(1000,10)]
+    X = [np.random.rand(1000, 10)]
     y = [np.random.rand(1000)]
 
     pipe = Pype([('seg', SegmentXY()),
@@ -103,7 +103,7 @@ def test_pipe_regression():
 
     # multiple time seres
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
-    Xc = np.random.rand(3,3)
+    Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
     y = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
 
@@ -113,10 +113,10 @@ def test_pipe_regression():
     pipe.score(X, y)
 
     # cross val
-    Xt = np.array([np.random.rand(1000,10) for i in range(5)])
-    Xc = np.random.rand(5,3)
+    Xt = np.array([np.random.rand(1000, 10)] * 5)
+    Xc = np.random.rand(5, 3)
     X = TS_Data(Xt, Xc)
-    y = np.array([np.random.rand(1000) for i in range(5)])
+    y = np.array([np.random.rand(1000)] * 5)
 
     cross_validate(pipe, X, y)
 
@@ -137,12 +137,12 @@ def test_pipe_regression():
 
 def test_pipe_forecast():
     # no context data, single time series
-    X = [np.random.rand(1000,10)]
+    X = [np.random.rand(1000, 10)]
     y = [np.random.rand(1000)]
-    
+
     pipe = Pype([('seg', SegmentXYForecast()),
                  ('ftr', FeatureRep()),
-                 ('ridge', Ridge())])    
+                 ('ridge', Ridge())])
 
     pipe.fit(X, y)
     pipe.transform_predict(X, y)
@@ -162,7 +162,7 @@ def test_pipe_forecast():
 
     # multiple time seres
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
-    Xc = np.random.rand(3,3)
+    Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
     y = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
 
@@ -173,20 +173,20 @@ def test_pipe_forecast():
 
     # cross val
 
-    Xt = np.array([np.random.rand(1000,10) for i in range(5)])
-    Xc = np.random.rand(5,3)
+    Xt = np.array([np.random.rand(1000, 10)] * 5)
+    Xc = np.random.rand(5, 3)
     X = TS_Data(Xt, Xc)
-    y = np.array([np.random.rand(1000) for i in range(5)])
+    y = np.array([np.random.rand(1000)] * 5)
 
     cross_validate(pipe, X, y)
 
     # transform pipe
     pipe = Pype([('seg', SegmentXYForecast()),
                  ('ftr', FeatureRep()),
-                 ('scaler', StandardScaler())])    
+                 ('scaler', StandardScaler())])
 
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
-    Xc = np.random.rand(3,3)
+    Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
     y = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
 
@@ -194,14 +194,15 @@ def test_pipe_forecast():
     pipe.transform(X, y)
     pipe.fit_transform(X, y)
 
+
 def test_pipe_PadTrunc():
     # no context data, single time series
-    X = [np.random.rand(1000,10)]
+    X = [np.random.rand(1000, 10)]
     y = [5]
 
     pipe = Pype([('trunc', PadTrunc()),
                  ('ftr', FeatureRep()),
-                 ('rf', RandomForestClassifier())]) 
+                 ('rf', RandomForestClassifier())])
 
     pipe.fit(X, y)
     pipe.transform_predict(X, y)
@@ -221,9 +222,9 @@ def test_pipe_PadTrunc():
 
     # multiple time series
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
-    Xc = np.random.rand(3,3)
+    Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
-    y = [1,2,3]
+    y = [1, 2, 3]
 
     pipe.fit(X, y)
     pipe.transform_predict(X, y)
@@ -234,7 +235,7 @@ def test_pipe_PadTrunc():
     Xt = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
     Xc = np.random.rand(3)
     X = TS_Data(Xt, Xc)
-    y = [1,2,3]
+    y = [1, 2, 3]
 
     pipe.fit(X, y)
     pipe.transform_predict(X, y)
@@ -244,12 +245,12 @@ def test_pipe_PadTrunc():
     # transform pipe   
     pipe = Pype([('trunc', PadTrunc()),
                  ('ftr', FeatureRep()),
-                 ('scaler', StandardScaler())]) 
+                 ('scaler', StandardScaler())])
 
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
-    Xc = np.random.rand(3,3)
+    Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
-    y = [1,2,3]
+    y = [1, 2, 3]
 
     pipe.fit(X, y)
     pipe.transform(X, y)

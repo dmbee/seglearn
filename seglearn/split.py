@@ -1,22 +1,28 @@
 '''
-This module has two classes for splitting time series data temporally - where train/test or fold splits are created within each of the time series' in the time series data. This splitting approach is for evaluating how well the algorithm performs on segments drawn from the same time series but excluded from the training set. The performance from this splitting approach should be similar to performance on the training data so long as the data in each series is relatively uniform.
+This module has two classes for splitting time series data temporally - where train/test or fold
+splits are created within each of the time series' in the time series data. This splitting approach
+is for evaluating how well the algorithm performs on segments drawn from the same time series but
+excluded from the training set. The performance from this splitting approach should be similar to
+performance on the training data so long as the data in each series is relatively uniform.
 '''
 # Author: David Burns
 # License: BSD
 
+import numpy as np
+
 from .util import check_ts_data, get_ts_data_parts
 from .base import TS_Data
 
-import numpy as np
 
-
-class TemporalKFold():
+class TemporalKFold(object):
     '''
     K-fold iterator variant for temporal splitting of time series data
 
     The time series' are divided in time with no overlap, and are balanced.
 
-    By splitting the time series', the number of samples in the data set is changed and so new arrays for the data and target are returned by the ``split`` function in addition to the iterator.
+    By splitting the time series', the number of samples in the data set is changed and so new
+    arrays for the data and target are returned by the ``split`` function in addition to the
+    iterator.
 
     Parameters
     ----------
@@ -33,7 +39,7 @@ class TemporalKFold():
 
     '''
 
-    def __init__(self, n_splits = 3):
+    def __init__(self, n_splits=3):
         assert n_splits > 1
         self.n_splits = n_splits
 
@@ -64,7 +70,7 @@ class TemporalKFold():
         Xt_new, y_new = self._ts_slice(Xt, y)
 
         if Xc is not None:
-            Xc_new = np.concatenate([Xc for i in range(self.n_splits)])
+            Xc_new = np.concatenate([Xc]*self.n_splits)
             X_new = TS_Data(Xt_new, Xc_new)
         else:
             X_new = np.array(Xt_new)
@@ -113,7 +119,7 @@ class TemporalKFold():
         return cv
 
 
-def temporal_split(X, y, test_size = 0.25):
+def temporal_split(X, y, test_size=0.25):
     '''
     Split time series or sequence data along the time axis.
     Test data is drawn from the end of each series / sequence
@@ -136,7 +142,7 @@ def temporal_split(X, y, test_size = 0.25):
 
     '''
 
-    Ns = len(y) # number of series
+    Ns = len(y)  # number of series
     check_ts_data(X, y)
     Xt, Xc = get_ts_data_parts(X)
 
@@ -163,15 +169,3 @@ def temporal_split(X, y, test_size = 0.25):
         y_test = y
 
     return X_train, X_test, y_train, y_test
-
-
-
-
-
-
-
-
-
-
-
-

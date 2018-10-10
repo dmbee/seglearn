@@ -1,9 +1,10 @@
 # Author: David Burns
 # License: BSD
 
+import numpy as np
+
 from seglearn import feature_functions
 
-import numpy as np
 
 def test_mv_feature_functions():
     ''' test feature functions with multivariate data '''
@@ -20,7 +21,6 @@ def test_mv_feature_functions():
         assert len(mvf) == N
 
 
-
 def test_uv_feature_functions():
     ''' test feature functions with univariate data '''
     N = 20
@@ -32,5 +32,3 @@ def test_uv_feature_functions():
     for f in ftr_funcs:
         uvf = ftr_funcs[f](uv_data)
         assert len(uvf) == N
-
-

@@ -5,23 +5,26 @@ time series data and sequences using a sliding window segmentation
 # Author: David Burns
 # License: BSD
 
-from .transform import XyTransformerMixin
-
-
 from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
 from sklearn.externals import six
 
+from .transform import XyTransformerMixin
+
+
 class Pype(Pipeline):
     '''
-    This pipeline extends the sklearn Pieline to support transformers that change X, y, sample_weight, and the number of samples.
+    This pipeline extends the sklearn Pieline to support transformers that change X, y,
+    sample_weight, and the number of samples.
 
-    It also adds some new options for setting hyper-parameters with callables and in reference to other parameters (see examples).
+    It also adds some new options for setting hyper-parameters with callables and in reference to
+    other parameters (see examples).
 
     Parameters
     ----------
     steps : list
-        List of (name, transform) tuples (implementing fit/transform) that are chained, in the order in which they are chained, with the last object an estimator.
+        List of (name, transform) tuples (implementing fit/transform) that are chained, in the
+        order in which they are chained, with the last object an estimator.
     scorer : sklearn scorer object
     memory : currently not implemented
 
@@ -33,24 +36,32 @@ class Pype(Pipeline):
     Examples
     --------
 
-    >>> from seglearn.transform import FeatureRep
+    >>> from seglearn.transform import FeatureRep, SegmentX
     >>> from seglearn.pipe import Pype
     >>> from seglearn.datasets import load_watch
     >>> from sklearn.ensemble import RandomForestClassifier
+    >>> from sklearn.preprocessing import StandardScaler
     >>> data = load_watch()
     >>> X = data['X']
     >>> y = data['y']
-    >>> pipe = Pype([('segment', SegmentX()),('features', FeatureRep()),('scaler', StandardScaler()),('rf', RandomForestClassifier())])
+    >>> pipe = Pype([('segment', SegmentX()),
+    >>>              ('features', FeatureRep()),
+    >>>              ('scaler', StandardScaler()),
+    >>>              ('rf', RandomForestClassifier())])
     >>> pipe.fit(X, y)
     >>> print(pipe.score(X, y))
 
     '''
 
-
-    #todo: handle steps with None
-    def __init__(self, steps, scorer = None, memory = None):
+    # todo: handle steps with None
+    def __init__(self, steps, scorer=None, memory=None):
         super(Pype, self).__init__(steps, memory)
         self.scorer = scorer
+        self.N_train = None
+        self.N_test = None
+        self.N_fit = None
+        self.history = None
+
 
     def fit(self, X, y=None, **fit_params):
         """
@@ -88,8 +99,7 @@ class Pype(Pipeline):
 
         return self
 
-
-    def _fit(self, X, y = None, **fit_params):
+    def _fit(self, X, y=None, **fit_params):
         self.steps = list(self.steps)
         self._validate_steps()
 
@@ -102,21 +112,23 @@ class Pype(Pipeline):
         Xt = X
         yt = y
 
-        for step_idx, (name, transformer) in enumerate(self.steps[:-1]): #iterate through all but last
+        # iterate through all but last
+        for step_idx, (name, transformer) in enumerate(self.steps[:-1]):
             if transformer is None:
                 pass
             else:
                 # not doing cloning for now...
                 if isinstance(transformer, XyTransformerMixin):
-                    Xt, yt, _ = transformer.fit_transform(Xt, yt, sample_weight=None, **fit_params_steps[name])
+                    Xt, yt, _ = transformer.fit_transform(Xt, yt, sample_weight=None,
+                                                          **fit_params_steps[name])
                 else:
                     Xt = transformer.fit_transform(Xt, yt, **fit_params_steps[name])
 
         if self._final_estimator is None:
-                return Xt, yt, {}
+            return Xt, yt, {}
         return Xt, yt, fit_params_steps[self.steps[-1][0]]
 
-    def _transform(self, X, y = None, sample_weight = None):
+    def _transform(self, X, y=None, sample_weight=None):
         Xt = X
         yt = y
         swt = sample_weight
@@ -129,9 +141,7 @@ class Pype(Pipeline):
 
         return Xt, yt, swt
 
-
-
-    def transform(self, X, y = None):
+    def transform(self, X, y=None):
         """
         Apply transforms, and transform with the final estimator
         This also works where final estimator is ``None``: all prior
@@ -160,7 +170,6 @@ class Pype(Pipeline):
             Xt = self._final_estimator.transform(Xt)
 
         return Xt, yt
-
 
     def fit_transform(self, X, y=None, **fit_params):
         """
@@ -205,7 +214,6 @@ class Pype(Pipeline):
 
         return Xt, yt
 
-
     def predict(self, X):
         """
         Apply transforms to the data, and predict with the final estimator
@@ -221,7 +229,7 @@ class Pype(Pipeline):
         yp : array-like
             Predicted transformed target
         """
-        Xt, _ , _ = self._transform(X)
+        Xt, _, _ = self._transform(X)
         return self._final_estimator.predict(Xt)
 
     def transform_predict(self, X, y):
@@ -247,7 +255,6 @@ class Pype(Pipeline):
         Xt, yt, _ = self._transform(X, y)
         yp = self._final_estimator.predict(Xt)
         return yt, yp
-
 
     def score(self, X, y=None, sample_weight=None):
         """
@@ -280,9 +287,8 @@ class Pype(Pipeline):
 
         if self.scorer is None:
             return self._final_estimator.score(Xt, yt, **score_params)
-        else:
-            return self.scorer(self._final_estimator, Xt, yt, **score_params)
 
+        return self.scorer(self._final_estimator, Xt, yt, **score_params)
 
     def predict_proba(self, X):
         """
@@ -299,7 +305,7 @@ class Pype(Pipeline):
         y_proba : array-like, shape = [n_samples, n_classes]
             Predicted probability of each class
         """
-        Xt, _ , _ = self._transform(X)
+        Xt, _, _ = self._transform(X)
         return self._final_estimator.predict_proba(Xt)
 
     def decision_function(self, X):
@@ -333,7 +339,7 @@ class Pype(Pipeline):
         -------
         y_score : array-like, shape = [n_samples, n_classes]
         """
-        Xt, _ , _ = self._transform(X)
+        Xt, _, _ = self._transform(X)
         return self._final_estimator.predict_log_proba(Xt)
 
     def set_params(self, **params):
@@ -365,4 +371,3 @@ class Pype(Pipeline):
 
         BaseEstimator.set_params(self, **params)
         return self
-

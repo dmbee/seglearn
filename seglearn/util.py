@@ -4,9 +4,10 @@ This module has utilities for time series data input checking
 # Author: David Burns
 # License: BSD
 
+import numpy as np
+
 from seglearn.base import TS_Data
 
-import numpy as np
 
 def get_ts_data_parts(X):
     '''
@@ -25,16 +26,12 @@ def get_ts_data_parts(X):
         contextual variables
 
     '''
-    # todo: remove np array
-    if type(X) is TS_Data:
-        return X.ts_data, X.context_data
-    else:
-        return np.array(X), None
+    if not isinstance(X, TS_Data):
+        return X, None
+    return X.ts_data, X.context_data
 
 
-
-
-def check_ts_data(X, y = None):
+def check_ts_data(X, y=None):
     '''
     Checks time series data is good. If not raises assertion error.
 
@@ -51,7 +48,6 @@ def check_ts_data(X, y = None):
         assert Ns == len(y)
         Nty = np.array([len(np.atleast_1d(y[i])) for i in np.arange(Ns)])
 
-
         if np.count_nonzero(Nty == 1) == Ns:
             return
         elif np.count_nonzero(Nty == Ntx) == Ns:
@@ -60,8 +56,7 @@ def check_ts_data(X, y = None):
             raise TypeError
 
 
-
-def ts_stats(Xt, y, fs = 1.0, class_labels = None):
+def ts_stats(Xt, y, fs=1.0, class_labels=None):
     '''
     Generates some helpful statistics about the data X
 
@@ -93,7 +88,7 @@ def ts_stats(Xt, y, fs = 1.0, class_labels = None):
     else:
         S = 0
 
-    C = np.max(y) + 1 # number of classes
+    C = np.max(y) + 1  # number of classes
     if class_labels is None:
         class_labels = np.arange(C)
 
@@ -110,9 +105,9 @@ def ts_stats(Xt, y, fs = 1.0, class_labels = None):
     T = np.sum(Ti)
 
     total = {"n_series": N, "n_classes": C, "n_TS_vars": D, "n_context_vars": S, "Total_Time": T,
-              "Series_Time_Mean": np.mean(Ti),
-              "Series_Time_Std": np.std(Ti),
-              "Series_Time_Range": (np.min(Ti), np.max(Ti))}
+             "Series_Time_Mean": np.mean(Ti),
+             "Series_Time_Std": np.std(Ti),
+             "Series_Time_Range": (np.min(Ti), np.max(Ti))}
 
     by_class = {"Class_labels": class_labels,
                 "n_series": np.array([len(Tic[i]) for i in range(C)]),
@@ -126,18 +121,3 @@ def ts_stats(Xt, y, fs = 1.0, class_labels = None):
                'by_class': by_class}
 
     return results
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

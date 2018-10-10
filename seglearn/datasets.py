@@ -4,12 +4,17 @@ This module is for loading time series data sets
 # Author: David Burns
 # License: BSD
 
-import numpy as np
 from os.path import dirname
+import numpy as np
+
+__all__ = ['load_watch']
+
 
 def load_watch():
     '''
-    Loads some of the 6-axis inertial sensor data from my smartwatch project. The sensor data was recorded as study subjects performed sets of 20 shoulder exercise repetitions while wearing a smartwatch. It is a multivariate time series.
+    Loads some of the 6-axis inertial sensor data from my smartwatch project. The sensor data was
+    recorded as study subjects performed sets of 20 shoulder exercise repetitions while wearing a
+    smartwatch. It is a multivariate time series.
 
     The study can be found here: https://arxiv.org/abs/1802.01489
 
@@ -39,5 +44,3 @@ def load_watch():
     module_path = dirname(__file__)
     data = np.load(module_path + "/data/watch_dataset.npy").item()
     return data
-
-

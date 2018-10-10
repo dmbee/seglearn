@@ -22,7 +22,7 @@ with codecs.open('README.rst', encoding='utf-8-sig') as f:
     LONG_DESCRIPTION = f.read()
 
 setup(name='seglearn',
-      version='1.0.0',
+      version='1.0.1',
       description='Machine Learning Time Series',
       author='David Burns',
       packages=find_packages(),
