@@ -12,25 +12,28 @@ from seglearn.util import get_ts_data_parts
 def test_sliding_window():
     N = 1000
     width = 10
-    ts = np.ones(N)
+    ts = np.random.rand(N)
     for step in 1 + np.arange(width):
         sts = transform.sliding_window(ts, width, step)
         assert sts.shape[1] == width
         Nsts = 1 + (N - width) // step
         assert Nsts == sts.shape[0]
+        assert np.all(np.isin(sts, ts))
 
 
 def test_sliding_tensor():
     N = 1000
     V = 5
     width = 10
-    ts = np.ones((N, V))
+    ts = np.random.rand(N, V)
     for step in 1 + np.arange(width):
         sts = transform.sliding_tensor(ts, width, step)
         assert sts.shape[1] == width
         assert sts.shape[2] == V
         Nsts = 1 + (N - width) // step
         assert Nsts == sts.shape[0]
+        for j in range(V):
+            assert np.all(np.isin(sts[:, :, j], ts[:, j]))
 
 
 def test_feature_rep():
@@ -239,6 +242,8 @@ def test_pad_trunc():
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width, nvars)
+    assert np.all([np.equal(X[i][0:width], Xs[i]) for i in range(len(X))])
+    assert np.all([np.equal(y[i][0:width], ys[i]) for i in range(len(y))])
 
     # univariate ts data without context data
     X = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(3 * Nt)]
@@ -247,6 +252,8 @@ def test_pad_trunc():
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width)
+    assert np.all([np.equal(X[i][0:width], Xs[i]) for i in range(len(X))])
+    assert np.all([np.equal(y[i][0:width], ys[i]) for i in range(len(y))])
 
     # multivariate ts data with context data
     Xt = [np.random.rand(Nt, nvars), np.random.rand(2 * Nt, nvars), np.random.rand(Nt, nvars)]
@@ -259,6 +266,9 @@ def test_pad_trunc():
     N = len(ys)
     assert Xst.shape == (N, width, nvars)
     assert Xsc.shape == (N, 4)
+    assert np.all([np.equal(Xt[i][0:width], Xst[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(Xc[i], Xsc[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(y[i][0:width], ys[i]) for i in range(len(y))])
 
     # ts data with univariate context data
     Xt = [np.random.rand(Nt, nvars), np.random.rand(2 * Nt, nvars), np.random.rand(Nt, nvars)]
@@ -271,6 +281,9 @@ def test_pad_trunc():
     N = len(ys)
     assert Xst.shape == (N, width, nvars)
     assert Xsc.shape == (N,)
+    assert np.all([np.equal(Xt[i][0:width], Xst[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(Xc[i], Xsc[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(y[i][0:width], ys[i]) for i in range(len(y))])
 
     # same number as context vars and time vars
     # this would cause broadcasting failure before implementation of TS_Data class
@@ -284,6 +297,9 @@ def test_pad_trunc():
     N = len(ys)
     assert Xst.shape == (N, width, nvars)
     assert Xsc.shape == (N, 5)
+    assert np.all([np.equal(Xt[i][0:width], Xst[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(Xc[i], Xsc[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(y[i][0:width], ys[i]) for i in range(len(y))])
 
     width = 5
     nvars = 5
@@ -296,6 +312,8 @@ def test_pad_trunc():
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width, nvars)
+    assert np.all([np.equal(X[i][0:width], Xs[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(y[i], ys[i]) for i in range(len(y))])
 
     # univariate ts data without context
     X = [np.random.rand(100), np.random.rand(100), np.random.rand(100)]
@@ -304,6 +322,8 @@ def test_pad_trunc():
     Xs, ys, _ = seg.transform(X, y)
     N = len(ys)
     assert Xs.shape == (N, width)
+    assert np.all([np.equal(X[i][0:width], Xs[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(y[i], ys[i]) for i in range(len(y))])
 
     # multivariate ts data with context data
     Xt = [np.random.rand(100, nvars), np.random.rand(200, nvars), np.random.rand(50, nvars)]
@@ -316,6 +336,9 @@ def test_pad_trunc():
     N = len(ys)
     assert Xst.shape == (N, width, nvars)
     assert Xsc.shape == (N, 4)
+    assert np.all([np.equal(Xt[i][0:width], Xst[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(Xc[i], Xsc[i]) for i in range(len(Xt))])
+    assert np.all([np.equal(y[i], ys[i]) for i in range(len(y))])
 
 
 def test_interp():
@@ -326,10 +349,16 @@ def test_interp():
 
     interp = transform.Interp(2)
     interp.fit(X)
-    interp.transform(X, y)
+    Xc, yc, swt = interp.transform(X, y)
 
-    # y = [np.random.randint(0,5,N)]
-    # np.random.ra
-    # interp = transform.Interp(5, kind = 'cubic', categorical_target=True)
-    # interp.fit(X, y)
-    # interp.transform(X, y)
+    assert len(Xc[0]) == N / 2
+    assert len(yc[0]) == N / 2
+
+    y = [np.random.randint(0, 5, N)]
+    interp = transform.Interp(5, kind='cubic', categorical_target=True)
+    interp.fit(X, y)
+    Xc, yc, swt = interp.transform(X, y)
+
+    assert len(Xc[0]) == N / 5
+    assert len(yc[0]) == N / 5
+    assert np.all(np.isin(yc, np.arange(6)))
