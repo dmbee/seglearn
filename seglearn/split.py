@@ -4,6 +4,10 @@ splits are created within each of the time series' in the time series data. This
 is for evaluating how well the algorithm performs on segments drawn from the same time series but
 excluded from the training set. The performance from this splitting approach should be similar to
 performance on the training data so long as the data in each series is relatively uniform.
+
+Note that splitting along the temporal axis violates the assumption of independence between train
+and test samples, as successive samples in a sequence or series are not iid. However, temporal
+splitting is still useful in certain cases such as for the analysis of a single sequence / series.
 '''
 # Author: David Burns
 # License: BSD
