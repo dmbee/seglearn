@@ -38,6 +38,7 @@ def base_features():
     ''' Returns dictionary of some basic features that can be calculated for segmented time
     series data '''
     features = {'mean': mean,
+                'median': median,
                 'std': std,
                 'var': var,
                 'min': minf,
@@ -55,6 +56,7 @@ def all_features():
     .. note:: Some of the features (hist4, corr) are relatively expensive to compute
     '''
     features = {'mean': mean,
+                'median': median,
                 'std': std,
                 'var': var,
                 'min': minf,
@@ -71,6 +73,11 @@ def all_features():
 def mean(X):
     ''' statistical mean for each variable in a segmented time series '''
     return np.mean(X, axis=1)
+
+
+def median(X):
+    ''' statistical median for each variable in a segmented time series '''
+    return np.median(X, axis=1)
 
 
 def std(X):
