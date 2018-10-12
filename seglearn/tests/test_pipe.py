@@ -19,7 +19,7 @@ def test_pipe_classification():
 
     pipe = Pype([('seg', SegmentX()),
                  ('ftr', FeatureRep()),
-                 ('ridge', RandomForestClassifier())])
+                 ('rf', RandomForestClassifier(n_estimators=10))])
 
     pipe.fit(X, y)
     pipe.predict(X)
@@ -118,7 +118,7 @@ def test_pipe_regression():
     X = TS_Data(Xt, Xc)
     y = np.array([np.random.rand(1000)] * 5)
 
-    cross_validate(pipe, X, y)
+    cross_validate(pipe, X, y, cv=3)
 
     # transform pipe
     pipe = Pype([('seg', SegmentXY()),
@@ -178,7 +178,7 @@ def test_pipe_forecast():
     X = TS_Data(Xt, Xc)
     y = np.array([np.random.rand(1000)] * 5)
 
-    cross_validate(pipe, X, y)
+    cross_validate(pipe, X, y, cv=3)
 
     # transform pipe
     pipe = Pype([('seg', SegmentXYForecast()),
@@ -202,7 +202,7 @@ def test_pipe_PadTrunc():
 
     pipe = Pype([('trunc', PadTrunc()),
                  ('ftr', FeatureRep()),
-                 ('rf', RandomForestClassifier())])
+                 ('rf', RandomForestClassifier(n_estimators=10))])
 
     pipe.fit(X, y)
     pipe.transform_predict(X, y)

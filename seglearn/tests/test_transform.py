@@ -20,6 +20,13 @@ def test_sliding_window():
         assert Nsts == sts.shape[0]
         assert np.all(np.isin(sts, ts))
 
+        # reconstruct the ts
+        if step == 1:
+            assert np.array_equal(np.concatenate((sts[:, 0], sts[-1, 1:width])), ts)
+
+        if step == width:
+            assert np.array_equal(sts.ravel(), ts)
+
 
 def test_sliding_tensor():
     N = 1000
@@ -34,6 +41,8 @@ def test_sliding_tensor():
         assert Nsts == sts.shape[0]
         for j in range(V):
             assert np.all(np.isin(sts[:, :, j], ts[:, j]))
+
+        # todo: reconstruct tensor ts
 
 
 def test_feature_rep():

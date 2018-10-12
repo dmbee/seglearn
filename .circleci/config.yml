@@ -1,17 +1,30 @@
-machine:
-  environment:
-    # The github organization or username of the repository which hosts the
-    # project and documentation.
-    USERNAME: "dmbee"
+# need to complete changes to make v2 compatible
+# https://circleci.com/docs/2.0/sample-config/
+# https://circleci.com/docs/2.0/migrating-from-1-2/
 
-    # The repository where the documentation will be hosted
-    DOC_REPO: "seglearn"
 
-    # The base URL for the Github page where the documentation will be hosted
-    DOC_URL: ""
+version: 2
 
-    # The email is to be used for commits in the Github Page
-    EMAIL: "david.mo.burns@gmail.com"
+jobs:
+  build:
+    environment:
+      # The github organization or username of the repository which hosts the
+      # project and documentation.
+      USERNAME: "dmbee"
+
+      # The repository where the documentation will be hosted
+      DOC_REPO: "seglearn"
+
+      # The base URL for the Github page where the documentation will be hosted
+      DOC_URL: ""
+
+      # The email is to be used for commits in the Github Page
+      EMAIL: "david.mo.burns@gmail.com"
+
+steps:
+  - run:
+
+
 
 dependencies:
 
