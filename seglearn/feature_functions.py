@@ -90,12 +90,12 @@ def var(X):
     return np.std(X, axis=1)
 
 
-def minf(X):
+def minimum(X):
     ''' minimum value for each variable in a segmented time series '''
     return np.min(X, axis=1)
 
 
-def maxf(X):
+def maximum(X):
     ''' maximum value for each variable in a segmented time series '''
     return np.max(X, axis=1)
 
