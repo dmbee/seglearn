@@ -14,20 +14,21 @@ segments (not series') as instances of the data.
 # License: BSD
 
 
-from seglearn.transform import FeatureRep, SegmentX
-from seglearn.pipe import Pype
-from seglearn.datasets import load_watch
-
-from sklearn.pipeline import Pipeline
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, cross_validate
-from sklearn.metrics import f1_score, confusion_matrix, make_scorer
+import itertools
 
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
-import itertools
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import f1_score, confusion_matrix, make_scorer
+from sklearn.model_selection import train_test_split, cross_validate
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+from seglearn.datasets import load_watch
+from seglearn.pipe import Pype
+from seglearn.transform import FeatureRep, SegmentX
+
 
 ##############################################
 # CONFUSION PLOT

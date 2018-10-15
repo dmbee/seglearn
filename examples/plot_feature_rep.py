@@ -9,21 +9,19 @@ This is a basic example using the pipeline to learn a feature representation of 
 # Author: David Burns
 # License: BSD
 
-from seglearn.datasets import load_watch
-from seglearn.transform import FeatureRep, SegmentX
-from seglearn.pipe import Pype
-from seglearn.base import TS_Data
-
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split, cross_validate
-from sklearn.metrics import f1_score, make_scorer
-
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
-
 import numpy as np
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import f1_score, make_scorer
+from sklearn.model_selection import train_test_split, cross_validate
+from sklearn.preprocessing import StandardScaler
+
+from seglearn.base import TS_Data
+from seglearn.datasets import load_watch
+from seglearn.pipe import Pype
+from seglearn.transform import FeatureRep, SegmentX
 
 # seed RNGESUS
 np.random.seed(123124)
@@ -42,7 +40,7 @@ clf = Pype([('segment', SegmentX()),
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
-clf.fit(X_train,y_train)
+clf.fit(X_train, y_train)
 score = clf.score(X_test, y_test)
 
 print("N series in train: ", len(X_train))
@@ -58,8 +56,8 @@ X = TS_Data(Xt, Xc)
 y = np.array(data['y'])
 
 # and do a cross validation
-scoring = make_scorer(f1_score, average = 'macro')
-cv_scores = cross_validate(clf, X, y, cv = 4, return_train_score=True)
+scoring = make_scorer(f1_score, average='macro')
+cv_scores = cross_validate(clf, X, y, cv=4, return_train_score=True)
 print("CV Scores: ", pd.DataFrame(cv_scores))
 
 # lets see what feature we used

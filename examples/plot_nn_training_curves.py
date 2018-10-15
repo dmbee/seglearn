@@ -9,18 +9,18 @@ This is a basic example using a convolutional recurrent neural network to learn 
 # Author: David Burns
 # License: BSD
 
-from seglearn.pipe import Pype
-from seglearn.transform import SegmentX
-from seglearn.datasets import load_watch
-
-from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import numpy as np
 from keras.layers import Dense, LSTM, Conv1D
 from keras.models import Sequential
 from keras.wrappers.scikit_learn import KerasClassifier
-
-import numpy as np
 from pandas import DataFrame
-import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+from seglearn.datasets import load_watch
+from seglearn.pipe import Pype
+from seglearn.transform import SegmentX
+
 
 ##############################################
 # Simple NN Model
@@ -57,9 +57,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 
 # create a segment learning pipeline
 width = 100
-pipe = Pype([('seg',SegmentX()),
-             ('crnn', KerasClassifier(build_fn=crnn_model, epochs = 10, batch_size = 256,
-                                      verbose = 0, validation_split = 0.2))])
+pipe = Pype([('seg', SegmentX()),
+             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=10, batch_size=256,
+                                      verbose=0, validation_split=0.2))])
 
 ##############################################
 # Accessing training history
@@ -70,19 +70,18 @@ pipe = Pype([('seg',SegmentX()),
 # this approach won't work with a more complex estimator pipeline, in which case
 # a callable class with the desired properties should be made passed to build_fn
 
-pipe.fit(X_train,y_train)
+pipe.fit(X_train, y_train)
 print(DataFrame(pipe.history.history))
 ac_train = pipe.history.history['acc']
 ac_val = pipe.history.history['val_acc']
-epoch = np.arange(len(ac_train))+1
-
+epoch = np.arange(len(ac_train)) + 1
 
 ##############################################
 # Training Curves
 ##############################################
 
-plt.plot(epoch, ac_train, 'o', label = "train")
-plt.plot(epoch, ac_val, '+', label = "validation")
+plt.plot(epoch, ac_train, 'o', label="train")
+plt.plot(epoch, ac_val, '+', label="validation")
 plt.xlabel("Epoch")
 plt.ylabel("Accuracy")
 plt.legend()

@@ -89,6 +89,10 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     X is time series data, optionally with contextual variables
     and each time series in X has a single target value y
 
+    The target y is mapped to all segments from their parent series.
+    The transformed data consists of segment/target pairs that can be learned
+    through a feature representation or directly with a neural network.
+
     Parameters
     ----------
     width : int > 0
@@ -204,6 +208,14 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     X is time series data, optionally with contextual variables
     and y is also time series data with the same sampling interval as X
 
+    The target y is mapped to segments from their parent series,
+    using the parameter ``y_func`` to determine the mapping behavior.
+    The segment targets can be a single value, or a sequence of values
+    depending on ``y_func`` parameter.
+
+    The transformed data consists of segment/target pairs that can be learned
+    through a feature representation or directly with a neural network.
+
 
     Parameters
     ----------
@@ -318,6 +330,14 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
 class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     '''
     Forecast sliding window segmentation for time series or sequence datasets
+
+    The target y is mapped to segments from their parent series,
+    using the ``forecast`` and ``y_func`` parameters to determine the mapping behavior.
+    The segment targets can be a single value, or a sequence of values
+    depending on ``y_func`` parameter.
+
+    The transformed data consists of segment/target pairs that can be learned
+    through a feature representation or directly with a neural network.
 
     Parameters
     ----------
@@ -499,6 +519,8 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
     Transformer for using padding and truncation to enforce fixed length on all time
     series in the dataset. Series' longer than ``width`` are truncated to length ``width``.
     Series' shorter than length ``width`` are padded at the end with zeros up to length ``width``.
+
+    The same behavior is applied to the target if it is a series and passed to the transformer.
 
     Parameters
     ----------

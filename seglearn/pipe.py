@@ -14,7 +14,7 @@ from .transform import XyTransformerMixin
 
 class Pype(Pipeline):
     '''
-    This pipeline extends the sklearn Pieline to support transformers that change X, y,
+    This pipeline extends the sklearn Pipeline to support transformers that change X, y,
     sample_weight, and the number of samples.
 
     It also adds some new options for setting hyper-parameters with callables and in reference to

@@ -11,19 +11,15 @@ using padding and truncation instead of sliding window segmentation.
 # License: BSD
 
 
-from seglearn.transform import FeatureRep, PadTrunc
-from seglearn.pipe import Pype
-from seglearn.datasets import load_watch
-
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.svm import LinearSVC
-
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import LinearSVC
 
-import numpy as np
+from seglearn.datasets import load_watch
+from seglearn.pipe import Pype
+from seglearn.transform import FeatureRep, PadTrunc
 
 # load the data
 data = load_watch()
@@ -40,9 +36,10 @@ pipe = Pype([('trunc', PadTrunc(width=250)),
              ('svc', LinearSVC())])
 
 # split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, shuffle=True, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, shuffle=True,
+                                                    random_state=42)
 
-pipe.fit(X_train,y_train)
+pipe.fit(X_train, y_train)
 score = pipe.score(X_test, y_test)
 
 print("N series in train: ", len(X_train))
