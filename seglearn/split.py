@@ -45,7 +45,7 @@ class TemporalKFold(object):
 
     def __init__(self, n_splits=3):
         if n_splits < 2:
-            raise ValueError("TemporalKFold: n_splits must be >= 2 (set to %d)" %n_splits)
+            raise ValueError("TemporalKFold: n_splits must be >= 2 (set to %d)" % n_splits)
         self.n_splits = n_splits
 
     def split(self, X, y):

@@ -62,7 +62,6 @@ class Pype(Pipeline):
         self.N_fit = None
         self.history = None
 
-
     def fit(self, X, y=None, **fit_params):
         """
         Fit the model
