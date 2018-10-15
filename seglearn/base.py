@@ -5,6 +5,8 @@ This module has some base classes for time series data
 # Author: David Burns
 # License: BSD
 
+import numpy as np
+
 __all__ = ['TS_Data']
 
 
@@ -24,9 +26,8 @@ class TS_Data(object):
 
     def __init__(self, ts_data, context_data):
         N = len(ts_data)
-        # assert len(context_data) == N
-        self.ts_data = ts_data
-        self.context_data = context_data
+        self.ts_data = np.atleast_1d(ts_data)
+        self.context_data = np.atleast_1d(context_data)
         self.index = 0
         self.N = N
         self.shape = [N]  # need for safe_indexing with sklearn
@@ -34,8 +35,8 @@ class TS_Data(object):
     def __iter__(self):
         return self
 
-    def __getitem__(self, indices):
-        return TS_Data(self.ts_data[indices], self.context_data[indices])
+    def __getitem__(self, slice):
+        return TS_Data(self.ts_data[slice], self.context_data[slice])
 
     def __next__(self):
         if self.index == self.N:

@@ -117,7 +117,8 @@ class hist(object):
     '''
 
     def __init__(self, bins=4):
-        assert bins > 1
+        if bins < 2:
+            raise ValueError("hist requires bins >= 2")
         self.bins = bins
 
     def __call__(self, X):

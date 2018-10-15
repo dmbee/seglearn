@@ -33,7 +33,7 @@ def get_ts_data_parts(X):
 
 def check_ts_data(X, y=None):
     '''
-    Checks time series data is good. If not raises assertion error.
+    Checks time series data is good. If not raises value error.
 
     Parameters
     ----------
@@ -45,7 +45,11 @@ def check_ts_data(X, y=None):
     Ntx = np.array([len(X[i]) for i in np.arange(Ns)])
 
     if y is not None:
-        assert Ns == len(y)
+        Ny = len(y)
+        if Ns!= Ny:
+            raise ValueError("Number of time series different in X (%d) and y (%d)"
+                             %(Ns, Ny))
+
         Nty = np.array([len(np.atleast_1d(y[i])) for i in np.arange(Ns)])
 
         if np.count_nonzero(Nty == 1) == Ns:
@@ -53,7 +57,10 @@ def check_ts_data(X, y=None):
         elif np.count_nonzero(Nty == Ntx) == Ns:
             return
         else:
-            raise TypeError
+            raise ValueError("Invalid time series lengths.\n"
+                            "Ns: ", Ns,
+                            "Ntx: ", Ntx,
+                            "Nty: ", Nty)
 
 
 def ts_stats(Xt, y, fs=1.0, class_labels=None):

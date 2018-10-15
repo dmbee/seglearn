@@ -7,6 +7,7 @@ This module is for transforming time series data.
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_random_state
+from sklearn.exceptions import NotFittedError
 from scipy.interpolate import interp1d
 
 from .feature_functions import base_features
@@ -114,16 +115,21 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     '''
 
     def __init__(self, width=100, overlap=0.5, shuffle=False, random_state=None):
-        assert width > 0
-        assert overlap >= 0. and overlap <= 1
-
         self.width = width
         self.overlap = overlap
         self.shuffle = shuffle
         self.random_state = random_state
+        self._validate_params()
+
         self.f_labels = None
         self.step = int(self.width * (1. - self.overlap))
         self.step = self.step if self.step >= 1 else 1
+
+    def _validate_params(self):
+        if not self.width >= 1:
+            raise ValueError("width must be >=1 (was %d)" % self.width)
+        if not (self.overlap >= 0.0 and self.overlap <= 1.0):
+            raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
 
     def fit(self, X, y=None):
         '''
@@ -250,8 +256,10 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self.step = self.step if self.step >= 1 else 1
 
     def _validate_params(self):
-        assert self.width > 0
-        assert self.overlap >= 0. and self.overlap <= 1.
+        if not self.width >= 1:
+            raise ValueError("width must be >=1 (was %d)" % self.width)
+        if not (self.overlap >= 0.0 and self.overlap <= 1.0):
+            raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
 
     def fit(self, X, y=None):
         '''
@@ -376,9 +384,12 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         self.step = self.step if self.step >= 1 else 1
 
     def _validate_params(self):
-        assert self.width > 0
-        assert self.overlap >= 0. and self.overlap <= 1.
-        assert self.forecast > 0
+        if not self.width >= 1:
+            raise ValueError("width must be >=1 (was %d)" % self.width)
+        if not (self.overlap >= 0.0 and self.overlap <= 1.0):
+            raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
+        if not self.forecast >= 1:
+            raise ValueError("forecase must be >=1 (was %d)" % self.forecast)
 
     def fit(self, X=None, y=None):
         '''
@@ -529,7 +540,8 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
     '''
 
     def __init__(self, width=100):
-        assert width >= 1
+        if not width >= 1:
+            raise ValueError("width must be >= 1 (was %d)" % width)
         self.width = width
 
     def _mv_resize(self, v):
@@ -632,10 +644,12 @@ class Interp(BaseEstimator, XyTransformerMixin):
     '''
 
     def __init__(self, sample_period, kind='linear', categorical_target=False):
+        if not sample_period > 0:
+            raise ValueError("sample_period must be >0 (was %f)" % sample_period)
+
         self.sample_period = sample_period
         self.kind = kind
         self.categorical_target = categorical_target
-        assert self.sample_period > 0
 
     def fit(self, X, y=None):
         '''
@@ -654,7 +668,9 @@ class Interp(BaseEstimator, XyTransformerMixin):
         self : object
             Returns self.
         '''
-        assert X[0].ndim > 1  # need 1 channel of values
+        if not X[0].ndim > 1:
+            raise ValueError("X variable must have more than 1 channel")
+
         return self
 
     def _interp(self, t_new, t, x, kind):
@@ -774,7 +790,8 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         if features == 'default':
             self.features = base_features()
         else:
-            assert isinstance(features, dict)
+            if not isinstance(features, dict):
+                raise TypeError("features must either 'default' or an instance of type dict")
             self.features = features
 
         self.f_labels = None
@@ -832,7 +849,8 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         self.f_labels = None
 
     def _check_if_fitted(self):
-        assert self.f_labels is not None
+        if self.f_labels is None:
+            raise NotFittedError("FeatureRep")
 
     def _check_features(self, features, Xti):
         '''
@@ -858,7 +876,10 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             fshapes[i] = np.row_stack(features[keys[i]](Xti)).shape
 
         # make sure each feature returns an array shape [N, ]
-        assert np.count_nonzero(fshapes[:, 0] == N)
+        if not np.all(fshapes[:, 0] == N):
+            raise ValueError("feature function returned array with invalid length, ",
+                             np.array(features.keys())[fshapes[:, 0] != N])
+
         return {keys[i]: fshapes[i, 1] for i in range(N_fts)}
 
     def _generate_feature_labels(self, X):

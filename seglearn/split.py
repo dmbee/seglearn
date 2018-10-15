@@ -44,7 +44,8 @@ class TemporalKFold(object):
     '''
 
     def __init__(self, n_splits=3):
-        assert n_splits > 1
+        if n_splits < 2:
+            raise ValueError("TemporalKFold: n_splits must be >= 2 (set to %d)" %n_splits)
         self.n_splits = n_splits
 
     def split(self, X, y):
@@ -74,7 +75,7 @@ class TemporalKFold(object):
         Xt_new, y_new = self._ts_slice(Xt, y)
 
         if Xc is not None:
-            Xc_new = np.concatenate([Xc]*self.n_splits)
+            Xc_new = np.concatenate([Xc] * self.n_splits)
             X_new = TS_Data(Xt_new, Xc_new)
         else:
             X_new = np.array(Xt_new)
@@ -146,11 +147,14 @@ def temporal_split(X, y, test_size=0.25):
 
     '''
 
+    if test_size <= 0. or test_size >= 1.:
+        raise ValueError("temporal_split: test_size must be >= 0.0 and <= 1.0"
+                         " (was %.1f)" %test_size)
+
     Ns = len(y)  # number of series
     check_ts_data(X, y)
     Xt, Xc = get_ts_data_parts(X)
 
-    assert test_size >= 0. and test_size <= 1.
     train_size = 1. - test_size
 
     train_ind = [np.arange(0, int(train_size * len(Xt[i]))) for i in range(Ns)]
