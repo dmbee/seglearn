@@ -6,13 +6,13 @@ This module is for transforming time series data.
 
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.utils import check_random_state
+from sklearn.utils import check_random_state, check_array
 from sklearn.exceptions import NotFittedError
 from scipy.interpolate import interp1d
 
 from .feature_functions import base_features
 from .base import TS_Data
-from .util import get_ts_data_parts
+from .util import get_ts_data_parts, check_ts_data
 
 __all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep']
 
@@ -150,6 +150,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         self : object
             Returns self.
         '''
+        check_ts_data(X, y)
         return self
 
     def transform(self, X, y=None, sample_weight=None):
@@ -177,6 +178,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         sample_weight_new : array-like shape [n_segments]
             expanded sample weights
         '''
+        check_ts_data(X, y)
         Xt, Xc = get_ts_data_parts(X)
         yt = y
         swt = sample_weight
@@ -278,6 +280,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self : object
             Returns self.
         '''
+        check_ts_data(X, y)
         return self
 
     def transform(self, X, y=None, sample_weight=None):
@@ -306,6 +309,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         sample_weight_new : None
 
         '''
+        check_ts_data(X, y)
         Xt, Xc = get_ts_data_parts(X)
         yt = y
 
@@ -408,6 +412,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         self : object
             Returns self.
         '''
+        check_ts_data(X, y)
         return self
 
     def transform(self, X, y, sample_weight=None):
@@ -434,6 +439,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         sample_weight_new : None
 
         '''
+        check_ts_data(X, y)
         Xt, Xc = get_ts_data_parts(X)
         yt = y
 
@@ -573,6 +579,7 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         self : object
             Returns self.
         '''
+        check_ts_data(X, y)
         return self
 
     def transform(self, X, y=None, sample_weight=None):
@@ -598,6 +605,7 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         sample_weight_new : None
 
         '''
+        check_ts_data(X, y)
         Xt, Xc = get_ts_data_parts(X)
         yt = y
         swt = sample_weight
@@ -668,6 +676,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
         self : object
             Returns self.
         '''
+        check_ts_data(X, y)
         if not X[0].ndim > 1:
             raise ValueError("X variable must have more than 1 channel")
 
@@ -702,6 +711,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
         sample_weight_new : array-like or None
             None is returned if target is changed. Otherwise it is returned unchanged.
         '''
+        check_ts_data(X, y)
         Xt, Xc = get_ts_data_parts(X)
         yt = y
         swt = sample_weight
@@ -813,7 +823,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         self : object
             Returns self.
         '''
-
+        check_ts_data(X, y)
         self._reset()
         print("X Shape: ", X.shape)
         self.f_labels = self._generate_feature_labels(X)
@@ -836,8 +846,9 @@ class FeatureRep(BaseEstimator, TransformerMixin):
 
         '''
         self._check_if_fitted()
-
         Xt, Xc = get_ts_data_parts(X)
+        check_array(Xt, dtype='numeric', ensure_2d=False, allow_nd=True)
+
         fts = np.column_stack([self.features[f](Xt) for f in self.features])
         if Xc is not None:
             fts = np.column_stack([fts, Xc])
