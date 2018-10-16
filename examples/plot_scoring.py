@@ -70,7 +70,7 @@ y = data['y']
 steps = [('seg', SegmentX()),
          ('features', FeatureRep()),
          ('scaler', StandardScaler()),
-         ('rf', RandomForestClassifier())]
+         ('rf', RandomForestClassifier(n_estimators=20))]
 
 pipe = Pype(steps)
 
