@@ -760,7 +760,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             The number of features returned (n_features) must be >= 1
 
         If features is not specified, a default feature dictionary will be used (see base_features).
-         See ``feature_functions`` for example implementations.
+        See ``feature_functions`` for example implementations.
 
     Attributes
     ----------
