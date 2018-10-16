@@ -38,14 +38,14 @@ jobs:
     - run: sudo apt-get update
     - run: sudo apt-get install libatlas-dev libatlas3gf-base
     - run: sudo apt-get install build-essential python-dev python-setuptools python-pip
-    - run: pip3 install --upgrade numpy
-    - run: pip3 install --upgrade scipy matplotlib setuptools nose coverage sphinx pillow sphinx-gallery sphinx_rtd_theme pandas
-    - run: pip3 install --upgrade tensorflow
-    - run: pip3 install --upgrade keras
+    - run: pip install --upgrade numpy
+    - run: pip install --upgrade scipy matplotlib setuptools nose coverage sphinx pillow sphinx-gallery sphinx_rtd_theme pandas
+    - run: pip install --upgrade tensorflow
+    - run: pip install --upgrade keras
     - run: sudo -E apt-get -yq update
     - run: sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install dvipng texlive-latex-base texlive-latex-extra
-    - run: pip3 install --upgrade cython numpydoc
-    - run: pip3 install --upgrade scikit-learn
+    - run: pip install --upgrade cython numpydoc
+    - run: pip install --upgrade scikit-learn
     - run: python3 setup.py clean
     - run: python3 setup.py develop
     - run: set -o pipefail && cd doc && make html 2>&1 | tee ~/log.txt

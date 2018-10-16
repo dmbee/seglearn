@@ -17,7 +17,7 @@ install:
   - pip install sphinx_rtd_theme sphinx_gallery numpy doc
 
 script:
-  - pytest --cov seglearn  
+  - pytest --cov seglearn
 
 after_success:
   - coveralls
