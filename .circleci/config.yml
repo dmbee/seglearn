@@ -38,6 +38,7 @@ jobs:
     - run: sudo apt-get update
     - run: sudo apt-get install libatlas-dev libatlas3gf-base
     - run: sudo apt-get install build-essential python-dev python-setuptools python-pip
+    - run: pip install --upgrade pip
     - run: pip install --upgrade numpy
     - run: pip install --upgrade scipy matplotlib setuptools nose coverage sphinx pillow sphinx-gallery sphinx_rtd_theme pandas
     - run: pip install --upgrade tensorflow
