@@ -107,6 +107,11 @@ If more details are needed, have a look at the `API Documentation <api.html>`_.
 
 Change Log
 ----------
+Version 1.0.1:
+
+* Improvements to documentation, error checking, and unit tests
+* feature_functions min and max changed to minimum and maximum respectively
+
 Version 1.0.0:
 
 * Major API change integrating preprocessing and estimation into single pipeline (Pype)
