@@ -47,8 +47,8 @@ jobs:
     - run: sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install dvipng texlive-latex-base texlive-latex-extra
     - run: pip install --upgrade cython numpydoc
     - run: pip install --upgrade scikit-learn
-    - run: python3 setup.py clean
-    - run: python3 setup.py develop
+    - run: python setup.py clean
+    - run: python setup.py develop
     - run: set -o pipefail && cd doc && make html 2>&1 | tee ~/log.txt
     # Save dependency cache
     - save_cache:
