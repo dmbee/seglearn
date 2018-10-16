@@ -81,7 +81,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 # OPTION 1: Use the score SegPipe score method
 ##############################################
 
-pipe.fit(X_train,y_train)
+pipe.fit(X_train, y_train)
 score = pipe.score(X_test, y_test)
 print("Accuracy score: ", score)
 
@@ -102,7 +102,7 @@ plot_confusion_matrix(cm, data['y_labels'])
 ##########################################
 
 # model selection using the built-in score method for the final estimator
-cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
+cv_scores = cross_validate(pipe, X, y, cv=4, return_train_score=True)
 print("CV Scores: ", pd.DataFrame(cv_scores))
 
 # model selection with scoring functions / dictionaries
@@ -126,10 +126,9 @@ print("CV Scores: ", pd.DataFrame(cv_scores))
 # this can be used to cross_validate or grid search with any 1 score
 
 scorer = make_scorer(f1_score, average='macro')
-pipe = Pype(steps, scorer = scorer)
-cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
+pipe = Pype(steps, scorer=scorer)
+cv_scores = cross_validate(pipe, X, y, cv=4, return_train_score=True)
 print("CV F1 Scores: ", pd.DataFrame(cv_scores))
-
 
 ##################################################
 # SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -149,10 +148,7 @@ clf = Pipeline([('features', FeatureRep()),
                 ('scaler', StandardScaler()),
                 ('rf', RandomForestClassifier())])
 
-
-
-scoring = ['accuracy','precision_macro','recall_macro','f1_macro']
+scoring = ['accuracy', 'precision_macro', 'recall_macro', 'f1_macro']
 cv_scores = cross_validate(clf, X_seg, y_seg,
                            cv=4, return_train_score=False, scoring=scoring)
 print("CV Scores (workaround): ", pd.DataFrame(cv_scores))
-

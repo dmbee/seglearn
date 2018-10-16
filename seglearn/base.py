@@ -35,8 +35,8 @@ class TS_Data(object):
     def __iter__(self):
         return self
 
-    def __getitem__(self, slice):
-        return TS_Data(self.ts_data[slice], self.context_data[slice])
+    def __getitem__(self, indices):
+        return TS_Data(self.ts_data[indices], self.context_data[indices])
 
     def __next__(self):
         if self.index == self.N:

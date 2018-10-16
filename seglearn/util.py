@@ -49,7 +49,7 @@ def check_ts_data(X, y=None):
             raise ValueError("Number of time series different in X (%d) and y (%d)"
                              % (Nx, Ny))
 
-        Xt, Xc = get_ts_data_parts(X)
+        Xt, _ = get_ts_data_parts(X)
         Ntx = np.array([len(Xt[i]) for i in np.arange(Nx)])
         Nty = np.array([len(np.atleast_1d(y[i])) for i in np.arange(Nx)])
 
