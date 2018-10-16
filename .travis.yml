@@ -14,7 +14,6 @@ install:
   - pip install .
   - pip install pytest pytest-cov coverage coveralls
   - pip install travis-sphinx
-  - pip install sphinx_rtd_theme sphinx_gallery numpy doc
 
 script:
   - pytest --cov seglearn
