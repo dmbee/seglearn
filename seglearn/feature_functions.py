@@ -39,6 +39,7 @@ def base_features():
     series data '''
     features = {'mean': mean,
                 'median': median,
+                'abs_energy': abs_energy,
                 'std': std,
                 'var': var,
                 'min': minimum,
@@ -57,8 +58,14 @@ def all_features():
     '''
     features = {'mean': mean,
                 'median': median,
+                'gmean': gmean,
+                'hmean': hmean,
+                'vec_sum': vec_sum,
+                'abs_sum': abs_sum,
+                'abs_energy': abs_energy,
                 'std': std,
                 'var': var,
+                'variation': variation,
                 'min': minimum,
                 'max': maximum,
                 'skew': skew,
@@ -80,6 +87,31 @@ def median(X):
     return np.median(X, axis=1)
 
 
+def gmean(X):
+    ''' geometric mean for each variable '''
+    return stats.gmean(X, axis=1)
+
+
+def hmean(X):
+    ''' harmonic mean for each variable '''
+    return stats.hmean(X, axis=1)
+
+
+def vec_sum(X):
+    ''' vector sum of each variable '''
+    return np.sum(X, axis=1)
+
+
+def abs_sum(X):
+    ''' sum of absolute values '''
+    return np.sum(np.abs(X), axis=1)
+
+
+def abs_energy(X):
+    ''' absolute sum of squares for each variable '''
+    return np.sum(X * X, axis=1)
+
+
 def std(X):
     ''' statistical standard deviation for each variable in a segmented time series '''
     return np.std(X, axis=1)
@@ -88,6 +120,11 @@ def std(X):
 def var(X):
     ''' statistical variance for each variable in a segmented time series '''
     return np.std(X, axis=1)
+
+
+def variation(X):
+    ''' coefficient of variation '''
+    return stats.variation(X, axis=1)
 
 
 def minimum(X):
@@ -108,6 +145,25 @@ def skew(X):
 def kurt(X):
     ''' kurtosis for each variable in a segmented time series '''
     return stats.kurtosis(X, axis=1)
+
+
+def mse(X):
+    ''' computes mean spectral energy for each variable in a segmented time series '''
+    return np.mean(np.square(np.abs(np.fft.fft(X, axis=1))), axis=1)
+
+
+def mean_crossings(X):
+    ''' Computes number of mean crossings for each variable in a segmented time series '''
+    X = np.atleast_3d(X)
+    N = X.shape[0]
+    D = X.shape[2]
+    mnx = np.zeros((N, D))
+    for i in range(D):
+        pos = X[:, :, i] > 0
+        npos = ~pos
+        c = (pos[:, :-1] & npos[:, 1:]) | (npos[:, :-1] & pos[:, 1:])
+        mnx[:, i] = np.count_nonzero(c, axis=1)
+    return mnx
 
 
 class hist(object):
@@ -133,25 +189,6 @@ class hist(object):
                     np.histogram(X[i, :, j], bins=self.bins, density=True)[0]
 
         return histogram
-
-
-def mse(X):
-    ''' computes mean spectral energy for each variable in a segmented time series '''
-    return np.mean(np.square(np.abs(np.fft.fft(X, axis=1))), axis=1)
-
-
-def mean_crossings(X):
-    ''' Computes number of mean crossings for each variable in a segmented time series '''
-    X = np.atleast_3d(X)
-    N = X.shape[0]
-    D = X.shape[2]
-    mnx = np.zeros((N, D))
-    for i in range(D):
-        pos = X[:, :, i] > 0
-        npos = ~pos
-        c = (pos[:, :-1] & npos[:, 1:]) | (npos[:, :-1] & pos[:, 1:])
-        mnx[:, i] = np.count_nonzero(c, axis=1)
-    return mnx
 
 
 def corr2(X):
