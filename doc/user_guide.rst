@@ -109,7 +109,7 @@ Change Log
 ----------
 Version 1.0.2:
 
-* Added further feature functions
+* Added further features
 
 Version 1.0.1:
 

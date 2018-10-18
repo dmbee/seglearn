@@ -70,6 +70,8 @@ def all_features():
                 'max': maximum,
                 'skew': skew,
                 'kurt': kurt,
+                'mean_diff': mean_diff,
+                'mean_abs_diff': means_abs_diff,
                 'mse': mse,
                 'mnx': mean_crossings,
                 'hist4': hist(),
@@ -145,6 +147,16 @@ def skew(X):
 def kurt(X):
     ''' kurtosis for each variable in a segmented time series '''
     return stats.kurtosis(X, axis=1)
+
+
+def mean_diff(X):
+    ''' mean temporal derivative '''
+    return np.mean(np.diff(X, axis=1), axis=1)
+
+
+def means_abs_diff(X):
+    ''' mean absolute temporal derivative '''
+    return np.mean(np.abs(np.diff(X, axis=1)), axis=1)
 
 
 def mse(X):
