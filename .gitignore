@@ -74,3 +74,6 @@ target/
 .ipynb_checkpoints/
 testing.ipynb
 
+# deployment scripts
+reinstall.sh
+deploy_to_pypi.sh
