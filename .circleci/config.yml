@@ -1,99 +1,41 @@
-# need to complete changes to make v2 compatible
-# https://circleci.com/docs/2.0/sample-config/
-# https://circleci.com/docs/2.0/migrating-from-1-2/
-
 version: 2
 
 jobs:
-  build:
-    working_directory: ~/dmbee/seglearn
-    parallelism: 1
-    shell: /bin/bash --login
-
-    environment:
-      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
-      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-      USERNAME: dmbee
-      DOC_REPO: seglearn
-      DOC_URL: ''
-      EMAIL: david.mo.burns@gmail.com
-
+  python3:
     docker:
-    - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
-      command: /sbin/init
-
+      - image: circleci/python:3.6.1
     steps:
-    - checkout
-    - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
-    - restore_cache:
-        keys:
-        # This branch if available
-        - v1-dep-{{ .Branch }}-
-        # Default branch if not
-        - v1-dep-master-
-        # Any branch if there are none on the default branch - this should be unnecessary if you have your default branch configured correctly
-        - v1-dep-
+      - checkout
+      - run:
+          command: |
+            wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+            chmod +x miniconda.sh && ./miniconda.sh -b -p ~/miniconda
+            export PATH="~/miniconda/bin:$PATH"
+            conda update --yes --quiet conda
+            conda create -n testenv --yes --quiet python=3
+            source activate testenv
+            conda install --yes pip numpy scipy scikit-learn matplotlib sphinx sphinx_rtd_theme numpydoc pillow
+            pip install sphinx-gallery
+            pip install .
+            cd doc
+            make html
+      - store_artifacts:
+          path: doc/_build/html
+          destination: doc
+      - store_artifacts:
+          path: ~/log.txt
+      - persist_to_workspace:
+          root: doc/_build/html
+          paths: .
+      - attach_workspace:
+          at: doc/_build/html
+      - run: ls -ltrh doc/_build/html
+    filters:
+      branches:
+        ignore: gh-pages
 
-    - run: sudo -E apt-get -yq remove texlive-binaries --purge
-    - run: sudo apt-get update
-    - run: sudo apt-get install libatlas-dev libatlas3gf-base
-    - run: sudo apt-get install build-essential python-dev python-setuptools python-pip
-    - run: pip install --upgrade pip
-    - run: pip install --upgrade numpy
-    - run: pip install --upgrade scipy matplotlib setuptools nose coverage sphinx pillow sphinx-gallery sphinx_rtd_theme pandas
-    - run: pip install --upgrade tensorflow
-    - run: pip install --upgrade keras
-    - run: sudo -E apt-get -yq update
-    - run: sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install dvipng texlive-latex-base texlive-latex-extra
-    - run: pip install --upgrade cython numpydoc
-    - run: pip install --upgrade scikit-learn
-    - run: python setup.py clean
-    - run: python setup.py develop
-    - run: set -o pipefail && cd doc && make html 2>&1 | tee ~/log.txt
-    # Save dependency cache
-    - save_cache:
-        key: v1-dep-{{ .Branch }}-{{ epoch }}
-        paths:
-        # This is a broad list of cache paths to include many possible development environments
-        # You can probably delete some of these entries
-        - vendor/bundle
-        - ~/virtualenvs
-        - ~/.m2
-        - ~/.ivy2
-        - ~/.bundle
-        - ~/.go_workspace
-        - ~/.gradle
-        - ~/.cache/bower
-
-    - run: cat ~/log.txt && if grep -q "Traceback (most recent call last):" ~/log.txt; then false; else true; fi
-
-    # Save test results
-    - store_test_results:
-        path: /tmp/circleci-test-results
-    # Save artifacts
-    - store_artifacts:
-        path: /tmp/circleci-artifacts
-    - store_artifacts:
-        path: doc/_build/html
-    - store_artifacts:
-        path: ~/log.txt
-    - store_artifacts:
-        path: /tmp/circleci-test-results
-
-    - persist_to_workspace:
-      root: doc/_build/html
-      paths: .
-    - attach_workspace:
-      at: doc/_build/html
-    - run: ls -ltrh doc/_build/html
-
-  filters:
-    branches:
-      ignore: gh-pages
-
-  workflows:
-    version: 2
-    build-doc-and-deploy:
-      jobs:
-        - python3
-
+workflows:
+  version: 2
+  build-doc-and-deploy:
+    jobs:
+      - python3
