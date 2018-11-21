@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  python3:
+  build:
     branches:
       ignore:
         - gh-pages
@@ -53,9 +53,3 @@ jobs:
           git add -A
           git commit -m "Automated deployment to GitHub Pages"
           git push origin gh-pages
-
-workflows:
-  version: 2
-  build-doc-and-deploy:
-    jobs:
-      - python3
