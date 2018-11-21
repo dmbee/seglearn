@@ -46,6 +46,7 @@ jobs:
             git checkout gh-pages || git checkout --orphan gh-pages
             git rm -rf .
             cp -R $HOME/tmp/* ./
+            touch .nojekyll
             git add -A
             git commit -m "Automated deployment to GitHub Pages"
             git push origin gh-pages
