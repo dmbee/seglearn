@@ -80,3 +80,20 @@ jobs:
     - store_artifacts:
         path: /tmp/circleci-test-results
 
+    - persist_to_workspace:
+      root: doc/_build/html
+      paths: .
+    - attach_workspace:
+      at: doc/_build/html
+    - run: ls -ltrh doc/_build/html
+
+  filters:
+    branches:
+      ignore: gh-pages
+
+  workflows:
+    version: 2
+    build-doc-and-deploy:
+      jobs:
+        - python3
+
