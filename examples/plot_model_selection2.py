@@ -48,7 +48,7 @@ Xs, ys, cv = splitter.split(X, y)
 # create a segment learning pipeline
 width = 100
 pipe = Pype([('seg', SegmentX()),
-             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
+             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=2, batch_size=256, verbose=0))])
 
 # create a parameter dictionary using the sklearn API
 #
