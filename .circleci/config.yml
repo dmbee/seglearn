@@ -34,12 +34,10 @@ jobs:
           at: doc/_build/html
       - run: ls -ltrh doc/_build/html
       - deploy:
-        name: Deploy
         command: |
           git config --global user.email $EMAIL
           git config --global user.name $USERNAME
           MSG="Pushing the docs for revision for branch: $CIRCLE_BRANCH, commit $CIRCLE_SHA1"
-
           cd $HOME
           rm -rf tmp
           mkdir tmp
@@ -49,7 +47,6 @@ jobs:
           git checkout gh-pages || git checkout --orphan gh-pages
           git rm -rf .
           cp -R $HOME/tmp/* ./
-
           git add -A
           git commit -m "Automated deployment to GitHub Pages"
           git push origin gh-pages
