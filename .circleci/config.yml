@@ -2,6 +2,9 @@ version: 2
 
 jobs:
   python3:
+    branches:
+      ignore:
+        - gh-pages
     docker:
       - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
     steps:
@@ -30,12 +33,23 @@ jobs:
       - attach_workspace:
           at: doc/_build/html
       - run: ls -ltrh doc/_build/html
-    filters:
-      branches:
-        ignore: gh-pages
+      - deploy:
+        name: Deploy
+        command: |
+          git config --global user.email $EMAIL
+          git config --global user.name $USERNAME
+          MSG="Pushing the docs for revision for branch: $CIRCLE_BRANCH, commit $CIRCLE_SHA1"
 
-workflows:
-  version: 2
-  build-doc-and-deploy:
-    jobs:
-      - python3
+          cd $HOME
+          rm -rf tmp
+          mkdir tmp
+          cp -R $HOME/seglearn/doc/_build/html/* ./tmp/
+          git clone https://github.com/dmbee/seglearn.git out
+          cd out
+          git checkout gh-pages || git checkout --orphan gh-pages
+          git rm -rf .
+          cp -R $HOME/tmp/* ./
+
+          git add -A
+          git commit -m "Automated deployment to GitHub Pages"
+          git push origin gh-pages
