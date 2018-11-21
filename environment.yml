@@ -1,0 +1,5 @@
+name: seglearn
+dependencies:
+  - numpy
+  - scipy
+  - scikit-learn
