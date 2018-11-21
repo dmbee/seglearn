@@ -34,19 +34,18 @@ jobs:
           at: doc/_build/html
       - run: ls -ltrh doc/_build/html
       - deploy:
-        command: |
-          git config --global user.email "david.mo.burns@gmail.com"
-          git config --global user.name "dmbee"
-          cd $HOME
-          rm -rf tmp
-          mkdir tmp
-          cp -R $HOME/seglearn/doc/_build/html/* ./tmp/
-          git clone https://github.com/dmbee/seglearn.git out
-          cd out
-          git checkout gh-pages || git checkout --orphan gh-pages
-          git rm -rf .
-          cp -R $HOME/tmp/* ./
-          git add -A
-          git commit -m "Automated deployment to GitHub Pages"
-          git push origin gh-pages
-          
+          command: |
+            git config --global user.email "david.mo.burns@gmail.com"
+            git config --global user.name "dmbee"
+            cd $HOME
+            rm -rf tmp
+            mkdir tmp
+            cp -R $HOME/seglearn/doc/_build/html/* ./tmp/
+            git clone https://github.com/dmbee/seglearn.git out
+            cd out
+            git checkout gh-pages || git checkout --orphan gh-pages
+            git rm -rf .
+            cp -R $HOME/tmp/* ./
+            git add -A
+            git commit -m "Automated deployment to GitHub Pages"
+            git push origin gh-pages
