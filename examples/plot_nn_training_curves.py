@@ -26,14 +26,12 @@ from seglearn.transform import SegmentX
 # Simple NN Model
 ##############################################
 
-def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-               conv_filters=64, lstm_units=100):
+def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=10,
+               conv_filters=32, lstm_units=40):
     input_shape = (width, n_vars)
     model = Sequential()
     model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
                      padding='valid', activation='relu', input_shape=input_shape))
-    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
-                     padding='valid', activation='relu'))
     model.add(LSTM(units=lstm_units, dropout=0.1, recurrent_dropout=0.1))
     model.add(Dense(n_classes, activation="softmax"))
 
@@ -58,7 +56,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 # create a segment learning pipeline
 width = 100
 pipe = Pype([('seg', SegmentX()),
-             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=3, batch_size=256,
+             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=5, batch_size=128,
                                       verbose=0, validation_split=0.2))])
 
 ##############################################
