@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Guide &mdash; seglearn 0.1.1 documentation</title>
+  <title>User Guide &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -186,8 +186,8 @@
 </div>
 <div class="section" id="time-series-data">
 <h2>Time Series Data<a class="headerlink" href="#time-series-data" title="Permalink to this headline">¶</a></h2>
-<p>Sequence and time series data have a general formulation as sequence pairs <img class="math" src="_images/math/6d636e1d90c17d2e1e208bd7327464353008bd31.png" alt="\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}"/>, where each <img class="math" src="_images/math/925bd8b766b4999fe4377713989fd144ec2fac8c.png" alt="\mathbf{X}_i"/> is a multivariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/d0f26c703def1e44a401ea8f6ce3cf67a7f25a6d.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle"/> and each <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> target is a univariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/d0f26c703def1e44a401ea8f6ce3cf67a7f25a6d.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle"/> and each <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> target is a univariate sequence with <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> samples <img class="math" src="_images/math/8c68c53cead5c55c2f3deabc2311503c78d3211c.png" alt="\langle y_{i,1}, y_{i,2},..., y_{i,T_i} \rangle"/>. The targets <img class="math" src="_images/math/8c217ba85ed1b24862bcbbeaaa256ebea4357665.png" alt="\mathbf{y}_i"/> can either be sequences of categorical class labels (for classification problems), or sequences of continuous data (for regression problems). The number of samples <img class="math" src="_images/math/5841980a2e23dce32c385013ad69a64ab5602640.png" alt="T_i"/> varies between the sequence pairs in the data set. Time series’ with a regular sampling period may be treated equivalently to sequences. Irregularly sampled time series are formulated with an additional sequence variable <img class="math" src="_images/math/7fe2721b39a412a06acf6247208a6d114e7483da.png" alt="\mathbf{t}_i"/> that increases monotonically and indicates the timing of samples in the data set <img class="math" src="_images/math/5792f24e82ec651606245f0a86cd9a05897dec08.png" alt="\{(\mathbf{t}_i, \mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}"/>.</p>
-<p>Important sub-classes of the general sequence learning problem are sequence classification and sequence prediction. In sequence classification problems (eg song genre classification), the target for each sequence is a fixed class label <img class="math" src="_images/math/07f6018e00c747406442bb3912e0209766fc9090.png" alt="y_i"/> and the data takes the form <img class="math" src="_images/math/8779cac103ab80aa52af5b1c46f15605dc4b5ff5.png" alt="\{(\mathbf{X}_i, y_i)\}_{i=1}^{N}"/>. Sequence prediction involves predicting a future value of the target <img class="math" src="_images/math/6bfea9d91249b6ed79b7f7f4488fbf61c0e06a6f.png" alt="(y_{i,t+f})"/> or future values <img class="math" src="_images/math/6ab83bae8dcc08c941c6c62ae83ca7273a063ca9.png" alt="\langle y_{i,t+1}, y_{i,t+2},..., y_{i,t+f} \rangle"/>, given <img class="math" src="_images/math/cbaf238de3b86f76f78f4b7eace63233c5332e8b.png" alt="\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,t} \rangle, \langle y_{i,1}, y_{i,2},..., y_{i,t} \rangle"/>, and sometimes also <img class="math" src="_images/math/9cf813368b23e19f9fdc2770bb97e44f2c92bafe.png" alt="\langle \mathbf{x}_{i,t+1}, \mathbf{x}_{i,t+2},...,\mathbf{x}_{i,t+f} \rangle"/>.</p>
+<p>Sequence and time series data have a general formulation as sequence pairs <span class="math">\{(\mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}</span>, where each <span class="math">\mathbf{X}_i</span> is a multivariate sequence with <span class="math">T_i</span> samples <span class="math">\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle</span> and each <span class="math">\mathbf{y}_i</span> target is a univariate sequence with <span class="math">T_i</span> samples <span class="math">\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,T_i} \rangle</span> and each <span class="math">\mathbf{y}_i</span> target is a univariate sequence with <span class="math">T_i</span> samples <span class="math">\langle y_{i,1}, y_{i,2},..., y_{i,T_i} \rangle</span>. The targets <span class="math">\mathbf{y}_i</span> can either be sequences of categorical class labels (for classification problems), or sequences of continuous data (for regression problems). The number of samples <span class="math">T_i</span> varies between the sequence pairs in the data set. Time series’ with a regular sampling period may be treated equivalently to sequences. Irregularly sampled time series are formulated with an additional sequence variable <span class="math">\mathbf{t}_i</span> that increases monotonically and indicates the timing of samples in the data set <span class="math">\{(\mathbf{t}_i, \mathbf{X}_i,\mathbf{y}_i)\}_{i=1}^{N}</span>.</p>
+<p>Important sub-classes of the general sequence learning problem are sequence classification and sequence prediction. In sequence classification problems (eg song genre classification), the target for each sequence is a fixed class label <span class="math">y_i</span> and the data takes the form <span class="math">\{(\mathbf{X}_i, y_i)\}_{i=1}^{N}</span>. Sequence prediction involves predicting a future value of the target <span class="math">(y_{i,t+f})</span> or future values <span class="math">\langle y_{i,t+1}, y_{i,t+2},..., y_{i,t+f} \rangle</span>, given <span class="math">\langle \mathbf{x}_{i,1}, \mathbf{x}_{i,2},...,\mathbf{x}_{i,t} \rangle, \langle y_{i,1}, y_{i,2},..., y_{i,t} \rangle</span>, and sometimes also <span class="math">\langle \mathbf{x}_{i,t+1}, \mathbf{x}_{i,t+2},...,\mathbf{x}_{i,t+f} \rangle</span>.</p>
 <p>A final important generalization is the case where contextual data associated with each sequence, but not varying within the sequence, exists to support the machine learning algorithm performance. Perhaps the algorithm for reading electrocardiograms will be given access to laboratory data, the patient’s age, or known medical diagnoses to assist with classifying the sequential data recovered from the leads.</p>
 <p>seglearn provides a flexible, user-friendly framework for learning time series and sequences in all of the above contexts. Transforms for sequence padding, truncation, and sliding window segmentation are implemented to fix sample number across all sequences in the data set. This permits utilization of many classical and modern machine learning algorithms that require fixed length inputs. Sliding window segmentation transforms the sequence data into a piecewise representation (segments), which is particularly effective for learning periodized sequences. An interpolation transform is implemented for resampling time series’. The sequence or time series data can be learned directly with various neural network architectures, or via a feature representation which greatly enhances performance of classical algorithms.</p>
 </div>
@@ -261,6 +261,15 @@
 </div>
 <div class="section" id="change-log">
 <h2>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h2>
+<p>Version 1.0.2:</p>
+<ul class="simple">
+<li>Added further features</li>
+</ul>
+<p>Version 1.0.1:</p>
+<ul class="simple">
+<li>Improvements to documentation, error checking, and unit tests</li>
+<li>feature_functions min and max changed to minimum and maximum respectively</li>
+</ul>
 <p>Version 1.0.0:</p>
 <ul class="simple">
 <li>Major API change integrating preprocessing and estimation into single pipeline (Pype)</li>
@@ -318,7 +327,7 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -337,20 +346,14 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

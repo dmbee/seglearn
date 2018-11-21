@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Plotting Neural Network Training Curves &mdash; seglearn 0.1.1 documentation</title>
+  <title>Plotting Neural Network Training Curves &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -196,18 +196,17 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">SegmentX</span>
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Conv1D</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.wrappers.scikit_learn</span> <span class="kn">import</span> <span class="n">KerasClassifier</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">SegmentX</span>
 </pre></div>
 </div>
 <div class="section" id="simple-nn-model">
@@ -242,9 +241,9 @@
 
 <span class="c1"># create a segment learning pipeline</span>
 <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span><span class="n">SegmentX</span><span class="p">()),</span>
-             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
-                                      <span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">validation_split</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">))])</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
+             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                      <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">))])</span>
 </pre></div>
 </div>
 </div>
@@ -255,32 +254,32 @@
 <span class="c1"># this approach won&#39;t work with a more complex estimator pipeline, in which case</span>
 <span class="c1"># a callable class with the desired properties should be made passed to build_fn</span>
 
-<span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">))</span>
 <span class="n">ac_train</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span>
 <span class="n">ac_val</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span>
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ac_train</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ac_train</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>acc      loss   val_acc  val_loss
-0  0.239787  1.785687  0.262784  1.669315
-1  0.559147  1.192391  0.512784  1.026026
-2  0.642274  0.819532  0.552557  0.814514
-3  0.706572  0.658595  0.532670  0.804258
-4  0.714742  0.612789  0.511364  0.862336
-5  0.749556  0.541444  0.561080  0.817720
-6  0.772647  0.487899  0.694602  0.841548
-7  0.789343  0.456314  0.612216  0.741530
-8  0.807815  0.421995  0.723011  0.630994
-9  0.816696  0.392262  0.671875  0.739284
+0  0.232682  1.801399  0.036932  1.806905
+1  0.455773  1.256160  0.357955  1.399215
+2  0.616696  0.861852  0.455966  0.906986
+3  0.665009  0.692225  0.676136  0.645294
+4  0.701954  0.612156  0.715909  0.572012
+5  0.730728  0.558351  0.691761  0.673151
+6  0.752753  0.510463  0.711648  0.520783
+7  0.765187  0.462172  0.748580  0.516488
+8  0.782593  0.436550  0.742898  0.578586
+9  0.796448  0.426022  0.529830  0.803166
 </pre></div>
 </div>
 </div>
 <div class="section" id="training-curves">
 <h2>Training Curves<a class="headerlink" href="#training-curves" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">ac_train</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">ac_val</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;validation&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">ac_train</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">ac_val</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epoch&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -288,12 +287,12 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
-<p><strong>Total running time of the script:</strong> ( 2 minutes  0.455 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  26.510 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-nn-training-curves-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_nn_training_curves.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/9ced9a273bf0af1cceab820f691ae479/plot_nn_training_curves.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_nn_training_curves.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_nn_training_curves.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/c3ef6e40e9eedeae042b4a5ed6a8c808/plot_nn_training_curves.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_nn_training_curves.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -319,7 +318,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -338,20 +337,14 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

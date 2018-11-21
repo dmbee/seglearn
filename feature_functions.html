@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Feature Functions &mdash; seglearn 0.1.1 documentation</title>
+  <title>Feature Functions &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -164,8 +164,10 @@
             
   <div class="section" id="module-seglearn.feature_functions">
 <span id="feature-functions"></span><h1>Feature Functions<a class="headerlink" href="#module-seglearn.feature_functions" title="Permalink to this headline">¶</a></h1>
-<p>This module has functions or callable objects that can be used to compute features from segmented time series data</p>
-<p>Sets of these functions or callables can be passed in a dictionary object to initialize the <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> transformer.</p>
+<p>This module has functions or callable objects that can be used to compute features from segmented
+time series data</p>
+<p>Sets of these functions or callables can be passed in a dictionary object to initialize the
+<code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> transformer.</p>
 <p>All functions follow the same template and process a single segmented time series instance:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">compute_feature</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -178,8 +180,9 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">np.atleast_3d</span></code> is used if accessing the third dimension, as some datasets will have only a single time series variable. See <code class="docutils literal notranslate"><span class="pre">hist4</span></code> as an example.</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">np.atleast_3d</span></code> is used if accessing the third dimension, as some datasets will</p>
 </div>
+<p>have only a single time series variable. See <code class="docutils literal notranslate"><span class="pre">hist4</span></code> as an example.</p>
 </div></blockquote>
 <p>See hist for an example of a callable object</p>
 <div class="section" id="examples">
@@ -189,6 +192,18 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">FeatureTransform</span> <span class="o">=</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="n">all_features</span><span class="p">())</span>
 </pre></div>
 </div>
+<dl class="function">
+<dt id="seglearn.feature_functions.abs_energy">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">abs_energy</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#abs_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.abs_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>absolute sum of squares for each variable</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.abs_sum">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">abs_sum</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#abs_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.abs_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>sum of absolute values</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="seglearn.feature_functions.all_features">
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">all_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#all_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.all_features" title="Permalink to this definition">¶</a></dt>
@@ -202,7 +217,8 @@
 <dl class="function">
 <dt id="seglearn.feature_functions.base_features">
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">base_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#base_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.base_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns dictionary of some basic features that can be calculated for segmented time series data</p>
+<dd><p>Returns dictionary of some basic features that can be calculated for segmented time
+series data</p>
 </dd></dl>
 
 <dl class="function">
@@ -211,8 +227,15 @@
 <dd><p>computes correlations between all variable pairs in a segmented time series</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">this feature is expensive to compute with the current implementation, and cannot be used with univariate time series</p>
+<p class="last">this feature is expensive to compute with the current implementation, and cannot be</p>
 </div>
+<p>used with univariate time series</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.gmean">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">gmean</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#gmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.gmean" title="Permalink to this definition">¶</a></dt>
+<dd><p>geometric mean for each variable</p>
 </dd></dl>
 
 <dl class="class">
@@ -224,17 +247,23 @@
 <p class="last">this feature is expensive to compute with the current implementation</p>
 </div>
 <p class="rubric">Methods</p>
-<table border="1" class="docutils">
+<table border="1" class="longtable docutils">
 <colgroup>
-<col width="55%" />
-<col width="45%" />
+<col width="10%" />
+<col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><strong>__call__</strong></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
+<td>Call self as a function.</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.hmean">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">hmean</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#hmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.hmean" title="Permalink to this definition">¶</a></dt>
+<dd><p>harmonic mean for each variable</p>
 </dd></dl>
 
 <dl class="function">
@@ -244,8 +273,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="seglearn.feature_functions.max">
-<code class="descclassname">seglearn.feature_functions.</code><code class="descname">max</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.max" title="Permalink to this definition">¶</a></dt>
+<dt id="seglearn.feature_functions.maximum">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">maximum</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#maximum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.maximum" title="Permalink to this definition">¶</a></dt>
 <dd><p>maximum value for each variable in a segmented time series</p>
 </dd></dl>
 
@@ -262,8 +291,26 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="seglearn.feature_functions.min">
-<code class="descclassname">seglearn.feature_functions.</code><code class="descname">min</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.min" title="Permalink to this definition">¶</a></dt>
+<dt id="seglearn.feature_functions.mean_diff">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">mean_diff</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#mean_diff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.mean_diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>mean temporal derivative</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.means_abs_diff">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">means_abs_diff</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#means_abs_diff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.means_abs_diff" title="Permalink to this definition">¶</a></dt>
+<dd><p>mean absolute temporal derivative</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.median">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">median</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>statistical median for each variable in a segmented time series</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.minimum">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">minimum</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#minimum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.minimum" title="Permalink to this definition">¶</a></dt>
 <dd><p>minimum value for each variable in a segmented time series</p>
 </dd></dl>
 
@@ -291,6 +338,18 @@
 <dd><p>statistical variance for each variable in a segmented time series</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="seglearn.feature_functions.variation">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">variation</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#variation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.variation" title="Permalink to this definition">¶</a></dt>
+<dd><p>coefficient of variation</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.vec_sum">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">vec_sum</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#vec_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.vec_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>vector sum of each variable</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -305,7 +364,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -324,20 +383,14 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

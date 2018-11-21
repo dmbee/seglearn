@@ -26,7 +26,7 @@ This example demonstrates how the pipeline can be used to perform transformation
 
  .. code-block:: none
 
-    ('X Shape: ', (4677, 100, 6))
+    X Shape:  (4677, 100, 6)
 
 
 
@@ -40,11 +40,12 @@ This example demonstrates how the pipeline can be used to perform transformation
     # Author: David Burns
     # License: BSD
 
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
     import seglearn as sgl
 
-    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-    import numpy as np
-    import matplotlib.pyplot as plt
 
     def plot_embedding(emb, y, y_labels):
         # plot a 2D feature map embedding
@@ -52,18 +53,19 @@ This example demonstrates how the pipeline can be used to perform transformation
         emb = (emb - x_min) / (x_max - x_min)
 
         NC = len(y_labels)
-        markers = ['.','+','x','|','_','*','o']
+        markers = ['.', '+', 'x', '|', '_', '*', 'o']
 
         fig = plt.figure()
-        fig.set_size_inches(6,6)
+        fig.set_size_inches(6, 6)
 
         for c in range(NC):
             i = y == c
-            plt.scatter(emb[i, 0], emb[i, 1], marker=markers[c], label = y_labels[c])
+            plt.scatter(emb[i, 0], emb[i, 1], marker=markers[c], label=y_labels[c])
 
         plt.xticks([]), plt.yticks([])
         plt.legend()
         plt.tight_layout()
+
 
     # load the data
     data = sgl.load_watch()
@@ -71,14 +73,15 @@ This example demonstrates how the pipeline can be used to perform transformation
     y = data['y']
 
     # create a pipeline for LDA transformation of the feature representation
-    clf = sgl.Pype([('segment',sgl.SegmentX()),
+    clf = sgl.Pype([('segment', sgl.SegmentX()),
                     ('ftr', sgl.FeatureRep()),
                     ('lda', LinearDiscriminantAnalysis(n_components=2))])
 
     X2, y2 = clf.fit_transform(X, y)
     plot_embedding(X2, y2.astype(int), data['y_labels'])
     plt.show()
-**Total running time of the script:** ( 0 minutes  3.722 seconds)
+
+**Total running time of the script:** ( 0 minutes  0.789 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_lda.py:

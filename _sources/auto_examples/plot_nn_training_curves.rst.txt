@@ -21,18 +21,18 @@ This is a basic example using a convolutional recurrent neural network to learn 
     # Author: David Burns
     # License: BSD
 
-    from seglearn.pipe import Pype
-    from seglearn.transform import SegmentX
-    from seglearn.datasets import load_watch
-
-    from sklearn.model_selection import train_test_split
+    import matplotlib.pyplot as plt
+    import numpy as np
     from keras.layers import Dense, LSTM, Conv1D
     from keras.models import Sequential
     from keras.wrappers.scikit_learn import KerasClassifier
-
-    import numpy as np
     from pandas import DataFrame
-    import matplotlib.pyplot as plt
+    from sklearn.model_selection import train_test_split
+
+    from seglearn.datasets import load_watch
+    from seglearn.pipe import Pype
+    from seglearn.transform import SegmentX
+
 
 
 
@@ -89,9 +89,9 @@ Setup
 
     # create a segment learning pipeline
     width = 100
-    pipe = Pype([('seg',SegmentX()),
-                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs = 10, batch_size = 256,
-                                          verbose = 0, validation_split = 0.2))])
+    pipe = Pype([('seg', SegmentX()),
+                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=10, batch_size=256,
+                                          verbose=0, validation_split=0.2))])
 
 
 
@@ -112,12 +112,11 @@ Accessing training history
     # this approach won't work with a more complex estimator pipeline, in which case
     # a callable class with the desired properties should be made passed to build_fn
 
-    pipe.fit(X_train,y_train)
+    pipe.fit(X_train, y_train)
     print(DataFrame(pipe.history.history))
     ac_train = pipe.history.history['acc']
     ac_val = pipe.history.history['val_acc']
-    epoch = np.arange(len(ac_train))+1
-
+    epoch = np.arange(len(ac_train)) + 1
 
 
 
@@ -130,16 +129,16 @@ Accessing training history
  .. code-block:: none
 
     acc      loss   val_acc  val_loss
-    0  0.239787  1.785687  0.262784  1.669315
-    1  0.559147  1.192391  0.512784  1.026026
-    2  0.642274  0.819532  0.552557  0.814514
-    3  0.706572  0.658595  0.532670  0.804258
-    4  0.714742  0.612789  0.511364  0.862336
-    5  0.749556  0.541444  0.561080  0.817720
-    6  0.772647  0.487899  0.694602  0.841548
-    7  0.789343  0.456314  0.612216  0.741530
-    8  0.807815  0.421995  0.723011  0.630994
-    9  0.816696  0.392262  0.671875  0.739284
+    0  0.232682  1.801399  0.036932  1.806905
+    1  0.455773  1.256160  0.357955  1.399215
+    2  0.616696  0.861852  0.455966  0.906986
+    3  0.665009  0.692225  0.676136  0.645294
+    4  0.701954  0.612156  0.715909  0.572012
+    5  0.730728  0.558351  0.691761  0.673151
+    6  0.752753  0.510463  0.711648  0.520783
+    7  0.765187  0.462172  0.748580  0.516488
+    8  0.782593  0.436550  0.742898  0.578586
+    9  0.796448  0.426022  0.529830  0.803166
 
 
 Training Curves
@@ -150,12 +149,13 @@ Training Curves
 .. code-block:: python
 
 
-    plt.plot(epoch, ac_train, 'o', label = "train")
-    plt.plot(epoch, ac_val, '+', label = "validation")
+    plt.plot(epoch, ac_train, 'o', label="train")
+    plt.plot(epoch, ac_val, '+', label="validation")
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy")
     plt.legend()
     plt.show()
+
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_nn_training_curves_001.png
@@ -164,7 +164,7 @@ Training Curves
 
 
 
-**Total running time of the script:** ( 2 minutes  0.455 seconds)
+**Total running time of the script:** ( 0 minutes  26.510 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

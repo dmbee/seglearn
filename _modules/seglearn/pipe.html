@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.pipe &mdash; seglearn 0.1.1 documentation</title>
+  <title>seglearn.pipe &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -168,23 +168,26 @@
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">from</span> <span class="nn">.transform</span> <span class="k">import</span> <span class="n">XyTransformerMixin</span>
-
-
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
 <span class="kn">from</span> <span class="nn">sklearn.externals</span> <span class="k">import</span> <span class="n">six</span>
 
+<span class="kn">from</span> <span class="nn">.transform</span> <span class="k">import</span> <span class="n">XyTransformerMixin</span>
+
+
 <div class="viewcode-block" id="Pype"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype">[docs]</a><span class="k">class</span> <span class="nc">Pype</span><span class="p">(</span><span class="n">Pipeline</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    This pipeline extends the sklearn Pieline to support transformers that change X, y, sample_weight, and the number of samples.</span>
+<span class="sd">    This pipeline extends the sklearn Pipeline to support transformers that change X, y,</span>
+<span class="sd">    sample_weight, and the number of samples.</span>
 
-<span class="sd">    It also adds some new options for setting hyper-parameters with callables and in reference to other parameters (see examples).</span>
+<span class="sd">    It also adds some new options for setting hyper-parameters with callables and in reference to</span>
+<span class="sd">    other parameters (see examples).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    steps : list</span>
-<span class="sd">        List of (name, transform) tuples (implementing fit/transform) that are chained, in the order in which they are chained, with the last object an estimator.</span>
+<span class="sd">        List of (name, transform) tuples (implementing fit/transform) that are chained, in the</span>
+<span class="sd">        order in which they are chained, with the last object an estimator.</span>
 <span class="sd">    scorer : sklearn scorer object</span>
 <span class="sd">    memory : currently not implemented</span>
 
@@ -196,24 +199,31 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRep</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRep, SegmentX</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.pipe import Pype</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
 <span class="sd">    &gt;&gt;&gt; from sklearn.ensemble import RandomForestClassifier</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.preprocessing import StandardScaler</span>
 <span class="sd">    &gt;&gt;&gt; data = load_watch()</span>
 <span class="sd">    &gt;&gt;&gt; X = data[&#39;X&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; pipe = Pype([(&#39;segment&#39;, SegmentX()),(&#39;features&#39;, FeatureRep()),(&#39;scaler&#39;, StandardScaler()),(&#39;rf&#39;, RandomForestClassifier())])</span>
+<span class="sd">    &gt;&gt;&gt; pipe = Pype([(&#39;segment&#39;, SegmentX()),</span>
+<span class="sd">    &gt;&gt;&gt;              (&#39;features&#39;, FeatureRep()),</span>
+<span class="sd">    &gt;&gt;&gt;              (&#39;scaler&#39;, StandardScaler()),</span>
+<span class="sd">    &gt;&gt;&gt;              (&#39;rf&#39;, RandomForestClassifier())])</span>
 <span class="sd">    &gt;&gt;&gt; pipe.fit(X, y)</span>
 <span class="sd">    &gt;&gt;&gt; print(pipe.score(X, y))</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
-
-    <span class="c1">#todo: handle steps with None</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">scorer</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">memory</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># todo: handle steps with None</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Pype</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">memory</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="o">=</span> <span class="n">scorer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N_train</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N_test</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N_fit</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Pype.fit"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -251,8 +261,7 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-
-    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_steps</span><span class="p">()</span>
 
@@ -265,21 +274,23 @@
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
 
-        <span class="k">for</span> <span class="n">step_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">transformer</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span> <span class="c1">#iterate through all but last</span>
+        <span class="c1"># iterate through all but last</span>
+        <span class="k">for</span> <span class="n">step_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">transformer</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">transformer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># not doing cloning for now...</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transformer</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
-                    <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params_steps</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+                    <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                                          <span class="o">**</span><span class="n">fit_params_steps</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">Xt</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params_steps</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="p">{}</span>
+            <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">fit_params_steps</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
 
-    <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
         <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
@@ -292,9 +303,7 @@
 
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span>
 
-
-
-<div class="viewcode-block" id="Pype.transform"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Pype.transform"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Apply transforms, and transform with the final estimator</span>
 <span class="sd">        This also works where final estimator is ``None``: all prior</span>
@@ -323,7 +332,6 @@
             <span class="n">Xt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span></div>
-
 
 <div class="viewcode-block" id="Pype.fit_transform"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.fit_transform">[docs]</a>    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -368,7 +376,6 @@
 
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span></div>
 
-
 <div class="viewcode-block" id="Pype.predict"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Apply transforms to the data, and predict with the final estimator</span>
@@ -384,7 +391,7 @@
 <span class="sd">        yp : array-like</span>
 <span class="sd">            Predicted transformed target</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span> <span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Pype.transform_predict"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.transform_predict">[docs]</a>    <span class="k">def</span> <span class="nf">transform_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -410,7 +417,6 @@
         <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">yp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">yt</span><span class="p">,</span> <span class="n">yp</span></div>
-
 
 <div class="viewcode-block" id="Pype.score"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -443,9 +449,8 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="o">**</span><span class="n">score_params</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="o">**</span><span class="n">score_params</span><span class="p">)</span></div>
 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scorer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="o">**</span><span class="n">score_params</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Pype.predict_proba"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -462,7 +467,7 @@
 <span class="sd">        y_proba : array-like, shape = [n_samples, n_classes]</span>
 <span class="sd">            Predicted probability of each class</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span> <span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Pype.decision_function"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.decision_function">[docs]</a>    <span class="k">def</span> <span class="nf">decision_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
@@ -496,7 +501,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        y_score : array-like, shape = [n_samples, n_classes]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span> <span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_final_estimator</span><span class="o">.</span><span class="n">predict_log_proba</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Pype.set_params"><a class="viewcode-back" href="../../pipe.html#seglearn.pipe.Pype.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
@@ -528,7 +533,6 @@
 
         <span class="n">BaseEstimator</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div></div>
-
 </pre></div>
 
            </div>
@@ -541,7 +545,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -560,20 +564,14 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

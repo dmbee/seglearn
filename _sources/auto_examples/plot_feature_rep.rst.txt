@@ -27,22 +27,22 @@ This is a basic example using the pipeline to learn a feature representation of 
 
  .. code-block:: none
 
-    ('X Shape: ', (3419, 100, 6))
-    ('N series in train: ', 105)
-    ('N series in test: ', 35)
-    ('N segments in train: ', 3419)
-    ('N segments in test: ', 1258)
-    ('Accuracy score: ', 0.7567567567567568)
-    ('X Shape: ', [3426])
-    ('X Shape: ', [3557])
-    ('X Shape: ', [3535])
-    ('X Shape: ', [3513])
-    ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.529553    0.135319    0.703437     0.998832
-    1  0.624397    0.124362    0.812500     0.999157
-    2  0.564156    0.248595    0.751313     0.999434
-    3  0.635365    0.125646    0.747423     0.998292)
-    ('Features: ', ['std_0', 'std_1', 'std_2', 'std_3', 'std_4', 'std_5', 'mnx_0', 'mnx_1', 'mnx_2', 'mnx_3', 'mnx_4', 'mnx_5', 'min_0', 'min_1', 'min_2', 'min_3', 'min_4', 'min_5', 'max_0', 'max_1', 'max_2', 'max_3', 'max_4', 'max_5', 'skew_0', 'skew_1', 'skew_2', 'skew_3', 'skew_4', 'skew_5', 'var_0', 'var_1', 'var_2', 'var_3', 'var_4', 'var_5', 'mse_0', 'mse_1', 'mse_2', 'mse_3', 'mse_4', 'mse_5', 'kurt_0', 'kurt_1', 'kurt_2', 'kurt_3', 'kurt_4', 'kurt_5', 'mean_0', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5'])
+    X Shape:  (3419, 100, 6)
+    N series in train:  105
+    N series in test:  35
+    N segments in train:  3419
+    N segments in test:  1258
+    Accuracy score:  0.6804451510333863
+    X Shape:  [3426]
+    X Shape:  [3557]
+    X Shape:  [3535]
+    X Shape:  [3513]
+    CV Scores:     fit_time  score_time  test_score  train_score
+    0  0.498929    0.097715    0.753797     0.999708
+    1  0.525610    0.088921    0.808929     1.000000
+    2  0.517640    0.090974    0.776708     0.999717
+    3  0.507879    0.092480    0.784364     1.000000
+    Features:  ['abs_energy_0', 'abs_energy_1', 'abs_energy_2', 'abs_energy_3', 'abs_energy_4', 'abs_energy_5', 'min_0', 'min_1', 'min_2', 'min_3', 'min_4', 'min_5', 'var_0', 'var_1', 'var_2', 'var_3', 'var_4', 'var_5', 'max_0', 'max_1', 'max_2', 'max_3', 'max_4', 'max_5', 'mean_0', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5', 'mse_0', 'mse_1', 'mse_2', 'mse_3', 'mse_4', 'mse_5', 'skew_0', 'skew_1', 'skew_2', 'skew_3', 'skew_4', 'skew_5', 'kurt_0', 'kurt_1', 'kurt_2', 'kurt_3', 'kurt_4', 'kurt_5', 'mnx_0', 'mnx_1', 'mnx_2', 'mnx_3', 'mnx_4', 'mnx_5', 'median_0', 'median_1', 'median_2', 'median_3', 'median_4', 'median_5', 'std_0', 'std_1', 'std_2', 'std_3', 'std_4', 'std_5']
 
 
 
@@ -55,21 +55,19 @@ This is a basic example using the pipeline to learn a feature representation of 
     # Author: David Burns
     # License: BSD
 
-    from seglearn.datasets import load_watch
-    from seglearn.transform import FeatureRep, SegmentX
-    from seglearn.pipe import Pype
-    from seglearn.base import TS_Data
-
-    from sklearn.ensemble import RandomForestClassifier
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.model_selection import train_test_split, cross_validate
-    from sklearn.metrics import f1_score, make_scorer
-
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
-
     import numpy as np
     import pandas as pd
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.metrics import f1_score, make_scorer
+    from sklearn.model_selection import train_test_split, cross_validate
+    from sklearn.preprocessing import StandardScaler
+
+    from seglearn.base import TS_Data
+    from seglearn.datasets import load_watch
+    from seglearn.pipe import Pype
+    from seglearn.transform import FeatureRep, SegmentX
 
     # seed RNGESUS
     np.random.seed(123124)
@@ -83,12 +81,12 @@ This is a basic example using the pipeline to learn a feature representation of 
     clf = Pype([('segment', SegmentX()),
                 ('features', FeatureRep()),
                 ('scaler', StandardScaler()),
-                ('rf', RandomForestClassifier())])
+                ('rf', RandomForestClassifier(n_estimators=20))])
 
     # split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
-    clf.fit(X_train,y_train)
+    clf.fit(X_train, y_train)
     score = clf.score(X_test, y_test)
 
     print("N series in train: ", len(X_train))
@@ -104,8 +102,8 @@ This is a basic example using the pipeline to learn a feature representation of 
     y = np.array(data['y'])
 
     # and do a cross validation
-    scoring = make_scorer(f1_score, average = 'macro')
-    cv_scores = cross_validate(clf, X, y, cv = 4, return_train_score=True)
+    scoring = make_scorer(f1_score, average='macro')
+    cv_scores = cross_validate(clf, X, y, cv=4, return_train_score=True)
     print("CV Scores: ", pd.DataFrame(cv_scores))
 
     # lets see what feature we used
@@ -113,7 +111,8 @@ This is a basic example using the pipeline to learn a feature representation of 
 
     img = mpimg.imread('feet.jpg')
     plt.imshow(img)
-**Total running time of the script:** ( 0 minutes  5.868 seconds)
+
+**Total running time of the script:** ( 0 minutes  4.224 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_feature_rep.py:

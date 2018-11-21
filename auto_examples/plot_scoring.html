@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Scoring Time Series Estimators &mdash; seglearn 0.1.1 documentation</title>
+  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -203,20 +203,20 @@ segments (not series’) as instances of the data.</p>
 <span class="c1"># License: BSD</span>
 
 
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">make_scorer</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">make_scorer</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
 </pre></div>
 </div>
 <div class="section" id="confusion-plot">
@@ -256,7 +256,7 @@ segments (not series’) as instances of the data.</p>
 <span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
          <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
          <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
-         <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())]</span>
+         <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">20</span><span class="p">))]</span>
 
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
 
@@ -267,14 +267,14 @@ segments (not series’) as instances of the data.</p>
 </div>
 <div class="section" id="option-1-use-the-score-segpipe-score-method">
 <h2>OPTION 1: Use the score SegPipe score method<a class="headerlink" href="#option-1-use-the-score-segpipe-score-method" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3519, 100, 6))
-(&#39;Accuracy score: &#39;, 0.7357512953367875)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3519, 100, 6)
+Accuracy score:  0.7469775474956822
 </pre></div>
 </div>
 </div>
@@ -291,14 +291,14 @@ segments (not series’) as instances of the data.</p>
 </div>
 <img alt="../_images/sphx_glr_plot_scoring_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_scoring_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;F1 score: &#39;, 0.7415567232887338)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>F1 score:  0.7573901292541463
 </pre></div>
 </div>
 </div>
 <div class="section" id="option-3-scoring-during-model-selection">
 <h2>OPTION 3: scoring during model selection<a class="headerlink" href="#option-3-scoring-during-model-selection" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model selection using the built-in score method for the final estimator</span>
-<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 
 <span class="c1"># model selection with scoring functions / dictionaries</span>
@@ -315,15 +315,15 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3426, 100, 6))
-(&#39;X Shape: &#39;, (3557, 100, 6))
-(&#39;X Shape: &#39;, (3535, 100, 6))
-(&#39;X Shape: &#39;, (3513, 100, 6))
-(&#39;CV Scores: &#39;,    fit_time  score_time  test_score  train_score
-0  0.541004    0.139409    0.768185     0.998249
-1  0.584890    0.305110    0.806250     0.999719
-2  0.835739    0.128509    0.775832     0.999434
-3  0.600773    0.297719    0.743127     0.998292)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3426, 100, 6)
+X Shape:  (3557, 100, 6)
+X Shape:  (3535, 100, 6)
+X Shape:  (3513, 100, 6)
+CV Scores:     fit_time  score_time  test_score  train_score
+0  0.515419    0.099035    0.806555     1.000000
+1  0.539040    0.091744    0.818750     1.000000
+2  0.533345    0.091522    0.792469     0.999717
+3  0.521410    0.092106    0.780928     1.000000
 </pre></div>
 </div>
 </div>
@@ -333,21 +333,21 @@ segments (not series’) as instances of the data.</p>
 <span class="c1"># this can be used to cross_validate or grid search with any 1 score</span>
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">scorer</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">)</span>
-<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">scorer</span><span class="p">)</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV F1 Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3426, 100, 6))
-(&#39;X Shape: &#39;, (3557, 100, 6))
-(&#39;X Shape: &#39;, (3535, 100, 6))
-(&#39;X Shape: &#39;, (3513, 100, 6))
-(&#39;CV F1 Scores: &#39;,    fit_time  score_time  test_score  train_score
-0  0.902614    0.141938    0.774252     0.998932
-1  0.715085    0.124343    0.846115     0.998263
-2  0.701144    0.129475    0.809397     0.999239
-3  0.720011    0.136580    0.756664     0.999731)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3426, 100, 6)
+X Shape:  (3557, 100, 6)
+X Shape:  (3535, 100, 6)
+X Shape:  (3513, 100, 6)
+CV F1 Scores:     fit_time  score_time  test_score  train_score
+0  0.518077    0.099835    0.826898     1.000000
+1  0.543113    0.091326    0.838489     1.000000
+2  0.536531    0.091271    0.831552     0.999476
+3  0.525305    0.093249    0.800003     1.000000
 </pre></div>
 </div>
 </div>
@@ -367,34 +367,30 @@ segments (not series’) as instances of the data.</p>
                 <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
                 <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">())])</span>
 
-
-
-<span class="n">scoring</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;precision_macro&#39;</span><span class="p">,</span><span class="s1">&#39;recall_macro&#39;</span><span class="p">,</span><span class="s1">&#39;f1_macro&#39;</span><span class="p">]</span>
+<span class="n">scoring</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;precision_macro&#39;</span><span class="p">,</span> <span class="s1">&#39;recall_macro&#39;</span><span class="p">,</span> <span class="s1">&#39;f1_macro&#39;</span><span class="p">]</span>
 <span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span>
                            <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores (workaround): &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;X Shape: &#39;, (3505, 100, 6))
-(&#39;X Shape: &#39;, (3506, 100, 6))
-(&#39;X Shape: &#39;, (3509, 100, 6))
-(&#39;X Shape: &#39;, (3511, 100, 6))
-(&#39;CV Scores (workaround): &#39;,    fit_time        ...          test_recall_macro
-0  0.657452        ...                   0.807886
-1  0.729873        ...                   0.828609
-2  0.694701        ...                   0.798632
-3  0.530008        ...                   0.791970
-
-[4 rows x 6 columns])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3505, 100, 6)
+X Shape:  (3506, 100, 6)
+X Shape:  (3509, 100, 6)
+X Shape:  (3511, 100, 6)
+CV Scores (workaround):     fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  test_recall_macro
+0  0.402737    0.310724       0.775597       0.786900              0.802410           0.791573
+1  0.401348    0.311281       0.795901       0.810707              0.822594           0.814544
+2  0.397075    0.308368       0.778253       0.795009              0.817575           0.792872
+3  0.394636    0.310251       0.792453       0.807200              0.824281           0.811305
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  16.440 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  11.208 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_scoring.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/521f87e56f325cca5a2a84342b426094/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_scoring.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_scoring.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/c4b78cb39d035563a4d72fcfcda7054b/plot_scoring.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_scoring.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -420,7 +416,7 @@ segments (not series’) as instances of the data.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -439,20 +435,14 @@ segments (not series’) as instances of the data.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

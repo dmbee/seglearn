@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.transform &mdash; seglearn 0.1.1 documentation</title>
+  <title>seglearn.transform &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -167,15 +167,15 @@
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">from</span> <span class="nn">.feature_functions</span> <span class="k">import</span> <span class="n">base_features</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_ts_data_parts</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_is_fitted</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span><span class="p">,</span> <span class="n">check_array</span>
+<span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="k">import</span> <span class="n">NotFittedError</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">interp1d</span>
+
+<span class="kn">from</span> <span class="nn">.feature_functions</span> <span class="k">import</span> <span class="n">base_features</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_ts_data_parts</span><span class="p">,</span> <span class="n">check_ts_data</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SegmentX&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXY&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXYForecast&#39;</span><span class="p">,</span> <span class="s1">&#39;PadTrunc&#39;</span><span class="p">,</span> <span class="s1">&#39;Interp&#39;</span><span class="p">,</span> <span class="s1">&#39;FeatureRep&#39;</span><span class="p">]</span>
 
@@ -183,7 +183,7 @@
 <span class="k">class</span> <span class="nc">XyTransformerMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Base class for transformer that transforms data and target &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the data and transform (required by sklearn API)</span>
 
@@ -207,23 +207,28 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span>
 
+
 <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Returns the last column from 2d matrix &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">y</span><span class="p">[:,</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
 
+
 <span class="k">def</span> <span class="nf">middle</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Returns the middle column from 2d matrix &#39;&#39;&#39;</span>
-    <span class="k">return</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+
 
 <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; returns average along axis 1&#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">every</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Returns all values (sequences) of y &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">y</span>
 
-<span class="k">def</span> <span class="nf">shuffle_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">shuffle_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; Shuffles indices X, y, and sample_weight together&#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
@@ -248,6 +253,10 @@
 <span class="sd">    X is time series data, optionally with contextual variables</span>
 <span class="sd">    and each time series in X has a single target value y</span>
 
+<span class="sd">    The target y is mapped to all segments from their parent series.</span>
+<span class="sd">    The transformed data consists of segment/target pairs that can be learned</span>
+<span class="sd">    through a feature representation or directly with a neural network.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    width : int &gt; 0</span>
@@ -259,20 +268,33 @@
 <span class="sd">    shuffle : bool, optional</span>
 <span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
 <span class="sd">    random_state : int, default = None</span>
-<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``. If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set ``random_state`` to an integer.</span>
+<span class="sd">        Randomized segment shuffling will return different results for each call to</span>
+<span class="sd">        ``transform``. If you have set ``shuffle`` to True and want the same result</span>
+<span class="sd">        with each call to ``fit``, set ``random_state`` to an integer.</span>
 
 <span class="sd">    Todo</span>
 <span class="sd">    ----</span>
 <span class="sd">    separate fit and predict overlap parameters</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">shuffle</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">=</span> <span class="n">overlap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
 
-<div class="viewcode-block" id="SegmentX.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentX.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;width must be &gt;=1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;overlap must be &gt;=0 and &lt;=1.0 (was </span><span class="si">%.2f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SegmentX.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentX.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the transform</span>
 
@@ -281,7 +303,8 @@
 <span class="sd">        X : array-like, shape [n_series, ...]</span>
 <span class="sd">            Time series data and (optionally) contextual data</span>
 <span class="sd">        y : None</span>
-<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this parameter.</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires</span>
+<span class="sd">            this parameter.</span>
 <span class="sd">        shuffle : bool</span>
 <span class="sd">            Shuffles data after transformation</span>
 
@@ -290,19 +313,10 @@
 <span class="sd">        self : object</span>
 <span class="sd">            Returns self.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&gt;=</span> <span class="mf">0.</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Resets internal data-dependent state of the transformer. __init__ parameters not touched. &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">):</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
-
-<div class="viewcode-block" id="SegmentX.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentX.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SegmentX.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentX.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Transforms the time series data into segments (temporal tensor)</span>
 <span class="sd">        Note this transformation changes the number of samples in the data</span>
@@ -327,8 +341,7 @@
 <span class="sd">        sample_weight_new : array-like shape [n_segments]</span>
 <span class="sd">            expanded sample weights</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">)</span>
-
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
         <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
@@ -344,10 +357,10 @@
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">yt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_target_to_segments</span><span class="p">(</span><span class="n">yt</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">yt</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">swt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">swt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_target_to_segments</span><span class="p">(</span><span class="n">swt</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
+            <span class="n">swt</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">swt</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">Xc</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
@@ -356,14 +369,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">shuffle_data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span></div>
 
-    <span class="k">def</span> <span class="nf">_expand_target_to_segments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Nt</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; expands variable vector v, by repeating each instance as specified in Nt &#39;&#39;&#39;</span>
-        <span class="n">y_e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">Nt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))])</span>
-        <span class="k">return</span> <span class="n">y_e</span></div>
-
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span></div></div>
 
 
 <div class="viewcode-block" id="SegmentXY"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXY">[docs]</a><span class="k">class</span> <span class="nc">SegmentXY</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
@@ -371,6 +378,14 @@
 <span class="sd">    Transformer for sliding window segmentation for datasets where</span>
 <span class="sd">    X is time series data, optionally with contextual variables</span>
 <span class="sd">    and y is also time series data with the same sampling interval as X</span>
+
+<span class="sd">    The target y is mapped to segments from their parent series,</span>
+<span class="sd">    using the parameter ``y_func`` to determine the mapping behavior.</span>
+<span class="sd">    The segment targets can be a single value, or a sequence of values</span>
+<span class="sd">    depending on ``y_func`` parameter.</span>
+
+<span class="sd">    The transformed data consists of segment/target pairs that can be learned</span>
+<span class="sd">    through a feature representation or directly with a neural network.</span>
 
 
 <span class="sd">    Parameters</span>
@@ -384,7 +399,9 @@
 <span class="sd">    shuffle : bool, optional</span>
 <span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
 <span class="sd">    random_state : int, default = None</span>
-<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``. If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set ``random_state`` to an integer.</span>
+<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``.</span>
+<span class="sd">        If you have set ``shuffle`` to True and want the same result with each call to ``fit``,</span>
+<span class="sd">        set ``random_state`` to an integer.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -392,7 +409,7 @@
 <span class="sd">        Returns self.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span> <span class="o">=</span> <span class="n">last</span><span class="p">,</span> <span class="n">shuffle</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">=</span> <span class="n">overlap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_func</span> <span class="o">=</span> <span class="n">y_func</span>
@@ -400,8 +417,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
 
-<div class="viewcode-block" id="SegmentXY.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXY.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;width must be &gt;=1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;overlap must be &gt;=0 and &lt;=1.0 (was </span><span class="si">%.2f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SegmentXY.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXY.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the transform</span>
 
@@ -410,33 +435,23 @@
 <span class="sd">        X : array-like, shape [n_series, ...]</span>
 <span class="sd">            Time series data and (optionally) contextual data</span>
 <span class="sd">        y : None</span>
-<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this parameter.</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
 
 <span class="sd">        Returnsself._validate_params()</span>
 <span class="sd">        -------</span>
 <span class="sd">        self : object</span>
 <span class="sd">            Returns self.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Resets internal data-dependent state of the transformer. __init__ parameters not touched. &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">):</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
-
-    <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&gt;=</span> <span class="mf">0.</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.</span>
-
-<div class="viewcode-block" id="SegmentXY.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXY.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SegmentXY.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXY.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Transforms the time series data into segments</span>
 <span class="sd">        Note this transformation changes the number of samples in the data</span>
-<span class="sd">        If y is provided, it is segmented and transformed to align to the new samples as per ``y_func``</span>
+<span class="sd">        If y is provided, it is segmented and transformed to align to the new samples as per</span>
+<span class="sd">        ``y_func``</span>
 <span class="sd">        Currently sample weights always returned as None</span>
 
 <span class="sd">        Parameters</span>
@@ -457,12 +472,11 @@
 <span class="sd">        sample_weight_new : None</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">)</span>
-
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
 
-        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span> <span class="c1"># number of time series</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>  <span class="c1"># number of time series</span>
 
         <span class="k">if</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_tensor</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
@@ -492,6 +506,14 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Forecast sliding window segmentation for time series or sequence datasets</span>
 
+<span class="sd">    The target y is mapped to segments from their parent series,</span>
+<span class="sd">    using the ``forecast`` and ``y_func`` parameters to determine the mapping behavior.</span>
+<span class="sd">    The segment targets can be a single value, or a sequence of values</span>
+<span class="sd">    depending on ``y_func`` parameter.</span>
+
+<span class="sd">    The transformed data consists of segment/target pairs that can be learned</span>
+<span class="sd">    through a feature representation or directly with a neural network.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    width : int &gt; 0</span>
@@ -505,7 +527,9 @@
 <span class="sd">    shuffle : bool, optional</span>
 <span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
 <span class="sd">    random_state : int, default = None</span>
-<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``. If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set ``random_state`` to an integer.</span>
+<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``.</span>
+<span class="sd">        If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set</span>
+<span class="sd">        ``random_state`` to an integer.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -513,7 +537,8 @@
 <span class="sd">        Returns self.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">forecast</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">y_func</span> <span class="o">=</span> <span class="n">last</span><span class="p">,</span> <span class="n">shuffle</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">forecast</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">=</span> <span class="n">overlap</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">=</span> <span class="n">forecast</span>
@@ -522,7 +547,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
 
-<div class="viewcode-block" id="SegmentXYForecast.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXYForecast.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;width must be &gt;=1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;overlap must be &gt;=0 and &lt;=1.0 (was </span><span class="si">%.2f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;forecase must be &gt;=1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SegmentXYForecast.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXYForecast.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the transform</span>
 
@@ -531,30 +567,18 @@
 <span class="sd">        X : array-like, shape [n_series, ...]</span>
 <span class="sd">            Time series data and (optionally) contextual data</span>
 <span class="sd">        y : None</span>
-<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this parameter.</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        self : object</span>
 <span class="sd">            Returns self.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Resets internal data-dependent state of the transformer. __init__ parameters not touched. &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">):</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
-
-    <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&gt;=</span> <span class="mf">0.</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">&gt;</span> <span class="mi">0</span>
-
-<div class="viewcode-block" id="SegmentXYForecast.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXYForecast.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SegmentXYForecast.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXYForecast.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Forecast sliding window segmentation for time series or sequence datasets.</span>
 <span class="sd">        Note this transformation changes the number of samples in the data.</span>
@@ -578,8 +602,7 @@
 <span class="sd">        sample_weight_new : None</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;step&#39;</span><span class="p">)</span>
-
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
 
@@ -587,25 +610,28 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xt</span><span class="p">]</span>
 
-        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span> <span class="c1"># number of time series</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>  <span class="c1"># number of time series</span>
 
         <span class="k">if</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_tensor</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_tensor</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
 
         <span class="n">Nt</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">))]</span>
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
 
         <span class="c1"># todo: implement advance X</span>
-        <span class="n">Xt</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">]</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">Xc</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
             <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
             <span class="n">yt</span> <span class="o">=</span> <span class="n">yt</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">:(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">)]</span>  <span class="c1"># target y</span>
             <span class="n">yt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_func</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
@@ -621,6 +647,7 @@
     <span class="sd">&#39;&#39;&#39; expands contextual variables v, by repeating each instance as specified in Nt &#39;&#39;&#39;</span>
     <span class="n">N_v</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">Nt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">N_v</span><span class="p">),</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))])</span>
+
 
 <span class="k">def</span> <span class="nf">sliding_window</span><span class="p">(</span><span class="n">time_series</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -641,7 +668,8 @@
 <span class="sd">        resampled time series segments</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">time_series</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="mi">1</span> <span class="o">+</span> <span class="n">i</span> <span class="o">-</span> <span class="n">width</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span><span class="n">step</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">/</span><span class="n">width</span><span class="p">),</span><span class="n">width</span><span class="p">),</span><span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">width</span><span class="p">),</span> <span class="n">width</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">sliding_tensor</span><span class="p">(</span><span class="n">mv_time_series</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -663,7 +691,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">mv_time_series</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">mv_time_series</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">D</span><span class="p">)]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="PadTrunc"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc">[docs]</a><span class="k">class</span> <span class="nc">PadTrunc</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
@@ -672,28 +700,32 @@
 <span class="sd">    series in the dataset. Series&#39; longer than ``width`` are truncated to length ``width``.</span>
 <span class="sd">    Series&#39; shorter than length ``width`` are padded at the end with zeros up to length ``width``.</span>
 
+<span class="sd">    The same behavior is applied to the target if it is a series and passed to the transformer.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    width : int &gt;= 1</span>
 <span class="sd">        width of segments (number of samples)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;width must be &gt;= 1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">width</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
 
     <span class="k">def</span> <span class="nf">_mv_resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">D</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span><span class="n">D</span><span class="p">))</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">))</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="n">Ni</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
-            <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="n">Ni</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">Ni</span><span class="p">]</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">Ni</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">Ni</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">w</span>
 
-<div class="viewcode-block" id="PadTrunc.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PadTrunc.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the transform. Does nothing, for compatibility with sklearn API.</span>
 
@@ -702,16 +734,18 @@
 <span class="sd">        X : array-like, shape [n_series, ...]</span>
 <span class="sd">            Time series data and (optionally) contextual data</span>
 <span class="sd">        y : None</span>
-<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this parameter.</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        self : object</span>
 <span class="sd">            Returns self.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="PadTrunc.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PadTrunc.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Transforms the time series data into fixed length segments using padding and or truncation</span>
 <span class="sd">        If y is a time series and passed, it will be transformed as well</span>
@@ -734,6 +768,7 @@
 <span class="sd">        sample_weight_new : None</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
         <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
@@ -748,16 +783,16 @@
             <span class="n">yt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mv_resize</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
             <span class="n">swt</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">elif</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1">#todo: is this needed?</span>
+            <span class="c1"># todo: is this needed?</span>
             <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span></div></div>
 
 
-
 <div class="viewcode-block" id="Interp"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Interp">[docs]</a><span class="k">class</span> <span class="nc">Interp</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Transformer for resampling time series data to a fixed period over closed interval (direct value interpolation).</span>
+<span class="sd">    Transformer for resampling time series data to a fixed period over closed interval</span>
+<span class="sd">    (direct value interpolation).</span>
 <span class="sd">    Default interpolation is linear, but other types can be specified.</span>
 <span class="sd">    If the target is a series, it will be resampled as well.</span>
 
@@ -778,13 +813,16 @@
 <span class="sd">        set to True for classification problems nearest use nearest instead of linear interp</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_period</span><span class="p">,</span> <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">categorical_target</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_period</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_period</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sample_period must be &gt;0 (was </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">sample_period</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span> <span class="o">=</span> <span class="n">sample_period</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">categorical_target</span> <span class="o">=</span> <span class="n">categorical_target</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="Interp.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Interp.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Interp.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Interp.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the transform. Does nothing, for compatibility with sklearn API.</span>
 
@@ -793,19 +831,23 @@
 <span class="sd">        X : array-like, shape [n_series, ...]</span>
 <span class="sd">            Time series data and (optionally) contextual data</span>
 <span class="sd">        y : None</span>
-<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this parameter.</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        self : object</span>
 <span class="sd">            Returns self.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">assert</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="c1"># need 1 channel of values</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X variable must have more than 1 channel&quot;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="k">def</span> <span class="nf">_interp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_new</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
-        <span class="n">interpolator</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bounds_error</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                                         <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">interpolator</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">t_new</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Interp.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Interp.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -832,23 +874,23 @@
 <span class="sd">        sample_weight_new : array-like or None</span>
 <span class="sd">            None is returned if target is changed. Otherwise it is returned unchanged.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
         <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
 
-        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span> <span class="c1"># number of series</span>
-        <span class="n">D</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span> <span class="c1"># number of data channels</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>  <span class="c1"># number of series</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># number of data channels</span>
 
         <span class="c1"># 1st channel is time</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
-        <span class="n">t_lin</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
-
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+        <span class="n">t_lin</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="n">D</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span><span class="n">j</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span>
-                                   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">D</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span>
+                                   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
         <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
 
@@ -856,9 +898,9 @@
             <span class="c1"># y is a time series</span>
             <span class="n">swt</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical_target</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># y is static - leave y alone</span>
             <span class="k">pass</span>
@@ -870,9 +912,12 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    A transformer for calculating a feature representation from segmented time series data.</span>
 
-<span class="sd">    This transformer calculates features from the segmented time series&#39;, by computing the same feature set for each segment from each time series in the data set.</span>
+<span class="sd">    This transformer calculates features from the segmented time series&#39;, by computing the same</span>
+<span class="sd">    feature set for each segment from each time series in the data set.</span>
 
-<span class="sd">    The ``features`` computed are a parameter of this transformer, defined by a dict of functions. The seglearn package includes some useful features, but this basic feature set can be easily extended.</span>
+<span class="sd">    The ``features`` computed are a parameter of this transformer, defined by a dict of functions.</span>
+<span class="sd">    The seglearn package includes some useful features, but this basic feature set can be easily</span>
+<span class="sd">    extended.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -887,7 +932,8 @@
 <span class="sd">            F : array-like [n_samples, n_features]</span>
 <span class="sd">            The number of features returned (n_features) must be &gt;= 1</span>
 
-<span class="sd">        If features is not specified, a default feature dictionary will be used (see base_features). See ``feature_functions`` for example implementations.</span>
+<span class="sd">        If features is not specified, a default feature dictionary will be used (see base_features).</span>
+<span class="sd">        See ``feature_functions`` for example implementations.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -896,26 +942,34 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRep</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRep, SegmentX</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.pipe import Pype</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.feature_functions import mean, var, std, skew</span>
-<span class="sd">    &gt;&gt;&gt; from seglearn.pipe import SegPipe</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
-<span class="sd">    &gt;&gt;&gt; from sklearn.pipeline import Pipeline</span>
 <span class="sd">    &gt;&gt;&gt; from sklearn.ensemble import RandomForestClassifier</span>
 <span class="sd">    &gt;&gt;&gt; data = load_watch()</span>
 <span class="sd">    &gt;&gt;&gt; X = data[&#39;X&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; fts = {&#39;mean&#39;: mean, &#39;var&#39;: var, &#39;std&#39;: std, &#39;skew&#39;: skew}</span>
-<span class="sd">    &gt;&gt;&gt; est = Pipeline([(&#39;ftr&#39;, FeatureRep(features = fts)),(&#39;rf&#39;,RandomForestClassifier())])</span>
-<span class="sd">    &gt;&gt;&gt; pipe = SegPipe(est)</span>
-<span class="sd">    &gt;&gt;&gt; pipe.fit(X, y)</span>
-<span class="sd">    &gt;&gt;&gt; print(pipe.score(X, y))</span>
+<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, SegmentX()),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;ftr&#39;, FeatureRep(features = fts))),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;rf&#39;,RandomForestClassifier())])</span>
+<span class="sd">    &gt;&gt;&gt; clf.fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; print(clf.score(X, y))</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span> <span class="o">=</span> <span class="n">base_features</span><span class="p">()):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
 
-<div class="viewcode-block" id="FeatureRep.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRep.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">features</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">base_features</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;features must either &#39;default&#39; or an instance of type dict&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FeatureRep.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRep.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the transform</span>
 
@@ -924,14 +978,15 @@
 <span class="sd">        X : array-like, shape [n_series, ...]</span>
 <span class="sd">            Segmented time series data and (optionally) contextual data</span>
 <span class="sd">        y : None</span>
-<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this parameter.</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        self : object</span>
 <span class="sd">            Returns self.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X Shape: &quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_feature_labels</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -953,18 +1008,23 @@
 <span class="sd">            Feature representation of segmented time series data and contextual data</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;f_labels&#39;</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
         <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">check_array</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
         <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="n">Xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">fts</span><span class="p">,</span><span class="n">Xc</span><span class="p">])</span>
+            <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">fts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">fts</span></div>
 
     <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Resets internal data-dependent state of the transformer. __init__ parameters not touched. &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;f_labels&#39;</span><span class="p">):</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span>
+        <span class="sd">&#39;&#39;&#39; Resets internal data-dependent state of the transformer. __init__ parameters not</span>
+<span class="sd">        touched. &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_check_if_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s2">&quot;FeatureRep&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_check_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">Xti</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -990,9 +1050,11 @@
             <span class="n">fshapes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]](</span><span class="n">Xti</span><span class="p">))</span><span class="o">.</span><span class="n">shape</span>
 
         <span class="c1"># make sure each feature returns an array shape [N, ]</span>
-        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">fshapes</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">fshapes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_fts</span><span class="p">)}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">fshapes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">N</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;feature function returned array with invalid length, &quot;</span><span class="p">,</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">fshapes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">N</span><span class="p">])</span>
 
+        <span class="k">return</span> <span class="p">{</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">fshapes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_fts</span><span class="p">)}</span>
 
     <span class="k">def</span> <span class="nf">_generate_feature_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -1006,17 +1068,15 @@
         <span class="c1"># calculated features</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">ftr_sizes</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ftr_sizes</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
-                <span class="n">f_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="n">key</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+                <span class="n">f_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
 
         <span class="c1"># contextual features</span>
         <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">Xc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-            <span class="n">s_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;context_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+            <span class="n">s_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;context_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
             <span class="n">f_labels</span> <span class="o">+=</span> <span class="n">s_labels</span>
 
         <span class="k">return</span> <span class="n">f_labels</span></div>
-
-
 </pre></div>
 
            </div>
@@ -1029,7 +1089,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -1048,20 +1108,14 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

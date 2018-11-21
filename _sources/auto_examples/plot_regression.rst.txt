@@ -27,19 +27,19 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
  .. code-block:: none
 
-    ('X Shape: ', (74, 200))
-    ('N series in train: ', 1)
-    ('N series in test: ', 1)
-    ('N segments in train: ', 74)
-    ('N segments in test: ', 24)
-    ('Score: ', 0.9744288294258036)
-    ('X Shape: ', (24, 200))
-    ('X Shape: ', (24, 200))
-    ('X Shape: ', (24, 200))
-    ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.005622    0.002497   -0.342113     0.036777
-    1  0.005464    0.002479   -0.149984     0.126310
-    2  0.005403    0.002446   -0.239356     0.097838)
+    X Shape:  (74, 200)
+    N series in train:  1
+    N series in test:  1
+    N segments in train:  74
+    N segments in test:  24
+    Score:  0.9731951168770685
+    X Shape:  (24, 200)
+    X Shape:  (24, 200)
+    X Shape:  (24, 200)
+    CV Scores:     fit_time  score_time  test_score  train_score
+    0  0.003442    0.001703   -0.179694     0.033793
+    1  0.003298    0.001678   -0.149984     0.126310
+    2  0.003296    0.001668   -0.239356     0.097838
 
 
 
@@ -53,22 +53,19 @@ In this example, we use the pipeline to learn a continuous time series target wi
     # License: BSD
 
 
-    from seglearn.transform import FeatureRep, SegmentXY, last
-    from seglearn.pipe import Pype
-    from seglearn.split import temporal_split, TemporalKFold
-
-    from sklearn.pipeline import Pipeline
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pandas as pd
     from sklearn.linear_model import LinearRegression
     from sklearn.model_selection import cross_validate
 
-    import matplotlib.pyplot as plt
-
-    import numpy as np
-    import pandas as pd
+    from seglearn.pipe import Pype
+    from seglearn.split import temporal_split, TemporalKFold
+    from seglearn.transform import FeatureRep, SegmentXY, last
 
     # for a single time series, we need to make it a list
-    X = [np.arange(10000)/100.]
-    y = [np.sin(X[0])*X[0]*3 + X[0]*X[0]]
+    X = [np.arange(10000) / 100.]
+    y = [np.sin(X[0]) * X[0] * 3 + X[0] * X[0]]
 
     # split the data along the time axis (our only option since we have only 1 time series)
     X_train, X_test, y_train, y_test = temporal_split(X, y)
@@ -78,12 +75,12 @@ In this example, we use the pipeline to learn a continuous time series target wi
     # other options include transform.middle, or you can make your own function
     # see the API documentation for further details
 
-    pipe = Pype([('seg', SegmentXY(width = 200, overlap=0.5, y_func=last)),
+    pipe = Pype([('seg', SegmentXY(width=200, overlap=0.5, y_func=last)),
                  ('features', FeatureRep()),
                  ('lin', LinearRegression())])
 
     # fit and score
-    pipe.fit(X_train,y_train)
+    pipe.fit(X_train, y_train)
     score = pipe.score(X_test, y_test)
 
     print("N series in train: ", len(X_train))
@@ -92,35 +89,31 @@ In this example, we use the pipeline to learn a continuous time series target wi
     print("N segments in test: ", pipe.N_test)
     print("Score: ", score)
 
-
     # generate some predictions
-    ytr, ytr_p = pipe.transform_predict(X_train, y_train) # training predictions
-    yte, yte_p = pipe.transform_predict(X_test, y_test) # test predictions
-    xtr = np.arange(len(ytr)) # segment number
+    ytr, ytr_p = pipe.transform_predict(X_train, y_train)  # training predictions
+    yte, yte_p = pipe.transform_predict(X_test, y_test)  # test predictions
+    xtr = np.arange(len(ytr))  # segment number
     xte = np.arange(len(yte)) + len(xtr)
 
     # plot the amazing results
-    plt.plot(xtr, ytr, '.', label = "training")
-    plt.plot(xte, yte, '.', label ="actual")
-    plt.plot(xte, yte_p, label ="predicted")
+    plt.plot(xtr, ytr, '.', label="training")
+    plt.plot(xte, yte, '.', label="actual")
+    plt.plot(xte, yte_p, label="predicted")
     plt.xlabel("Segment Number")
     plt.ylabel("Target")
     plt.legend()
     plt.show()
 
-
     # now try a cross validation
-    X = [np.arange(4000)/100.]
+    X = [np.arange(4000) / 100.]
     y = [np.sin(X[0])]
 
     tkf = TemporalKFold()
     X, y, cv = tkf.split(X, y)
-    cv_scores = cross_validate(pipe, X, y, cv = cv, return_train_score=True)
+    cv_scores = cross_validate(pipe, X, y, cv=cv, return_train_score=True)
     print("CV Scores: ", pd.DataFrame(cv_scores))
 
-
-
-**Total running time of the script:** ( 0 minutes  0.118 seconds)
+**Total running time of the script:** ( 0 minutes  0.053 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_regression.py:

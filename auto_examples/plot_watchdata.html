@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Working with Time Series Data &mdash; seglearn 0.1.1 documentation</title>
+  <title>Working with Time Series Data &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -190,19 +190,17 @@
 <img alt="../_images/sphx_glr_plot_watchdata_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_watchdata_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>DATA STATS - AGGREGATED
-{&#39;Total_Time&#39;: 4882.04, &#39;Series_Time_Range&#39;: (18.94, 52.36), &#39;n_classes&#39;: 7, &#39;n_series&#39;: 140, &#39;Series_Time_Mean&#39;: 34.87171428571428, &#39;Series_Time_Std&#39;: 8.757850351285423, &#39;n_TS_vars&#39;: 6, &#39;n_context_vars&#39;: 2}
+{&#39;Series_Time_Std&#39;: 8.757850351285423, &#39;n_TS_vars&#39;: 6, &#39;n_classes&#39;: 7, &#39;Series_Time_Range&#39;: (18.94, 52.36), &#39;Series_Time_Mean&#39;: 34.87171428571428, &#39;n_context_vars&#39;: 2, &#39;n_series&#39;: 140, &#39;Total_Time&#39;: 4882.04}
 
 DATA STATS - BY CLASS
-  Class_labels  Series_Time_Max    ...     Total_Time  n_series
-0          PEN            31.10    ...         532.44        20
-1          ABD            49.10    ...         798.10        20
-2          FEL            50.84    ...         809.96        20
-3           IR            52.36    ...         747.90        20
-4           ER            49.24    ...         752.08        20
-5         TRAP            45.12    ...         611.56        20
-6          ROW            38.66    ...         630.00        20
-
-[7 rows x 7 columns]
+  Class_labels  Series_Time_Max  Series_Time_Mean  Series_Time_Min  Series_Time_Std  Total_Time  n_series
+0          PEN            31.10            26.622            21.28         2.720845      532.44        20
+1          ABD            49.10            39.905            22.48         8.055554      798.10        20
+2          FEL            50.84            40.498            22.30         8.772099      809.96        20
+3           IR            52.36            37.395            19.40         9.085212      747.90        20
+4           ER            49.24            37.604            21.30         7.983878      752.08        20
+5         TRAP            45.12            30.578            19.26         6.099252      611.56        20
+6          ROW            38.66            31.500            18.94         5.957100      630.00        20
 </pre></div>
 </div>
 <div class="line-block">
@@ -211,19 +209,19 @@ DATA STATS - BY CLASS
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.util</span> <span class="kn">import</span> <span class="n">check_ts_data</span><span class="p">,</span> <span class="n">ts_stats</span>
-<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
-
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.util</span> <span class="kn">import</span> <span class="n">check_ts_data</span><span class="p">,</span> <span class="n">ts_stats</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
 
 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
 <span class="n">Xt</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
-<span class="n">fs</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># sampling frequency</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># sampling frequency</span>
 
 <span class="c1"># create time series data object with no contextual variables</span>
 
@@ -239,7 +237,7 @@ DATA STATS - BY CLASS
 <span class="n">Xs</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">context_data</span>
 
 <span class="c1"># generate some statistics from the time series data</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">ts_stats</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">fs</span><span class="p">,</span> <span class="n">class_labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y_labels&#39;</span><span class="p">])</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">ts_stats</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">class_labels</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;y_labels&#39;</span><span class="p">])</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;DATA STATS - AGGREGATED&quot;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -250,17 +248,17 @@ DATA STATS - BY CLASS
 <span class="c1"># this plot shows 6-axis inertial sensor data recorded by someone doing shoulder pendulum exercise</span>
 <span class="n">Xt0</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">f</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">t</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt0</span><span class="p">))</span> <span class="o">/</span> <span class="n">fs</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt0</span><span class="p">))</span> <span class="o">/</span> <span class="n">fs</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [s]&#39;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Acceleration [G]&#39;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X_labels&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span><span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
-<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span><span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [s]&#39;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Rotational Velocity [rad/s]&#39;</span><span class="p">)</span>
 <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X_labels&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
@@ -269,12 +267,12 @@ DATA STATS - BY CLASS
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.566 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.304 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-watchdata-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_watchdata.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_watchdata.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/818cca637c6064f19c4d50bbcebd2247/plot_watchdata.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_watchdata.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/plot_watchdata.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_watchdata.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/91e6d59a7e2805c19a9dfed488016e8e/plot_watchdata.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_watchdata.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -299,7 +297,7 @@ DATA STATS - BY CLASS
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -318,20 +316,14 @@ DATA STATS - BY CLASS
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

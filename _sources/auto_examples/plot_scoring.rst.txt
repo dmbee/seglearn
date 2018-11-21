@@ -26,20 +26,21 @@ segments (not series') as instances of the data.
     # License: BSD
 
 
-    from seglearn.transform import FeatureRep, SegmentX
-    from seglearn.pipe import Pype
-    from seglearn.datasets import load_watch
-
-    from sklearn.pipeline import Pipeline
-    from sklearn.ensemble import RandomForestClassifier
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.model_selection import train_test_split, cross_validate
-    from sklearn.metrics import f1_score, confusion_matrix, make_scorer
+    import itertools
 
     import matplotlib.pyplot as plt
-    import pandas as pd
     import numpy as np
-    import itertools
+    import pandas as pd
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.metrics import f1_score, confusion_matrix, make_scorer
+    from sklearn.model_selection import train_test_split, cross_validate
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+
+    from seglearn.datasets import load_watch
+    from seglearn.pipe import Pype
+    from seglearn.transform import FeatureRep, SegmentX
+
 
 
 
@@ -101,7 +102,7 @@ SETUP
     steps = [('seg', SegmentX()),
              ('features', FeatureRep()),
              ('scaler', StandardScaler()),
-             ('rf', RandomForestClassifier())]
+             ('rf', RandomForestClassifier(n_estimators=20))]
 
     pipe = Pype(steps)
 
@@ -122,7 +123,7 @@ OPTION 1: Use the score SegPipe score method
 .. code-block:: python
 
 
-    pipe.fit(X_train,y_train)
+    pipe.fit(X_train, y_train)
     score = pipe.score(X_test, y_test)
     print("Accuracy score: ", score)
 
@@ -136,8 +137,8 @@ OPTION 1: Use the score SegPipe score method
 
  .. code-block:: none
 
-    ('X Shape: ', (3519, 100, 6))
-    ('Accuracy score: ', 0.7357512953367875)
+    X Shape:  (3519, 100, 6)
+    Accuracy score:  0.7469775474956822
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -169,7 +170,7 @@ OPTION 2: generate true and predicted target values for the segments
 
  .. code-block:: none
 
-    ('F1 score: ', 0.7415567232887338)
+    F1 score:  0.7573901292541463
 
 
 OPTION 3: scoring during model selection
@@ -181,7 +182,7 @@ OPTION 3: scoring during model selection
 
 
     # model selection using the built-in score method for the final estimator
-    cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
+    cv_scores = cross_validate(pipe, X, y, cv=4, return_train_score=True)
     print("CV Scores: ", pd.DataFrame(cv_scores))
 
     # model selection with scoring functions / dictionaries
@@ -207,15 +208,15 @@ OPTION 3: scoring during model selection
 
  .. code-block:: none
 
-    ('X Shape: ', (3426, 100, 6))
-    ('X Shape: ', (3557, 100, 6))
-    ('X Shape: ', (3535, 100, 6))
-    ('X Shape: ', (3513, 100, 6))
-    ('CV Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.541004    0.139409    0.768185     0.998249
-    1  0.584890    0.305110    0.806250     0.999719
-    2  0.835739    0.128509    0.775832     0.999434
-    3  0.600773    0.297719    0.743127     0.998292)
+    X Shape:  (3426, 100, 6)
+    X Shape:  (3557, 100, 6)
+    X Shape:  (3535, 100, 6)
+    X Shape:  (3513, 100, 6)
+    CV Scores:     fit_time  score_time  test_score  train_score
+    0  0.515419    0.099035    0.806555     1.000000
+    1  0.539040    0.091744    0.818750     1.000000
+    2  0.533345    0.091522    0.792469     0.999717
+    3  0.521410    0.092106    0.780928     1.000000
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -230,10 +231,9 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
     # this can be used to cross_validate or grid search with any 1 score
 
     scorer = make_scorer(f1_score, average='macro')
-    pipe = Pype(steps, scorer = scorer)
-    cv_scores = cross_validate(pipe, X, y, cv = 4, return_train_score=True)
+    pipe = Pype(steps, scorer=scorer)
+    cv_scores = cross_validate(pipe, X, y, cv=4, return_train_score=True)
     print("CV F1 Scores: ", pd.DataFrame(cv_scores))
-
 
 
 
@@ -245,15 +245,15 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
 
  .. code-block:: none
 
-    ('X Shape: ', (3426, 100, 6))
-    ('X Shape: ', (3557, 100, 6))
-    ('X Shape: ', (3535, 100, 6))
-    ('X Shape: ', (3513, 100, 6))
-    ('CV F1 Scores: ',    fit_time  score_time  test_score  train_score
-    0  0.902614    0.141938    0.774252     0.998932
-    1  0.715085    0.124343    0.846115     0.998263
-    2  0.701144    0.129475    0.809397     0.999239
-    3  0.720011    0.136580    0.756664     0.999731)
+    X Shape:  (3426, 100, 6)
+    X Shape:  (3557, 100, 6)
+    X Shape:  (3535, 100, 6)
+    X Shape:  (3513, 100, 6)
+    CV F1 Scores:     fit_time  score_time  test_score  train_score
+    0  0.518077    0.099835    0.826898     1.000000
+    1  0.543113    0.091326    0.838489     1.000000
+    2  0.536531    0.091271    0.831552     0.999476
+    3  0.525305    0.093249    0.800003     1.000000
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -278,13 +278,10 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
                     ('scaler', StandardScaler()),
                     ('rf', RandomForestClassifier())])
 
-
-
-    scoring = ['accuracy','precision_macro','recall_macro','f1_macro']
+    scoring = ['accuracy', 'precision_macro', 'recall_macro', 'f1_macro']
     cv_scores = cross_validate(clf, X_seg, y_seg,
                                cv=4, return_train_score=False, scoring=scoring)
     print("CV Scores (workaround): ", pd.DataFrame(cv_scores))
-
 
 
 
@@ -295,20 +292,18 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
  .. code-block:: none
 
-    ('X Shape: ', (3505, 100, 6))
-    ('X Shape: ', (3506, 100, 6))
-    ('X Shape: ', (3509, 100, 6))
-    ('X Shape: ', (3511, 100, 6))
-    ('CV Scores (workaround): ',    fit_time        ...          test_recall_macro
-    0  0.657452        ...                   0.807886
-    1  0.729873        ...                   0.828609
-    2  0.694701        ...                   0.798632
-    3  0.530008        ...                   0.791970
-
-    [4 rows x 6 columns])
+    X Shape:  (3505, 100, 6)
+    X Shape:  (3506, 100, 6)
+    X Shape:  (3509, 100, 6)
+    X Shape:  (3511, 100, 6)
+    CV Scores (workaround):     fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  test_recall_macro
+    0  0.402737    0.310724       0.775597       0.786900              0.802410           0.791573
+    1  0.401348    0.311281       0.795901       0.810707              0.822594           0.814544
+    2  0.397075    0.308368       0.778253       0.795009              0.817575           0.792872
+    3  0.394636    0.310251       0.792453       0.807200              0.824281           0.811305
 
 
-**Total running time of the script:** ( 0 minutes  16.440 seconds)
+**Total running time of the script:** ( 0 minutes  11.208 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:

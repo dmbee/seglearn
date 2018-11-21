@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Transforms &mdash; seglearn 0.1.1 documentation</title>
+  <title>Time Series Transforms &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -171,6 +171,9 @@
 <dd><p>Transformer for sliding window segmentation for datasets where
 X is time series data, optionally with contextual variables
 and each time series in X has a single target value y</p>
+<p>The target y is mapped to all segments from their parent series.
+The transformed data consists of segment/target pairs that can be learned
+through a feature representation or directly with a neural network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -188,7 +191,9 @@ shuffle the segments before fitting the <code class="docutils literal notranslat
 <dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
 </dd>
 <dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default = None</span></dt>
-<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
+<dd><p class="first last">Randomized segment shuffling will return different results for each call to
+<code class="docutils literal notranslate"><span class="pre">transform</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result
+with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
 </dd>
 </dl>
 </td>
@@ -232,7 +237,8 @@ shuffle the segments before fitting the <code class="docutils literal notranslat
 <dd><p class="first last">Time series data and (optionally) contextual data</p>
 </dd>
 <dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires
+this parameter.</p>
 </dd>
 <dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
 <dd><p class="first last">Shuffles data after transformation</p>
@@ -299,6 +305,12 @@ If y and sample_weight are provided, they are transformed to align to the new sa
 <dd><p>Transformer for sliding window segmentation for datasets where
 X is time series data, optionally with contextual variables
 and y is also time series data with the same sampling interval as X</p>
+<p>The target y is mapped to segments from their parent series,
+using the parameter <code class="docutils literal notranslate"><span class="pre">y_func</span></code> to determine the mapping behavior.
+The segment targets can be a single value, or a sequence of values
+depending on <code class="docutils literal notranslate"><span class="pre">y_func</span></code> parameter.</p>
+<p>The transformed data consists of segment/target pairs that can be learned
+through a feature representation or directly with a neural network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -317,7 +329,9 @@ and y is also time series data with the same sampling interval as X</p>
 <dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
 </dd>
 <dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default = None</span></dt>
-<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
+<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>.
+If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>,
+set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
 </dd>
 </dl>
 </td>
@@ -368,7 +382,8 @@ and y is also time series data with the same sampling interval as X</p>
 <dd><p class="first last">Time series data and (optionally) contextual data</p>
 </dd>
 <dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this
+parameter.</p>
 </dd>
 <dt><strong>Returnsself._validate_params()</strong></dt>
 <dd></dd>
@@ -389,7 +404,8 @@ and y is also time series data with the same sampling interval as X</p>
 <code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the time series data into segments
 Note this transformation changes the number of samples in the data
-If y is provided, it is segmented and transformed to align to the new samples as per <code class="docutils literal notranslate"><span class="pre">y_func</span></code>
+If y is provided, it is segmented and transformed to align to the new samples as per
+<code class="docutils literal notranslate"><span class="pre">y_func</span></code>
 Currently sample weights always returned as None</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -430,6 +446,12 @@ Currently sample weights always returned as None</p>
 <dt id="seglearn.transform.SegmentXYForecast">
 <em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXYForecast</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>forecast=10</em>, <em>y_func=&lt;function last&gt;</em>, <em>shuffle=False</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXYForecast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXYForecast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forecast sliding window segmentation for time series or sequence datasets</p>
+<p>The target y is mapped to segments from their parent series,
+using the <code class="docutils literal notranslate"><span class="pre">forecast</span></code> and <code class="docutils literal notranslate"><span class="pre">y_func</span></code> parameters to determine the mapping behavior.
+The segment targets can be a single value, or a sequence of values
+depending on <code class="docutils literal notranslate"><span class="pre">y_func</span></code> parameter.</p>
+<p>The transformed data consists of segment/target pairs that can be learned
+through a feature representation or directly with a neural network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -451,7 +473,9 @@ Currently sample weights always returned as None</p>
 <dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
 </dd>
 <dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int, default = None</span></dt>
-<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>. If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
+<dd><p class="first last">Randomized segment shuffling will return different results for each call to <code class="docutils literal notranslate"><span class="pre">transform</span></code>.
+If you have set <code class="docutils literal notranslate"><span class="pre">shuffle</span></code> to True and want the same result with each call to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, set
+<code class="docutils literal notranslate"><span class="pre">random_state</span></code> to an integer.</p>
 </dd>
 </dl>
 </td>
@@ -502,7 +526,8 @@ Currently sample weights always returned as None</p>
 <dd><p class="first last">Time series data and (optionally) contextual data</p>
 </dd>
 <dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this
+parameter.</p>
 </dd>
 </dl>
 </td>
@@ -565,6 +590,7 @@ Currently sample weights always returned as None.</p>
 <dd><p>Transformer for using padding and truncation to enforce fixed length on all time
 series in the dataset. Series’ longer than <code class="docutils literal notranslate"><span class="pre">width</span></code> are truncated to length <code class="docutils literal notranslate"><span class="pre">width</span></code>.
 Series’ shorter than length <code class="docutils literal notranslate"><span class="pre">width</span></code> are padded at the end with zeros up to length <code class="docutils literal notranslate"><span class="pre">width</span></code>.</p>
+<p>The same behavior is applied to the target if it is a series and passed to the transformer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -615,7 +641,8 @@ Series’ shorter than length <code class="docutils literal notranslate"><span c
 <dd><p class="first last">Time series data and (optionally) contextual data</p>
 </dd>
 <dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this
+parameter.</p>
 </dd>
 </dl>
 </td>
@@ -674,7 +701,8 @@ If y is a time series and passed, it will be transformed as well</p>
 <dl class="class">
 <dt id="seglearn.transform.Interp">
 <em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">Interp</code><span class="sig-paren">(</span><em>sample_period</em>, <em>kind='linear'</em>, <em>categorical_target=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#Interp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.Interp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transformer for resampling time series data to a fixed period over closed interval (direct value interpolation).
+<dd><p>Transformer for resampling time series data to a fixed period over closed interval
+(direct value interpolation).
 Default interpolation is linear, but other types can be specified.
 If the target is a series, it will be resampled as well.</p>
 <p>categorical_target should be set to True if the target series is a class
@@ -738,7 +766,8 @@ If start time or similar is important to the estimator, use a context variable.<
 <dd><p class="first last">Time series data and (optionally) contextual data</p>
 </dd>
 <dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this
+parameter.</p>
 </dd>
 </dl>
 </td>
@@ -798,10 +827,13 @@ The time dimension is removed from the data</p>
 
 <dl class="class">
 <dt id="seglearn.transform.FeatureRep">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features={'kurt': &lt;function kurt at 0x2b142f225320&gt;</em>, <em>'max': &lt;function max at 0x2b142f225230&gt;</em>, <em>'mean': &lt;function mean at 0x2b142f225050&gt;</em>, <em>'min': &lt;function min at 0x2b142f2251b8&gt;</em>, <em>'mnx': &lt;function mean_crossings at 0x2b142f225500&gt;</em>, <em>'mse': &lt;function mse at 0x2b142f225398&gt;</em>, <em>'skew': &lt;function skew at 0x2b142f2252a8&gt;</em>, <em>'std': &lt;function std at 0x2b142f2250c8&gt;</em>, <em>'var': &lt;function var at 0x2b142f225140&gt;}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features='default'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
 <dd><p>A transformer for calculating a feature representation from segmented time series data.</p>
-<p>This transformer calculates features from the segmented time series’, by computing the same feature set for each segment from each time series in the data set.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">features</span></code> computed are a parameter of this transformer, defined by a dict of functions. The seglearn package includes some useful features, but this basic feature set can be easily extended.</p>
+<p>This transformer calculates features from the segmented time series’, by computing the same
+feature set for each segment from each time series in the data set.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">features</span></code> computed are a parameter of this transformer, defined by a dict of functions.
+The seglearn package includes some useful features, but this basic feature set can be easily
+extended.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -819,7 +851,8 @@ multivariate segmented time series along axis 1 (the segment) eg:</p>
 <span class="go">The number of features returned (n_features) must be &gt;= 1</span>
 </pre></div>
 </div>
-<p class="last">If features is not specified, a default feature dictionary will be used (see base_features). See <code class="docutils literal notranslate"><span class="pre">feature_functions</span></code> for example implementations.</p>
+<p class="last">If features is not specified, a default feature dictionary will be used (see base_features).
+See <code class="docutils literal notranslate"><span class="pre">feature_functions</span></code> for example implementations.</p>
 </dd>
 </dl>
 </td>
@@ -827,20 +860,20 @@ multivariate segmented time series along axis 1 (the segment) eg:</p>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.feature_functions</span> <span class="k">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skew</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">SegPipe</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fts</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span> <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">var</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="n">std</span><span class="p">,</span> <span class="s1">&#39;skew&#39;</span><span class="p">:</span> <span class="n">skew</span><span class="p">}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">est</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;ftr&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span> <span class="o">=</span> <span class="n">fts</span><span class="p">)),(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span><span class="n">RandomForestClassifier</span><span class="p">())])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span> <span class="o">=</span> <span class="n">SegPipe</span><span class="p">(</span><span class="n">est</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="p">(</span><span class="s1">&#39;ftr&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span> <span class="o">=</span> <span class="n">fts</span><span class="p">))),</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span><span class="n">RandomForestClassifier</span><span class="p">())])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -892,7 +925,8 @@ multivariate segmented time series along axis 1 (the segment) eg:</p>
 <dd><p class="first last">Segmented time series data and (optionally) contextual data</p>
 </dd>
 <dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this parameter.</p>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this
+parameter.</p>
 </dd>
 </dl>
 </td>
@@ -950,7 +984,7 @@ If contextual data is included in X, it is returned with the feature data.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -969,20 +1003,14 @@ If contextual data is included in X, it is returned with the feature data.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Temporal K Fold Data Splitter &mdash; seglearn 0.1.1 documentation</title>
+  <title>Temporal K Fold Data Splitter &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -164,13 +164,22 @@
             
   <div class="section" id="module-seglearn.split">
 <span id="temporal-k-fold-data-splitter"></span><h1>Temporal K Fold Data Splitter<a class="headerlink" href="#module-seglearn.split" title="Permalink to this headline">¶</a></h1>
-<p>This module has two classes for splitting time series data temporally - where train/test or fold splits are created within each of the time series’ in the time series data. This splitting approach is for evaluating how well the algorithm performs on segments drawn from the same time series but excluded from the training set. The performance from this splitting approach should be similar to performance on the training data so long as the data in each series is relatively uniform.</p>
+<p>This module has two classes for splitting time series data temporally - where train/test or fold
+splits are created within each of the time series’ in the time series data. This splitting approach
+is for evaluating how well the algorithm performs on segments drawn from the same time series but
+excluded from the training set. The performance from this splitting approach should be similar to
+performance on the training data so long as the data in each series is relatively uniform.</p>
+<p>Note that splitting along the temporal axis violates the assumption of independence between train
+and test samples, as successive samples in a sequence or series are not iid. However, temporal
+splitting is still useful in certain cases such as for the analysis of a single sequence / series.</p>
 <dl class="class">
 <dt id="seglearn.split.TemporalKFold">
 <em class="property">class </em><code class="descclassname">seglearn.split.</code><code class="descname">TemporalKFold</code><span class="sig-paren">(</span><em>n_splits=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold" title="Permalink to this definition">¶</a></dt>
 <dd><p>K-fold iterator variant for temporal splitting of time series data</p>
 <p>The time series’ are divided in time with no overlap, and are balanced.</p>
-<p>By splitting the time series’, the number of samples in the data set is changed and so new arrays for the data and target are returned by the <code class="docutils literal notranslate"><span class="pre">split</span></code> function in addition to the iterator.</p>
+<p>By splitting the time series’, the number of samples in the data set is changed and so new
+arrays for the data and target are returned by the <code class="docutils literal notranslate"><span class="pre">split</span></code> function in addition to the
+iterator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -292,7 +301,7 @@ Test data is drawn from the end of each series / sequence</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, David Burns.
+        &copy; Copyright 2018, David Burns
 
     </p>
   </div>
@@ -311,20 +320,14 @@ Test data is drawn from the end of each series / sequence</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
