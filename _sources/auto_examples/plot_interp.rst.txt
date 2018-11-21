@@ -35,7 +35,7 @@ an optimal sampling frequency for the data
     N series in test:  35
     N segments in train:  1625
     N segments in test:  604
-    Accuracy score:  0.7516556291390728
+    Accuracy score:  0.7268211920529801
     X Shape:  (418, 10, 5)
     X Shape:  (418, 10, 5)
     X Shape:  (418, 10, 5)
@@ -133,7 +133,7 @@ an optimal sampling frequency for the data
                      color='navy')
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  8.209 seconds)
+**Total running time of the script:** ( 0 minutes  8.045 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_interp.py:

@@ -49,13 +49,11 @@ Simple NN Model
 
 
     def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-                   conv_filters=64, lstm_units=100):
+                   conv_filters=10, lstm_units=10):
         input_shape = (width, n_vars)
         model = Sequential()
         model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
                          padding='valid', activation='relu', input_shape=input_shape))
-        model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
-                         padding='valid', activation='relu'))
         model.add(LSTM(units=lstm_units, dropout=0.1, recurrent_dropout=0.1))
         model.add(Dense(n_classes, activation="softmax"))
 
@@ -90,7 +88,7 @@ Setup
     # create a segment learning pipeline
     width = 100
     pipe = Pype([('seg', SegmentX()),
-                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=10, batch_size=256,
+                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=5, batch_size=256,
                                           verbose=0, validation_split=0.2))])
 
 
@@ -129,16 +127,11 @@ Accessing training history
  .. code-block:: none
 
     acc      loss   val_acc  val_loss
-    0  0.232682  1.801399  0.036932  1.806905
-    1  0.455773  1.256160  0.357955  1.399215
-    2  0.616696  0.861852  0.455966  0.906986
-    3  0.665009  0.692225  0.676136  0.645294
-    4  0.701954  0.612156  0.715909  0.572012
-    5  0.730728  0.558351  0.691761  0.673151
-    6  0.752753  0.510463  0.711648  0.520783
-    7  0.765187  0.462172  0.748580  0.516488
-    8  0.782593  0.436550  0.742898  0.578586
-    9  0.796448  0.426022  0.529830  0.803166
+    0  0.121492  2.027315  0.194602  2.041951
+    1  0.162345  1.945649  0.251420  1.943296
+    2  0.219538  1.889359  0.269886  1.893045
+    3  0.244760  1.852597  0.295455  1.858910
+    4  0.273535  1.802227  0.315341  1.820386
 
 
 Training Curves
@@ -164,7 +157,7 @@ Training Curves
 
 
 
-**Total running time of the script:** ( 0 minutes  26.510 seconds)
+**Total running time of the script:** ( 0 minutes  5.299 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

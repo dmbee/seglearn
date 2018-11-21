@@ -138,7 +138,7 @@ OPTION 1: Use the score SegPipe score method
  .. code-block:: none
 
     X Shape:  (3519, 100, 6)
-    Accuracy score:  0.7469775474956822
+    Accuracy score:  0.7789291882556131
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -170,7 +170,7 @@ OPTION 2: generate true and predicted target values for the segments
 
  .. code-block:: none
 
-    F1 score:  0.7573901292541463
+    F1 score:  0.7903618713885233
 
 
 OPTION 3: scoring during model selection
@@ -213,10 +213,10 @@ OPTION 3: scoring during model selection
     X Shape:  (3535, 100, 6)
     X Shape:  (3513, 100, 6)
     CV Scores:     fit_time  score_time  test_score  train_score
-    0  0.515419    0.099035    0.806555     1.000000
-    1  0.539040    0.091744    0.818750     1.000000
-    2  0.533345    0.091522    0.792469     0.999717
-    3  0.521410    0.092106    0.780928     1.000000
+    0  0.509498    0.095122    0.788169     1.000000
+    1  0.530913    0.087968    0.833036     1.000000
+    2  0.525584    0.087555    0.772329     0.999717
+    3  0.505738    0.093753    0.775773     1.000000
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -250,10 +250,10 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
     X Shape:  (3535, 100, 6)
     X Shape:  (3513, 100, 6)
     CV F1 Scores:     fit_time  score_time  test_score  train_score
-    0  0.518077    0.099835    0.826898     1.000000
-    1  0.543113    0.091326    0.838489     1.000000
-    2  0.536531    0.091271    0.831552     0.999476
-    3  0.525305    0.093249    0.800003     1.000000
+    0  0.517027    0.097159    0.813201          1.0
+    1  0.528451    0.087748    0.844138          1.0
+    2  0.533641    0.091613    0.810301          1.0
+    3  0.519265    0.090997    0.795585          1.0
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -297,13 +297,13 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
     X Shape:  (3509, 100, 6)
     X Shape:  (3511, 100, 6)
     CV Scores (workaround):     fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  test_recall_macro
-    0  0.402737    0.310724       0.775597       0.786900              0.802410           0.791573
-    1  0.401348    0.311281       0.795901       0.810707              0.822594           0.814544
-    2  0.397075    0.308368       0.778253       0.795009              0.817575           0.792872
-    3  0.394636    0.310251       0.792453       0.807200              0.824281           0.811305
+    0  0.400053    0.312469       0.767918       0.776470              0.790950           0.782083
+    1  0.388707    0.319273       0.799317       0.816144              0.824632           0.818828
+    2  0.390619    0.324876       0.808219       0.818242              0.838258           0.815936
+    3  0.381548    0.307090       0.795883       0.807999              0.819836           0.810041
 
 
-**Total running time of the script:** ( 0 minutes  11.208 seconds)
+**Total running time of the script:** ( 0 minutes  11.012 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Hyperparameter Selection 2 &mdash; seglearn 1.0.2 documentation</title>
+  <title>Hyperparameter Selection 2 &mdash; seglearn 1.0.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0
+                1.0.0
               </div>
             
           
@@ -101,9 +101,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
@@ -188,6 +188,31 @@
 <span id="sphx-glr-auto-examples-plot-model-selection2-py"></span><h1>Hyperparameter Selection 2<a class="headerlink" href="#hyperparameter-selection-2" title="Permalink to this headline">¶</a></h1>
 <p>This example demonstrates how to do model selection in a pipeline where segments are learned directly by a neural network</p>
 <img alt="../_images/sphx_glr_plot_model_selection2_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_model_selection2_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 3 folds for each of 3 candidates, totalling 9 fits
+[CV] seg__width=50, crnn__width=seg__width, seg__overlap=0.0 .........
+[CV]  seg__width=50, crnn__width=seg__width, seg__overlap=0.0, total=   3.3s
+[CV] seg__width=50, crnn__width=seg__width, seg__overlap=0.0 .........
+[CV]  seg__width=50, crnn__width=seg__width, seg__overlap=0.0, total=   3.5s
+[CV] seg__width=50, crnn__width=seg__width, seg__overlap=0.0 .........
+[CV]  seg__width=50, crnn__width=seg__width, seg__overlap=0.0, total=   3.5s
+[CV] seg__width=100, crnn__width=seg__width, seg__overlap=0.0 ........
+[CV]  seg__width=100, crnn__width=seg__width, seg__overlap=0.0, total=   4.6s
+[CV] seg__width=100, crnn__width=seg__width, seg__overlap=0.0 ........
+[CV]  seg__width=100, crnn__width=seg__width, seg__overlap=0.0, total=   4.3s
+[CV] seg__width=100, crnn__width=seg__width, seg__overlap=0.0 ........
+[CV]  seg__width=100, crnn__width=seg__width, seg__overlap=0.0, total=   4.7s
+[CV] seg__width=200, crnn__width=seg__width, seg__overlap=0.0 ........
+[CV]  seg__width=200, crnn__width=seg__width, seg__overlap=0.0, total=   5.5s
+[CV] seg__width=200, crnn__width=seg__width, seg__overlap=0.0 ........
+[CV]  seg__width=200, crnn__width=seg__width, seg__overlap=0.0, total=   5.8s
+[CV] seg__width=200, crnn__width=seg__width, seg__overlap=0.0 ........
+[CV]  seg__width=200, crnn__width=seg__width, seg__overlap=0.0, total=   5.7s
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
@@ -204,14 +229,12 @@
 
 
 <span class="k">def</span> <span class="nf">crnn_model</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_vars</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">conv_kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-               <span class="n">conv_filters</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">lstm_units</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-    <span class="c1"># create a crnn model with keras with two cnn layers, and one rnn layer</span>
+               <span class="n">conv_filters</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lstm_units</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="c1"># create a crnn model with keras with one cnn layers, and one rnn layer</span>
     <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">n_vars</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">conv_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">conv_kernel_size</span><span class="p">,</span>
                      <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">conv_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">conv_kernel_size</span><span class="p">,</span>
-                     <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">lstm_units</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">recurrent_dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">))</span>
 
@@ -232,7 +255,7 @@
 <span class="c1"># create a segment learning pipeline</span>
 <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
-             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
+             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
 
 <span class="c1"># create a parameter dictionary using the sklearn API</span>
 <span class="c1">#</span>
@@ -245,7 +268,7 @@
             <span class="s1">&#39;seg__overlap&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.</span><span class="p">],</span>
             <span class="s1">&#39;crnn__width&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;seg__width&#39;</span><span class="p">]}</span>
 
-<span class="n">clf</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">par_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">par_grid</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
 <span class="n">scores</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;mean_test_score&#39;</span><span class="p">]</span>
 <span class="n">stds</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">cv_results_</span><span class="p">[</span><span class="s1">&#39;std_test_score&#39;</span><span class="p">]</span>
@@ -258,7 +281,7 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 2 minutes  43.258 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  49.045 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-model-selection2-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/2befac74d11c9db01d0a2f4cce4c385d/plot_model_selection2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_selection2.py</span></code></a></div>

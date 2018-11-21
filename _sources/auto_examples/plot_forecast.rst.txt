@@ -40,7 +40,7 @@ useful in your application).
     N series in test:  1
     N segments in train:  34
     N segments in test:  9
-    Score:  0.9967185815548664
+    Score:  0.9967185815435372
 
 
 
@@ -119,7 +119,7 @@ useful in your application).
     plt.legend()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.040 seconds)
+**Total running time of the script:** ( 0 minutes  0.044 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_forecast.py:

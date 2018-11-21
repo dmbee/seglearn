@@ -20,7 +20,36 @@ This example demonstrates how to do model selection in a pipeline where segments
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
 
+ Out:
+
+ .. code-block:: none
+
+    Fitting 3 folds for each of 3 candidates, totalling 9 fits
+    [CV] seg__width=50, crnn__width=seg__width, seg__overlap=0.0 .........
+    [CV]  seg__width=50, crnn__width=seg__width, seg__overlap=0.0, total=   3.3s
+    [CV] seg__width=50, crnn__width=seg__width, seg__overlap=0.0 .........
+    [CV]  seg__width=50, crnn__width=seg__width, seg__overlap=0.0, total=   3.5s
+    [CV] seg__width=50, crnn__width=seg__width, seg__overlap=0.0 .........
+    [CV]  seg__width=50, crnn__width=seg__width, seg__overlap=0.0, total=   3.5s
+    [CV] seg__width=100, crnn__width=seg__width, seg__overlap=0.0 ........
+    [CV]  seg__width=100, crnn__width=seg__width, seg__overlap=0.0, total=   4.6s
+    [CV] seg__width=100, crnn__width=seg__width, seg__overlap=0.0 ........
+    [CV]  seg__width=100, crnn__width=seg__width, seg__overlap=0.0, total=   4.3s
+    [CV] seg__width=100, crnn__width=seg__width, seg__overlap=0.0 ........
+    [CV]  seg__width=100, crnn__width=seg__width, seg__overlap=0.0, total=   4.7s
+    [CV] seg__width=200, crnn__width=seg__width, seg__overlap=0.0 ........
+    [CV]  seg__width=200, crnn__width=seg__width, seg__overlap=0.0, total=   5.5s
+    [CV] seg__width=200, crnn__width=seg__width, seg__overlap=0.0 ........
+    [CV]  seg__width=200, crnn__width=seg__width, seg__overlap=0.0, total=   5.8s
+    [CV] seg__width=200, crnn__width=seg__width, seg__overlap=0.0 ........
+    [CV]  seg__width=200, crnn__width=seg__width, seg__overlap=0.0, total=   5.7s
+
+
+
+
+|
 
 
 .. code-block:: python
@@ -42,14 +71,12 @@ This example demonstrates how to do model selection in a pipeline where segments
 
 
     def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-                   conv_filters=64, lstm_units=100):
-        # create a crnn model with keras with two cnn layers, and one rnn layer
+                   conv_filters=10, lstm_units=10):
+        # create a crnn model with keras with one cnn layers, and one rnn layer
         input_shape = (width, n_vars)
         model = Sequential()
         model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
                          padding='valid', activation='relu', input_shape=input_shape))
-        model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
-                         padding='valid', activation='relu'))
         model.add(LSTM(units=lstm_units, dropout=0.1, recurrent_dropout=0.1))
         model.add(Dense(n_classes, activation="softmax"))
 
@@ -70,7 +97,7 @@ This example demonstrates how to do model selection in a pipeline where segments
     # create a segment learning pipeline
     width = 100
     pipe = Pype([('seg', SegmentX()),
-                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=5, batch_size=256, verbose=0))])
+                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=2, batch_size=256, verbose=0))])
 
     # create a parameter dictionary using the sklearn API
     #
@@ -83,7 +110,7 @@ This example demonstrates how to do model selection in a pipeline where segments
                 'seg__overlap': [0.],
                 'crnn__width': ['seg__width']}
 
-    clf = GridSearchCV(pipe, par_grid, cv=cv)
+    clf = GridSearchCV(pipe, par_grid, cv=cv, verbose=2)
     clf.fit(Xs, ys)
     scores = clf.cv_results_['mean_test_score']
     stds = clf.cv_results_['std_test_score']
@@ -95,7 +122,7 @@ This example demonstrates how to do model selection in a pipeline where segments
     plt.fill_between(par_grid['seg__width'], scores - stds, scores + stds, alpha=0.2, color='navy')
     plt.show()
 
-**Total running time of the script:** ( 2 minutes  43.258 seconds)
+**Total running time of the script:** ( 0 minutes  49.045 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection2.py:

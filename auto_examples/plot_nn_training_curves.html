@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Plotting Neural Network Training Curves &mdash; seglearn 1.0.2 documentation</title>
+  <title>Plotting Neural Network Training Curves &mdash; seglearn 1.0.0 documentation</title>
   
 
   
@@ -30,8 +30,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Time Series Forecasting" href="plot_forecast.html" />
-    <link rel="prev" title="Hyperparameter Selection 1" href="plot_model_selection1.html" /> 
+    <link rel="next" title="Continuous Target and Time Series Regression" href="plot_regression.html" />
+    <link rel="prev" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0
+                1.0.0
               </div>
             
           
@@ -101,8 +101,6 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Neural Network Training Curves</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#simple-nn-model">Simple NN Model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
@@ -110,6 +108,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#training-curves">Training Curves</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
@@ -212,13 +212,11 @@
 <div class="section" id="simple-nn-model">
 <h2>Simple NN Model<a class="headerlink" href="#simple-nn-model" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">crnn_model</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_vars</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">conv_kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-               <span class="n">conv_filters</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">lstm_units</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+               <span class="n">conv_filters</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lstm_units</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">n_vars</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">conv_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">conv_kernel_size</span><span class="p">,</span>
                      <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">conv_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">conv_kernel_size</span><span class="p">,</span>
-                     <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">lstm_units</span><span class="p">,</span> <span class="n">dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">recurrent_dropout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">))</span>
 
@@ -242,7 +240,7 @@
 <span class="c1"># create a segment learning pipeline</span>
 <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
-             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
                                       <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">))])</span>
 </pre></div>
 </div>
@@ -263,16 +261,11 @@
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>acc      loss   val_acc  val_loss
-0  0.232682  1.801399  0.036932  1.806905
-1  0.455773  1.256160  0.357955  1.399215
-2  0.616696  0.861852  0.455966  0.906986
-3  0.665009  0.692225  0.676136  0.645294
-4  0.701954  0.612156  0.715909  0.572012
-5  0.730728  0.558351  0.691761  0.673151
-6  0.752753  0.510463  0.711648  0.520783
-7  0.765187  0.462172  0.748580  0.516488
-8  0.782593  0.436550  0.742898  0.578586
-9  0.796448  0.426022  0.529830  0.803166
+0  0.121492  2.027315  0.194602  2.041951
+1  0.162345  1.945649  0.251420  1.943296
+2  0.219538  1.889359  0.269886  1.893045
+3  0.244760  1.852597  0.295455  1.858910
+4  0.273535  1.802227  0.315341  1.820386
 </pre></div>
 </div>
 </div>
@@ -287,7 +280,7 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_plot_nn_training_curves_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_nn_training_curves_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  26.510 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  5.299 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-nn-training-curves-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/9ced9a273bf0af1cceab820f691ae479/plot_nn_training_curves.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_nn_training_curves.py</span></code></a></div>
@@ -306,10 +299,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_forecast.html" class="btn btn-neutral float-right" title="Time Series Forecasting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_regression.html" class="btn btn-neutral float-right" title="Continuous Target and Time Series Regression" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_model_selection1.html" class="btn btn-neutral" title="Hyperparameter Selection 1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_segment_rep.html" class="btn btn-neutral" title="Classifying Segments Directly with a Neural Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Classifying Segments Directly with a Neural Network &mdash; seglearn 1.0.2 documentation</title>
+  <title>Classifying Segments Directly with a Neural Network &mdash; seglearn 1.0.0 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Continuous Target and Time Series Regression" href="plot_regression.html" />
+    <link rel="next" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html" />
     <link rel="prev" title="Basic Feature Representation Classification Pipeline" href="plot_feature_rep.html" /> 
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0
+                1.0.0
               </div>
             
           
@@ -101,9 +101,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
@@ -193,7 +193,7 @@
 N series in test:  35
 N segments in train:  3519
 N segments in test:  1158
-Accuracy score:  0.657167533621681
+Accuracy score:  0.39032815280973604
 </pre></div>
 </div>
 <div class="line-block">
@@ -215,7 +215,7 @@ Accuracy score:  0.657167533621681
 
 
 <span class="k">def</span> <span class="nf">crnn_model</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_vars</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">conv_kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-               <span class="n">conv_filters</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">lstm_units</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+               <span class="n">conv_filters</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lstm_units</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">n_vars</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="n">conv_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">conv_kernel_size</span><span class="p">,</span>
@@ -240,7 +240,7 @@ Accuracy score:  0.657167533621681
 <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
-             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
+             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
 
 <span class="c1"># split the data</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -258,7 +258,7 @@ Accuracy score:  0.657167533621681
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  31.209 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  8.933 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-segment-rep-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/178efc13459f93a61a913f5478df039a/plot_segment_rep.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_segment_rep.py</span></code></a></div>
@@ -276,7 +276,7 @@ Accuracy score:  0.657167533621681
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_regression.html" class="btn btn-neutral float-right" title="Continuous Target and Time Series Regression" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_nn_training_curves.html" class="btn btn-neutral float-right" title="Plotting Neural Network Training Curves" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="plot_feature_rep.html" class="btn btn-neutral" title="Basic Feature Representation Classification Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
