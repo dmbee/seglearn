@@ -191,23 +191,23 @@
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 3 folds for each of 3 candidates, totalling 9 fits
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  24.6s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=   8.7s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  15.0s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=   9.5s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  13.2s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=   9.6s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  24.6s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  12.4s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  44.6s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  13.3s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  44.1s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  14.1s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  37.5s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  24.9s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  43.2s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  21.1s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  54.8s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  20.1s
 </pre></div>
 </div>
 <div class="line-block">
@@ -255,7 +255,7 @@
 <span class="c1"># create a segment learning pipeline</span>
 <span class="n">width</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
-             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
+             <span class="p">(</span><span class="s1">&#39;crnn&#39;</span><span class="p">,</span> <span class="n">KerasClassifier</span><span class="p">(</span><span class="n">build_fn</span><span class="o">=</span><span class="n">crnn_model</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">))])</span>
 
 <span class="c1"># create a parameter dictionary using the sklearn API</span>
 <span class="c1">#</span>
@@ -281,7 +281,7 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 6 minutes  27.435 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 2 minutes  45.054 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-model-selection2-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/df34fdc6637c7c08a2acf02b32fad8a5/plot_model_selection2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_selection2.py</span></code></a></div>
