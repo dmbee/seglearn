@@ -89,6 +89,11 @@ After installation, you can use `pytest` to run the test suite from seglearn's r
 
 Change Log
 ----------
+Version 1.0.3:
+
+* Continuous integration fixes
+* Documentation and unit testing improvements
+
 Version 1.0.2:
 
 * Added further features
