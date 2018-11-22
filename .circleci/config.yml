@@ -35,7 +35,7 @@ jobs:
       - run: ls -ltrh doc/_build/html
       - deploy:
           command: |
-            if ["$CIRCLE_BRANCH" = "master"]; then
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               git config --global user.email $EMAIL
               git config --global user.name $USERNAME
               git clone $CIRCLE_REPOSITORY_URL out
