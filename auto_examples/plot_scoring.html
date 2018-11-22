@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.0 documentation</title>
+  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0
               </div>
             
           
@@ -274,7 +274,7 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3519, 100, 6)
-Accuracy score:  0.7789291882556131
+Accuracy score:  0.7547495682210709
 </pre></div>
 </div>
 </div>
@@ -291,7 +291,7 @@ Accuracy score:  0.7789291882556131
 </div>
 <img alt="../_images/sphx_glr_plot_scoring_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_scoring_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>F1 score:  0.7903618713885233
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>F1 score:  0.7675626416250413
 </pre></div>
 </div>
 </div>
@@ -319,11 +319,13 @@ Accuracy score:  0.7789291882556131
 X Shape:  (3557, 100, 6)
 X Shape:  (3535, 100, 6)
 X Shape:  (3513, 100, 6)
-CV Scores:     fit_time  score_time  test_score  train_score
-0  0.509498    0.095122    0.788169     1.000000
-1  0.530913    0.087968    0.833036     1.000000
-2  0.525584    0.087555    0.772329     0.999717
-3  0.505738    0.093753    0.775773     1.000000
+CV Scores:     fit_time     ...       train_score
+0  0.779600     ...          0.999708
+1  0.748793     ...          1.000000
+2  0.801624     ...          1.000000
+3  0.839039     ...          1.000000
+
+[4 rows x 4 columns]
 </pre></div>
 </div>
 </div>
@@ -343,11 +345,13 @@ CV Scores:     fit_time  score_time  test_score  train_score
 X Shape:  (3557, 100, 6)
 X Shape:  (3535, 100, 6)
 X Shape:  (3513, 100, 6)
-CV F1 Scores:     fit_time  score_time  test_score  train_score
-0  0.517027    0.097159    0.813201          1.0
-1  0.528451    0.087748    0.844138          1.0
-2  0.533641    0.091613    0.810301          1.0
-3  0.519265    0.090997    0.795585          1.0
+CV F1 Scores:     fit_time     ...       train_score
+0  0.872503     ...               1.0
+1  0.845988     ...               1.0
+2  0.787694     ...               1.0
+3  0.868041     ...               1.0
+
+[4 rows x 4 columns]
 </pre></div>
 </div>
 </div>
@@ -378,19 +382,21 @@ CV F1 Scores:     fit_time  score_time  test_score  train_score
 X Shape:  (3506, 100, 6)
 X Shape:  (3509, 100, 6)
 X Shape:  (3511, 100, 6)
-CV Scores (workaround):     fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  test_recall_macro
-0  0.400053    0.312469       0.767918       0.776470              0.790950           0.782083
-1  0.388707    0.319273       0.799317       0.816144              0.824632           0.818828
-2  0.390619    0.324876       0.808219       0.818242              0.838258           0.815936
-3  0.381548    0.307090       0.795883       0.807999              0.819836           0.810041
+CV Scores (workaround):     fit_time      ...        test_f1_macro
+0  0.679129      ...             0.788125
+1  0.804840      ...             0.828601
+2  0.754647      ...             0.809802
+3  0.760404      ...             0.814700
+
+[4 rows x 6 columns]
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  11.012 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  19.975 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/521f87e56f325cca5a2a84342b426094/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/17e4fd290277699455418db0c1642d5d/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/c4b78cb39d035563a4d72fcfcda7054b/plot_scoring.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_scoring.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/f6ccee9e54ef6464d5f7808c1e3c061c/plot_scoring.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_scoring.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -441,7 +447,6 @@ CV Scores (workaround):     fit_time  score_time  test_accuracy  test_f1_macro  
         <script type="text/javascript" src="../_static/jquery.js"></script>
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

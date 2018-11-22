@@ -28,17 +28,19 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
  .. code-block:: none
 
     DATA STATS - AGGREGATED
-    {'Series_Time_Mean': 34.87171428571428, 'n_context_vars': 2, 'Total_Time': 4882.04, 'Series_Time_Std': 8.757850351285423, 'Series_Time_Range': (18.94, 52.36), 'n_classes': 7, 'n_series': 140, 'n_TS_vars': 6}
+    {'n_series': 140, 'n_classes': 7, 'n_TS_vars': 6, 'n_context_vars': 2, 'Total_Time': 4882.04, 'Series_Time_Mean': 34.87171428571428, 'Series_Time_Std': 8.757850351285423, 'Series_Time_Range': (18.94, 52.36)}
 
     DATA STATS - BY CLASS
-      Class_labels  Series_Time_Max  Series_Time_Mean  Series_Time_Min  Series_Time_Std  Total_Time  n_series
-    0          PEN            31.10            26.622            21.28         2.720845      532.44        20
-    1          ABD            49.10            39.905            22.48         8.055554      798.10        20
-    2          FEL            50.84            40.498            22.30         8.772099      809.96        20
-    3           IR            52.36            37.395            19.40         9.085212      747.90        20
-    4           ER            49.24            37.604            21.30         7.983878      752.08        20
-    5         TRAP            45.12            30.578            19.26         6.099252      611.56        20
-    6          ROW            38.66            31.500            18.94         5.957100      630.00        20
+      Class_labels       ...         Series_Time_Max
+    0          PEN       ...                   31.10
+    1          ABD       ...                   49.10
+    2          FEL       ...                   50.84
+    3           IR       ...                   52.36
+    4           ER       ...                   49.24
+    5         TRAP       ...                   45.12
+    6          ROW       ...                   38.66
+
+    [7 rows x 7 columns]
 
 
 
@@ -108,7 +110,7 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.242 seconds)
+**Total running time of the script:** ( 0 minutes  0.312 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_watchdata.py:

@@ -138,7 +138,7 @@ OPTION 1: Use the score SegPipe score method
  .. code-block:: none
 
     X Shape:  (3519, 100, 6)
-    Accuracy score:  0.7789291882556131
+    Accuracy score:  0.7547495682210709
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -170,7 +170,7 @@ OPTION 2: generate true and predicted target values for the segments
 
  .. code-block:: none
 
-    F1 score:  0.7903618713885233
+    F1 score:  0.7675626416250413
 
 
 OPTION 3: scoring during model selection
@@ -212,11 +212,13 @@ OPTION 3: scoring during model selection
     X Shape:  (3557, 100, 6)
     X Shape:  (3535, 100, 6)
     X Shape:  (3513, 100, 6)
-    CV Scores:     fit_time  score_time  test_score  train_score
-    0  0.509498    0.095122    0.788169     1.000000
-    1  0.530913    0.087968    0.833036     1.000000
-    2  0.525584    0.087555    0.772329     0.999717
-    3  0.505738    0.093753    0.775773     1.000000
+    CV Scores:     fit_time     ...       train_score
+    0  0.779600     ...          0.999708
+    1  0.748793     ...          1.000000
+    2  0.801624     ...          1.000000
+    3  0.839039     ...          1.000000
+
+    [4 rows x 4 columns]
 
 
 SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
@@ -249,11 +251,13 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
     X Shape:  (3557, 100, 6)
     X Shape:  (3535, 100, 6)
     X Shape:  (3513, 100, 6)
-    CV F1 Scores:     fit_time  score_time  test_score  train_score
-    0  0.517027    0.097159    0.813201          1.0
-    1  0.528451    0.087748    0.844138          1.0
-    2  0.533641    0.091613    0.810301          1.0
-    3  0.519265    0.090997    0.795585          1.0
+    CV F1 Scores:     fit_time     ...       train_score
+    0  0.872503     ...               1.0
+    1  0.845988     ...               1.0
+    2  0.787694     ...               1.0
+    3  0.868041     ...               1.0
+
+    [4 rows x 4 columns]
 
 
 SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
@@ -296,14 +300,16 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
     X Shape:  (3506, 100, 6)
     X Shape:  (3509, 100, 6)
     X Shape:  (3511, 100, 6)
-    CV Scores (workaround):     fit_time  score_time  test_accuracy  test_f1_macro  test_precision_macro  test_recall_macro
-    0  0.400053    0.312469       0.767918       0.776470              0.790950           0.782083
-    1  0.388707    0.319273       0.799317       0.816144              0.824632           0.818828
-    2  0.390619    0.324876       0.808219       0.818242              0.838258           0.815936
-    3  0.381548    0.307090       0.795883       0.807999              0.819836           0.810041
+    CV Scores (workaround):     fit_time      ...        test_f1_macro
+    0  0.679129      ...             0.788125
+    1  0.804840      ...             0.828601
+    2  0.754647      ...             0.809802
+    3  0.760404      ...             0.814700
+
+    [4 rows x 6 columns]
 
 
-**Total running time of the script:** ( 0 minutes  11.012 seconds)
+**Total running time of the script:** ( 0 minutes  19.975 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:
