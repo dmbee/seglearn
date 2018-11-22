@@ -107,6 +107,11 @@ If more details are needed, have a look at the `API Documentation <api.html>`_.
 
 Change Log
 ----------
+Version 1.0.3:
+
+* Continuous integration fixes
+* Documentation and unit testing improvements
+
 Version 1.0.2:
 
 * Added further features
