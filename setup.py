@@ -1,40 +1,30 @@
-from __future__ import print_function
-import sys, codecs
-from setuptools import setup, find_packages
+#! /usr/bin/env python
+"""A template for scikit-learn compatible packages."""
 
-with open('requirements.txt') as f:
-    INSTALL_REQUIRES = [l.strip() for l in f.readlines() if l]
+import codecs
+import os
 
+from setuptools import find_packages, setup
 
-try:
-    import numpy
-except ImportError:
-    print('numpy is required during installation')
-    sys.exit(1)
+# get __version__ from _version.py
+ver_file = os.path.join('seglearn', '_version.py')
+with open(ver_file) as f:
+    exec(f.read())
 
-try:
-    import scipy
-except ImportError:
-    print('scipy is required during installation')
-    sys.exit(1)
-
+DISTNAME = 'seglearn'
+DESCRIPTION = 'A template for scikit-learn compatible packages.'
 with codecs.open('README.rst', encoding='utf-8-sig') as f:
     LONG_DESCRIPTION = f.read()
-
-setup(name='seglearn',
-      version='1.0.2',
-      description='Machine Learning Time Series',
-      author='David Burns',
-      packages=find_packages(),
-      include_package_data=True,
-      install_requires=INSTALL_REQUIRES,
-      author_email='david.mo.burns@gmail.com',
-      url = 'https://github.com/dmbee/seglearn',
-      download_url = 'https://github.com/dmbee/seglearn',
-      long_description=LONG_DESCRIPTION,
-      classifiers = ['Intended Audience :: Science/Research',
+MAINTAINER = 'David Burns'
+MAINTAINER_EMAIL = 'david.mo.burns@gmail.com'
+URL = 'https://github.com/dmbee/seglearn'
+LICENSE = 'BSD'
+DOWNLOAD_URL = 'https://github.com/dmbee/seglearn'
+VERSION = __version__
+INSTALL_REQUIRES = ['numpy', 'scipy', 'scikit-learn']
+CLASSIFIERS = ['Intended Audience :: Science/Research',
                'Intended Audience :: Developers',
-               'License :: OSI Approved :: BSD License',
+               'License :: OSI Approved',
                'Programming Language :: Python',
                'Topic :: Software Development',
                'Topic :: Scientific/Engineering',
@@ -43,5 +33,35 @@ setup(name='seglearn',
                'Operating System :: Unix',
                'Operating System :: MacOS',
                'Programming Language :: Python :: 2.7',
-               'Programming Language :: Python :: 3.5']
-      )
+               'Programming Language :: Python :: 3.5',
+               'Programming Language :: Python :: 3.6',
+               'Programming Language :: Python :: 3.7']
+EXTRAS_REQUIRE = {
+    'tests': [
+        'pytest',
+        'pytest-cov'],
+    'docs': [
+        'sphinx',
+        'sphinx-gallery',
+        'sphinx_rtd_theme',
+        'numpydoc',
+        'matplotlib',
+        'keras',
+        'pandas'
+    ]
+}
+
+setup(name=DISTNAME,
+      maintainer=MAINTAINER,
+      maintainer_email=MAINTAINER_EMAIL,
+      description=DESCRIPTION,
+      license=LICENSE,
+      url=URL,
+      version=VERSION,
+      download_url=DOWNLOAD_URL,
+      long_description=LONG_DESCRIPTION,
+      zip_safe=False,  # the package can run out of an .egg file
+      classifiers=CLASSIFIERS,
+      packages=find_packages(),
+      install_requires=INSTALL_REQUIRES,
+      extras_require=EXTRAS_REQUIRE)
