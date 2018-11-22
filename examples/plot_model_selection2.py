@@ -23,7 +23,7 @@ from seglearn.transform import SegmentX
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
                conv_filters=10, lstm_units=10):
-    # create a crnn model with keras with two cnn layers, and one rnn layer
+    # create a crnn model with keras with one cnn layers, and one rnn layer
     input_shape = (width, n_vars)
     model = Sequential()
     model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,

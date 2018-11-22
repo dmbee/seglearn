@@ -1,7 +1,10 @@
 version: 2
 
 jobs:
-  python3:
+  build:
+    branches:
+      ignore:
+        - gh-pages
     docker:
       - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
     steps:
@@ -30,12 +33,20 @@ jobs:
       - attach_workspace:
           at: doc/_build/html
       - run: ls -ltrh doc/_build/html
-    filters:
-      branches:
-        ignore: gh-pages
-
-workflows:
-  version: 2
-  build-doc-and-deploy:
-    jobs:
-      - python3
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              git config --global user.email $EMAIL
+              git config --global user.name $USERNAME
+              git clone $CIRCLE_REPOSITORY_URL out
+              cd out
+              git checkout gh-pages || git checkout --orphan gh-pages
+              git rm -rf .
+              cp -R ../doc/_build/html/* ./
+              touch .nojekyll
+              mkdir .circleci
+              cp -a ../.circleci/. .circleci/.
+              git add -A
+              git commit -m "Automated doc html deployment for branch: $CIRCLE_BRANCH, commit $CIRCLE_SHA1"
+              git push origin gh-pages
+            fi
