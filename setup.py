@@ -11,6 +11,9 @@ ver_file = os.path.join('seglearn', '_version.py')
 with open(ver_file) as f:
     exec(f.read())
 
+with open('requirements.txt') as f:
+    INSTALL_REQUIRES = [l.strip() for l in f.readlines() if l]
+
 DISTNAME = 'seglearn'
 DESCRIPTION = 'A template for scikit-learn compatible packages.'
 with codecs.open('README.rst', encoding='utf-8-sig') as f:
@@ -21,10 +24,9 @@ URL = 'https://github.com/dmbee/seglearn'
 LICENSE = 'BSD'
 DOWNLOAD_URL = 'https://github.com/dmbee/seglearn'
 VERSION = __version__
-INSTALL_REQUIRES = ['numpy', 'scipy', 'scikit-learn']
 CLASSIFIERS = ['Intended Audience :: Science/Research',
                'Intended Audience :: Developers',
-               'License :: OSI Approved',
+               'License :: OSI Approved :: BSD License',
                'Programming Language :: Python',
                'Topic :: Software Development',
                'Topic :: Scientific/Engineering',
@@ -63,5 +65,6 @@ setup(name=DISTNAME,
       zip_safe=False,  # the package can run out of an .egg file
       classifiers=CLASSIFIERS,
       packages=find_packages(),
+      include_package_data=True,
       install_requires=INSTALL_REQUIRES,
       extras_require=EXTRAS_REQUIRE)
