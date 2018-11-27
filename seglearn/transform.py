@@ -101,8 +101,6 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     overlap : float range [0,1)
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
-        shuffle : bool, optional
-        shuffle the segments before fitting the ``est`` pipeline (recommended)
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
@@ -277,7 +275,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             There is no need of a target in a transformer, yet the pipeline API requires this
             parameter.
 
-        Returnsself._validate_params()
+        Returns
         -------
         self : object
             Returns self.
