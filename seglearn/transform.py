@@ -727,7 +727,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
             Xt = [self._interp(t_lin[i], t[i], Xt[i][:, 1], kind=self.kind) for i in np.arange(N)]
         elif D > 1:
             Xt = [np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:, j], kind=self.kind)
-                                   for j in range(1, D)]) for i in np.arange(N)]
+                                   for j in range(1, D+1)]) for i in np.arange(N)]
         if Xc is not None:
             Xt = TS_Data(Xt, Xc)
 
