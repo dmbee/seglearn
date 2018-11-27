@@ -183,9 +183,8 @@ through a feature representation or directly with a neural network.</p>
 <dd><p class="first last">width of segments (number of samples)</p>
 </dd>
 <dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1)</span></dt>
-<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.
-shuffle : bool, optional
-shuffle the segments before fitting the <code class="docutils literal notranslate"><span class="pre">est</span></code> pipeline (recommended)</p>
+<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1
+(note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</p>
 </dd>
 <dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
 <dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
@@ -320,7 +319,8 @@ through a feature representation or directly with a neural network.</p>
 <dd><p class="first last">width of segments (number of samples)</p>
 </dd>
 <dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1)</span></dt>
-<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
+<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1
+(note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</p>
 </dd>
 <dt><strong>y_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
 <dd><p class="first last">returns target from array of target segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, <code class="docutils literal notranslate"><span class="pre">middle</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
@@ -377,7 +377,7 @@ set <code class="docutils literal notranslate"><span class="pre">random_state</s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
 <dd><p class="first last">Time series data and (optionally) contextual data</p>
 </dd>
@@ -385,10 +385,10 @@ set <code class="docutils literal notranslate"><span class="pre">random_state</s
 <dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this
 parameter.</p>
 </dd>
-<dt><strong>Returnsself._validate_params()</strong></dt>
-<dd></dd>
-<dt><strong>——-</strong></dt>
-<dd></dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
 <dd><p class="first last">Returns self.</p>
 </dd>
@@ -461,7 +461,8 @@ through a feature representation or directly with a neural network.</p>
 <dd><p class="first last">width of segments (number of samples)</p>
 </dd>
 <dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1)</span></dt>
-<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</p>
+<dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1
+(note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</p>
 </dd>
 <dt><strong>forecast</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">The number of samples ahead in time to forecast</p>

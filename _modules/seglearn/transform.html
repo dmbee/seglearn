@@ -262,9 +262,8 @@
 <span class="sd">    width : int &gt; 0</span>
 <span class="sd">        width of segments (number of samples)</span>
 <span class="sd">    overlap : float range [0,1)</span>
-<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</span>
-<span class="sd">        shuffle : bool, optional</span>
-<span class="sd">        shuffle the segments before fitting the ``est`` pipeline (recommended)</span>
+<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1</span>
+<span class="sd">        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</span>
 <span class="sd">    shuffle : bool, optional</span>
 <span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
 <span class="sd">    random_state : int, default = None</span>
@@ -393,7 +392,8 @@
 <span class="sd">    width : int &gt; 0</span>
 <span class="sd">        width of segments (number of samples)</span>
 <span class="sd">    overlap : float range [0,1)</span>
-<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</span>
+<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1</span>
+<span class="sd">        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</span>
 <span class="sd">    y_func : function</span>
 <span class="sd">        returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)</span>
 <span class="sd">    shuffle : bool, optional</span>
@@ -438,7 +438,7 @@
 <span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
 <span class="sd">            parameter.</span>
 
-<span class="sd">        Returnsself._validate_params()</span>
+<span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        self : object</span>
 <span class="sd">            Returns self.</span>
@@ -519,7 +519,8 @@
 <span class="sd">    width : int &gt; 0</span>
 <span class="sd">        width of segments (number of samples)</span>
 <span class="sd">    overlap : float range [0,1)</span>
-<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt; 1.</span>
+<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1</span>
+<span class="sd">        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</span>
 <span class="sd">    forecast : int</span>
 <span class="sd">        The number of samples ahead in time to forecast</span>
 <span class="sd">    y_func : function</span>
