@@ -98,7 +98,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
+    overlap : float range [0,1]
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     shuffle : bool, optional
@@ -228,7 +228,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
+    overlap : float range [0,1]
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     y_func : function
@@ -355,7 +355,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
+    overlap : float range [0,1]
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     forecast : int
