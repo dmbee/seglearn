@@ -99,7 +99,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     width : int > 0
         width of segments (number of samples)
     overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1.
         shuffle : bool, optional
         shuffle the segments before fitting the ``est`` pipeline (recommended)
     shuffle : bool, optional
@@ -230,7 +230,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     width : int > 0
         width of segments (number of samples)
     overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1.
     y_func : function
         returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
     shuffle : bool, optional
@@ -356,7 +356,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     width : int > 0
         width of segments (number of samples)
     overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1.
     forecast : int
         The number of samples ahead in time to forecast
     y_func : function
