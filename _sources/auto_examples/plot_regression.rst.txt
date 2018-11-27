@@ -37,9 +37,9 @@ In this example, we use the pipeline to learn a continuous time series target wi
     X Shape:  (24, 200)
     X Shape:  (24, 200)
     CV Scores:     fit_time     ...       train_score
-    0  0.003927     ...          0.036307
-    1  0.026426     ...          0.126310
-    2  0.003709     ...          0.097838
+    0  0.003752     ...          0.036307
+    1  0.003557     ...          0.126310
+    2  0.003438     ...          0.097838
 
     [3 rows x 4 columns]
 
@@ -115,7 +115,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
     cv_scores = cross_validate(pipe, X, y, cv=cv, return_train_score=True)
     print("CV Scores: ", pd.DataFrame(cv_scores))
 
-**Total running time of the script:** ( 0 minutes  0.085 seconds)
+**Total running time of the script:** ( 0 minutes  0.104 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_regression.py:
