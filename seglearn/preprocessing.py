@@ -19,18 +19,20 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
     with run length encoding (RLE) of the target variable
 
     RLE finds contiguous runs of the same target value within the input data and derives the
-    transformed data set from the amalgum of all contiguous runs of all target variables from all
+    transformed data set from the amalgum of all contiguous runs of all target classes from all
     series in the input data.
 
     This is useful for generating "pure" series with no mixing of target variables from datasets
     that encode the target variable as a series (e.g. MHEALTH and PAMAP2)
 
-    Note that ``seglearn`` can handle datasets with target variables encoded as a series, and so this
-    preprocessing is not required but may be helpful for some tasks
+    Note that ``seglearn`` can handle datasets with target variables encoded as a series natively
+    (using ``SegmentXY``) and so this preprocessing is not required but may be helpful for some tasks.
+    Effectively it will let you use ``SegmentX`` on datasets that would otherwise require ``SegmentXY``.
 
     Parameters
     ----------
-    min_length : minimum number of samples in a run for it to be included in the transformed data
+    min_length : integer > 1
+        minimum number of samples in a run for it to be included in the transformed data
     '''
 
     def __init__(self, min_length = 200):
@@ -119,6 +121,7 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
         Parameters
         ----------
         a : array, shape[n,]
+            input vector
 
         Returns
         -------
