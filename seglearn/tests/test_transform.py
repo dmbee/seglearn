@@ -371,3 +371,33 @@ def test_interp():
     assert len(Xc[0]) == N / 5
     assert len(yc[0]) == N / 5
     assert np.all(np.isin(yc, np.arange(6)))
+
+
+def test_columntransformer():
+    Nt = 100
+    width = 5
+    nvars = 5
+    seg = transform.SegmentXY(width=width)
+    colTrans = transform.SegmentedColumnTransformer(transformers=[
+        ("a", transform.FeatureRep(features={"mean": mean}), 0)
+    ])
+
+    # multivariate ts data without context data
+    X = [np.random.rand(Nt, nvars), np.random.rand(Nt, nvars), np.random.rand(Nt, nvars)]
+    y = [np.random.rand(Nt), np.random.rand(Nt), np.random.rand(Nt)]
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    colTrans.fit(Xs)
+    Xf = colTrans.transform(Xs)
+    N = len(ys)
+    assert Xf.shape == (N, 1)
+
+    # univariate ts data without context data
+    X = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(3 * Nt)]
+    y = [np.random.rand(Nt), np.random.rand(2 * Nt), np.random.rand(3 * Nt)]
+    seg.fit(X, y)
+    Xs, ys, _ = seg.transform(X, y)
+    colTrans.fit(Xs)
+    Xf = colTrans.transform(Xs)
+    N = len(ys)
+    assert Xf.shape == (N, 1)
