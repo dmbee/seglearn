@@ -89,6 +89,12 @@ After installation, you can use `pytest` to run the test suite from seglearn's r
 
 Change Log
 ----------
+
+Version 1.0.4:
+
+* Fixed bug with Interp class and improved its unit testing
+* Added preprocessing module with TargetRunLengthEncoder transform
+
 Version 1.0.3:
 
 * Continuous integration fixes
