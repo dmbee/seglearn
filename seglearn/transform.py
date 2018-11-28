@@ -5,16 +5,18 @@ This module is for transforming time series data.
 # License: BSD
 
 import numpy as np
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.utils import check_random_state, check_array
+from sklearn.base import BaseEstimator, TransformerMixin, clone
+from sklearn.utils import check_random_state, check_array, Parallel, delayed
 from sklearn.exceptions import NotFittedError
+from sklearn.compose import ColumnTransformer
 from scipy.interpolate import interp1d
 
 from .feature_functions import base_features
 from .base import TS_Data
 from .util import get_ts_data_parts, check_ts_data
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep']
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep',
+           'SegmentedColumnTransformer']
 
 
 class XyTransformerMixin(object):
@@ -915,3 +917,58 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             f_labels += s_labels
 
         return f_labels
+
+
+# TODO: Add support for contextual data.
+class SegmentedColumnTransformer(ColumnTransformer):
+    '''
+    Apply specified transformers to columns of a numpy array of segmented time series data.
+
+    EXPERIMENTAL: This transformer is based on the sklearn ColumnTransformer which may change
+    without deprecation warnings between releases.
+
+    This transformer allows the application of specified groups of feature functions (using
+    FeatureRep) to a subset of columns, e.g. when dealing with heterogeneous data. The order of the
+    final output is determined by the transformers list. Non-specified columns are dropped.
+
+    Parameters
+    ----------
+    transformers : list of tuples (name, transformer, column(s))
+    sparse_threshold : float (default=0.3) threshold value to switch between dense and sparse output
+    n_jobs : int or None (default=None) to specify the number of jobs to run in parallel
+    transformer_weights : dict (default=None) to specify the multiplicative weight of a transformer
+
+    Consult the ColumnTransformer documentation for more detailed information on the parameters.
+
+    Attributes
+    ----------
+    transformers_ : list of fitted transformers as tuples of (name, fitted_transformer, column)
+    named_transformers_ : (read-only) Bunch object of fitted transformers indexed by their names
+    sparse_output : boolean indicating whether the output is a sparse matrix or a dense numpy array
+
+    Consult the ColumnTransformer documentation for more detailed information on the attributes.
+    '''
+
+    def __init__(self, transformers, sparse_threshold=0.3, n_jobs=None, transformer_weights=None):
+        # changes to original: remove the remainder parameter
+        super(SegmentedColumnTransformer, self).__init__(
+            transformers=transformers,
+            sparse_threshold=sparse_threshold,
+            n_jobs=n_jobs,
+            transformer_weights=transformer_weights
+        )
+
+    def _validate_remainder(self, X):
+        # changes to original: disable remainder handling
+        self._remainder = ('remainder', None, None)
+
+    def _fit_transform(self, X, y, func, fitted=False):
+        # changes to original:
+        # - replace _get_column(X, column) with np.atleast_3d(X)[:, :, column]
+        # - replace_strings=False (disable 'passthrough' and 'drop' handling)
+        # - remove 2D data specific exception handling
+        return Parallel(n_jobs=self.n_jobs)(
+            delayed(func)(
+                clone(trans) if not fitted else trans, np.atleast_3d(X)[:, :, column], y, weight
+            ) for _, trans, column, weight in self._iter(fitted=fitted, replace_strings=False)
+        )
