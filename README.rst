@@ -89,6 +89,13 @@ After installation, you can use `pytest` to run the test suite from seglearn's r
 
 Change Log
 ----------
+
+Version 1.0.4:
+
+* Fixed bug with Interp class and improved its unit testing
+* Added preprocessing module with TargetRunLengthEncoder transform
+* Further features functions contributed by Matthias Gazzari (qtux)
+
 Version 1.0.3:
 
 * Continuous integration fixes
@@ -127,6 +134,9 @@ The development of this scikit-learn-contrib is in line with the one
 of the scikit-learn community. Therefore, you can refer to their
 `Development Guide
 <http://scikit-learn.org/stable/developers>`_.
+
+Please submit new pull requests on the dev branch with unit tests and an example to
+demonstrate any new functionality / api changes.
 
 About
 -----

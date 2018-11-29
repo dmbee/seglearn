@@ -8,6 +8,7 @@ import numpy as np
 
 from seglearn.base import TS_Data
 
+__all__ = ['get_ts_data_parts', 'check_ts_data', 'check_ts_data_with_ts_target', 'ts_stats']
 
 def get_ts_data_parts(X):
     '''
@@ -56,6 +57,37 @@ def check_ts_data(X, y=None):
         if np.count_nonzero(Nty == 1) == Nx:
             return
         elif np.count_nonzero(Nty == Ntx) == Nx:
+            return
+        else:
+            raise ValueError("Invalid time series lengths.\n"
+                             "Ns: ", Nx,
+                             "Ntx: ", Ntx,
+                             "Nty: ", Nty)
+
+def check_ts_data_with_ts_target(X, y=None):
+    '''
+    Checks time series data with time series target is good. If not raises value error.
+
+    Parameters
+    ----------
+    X : array-like, shape [n_series, ...]
+       Time series data and (optionally) contextual data
+    y : array-like, shape [n_series, ...]
+        target data
+    '''
+    if y is not None:
+        Nx = len(X)
+        Ny = len(y)
+
+        if Nx != Ny:
+            raise ValueError("Number of time series different in X (%d) and y (%d)"
+                             % (Nx, Ny))
+
+        Xt, _ = get_ts_data_parts(X)
+        Ntx = np.array([len(Xt[i]) for i in np.arange(Nx)])
+        Nty = np.array([len(np.atleast_1d(y[i])) for i in np.arange(Nx)])
+
+        if np.count_nonzero(Nty == Ntx) == Nx:
             return
         else:
             raise ValueError("Invalid time series lengths.\n"

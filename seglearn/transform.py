@@ -98,10 +98,9 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
-        shuffle : bool, optional
-        shuffle the segments before fitting the ``est`` pipeline (recommended)
+    overlap : float range [0,1]
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1
+        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
@@ -123,7 +122,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
 
         self.f_labels = None
         self.step = int(self.width * (1. - self.overlap))
-        self.step = self.step if self.step >= 1 else 1
+        self.step = max(1, self.step)
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -229,8 +228,9 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+    overlap : float range [0,1]
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1
+        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     y_func : function
         returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
     shuffle : bool, optional
@@ -255,7 +255,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self._validate_params()
 
         self.step = int(self.width * (1. - self.overlap))
-        self.step = self.step if self.step >= 1 else 1
+        self.step = max(1, self.step)
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -275,7 +275,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             There is no need of a target in a transformer, yet the pipeline API requires this
             parameter.
 
-        Returnsself._validate_params()
+        Returns
         -------
         self : object
             Returns self.
@@ -355,8 +355,9 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+    overlap : float range [0,1]
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1
+        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     forecast : int
         The number of samples ahead in time to forecast
     y_func : function
@@ -385,7 +386,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         self._validate_params()
 
         self.step = int(self.width * (1. - self.overlap))
-        self.step = self.step if self.step >= 1 else 1
+        self.step = max(1, self.step)
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -727,7 +728,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
             Xt = [self._interp(t_lin[i], t[i], Xt[i][:, 1], kind=self.kind) for i in np.arange(N)]
         elif D > 1:
             Xt = [np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:, j], kind=self.kind)
-                                   for j in range(1, D)]) for i in np.arange(N)]
+                                   for j in range(1, D+1)]) for i in np.arange(N)]
         if Xc is not None:
             Xt = TS_Data(Xt, Xc)
 

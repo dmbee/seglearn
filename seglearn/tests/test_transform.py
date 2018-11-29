@@ -351,6 +351,7 @@ def test_pad_trunc():
 
 
 def test_interp():
+    # univariate time series
     N = 100
     t = np.arange(N) + np.random.rand(N)
     X = [np.column_stack([t, np.random.rand(N)])]
@@ -362,6 +363,7 @@ def test_interp():
 
     assert len(Xc[0]) == N / 2
     assert len(yc[0]) == N / 2
+    assert np.ndim(Xc[0]) == 1
 
     y = [np.random.randint(0, 5, N)]
     interp = transform.Interp(5, kind='cubic', categorical_target=True)
@@ -370,4 +372,34 @@ def test_interp():
 
     assert len(Xc[0]) == N / 5
     assert len(yc[0]) == N / 5
+    assert np.ndim(Xc[0]) == 1
     assert np.all(np.isin(yc, np.arange(6)))
+
+    # multivariate time series
+    N = 100
+    D = 5
+    t = np.arange(N) + np.random.rand(N)
+    X = [np.column_stack([t, np.random.rand(N,D)])]
+    y = [np.random.rand(N)]
+
+    interp = transform.Interp(2)
+    interp.fit(X)
+    Xc, yc, swt = interp.transform(X, y)
+
+    assert len(Xc[0]) == N / 2
+    assert len(yc[0]) == N / 2
+    assert Xc[0].shape[1] == D
+
+    y = [np.random.randint(0, 5, N)]
+    interp = transform.Interp(5, kind='cubic', categorical_target=True)
+    interp.fit(X, y)
+    Xc, yc, swt = interp.transform(X, y)
+
+    assert len(Xc[0]) == N / 5
+    assert len(yc[0]) == N / 5
+    assert Xc[0].shape[1] == D
+    assert np.all(np.isin(yc, np.arange(6)))
+
+
+
+
