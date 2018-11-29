@@ -75,8 +75,23 @@ def all_features():
                 'mse': mse,
                 'mnx': mean_crossings,
                 'hist4': hist(),
-                'corr': corr2}
+                'corr': corr2,
+                'mean_abs_value': mean_abs,
+                'zero_crossings': zero_crossing(),
+                'slope_sign_changes': slope_sign_changes(),
+                'waveform_length': waveform_length}
     return features
+
+
+def hudgins_features(threshold=0):
+    '''Return a dict of Hudgin's time domain features used for EMG time series classification.'''
+    return {
+        'mean_abs_value': mean_abs,
+        'mean_abs_value_slope': means_abs_diff,
+        'zero_crossings': zero_crossing(threshold),
+        'slope_sign_changes': slope_sign_changes(threshold),
+        'waveform_length': waveform_length,
+    }
 
 
 def mean(X):
@@ -223,3 +238,35 @@ def corr2(X):
         rmat = np.corrcoef(X[i])  # get the ith window from each signal, result will be DxD
         r[i] = rmat[trii]
     return r
+
+
+def mean_abs(X):
+    ''' statistical mean of the absolute values for each variable in a segmented time series '''
+    return np.mean(np.abs(X), axis=1)
+
+
+class zero_crossing(object):
+    ''' number of zero crossings among two consecutive samples above a certain threshold for each
+    variable in the segmented time series'''
+    def __init__(self, threshold=0):
+        self.threshold = threshold
+    def __call__(self, X):
+        sign = np.heaviside(-1 * X[:,:-1] * X[:,1:], 0)
+        abs_diff = np.abs(np.diff(X, axis=1))
+        return np.sum(sign * abs_diff > self.threshold, axis=1, dtype=X.dtype)
+
+
+class slope_sign_changes(object):
+    ''' number of changes between positive and negative slope among three consecutive samples
+    above a certain threshold for each variable in the segmented time series'''
+    def __init__(self,threshold=0):
+        self.threshold = threshold
+    def __call__(self, X):
+        change = (X[:,1:-1] - X[:,:-2]) * (X[:,1:-1] - X[:,2:])
+        return np.sum(change > self.threshold, axis=1, dtype=X.dtype)
+
+
+def waveform_length(X):
+    ''' cumulative length of the waveform over a segment for each variable in the segmented time
+    series '''
+    return np.sum(np.abs(np.diff(X, axis=1)), axis=1)
