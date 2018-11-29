@@ -135,6 +135,9 @@ of the scikit-learn community. Therefore, you can refer to their
 `Development Guide
 <http://scikit-learn.org/stable/developers>`_.
 
+Please submit new pull requests on the dev branch with unit tests and an example to
+demonstrate any new functionality / api changes.
+
 About
 -----
 
