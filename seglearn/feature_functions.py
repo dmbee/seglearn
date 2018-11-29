@@ -79,7 +79,10 @@ def all_features():
                 'mean_abs_value': mean_abs,
                 'zero_crossings': zero_crossing(),
                 'slope_sign_changes': slope_sign_changes(),
-                'waveform_length': waveform_length}
+                'waveform_length': waveform_length,
+                'emg_var': emg_var,
+                'root_mean_square': root_mean_square,
+                'willison_amplitude': willison_amplitude()}
     return features
 
 
@@ -91,6 +94,22 @@ def hudgins_features(threshold=0):
         'zero_crossings': zero_crossing(threshold),
         'slope_sign_changes': slope_sign_changes(threshold),
         'waveform_length': waveform_length,
+    }
+
+
+def emg_features(threshold=0):
+    '''Return a dictionary of popular features used for EMG time series classification.'''
+    return {
+        'mean_abs_value': mean_abs,
+        'mean_abs_value_slope': means_abs_diff,
+        'zero_crossings': zero_crossing(threshold),
+        'slope_sign_changes': slope_sign_changes(threshold),
+        'waveform_length': waveform_length,
+        'integrated_emg': abs_sum,
+        'emg_var': emg_var,
+        'simple square integral': abs_energy,
+        'root_mean_square': root_mean_square,
+        'willison_amplitude': willison_amplitude(threshold),
     }
 
 
@@ -270,3 +289,25 @@ def waveform_length(X):
     ''' cumulative length of the waveform over a segment for each variable in the segmented time
     series '''
     return np.sum(np.abs(np.diff(X, axis=1)), axis=1)
+
+
+def root_mean_square(X):
+    ''' root mean square for each variable in the segmented time series '''
+    segment_width = X.shape[1]
+    return np.sqrt(np.sum(X * X, axis=1) / segment_width)
+
+
+def emg_var(X):
+    ''' variance (assuming a mean of zero) for each variable in the segmented time series
+    (equals abs_energy divided by (seg_size - 1)) '''
+    segment_width = X.shape[1]
+    return np.sum(X * X, axis=1) / (segment_width - 1)
+
+
+class willison_amplitude(object):
+    ''' the Willison amplitude for each variable in the segmented time series '''
+    def __init__(self, threshold=0):
+        self.threshold = threshold
+    def __call__(self, X):
+        segment_size = X.shape[1]
+        return np.sum(np.abs(np.diff(X, axis=1)) > self.threshold, axis=1)
