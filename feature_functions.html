@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Feature Functions &mdash; seglearn 1.0.3 documentation</title>
+  <title>Feature Functions &mdash; seglearn 1.0.4 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.4
               </div>
             
           
@@ -233,6 +233,19 @@ series data</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="seglearn.feature_functions.emg_features">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">emg_features</code><span class="sig-paren">(</span><em>threshold=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#emg_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.emg_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary of popular features used for EMG time series classification.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.emg_var">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">emg_var</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#emg_var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.emg_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>variance (assuming a mean of zero) for each variable in the segmented time series
+(equals abs_energy divided by (seg_size - 1))</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="seglearn.feature_functions.gmean">
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">gmean</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#gmean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.gmean" title="Permalink to this definition">¶</a></dt>
 <dd><p>geometric mean for each variable</p>
@@ -267,6 +280,12 @@ series data</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="seglearn.feature_functions.hudgins_features">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">hudgins_features</code><span class="sig-paren">(</span><em>threshold=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#hudgins_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.hudgins_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict of Hudgin’s time domain features used for EMG time series classification.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="seglearn.feature_functions.kurt">
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">kurt</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#kurt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.kurt" title="Permalink to this definition">¶</a></dt>
 <dd><p>kurtosis for each variable in a segmented time series</p>
@@ -282,6 +301,12 @@ series data</p>
 <dt id="seglearn.feature_functions.mean">
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">mean</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.mean" title="Permalink to this definition">¶</a></dt>
 <dd><p>statistical mean for each variable in a segmented time series</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.mean_abs">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">mean_abs</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#mean_abs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.mean_abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>statistical mean of the absolute values for each variable in a segmented time series</p>
 </dd></dl>
 
 <dl class="function">
@@ -321,9 +346,34 @@ series data</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="seglearn.feature_functions.root_mean_square">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">root_mean_square</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#root_mean_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.root_mean_square" title="Permalink to this definition">¶</a></dt>
+<dd><p>root mean square for each variable in the segmented time series</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="seglearn.feature_functions.skew">
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">skew</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#skew"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.skew" title="Permalink to this definition">¶</a></dt>
 <dd><p>skewness for each variable in a segmented time series</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="seglearn.feature_functions.slope_sign_changes">
+<em class="property">class </em><code class="descclassname">seglearn.feature_functions.</code><code class="descname">slope_sign_changes</code><span class="sig-paren">(</span><em>threshold=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#slope_sign_changes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.slope_sign_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of changes between positive and negative slope among three consecutive samples
+above a certain threshold for each variable in the segmented time series</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
+<td>Call self as a function.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -348,6 +398,50 @@ series data</p>
 <dt id="seglearn.feature_functions.vec_sum">
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">vec_sum</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#vec_sum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.vec_sum" title="Permalink to this definition">¶</a></dt>
 <dd><p>vector sum of each variable</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.feature_functions.waveform_length">
+<code class="descclassname">seglearn.feature_functions.</code><code class="descname">waveform_length</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#waveform_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.waveform_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>cumulative length of the waveform over a segment for each variable in the segmented time
+series</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="seglearn.feature_functions.willison_amplitude">
+<em class="property">class </em><code class="descclassname">seglearn.feature_functions.</code><code class="descname">willison_amplitude</code><span class="sig-paren">(</span><em>threshold=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#willison_amplitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.willison_amplitude" title="Permalink to this definition">¶</a></dt>
+<dd><p>the Willison amplitude for each variable in the segmented time series</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
+<td>Call self as a function.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="seglearn.feature_functions.zero_crossing">
+<em class="property">class </em><code class="descclassname">seglearn.feature_functions.</code><code class="descname">zero_crossing</code><span class="sig-paren">(</span><em>threshold=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#zero_crossing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.zero_crossing" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of zero crossings among two consecutive samples above a certain threshold for each
+variable in the segmented time series</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
+<td>Call self as a function.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

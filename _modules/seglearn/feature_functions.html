@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.feature_functions &mdash; seglearn 1.0.3 documentation</title>
+  <title>seglearn.feature_functions &mdash; seglearn 1.0.4 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.4
               </div>
             
           
@@ -238,8 +238,42 @@
                 <span class="s1">&#39;mse&#39;</span><span class="p">:</span> <span class="n">mse</span><span class="p">,</span>
                 <span class="s1">&#39;mnx&#39;</span><span class="p">:</span> <span class="n">mean_crossings</span><span class="p">,</span>
                 <span class="s1">&#39;hist4&#39;</span><span class="p">:</span> <span class="n">hist</span><span class="p">(),</span>
-                <span class="s1">&#39;corr&#39;</span><span class="p">:</span> <span class="n">corr2</span><span class="p">}</span>
+                <span class="s1">&#39;corr&#39;</span><span class="p">:</span> <span class="n">corr2</span><span class="p">,</span>
+                <span class="s1">&#39;mean_abs_value&#39;</span><span class="p">:</span> <span class="n">mean_abs</span><span class="p">,</span>
+                <span class="s1">&#39;zero_crossings&#39;</span><span class="p">:</span> <span class="n">zero_crossing</span><span class="p">(),</span>
+                <span class="s1">&#39;slope_sign_changes&#39;</span><span class="p">:</span> <span class="n">slope_sign_changes</span><span class="p">(),</span>
+                <span class="s1">&#39;waveform_length&#39;</span><span class="p">:</span> <span class="n">waveform_length</span><span class="p">,</span>
+                <span class="s1">&#39;emg_var&#39;</span><span class="p">:</span> <span class="n">emg_var</span><span class="p">,</span>
+                <span class="s1">&#39;root_mean_square&#39;</span><span class="p">:</span> <span class="n">root_mean_square</span><span class="p">,</span>
+                <span class="s1">&#39;willison_amplitude&#39;</span><span class="p">:</span> <span class="n">willison_amplitude</span><span class="p">()}</span>
     <span class="k">return</span> <span class="n">features</span></div>
+
+
+<div class="viewcode-block" id="hudgins_features"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.hudgins_features">[docs]</a><span class="k">def</span> <span class="nf">hudgins_features</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Return a dict of Hudgin&#39;s time domain features used for EMG time series classification.&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;mean_abs_value&#39;</span><span class="p">:</span> <span class="n">mean_abs</span><span class="p">,</span>
+        <span class="s1">&#39;mean_abs_value_slope&#39;</span><span class="p">:</span> <span class="n">means_abs_diff</span><span class="p">,</span>
+        <span class="s1">&#39;zero_crossings&#39;</span><span class="p">:</span> <span class="n">zero_crossing</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
+        <span class="s1">&#39;slope_sign_changes&#39;</span><span class="p">:</span> <span class="n">slope_sign_changes</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
+        <span class="s1">&#39;waveform_length&#39;</span><span class="p">:</span> <span class="n">waveform_length</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="emg_features"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.emg_features">[docs]</a><span class="k">def</span> <span class="nf">emg_features</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Return a dictionary of popular features used for EMG time series classification.&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;mean_abs_value&#39;</span><span class="p">:</span> <span class="n">mean_abs</span><span class="p">,</span>
+        <span class="s1">&#39;mean_abs_value_slope&#39;</span><span class="p">:</span> <span class="n">means_abs_diff</span><span class="p">,</span>
+        <span class="s1">&#39;zero_crossings&#39;</span><span class="p">:</span> <span class="n">zero_crossing</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
+        <span class="s1">&#39;slope_sign_changes&#39;</span><span class="p">:</span> <span class="n">slope_sign_changes</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
+        <span class="s1">&#39;waveform_length&#39;</span><span class="p">:</span> <span class="n">waveform_length</span><span class="p">,</span>
+        <span class="s1">&#39;integrated_emg&#39;</span><span class="p">:</span> <span class="n">abs_sum</span><span class="p">,</span>
+        <span class="s1">&#39;emg_var&#39;</span><span class="p">:</span> <span class="n">emg_var</span><span class="p">,</span>
+        <span class="s1">&#39;simple square integral&#39;</span><span class="p">:</span> <span class="n">abs_energy</span><span class="p">,</span>
+        <span class="s1">&#39;root_mean_square&#39;</span><span class="p">:</span> <span class="n">root_mean_square</span><span class="p">,</span>
+        <span class="s1">&#39;willison_amplitude&#39;</span><span class="p">:</span> <span class="n">willison_amplitude</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
+    <span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="mean"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean">[docs]</a><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -386,6 +420,60 @@
         <span class="n">rmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>  <span class="c1"># get the ith window from each signal, result will be DxD</span>
         <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmat</span><span class="p">[</span><span class="n">trii</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">r</span></div>
+
+
+<div class="viewcode-block" id="mean_abs"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean_abs">[docs]</a><span class="k">def</span> <span class="nf">mean_abs</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; statistical mean of the absolute values for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="zero_crossing"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.zero_crossing">[docs]</a><span class="k">class</span> <span class="nc">zero_crossing</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; number of zero crossings among two consecutive samples above a certain threshold for each</span>
+<span class="sd">    variable in the segmented time series&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">heaviside</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:],</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">abs_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sign</span> <span class="o">*</span> <span class="n">abs_diff</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="slope_sign_changes"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.slope_sign_changes">[docs]</a><span class="k">class</span> <span class="nc">slope_sign_changes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; number of changes between positive and negative slope among three consecutive samples</span>
+<span class="sd">    above a certain threshold for each variable in the segmented time series&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">change</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">2</span><span class="p">:])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">change</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="waveform_length"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.waveform_length">[docs]</a><span class="k">def</span> <span class="nf">waveform_length</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; cumulative length of the waveform over a segment for each variable in the segmented time</span>
+<span class="sd">    series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="root_mean_square"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.root_mean_square">[docs]</a><span class="k">def</span> <span class="nf">root_mean_square</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; root mean square for each variable in the segmented time series &#39;&#39;&#39;</span>
+    <span class="n">segment_width</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">segment_width</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="emg_var"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.emg_var">[docs]</a><span class="k">def</span> <span class="nf">emg_var</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; variance (assuming a mean of zero) for each variable in the segmented time series</span>
+<span class="sd">    (equals abs_energy divided by (seg_size - 1)) &#39;&#39;&#39;</span>
+    <span class="n">segment_width</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="willison_amplitude"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.willison_amplitude">[docs]</a><span class="k">class</span> <span class="nc">willison_amplitude</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; the Willison amplitude for each variable in the segmented time series &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">segment_size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

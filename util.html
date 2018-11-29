@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Input and Checking Utilities &mdash; seglearn 1.0.3 documentation</title>
+  <title>Data Input and Checking Utilities &mdash; seglearn 1.0.4 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.4
               </div>
             
           
@@ -166,25 +166,6 @@
 <span id="data-input-and-checking-utilities"></span><h1>Data Input and Checking Utilities<a class="headerlink" href="#module-seglearn.util" title="Permalink to this headline">¶</a></h1>
 <p>This module has utilities for time series data input checking</p>
 <dl class="function">
-<dt id="seglearn.util.check_ts_data">
-<code class="descclassname">seglearn.util.</code><code class="descname">check_ts_data</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks time series data is good. If not raises value error.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="seglearn.util.get_ts_data_parts">
 <code class="descclassname">seglearn.util.</code><code class="descname">get_ts_data_parts</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#get_ts_data_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.get_ts_data_parts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Separates time series data object into time series variables and contextual variables</p>
@@ -205,6 +186,47 @@
 </dd>
 <dt><strong>Xs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, n_contextd = np.colum _variables]</span></dt>
 <dd><p class="first last">contextual variables</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.util.check_ts_data">
+<code class="descclassname">seglearn.util.</code><code class="descname">check_ts_data</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks time series data is good. If not raises value error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.util.check_ts_data_with_ts_target">
+<code class="descclassname">seglearn.util.</code><code class="descname">check_ts_data_with_ts_target</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data_with_ts_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data_with_ts_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks time series data with time series target is good. If not raises value error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">target data</p>
 </dd>
 </dl>
 </td>

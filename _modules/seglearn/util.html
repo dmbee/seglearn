@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.util &mdash; seglearn 1.0.3 documentation</title>
+  <title>seglearn.util &mdash; seglearn 1.0.4 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.4
               </div>
             
           
@@ -171,6 +171,7 @@
 
 <span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
 
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get_ts_data_parts&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data_with_ts_target&#39;</span><span class="p">,</span> <span class="s1">&#39;ts_stats&#39;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="get_ts_data_parts"><a class="viewcode-back" href="../../util.html#seglearn.util.get_ts_data_parts">[docs]</a><span class="k">def</span> <span class="nf">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -219,6 +220,37 @@
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Ntx</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid time series lengths.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                             <span class="s2">&quot;Ns: &quot;</span><span class="p">,</span> <span class="n">Nx</span><span class="p">,</span>
+                             <span class="s2">&quot;Ntx: &quot;</span><span class="p">,</span> <span class="n">Ntx</span><span class="p">,</span>
+                             <span class="s2">&quot;Nty: &quot;</span><span class="p">,</span> <span class="n">Nty</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="check_ts_data_with_ts_target"><a class="viewcode-back" href="../../util.html#seglearn.util.check_ts_data_with_ts_target">[docs]</a><span class="k">def</span> <span class="nf">check_ts_data_with_ts_target</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Checks time series data with time series target is good. If not raises value error.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : array-like, shape [n_series, ...]</span>
+<span class="sd">       Time series data and (optionally) contextual data</span>
+<span class="sd">    y : array-like, shape [n_series, ...]</span>
+<span class="sd">        target data</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Nx</span> <span class="o">!=</span> <span class="n">Ny</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of time series different in X (</span><span class="si">%d</span><span class="s2">) and y (</span><span class="si">%d</span><span class="s2">)&quot;</span>
+                             <span class="o">%</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Ntx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
+        <span class="n">Nty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Ntx</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid time series lengths.</span><span class="se">\n</span><span class="s2">&quot;</span>
