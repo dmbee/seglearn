@@ -401,5 +401,49 @@ def test_interp():
     assert np.all(np.isin(yc, np.arange(6)))
 
 
+def test_feature_rep_mix():
+    union = transform.FeatureRepMix([
+        ('a', transform.FeatureRep(features={'mean': mean}), 0),
+        ('b', transform.FeatureRep(features={'mean': mean}), 1),
+        ('c', transform.FeatureRep(features={'mean': mean}), [2,3]),
+        ('d', transform.FeatureRep(features={'mean': mean}), slice(0,2)),
+        ('e', transform.FeatureRep(features={'mean': mean}), [False, False, True, True]),
+    ])
 
+    # multivariate ts
+    X = np.random.rand(100, 10, 4)
+    y = np.ones(100)
+    union.fit(X, y)
+    Xt = union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(union.f_labels) == Xt.shape[1]
 
+    # ts with multivariate contextual data
+    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100, 3))
+    y = np.ones(100)
+    union.fit(X, y)
+    Xt = union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(union.f_labels) == Xt.shape[1]
+
+    # ts with univariate contextual data
+    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100))
+    y = np.ones(100)
+    union.fit(X, y)
+    Xt = union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(union.f_labels) == Xt.shape[1]
+
+    # univariate ts
+    uni_union = transform.FeatureRepMix([
+        ('a', transform.FeatureRep(features={'mean': mean}), 0),
+        ('b', transform.FeatureRep(features={'mean': mean}), [0]),
+        ('c', transform.FeatureRep(features={'mean': mean}), slice(0,1)),
+        ('d', transform.FeatureRep(features={'mean': mean}), [True]),
+    ])
+    X = np.random.rand(100, 10)
+    y = np.ones(100)
+    uni_union.fit(X, y)
+    Xt = uni_union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(uni_union.f_labels) == Xt.shape[1]
