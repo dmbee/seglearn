@@ -15,7 +15,8 @@ from .feature_functions import base_features
 from .base import TS_Data
 from .util import get_ts_data_parts, check_ts_data
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep']
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep',
+           'FeatureRepMix']
 
 
 class XyTransformerMixin(object):

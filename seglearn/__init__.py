@@ -12,8 +12,8 @@ from .split import TemporalKFold, temporal_split
 from .transform import SegmentX, SegmentXY, SegmentXYForecast, PadTrunc, Interp, FeatureRep
 from .util import check_ts_data, check_ts_data_with_ts_target, ts_stats, get_ts_data_parts
 
-__all__ = ['TS_Data', 'FeatureRep', 'PadTrunc', 'Interp', 'Pype', 'SegmentX', 'SegmentXY',
-           'SegmentXYForecast', 'TemporalKFold', 'temporal_split', 'check_ts_data',
+__all__ = ['TS_Data', 'FeatureRep', 'FeatureRepMix', 'PadTrunc', 'Interp', 'Pype', 'SegmentX',
+           'SegmentXY', 'SegmentXYForecast', 'TemporalKFold', 'temporal_split', 'check_ts_data',
            'check_ts_data_with_ts_target', 'ts_stats', 'get_ts_data_parts', 'all_features',
            'base_features', 'load_watch', 'TargetRunLengthEncoder', '__version__']
 
