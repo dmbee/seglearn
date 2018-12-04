@@ -1040,7 +1040,7 @@ class FeatureRepMix(_BaseComposition, TransformerMixin):
             return list(range(start, stop, step))
         elif isinstance(cols, list) and cols:
             if isinstance(cols[0], bool):
-                return np.flatnonzero(cols)
+                return np.flatnonzero(np.asarray(cols))
             elif isinstance(cols[0], int):
                 return cols
         else:
