@@ -90,9 +90,8 @@ After installation, you can use `pytest` to run the test suite from seglearn's r
 Change Log
 ----------
 
-Version history can be viewed in the change_log_.
-
-.. _change_log: https://dmbee.github.io/seglearn/change_log.html
+Version history can be viewed in the `Change Log
+<https://dmbee.github.io/seglearn/change_log.html>`_.
 
 Development
 -----------
