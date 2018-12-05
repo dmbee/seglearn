@@ -208,10 +208,10 @@ OPTION 3: scoring during model selection
  .. code-block:: none
 
     CV Scores:     fit_time     ...       train_score
-    0  0.704527     ...          0.999708
-    1  0.747750     ...          1.000000
-    2  0.762934     ...          1.000000
-    3  0.763673     ...          1.000000
+    0  0.804959     ...          0.999708
+    1  0.910550     ...          1.000000
+    2  0.896624     ...          1.000000
+    3  0.815398     ...          1.000000
 
     [4 rows x 4 columns]
 
@@ -243,10 +243,10 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
  .. code-block:: none
 
     CV F1 Scores:     fit_time     ...       train_score
-    0  0.833203     ...               1.0
-    1  0.868425     ...               1.0
-    2  0.878149     ...               1.0
-    3  0.860162     ...               1.0
+    0  0.847743     ...               1.0
+    1  0.960627     ...               1.0
+    2  0.878603     ...               1.0
+    3  0.882953     ...               1.0
 
     [4 rows x 4 columns]
 
@@ -288,15 +288,15 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
  .. code-block:: none
 
     CV Scores (workaround):     fit_time      ...        test_f1_macro
-    0  0.736641      ...             0.788125
-    1  0.797430      ...             0.828601
-    2  0.730777      ...             0.809802
-    3  0.731225      ...             0.814700
+    0  0.743011      ...             0.788125
+    1  0.729217      ...             0.828601
+    2  0.803182      ...             0.809802
+    3  0.808530      ...             0.814700
 
     [4 rows x 6 columns]
 
 
-**Total running time of the script:** ( 0 minutes  19.693 seconds)
+**Total running time of the script:** ( 0 minutes  21.021 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:
