@@ -794,7 +794,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
     >>> y = data['y']
     >>> fts = {'mean': mean, 'var': var, 'std': std, 'skew': skew}
     >>> clf = Pype([('seg', SegmentX()),
-    >>>             ('ftr', FeatureRep(features = fts))),
+    >>>             ('ftr', FeatureRep(features = fts)),
     >>>             ('rf',RandomForestClassifier())])
     >>> clf.fit(X, y)
     >>> print(clf.score(X, y))
