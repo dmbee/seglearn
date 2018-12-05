@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.4 documentation</title>
+  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.5 documentation</title>
   
 
   
@@ -27,10 +27,9 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="About us" href="../about.html" />
+    <link rel="next" title="Authors" href="../authors.html" />
     <link rel="prev" title="Resampling Time Series Data" href="plot_interp.html" /> 
 
   
@@ -60,7 +59,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.5
               </div>
             
           
@@ -92,10 +91,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Change Log</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep_mix_example.html">Simple FeatureRepMix Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
@@ -122,7 +123,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Addtional Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations.html">Citing seglearn</a></li>
 </ul>
 
             
@@ -273,8 +275,7 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3519, 100, 6)
-Accuracy score:  0.7547495682210709
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Accuracy score:  0.7547495682210709
 </pre></div>
 </div>
 </div>
@@ -315,15 +316,11 @@ Accuracy score:  0.7547495682210709
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3426, 100, 6)
-X Shape:  (3557, 100, 6)
-X Shape:  (3535, 100, 6)
-X Shape:  (3513, 100, 6)
-CV Scores:     fit_time     ...       train_score
-0  0.798275     ...          0.999708
-1  1.097563     ...          1.000000
-2  0.958126     ...          1.000000
-3  0.890989     ...          1.000000
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV Scores:     fit_time     ...       train_score
+0  0.704527     ...          0.999708
+1  0.747750     ...          1.000000
+2  0.762934     ...          1.000000
+3  0.763673     ...          1.000000
 
 [4 rows x 4 columns]
 </pre></div>
@@ -341,15 +338,11 @@ CV Scores:     fit_time     ...       train_score
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3426, 100, 6)
-X Shape:  (3557, 100, 6)
-X Shape:  (3535, 100, 6)
-X Shape:  (3513, 100, 6)
-CV F1 Scores:     fit_time     ...       train_score
-0  0.773412     ...               1.0
-1  0.934633     ...               1.0
-2  0.870715     ...               1.0
-3  0.784779     ...               1.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV F1 Scores:     fit_time     ...       train_score
+0  0.833203     ...               1.0
+1  0.868425     ...               1.0
+2  0.878149     ...               1.0
+3  0.860162     ...               1.0
 
 [4 rows x 4 columns]
 </pre></div>
@@ -378,20 +371,16 @@ CV F1 Scores:     fit_time     ...       train_score
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (3505, 100, 6)
-X Shape:  (3506, 100, 6)
-X Shape:  (3509, 100, 6)
-X Shape:  (3511, 100, 6)
-CV Scores (workaround):     fit_time      ...        test_f1_macro
-0  0.739938      ...             0.788125
-1  1.060067      ...             0.828601
-2  0.727200      ...             0.809802
-3  0.744796      ...             0.814700
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV Scores (workaround):     fit_time      ...        test_f1_macro
+0  0.736641      ...             0.788125
+1  0.797430      ...             0.828601
+2  0.730777      ...             0.809802
+3  0.731225      ...             0.814700
 
 [4 rows x 6 columns]
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  20.401 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  19.693 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/17e4fd290277699455418db0c1642d5d/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
@@ -410,7 +399,7 @@ CV Scores (workaround):     fit_time      ...        test_f1_macro
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../about.html" class="btn btn-neutral float-right" title="About us" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../authors.html" class="btn btn-neutral float-right" title="Authors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="plot_interp.html" class="btn btn-neutral" title="Resampling Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

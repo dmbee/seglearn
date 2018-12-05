@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Hyperparameter Selection 2 &mdash; seglearn 1.0.4 documentation</title>
+  <title>Hyperparameter Selection 2 &mdash; seglearn 1.0.5 documentation</title>
   
 
   
@@ -27,7 +27,6 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Resampling Time Series Data" href="plot_interp.html" />
@@ -60,7 +59,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.5
               </div>
             
           
@@ -92,10 +91,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Change Log</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep_mix_example.html">Simple FeatureRepMix Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
@@ -113,7 +114,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Addtional Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations.html">Citing seglearn</a></li>
 </ul>
 
             
@@ -191,23 +193,23 @@
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 3 folds for each of 3 candidates, totalling 9 fits
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  39.7s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  12.0s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  22.8s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  19.7s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  29.0s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  18.2s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  39.9s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  22.6s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  42.2s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  23.7s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total= 1.1min
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  23.1s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total= 1.6min
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  51.5s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total= 2.0min
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  34.5s
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total= 1.2min
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  34.1s
 </pre></div>
 </div>
 <div class="line-block">
@@ -281,7 +283,7 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 10 minutes  1.491 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 5 minutes  10.435 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-model-selection2-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/df34fdc6637c7c08a2acf02b32fad8a5/plot_model_selection2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_selection2.py</span></code></a></div>

@@ -35,7 +35,6 @@ useful in your application).
 
  .. code-block:: none
 
-    X Shape:  (34, 200, 2)
     N series in train:  1
     N series in test:  1
     N segments in train:  34

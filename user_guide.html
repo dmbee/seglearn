@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Guide &mdash; seglearn 1.0.4 documentation</title>
+  <title>User Guide &mdash; seglearn 1.0.5 documentation</title>
   
 
   
@@ -27,7 +27,6 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Documentation" href="api.html" />
@@ -60,7 +59,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.5
               </div>
             
           
@@ -98,11 +97,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#what-this-package-doesn-t-include">What this Package Doesn’t Include</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#valid-sequence-data-representations">Valid Sequence Data Representations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#using-seglearn">Using Seglearn</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#change-log">Change Log</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_log.html">Change Log</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
 <ul>
@@ -110,7 +109,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Addtional Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing seglearn</a></li>
 </ul>
 
             
@@ -206,7 +206,8 @@
 <li><code class="docutils literal notranslate"><span class="pre">SegmentXYForecast</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.</li>
 <li><code class="docutils literal notranslate"><span class="pre">PadTrunc</span></code> - transformer class for fixing time series / sequence length using a combination of padding and truncation</li>
 <li><code class="docutils literal notranslate"><span class="pre">Interp</span></code> - transformer class for resampling time series data</li>
-<li><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data, and</li>
+<li><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data</li>
+<li><code class="docutils literal notranslate"><span class="pre">FeatureRepMix</span></code> - transformer class for computing feature representations where a different <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> can be applied to each time series variable</li>
 <li><code class="docutils literal notranslate"><span class="pre">Pype</span></code> - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples</li>
 <li><code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> - an indexable / iterable class for storing time series &amp; contextual data</li>
 <li><code class="docutils literal notranslate"><span class="pre">split</span></code> - a module for splitting time series or sequences along the temporal axis</li>
@@ -258,45 +259,6 @@
 <p>The package is relatively straightforward to use.</p>
 <p>First see the <a class="reference external" href="auto_examples/index.html">Examples</a></p>
 <p>If more details are needed, have a look at the <a class="reference external" href="api.html">API Documentation</a>.</p>
-</div>
-<div class="section" id="change-log">
-<h2>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h2>
-<p>Version 1.0.4:</p>
-<ul class="simple">
-<li>Fixed bug with Interp class and improved its unit testing</li>
-<li>Added preprocessing module with TargetRunLengthEncoder transform</li>
-<li>Further features functions contributed by Matthias Gazzari (qtux)</li>
-</ul>
-<p>Version 1.0.3:</p>
-<ul class="simple">
-<li>Continuous integration fixes</li>
-<li>Documentation and unit testing improvements</li>
-</ul>
-<p>Version 1.0.2:</p>
-<ul class="simple">
-<li>Added further features</li>
-</ul>
-<p>Version 1.0.1:</p>
-<ul class="simple">
-<li>Improvements to documentation, error checking, and unit tests</li>
-<li>feature_functions min and max changed to minimum and maximum respectively</li>
-</ul>
-<p>Version 1.0.0:</p>
-<ul class="simple">
-<li>Major API change integrating preprocessing and estimation into single pipeline (Pype)</li>
-<li>Note this is unfortunately not backwards compatible</li>
-<li>Added Interp transformer for resampling time series</li>
-</ul>
-<p>Version 0.2.0:</p>
-<ul class="simple">
-<li>Added transformer for segmenting data set with padding and / or truncation</li>
-<li>Implemented random_state initialization for SegPipe</li>
-<li>Corrected documentation for FeatureRep</li>
-</ul>
-<p>Version 0.1.6:</p>
-<ul class="simple">
-<li>First stable version</li>
-</ul>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>

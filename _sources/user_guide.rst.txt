@@ -43,10 +43,11 @@ The main contributions of this package are:
 3) ``SegmentXYForecast`` - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.
 4) ``PadTrunc`` - transformer class for fixing time series / sequence length using a combination of padding and truncation
 5) ``Interp`` - transformer class for resampling time series data
-6) ``FeatureRep`` - transformer class for computing a feature representation from segment data, and
-7) ``Pype`` - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples
-8) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
-9) ``split`` - a module for splitting time series or sequences along the temporal axis
+6) ``FeatureRep`` - transformer class for computing a feature representation from segment data
+7) ``FeatureRepMix`` - transformer class for computing feature representations where a different ``FeatureRep`` can be applied to each time series variable
+8) ``Pype`` - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples
+9) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
+10) ``split`` - a module for splitting time series or sequences along the temporal axis
 
 
 What this Package Doesn't Include
@@ -103,46 +104,6 @@ The package is relatively straightforward to use.
 First see the `Examples <auto_examples/index.html>`_
 
 If more details are needed, have a look at the `API Documentation <api.html>`_.
-
-
-Change Log
-----------
-
-Version 1.0.4:
-
-* Fixed bug with Interp class and improved its unit testing
-* Added preprocessing module with TargetRunLengthEncoder transform
-* Further features functions contributed by Matthias Gazzari (qtux)
-
-Version 1.0.3:
-
-* Continuous integration fixes
-* Documentation and unit testing improvements
-
-Version 1.0.2:
-
-* Added further features
-
-Version 1.0.1:
-
-* Improvements to documentation, error checking, and unit tests
-* feature_functions min and max changed to minimum and maximum respectively
-
-Version 1.0.0:
-
-* Major API change integrating preprocessing and estimation into single pipeline (Pype)
-* Note this is unfortunately not backwards compatible
-* Added Interp transformer for resampling time series
-
-Version 0.2.0:
-
-* Added transformer for segmenting data set with padding and / or truncation
-* Implemented random_state initialization for SegPipe
-* Corrected documentation for FeatureRep
-
-Version 0.1.6:
-
-* First stable version
 
 
 References

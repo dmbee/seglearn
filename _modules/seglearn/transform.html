@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.transform &mdash; seglearn 1.0.4 documentation</title>
+  <title>seglearn.transform &mdash; seglearn 1.0.5 documentation</title>
   
 
   
@@ -27,7 +27,6 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 
@@ -58,7 +57,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.5
               </div>
             
           
@@ -90,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../change_log.html">Change Log</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
 <ul>
@@ -97,7 +97,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Addtional Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citations.html">Citing seglearn</a></li>
 </ul>
 
             
@@ -171,13 +172,15 @@
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span><span class="p">,</span> <span class="n">check_array</span>
 <span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="k">import</span> <span class="n">NotFittedError</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.metaestimators</span> <span class="k">import</span> <span class="n">_BaseComposition</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">interp1d</span>
 
 <span class="kn">from</span> <span class="nn">.feature_functions</span> <span class="k">import</span> <span class="n">base_features</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
 <span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_ts_data_parts</span><span class="p">,</span> <span class="n">check_ts_data</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SegmentX&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXY&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXYForecast&#39;</span><span class="p">,</span> <span class="s1">&#39;PadTrunc&#39;</span><span class="p">,</span> <span class="s1">&#39;Interp&#39;</span><span class="p">,</span> <span class="s1">&#39;FeatureRep&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SegmentX&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXY&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXYForecast&#39;</span><span class="p">,</span> <span class="s1">&#39;PadTrunc&#39;</span><span class="p">,</span> <span class="s1">&#39;Interp&#39;</span><span class="p">,</span> <span class="s1">&#39;FeatureRep&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;FeatureRepMix&#39;</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">XyTransformerMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -891,7 +894,7 @@
             <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="n">D</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span>
-                                   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+                                   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
         <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
 
@@ -935,6 +938,8 @@
 
 <span class="sd">        If features is not specified, a default feature dictionary will be used (see base_features).</span>
 <span class="sd">        See ``feature_functions`` for example implementations.</span>
+<span class="sd">    verbose: boolean, optional (default false)</span>
+<span class="sd">        Controls the verbosity of output messages</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -960,7 +965,7 @@
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">features</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">base_features</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -968,6 +973,10 @@
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;features must either &#39;default&#39; or an instance of type dict&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
 
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;verbose parameter must be type boolean&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="FeatureRep.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRep.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -989,7 +998,8 @@
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X Shape: &quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X Shape: &quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_feature_labels</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -1078,6 +1088,223 @@
             <span class="n">f_labels</span> <span class="o">+=</span> <span class="n">s_labels</span>
 
         <span class="k">return</span> <span class="n">f_labels</span></div>
+
+
+<div class="viewcode-block" id="FeatureRepMix"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix">[docs]</a><span class="k">class</span> <span class="nc">FeatureRepMix</span><span class="p">(</span><span class="n">_BaseComposition</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A transformer for calculating a feature representation from segmented time series data.</span>
+
+<span class="sd">    This transformer calculates features from the segmented time series&#39;, by applying the supplied</span>
+<span class="sd">    list of FeatureRep transformers on the specified columns of data. Non-specified columns are</span>
+<span class="sd">    dropped.</span>
+
+<span class="sd">    The segmented time series data is expected to enter this transform in the form of</span>
+<span class="sd">    num_samples x segment_size x num_features and to leave this transform in the form of</span>
+<span class="sd">    num_samples x num_features. The term columns refers to the last dimension of both</span>
+<span class="sd">    representations.</span>
+
+<span class="sd">    Note: This code is partially taken (_validate and _transformers functions with docstring) from</span>
+<span class="sd">          the scikit-learn ColumnTransformer made available under the 3-Clause BSD license.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    transformers : list of (name, transformer, columns) to be applied on the segmented time series</span>
+<span class="sd">        name : string</span>
+<span class="sd">            unique string which is used to prefix the f_labels of the FeatureRep below</span>
+<span class="sd">        transformer : FeatureRep transform</span>
+<span class="sd">            to be applied on the columns specified below</span>
+<span class="sd">        columns : integer, slice or boolean mask</span>
+<span class="sd">            to specify the columns to be transformed</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f_labels : list of string feature labels (in order) corresponding to the computed features</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRepMix, FeatureRep, SegmentX</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.pipe import Pype</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.feature_functions import mean, var, std, skew</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.ensemble import RandomForestClassifier</span>
+<span class="sd">    &gt;&gt;&gt; data = load_watch()</span>
+<span class="sd">    &gt;&gt;&gt; X = data[&#39;X&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; mask = [False, False, False, True, True, True]</span>
+<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, SegmentX()),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;union&#39;, FeatureRepMix([</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_a&#39;, FeatureRep(features={&#39;mean&#39;: mean}), 0),</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_b&#39;, FeatureRep(features={&#39;var&#39;: var}), [0,1,2]),</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_c&#39;, FeatureRep(features={&#39;std&#39;: std}), slice(3,7)),</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_d&#39;, FeatureRep(features={&#39;skew&#39;: skew}), mask),</span>
+<span class="sd">    &gt;&gt;&gt;             ])),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;rf&#39;,RandomForestClassifier())])</span>
+<span class="sd">    &gt;&gt;&gt; clf.fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; print(clf.score(X, y))</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span> <span class="o">=</span> <span class="n">transformers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_transformers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Internal list of transformers only containing the name and transformers, dropping the</span>
+<span class="sd">        columns. This is for the implementation of get_params via BaseComposition._get_params which</span>
+<span class="sd">        expects lists of tuples of len 2.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">]</span>
+
+    <span class="nd">@_transformers</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_transformers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+            <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="FeatureRepMix.get_params"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get parameters for this transformer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deep : boolean, optional</span>
+<span class="sd">            If True, will return the parameters for this transformer and contained transformers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : mapping of string to any parameter names mapped to their values.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params</span><span class="p">(</span><span class="s1">&#39;_transformers&#39;</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="n">deep</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureRepMix.set_params"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set the parameters of this transformer.</span>
+
+<span class="sd">        Valid parameter keys can be listed with ``get_params()``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_params</span><span class="p">(</span><span class="s1">&#39;_transformers&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_select</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Select slices of the last dimension from time series data of the form</span>
+<span class="sd">        num_samples x segment_size x num_features.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">Xt</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="n">cols</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_retrieve_indices</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Retrieve a list of indices corresponding to the provided column specification.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">cols</span><span class="o">.</span><span class="n">start</span> <span class="k">if</span> <span class="n">cols</span><span class="o">.</span><span class="n">start</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">stop</span> <span class="o">=</span> <span class="n">cols</span><span class="o">.</span><span class="n">stop</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="n">cols</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="n">cols</span><span class="o">.</span><span class="n">step</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">cols</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cols</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">cols</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;No valid column specifier. Only a scalar, list or slice of all&#39;</span>
+                            <span class="s1">&#39;integers or a boolean mask are allowed.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FeatureRepMix.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Fit the transform</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Segmented time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># calculated features (prefix with the FeatureRep name and correct the index)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">cols</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrieve_indices</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+            <span class="n">trans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">cols</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trans</span><span class="o">.</span><span class="n">f_labels</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">label</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+
+        <span class="c1"># contextual features</span>
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">Xc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;context_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Internal function to validate the transformer before applying all internal transformers.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s1">&#39;FeatureRepMix&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">names</span><span class="p">,</span> <span class="n">transformers</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">)</span>
+
+        <span class="c1"># validate names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_names</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+        <span class="c1"># validate transformers</span>
+        <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="n">transformers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;All transformers must be an instance of FeatureRep.&quot;</span>
+                                <span class="s2">&quot; &#39;</span><span class="si">%s</span><span class="s2">&#39; (type </span><span class="si">%s</span><span class="s2">) doesn&#39;t.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">trans</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="FeatureRepMix.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Transform the segmented time series data into feature data.</span>
+<span class="sd">        If contextual data is included in X, it is returned with the feature data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Segmented time series data and (optionally) contextual data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array shape [n_series, ...]</span>
+<span class="sd">            Feature representation of segmented time series data and contextual data</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">check_array</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># calculated features</span>
+        <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">trans</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">cols</span><span class="p">))</span>
+                               <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">cols</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">])</span>
+        <span class="c1"># contextual features</span>
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">fts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">fts</span></div></div>
 </pre></div>
 
            </div>

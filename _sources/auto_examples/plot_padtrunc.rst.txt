@@ -28,7 +28,6 @@ using padding and truncation instead of sliding window segmentation.
 
  .. code-block:: none
 
-    X Shape:  (105, 250, 6)
     N series in train:  105
     N series in test:  35
     N segments in train:  105
@@ -87,7 +86,7 @@ using padding and truncation instead of sliding window segmentation.
     img = mpimg.imread('trunk.jpg')
     plt.imshow(img)
 
-**Total running time of the script:** ( 0 minutes  0.130 seconds)
+**Total running time of the script:** ( 0 minutes  0.141 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_padtrunc.py:

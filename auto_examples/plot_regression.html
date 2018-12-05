@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Continuous Target and Time Series Regression &mdash; seglearn 1.0.4 documentation</title>
+  <title>Continuous Target and Time Series Regression &mdash; seglearn 1.0.5 documentation</title>
   
 
   
@@ -27,7 +27,6 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Hyperparameter Selection 1" href="plot_model_selection1.html" />
@@ -60,7 +59,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.5
               </div>
             
           
@@ -92,10 +91,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Change Log</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep_mix_example.html">Simple FeatureRepMix Example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
@@ -113,7 +114,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Addtional Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations.html">Citing seglearn</a></li>
 </ul>
 
             
@@ -189,19 +191,15 @@
 <p>In this example, we use the pipeline to learn a continuous time series target with a regressor</p>
 <img alt="../_images/sphx_glr_plot_regression_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_regression_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X Shape:  (74, 200)
-N series in train:  1
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>N series in train:  1
 N series in test:  1
 N segments in train:  74
 N segments in test:  24
 Score:  0.9739099320556269
-X Shape:  (24, 200)
-X Shape:  (24, 200)
-X Shape:  (24, 200)
 CV Scores:     fit_time     ...       train_score
-0  0.063999     ...          0.036307
-1  0.048205     ...          0.126310
-2  0.067942     ...          0.097838
+0  0.003774     ...          0.036307
+1  0.003658     ...          0.126310
+2  0.003538     ...          0.097838
 
 [3 rows x 4 columns]
 </pre></div>
@@ -274,7 +272,7 @@ CV Scores:     fit_time     ...       train_score
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.526 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.083 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-regression-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/3f8db2b1621249bdcdcdbe701292048f/plot_regression.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_regression.py</span></code></a></div>

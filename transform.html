@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Transforms &mdash; seglearn 1.0.4 documentation</title>
+  <title>Time Series Transforms &mdash; seglearn 1.0.5 documentation</title>
   
 
   
@@ -27,7 +27,6 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 
@@ -58,7 +57,7 @@
             
             
               <div class="version">
-                1.0.4
+                1.0.5
               </div>
             
           
@@ -90,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_log.html">Change Log</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
 <ul>
@@ -97,7 +97,8 @@
 </ul>
 <p class="caption"><span class="caption-text">Addtional Information</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">About us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing seglearn</a></li>
 </ul>
 
             
@@ -828,7 +829,7 @@ The time dimension is removed from the data</p>
 
 <dl class="class">
 <dt id="seglearn.transform.FeatureRep">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features='default'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRep</code><span class="sig-paren">(</span><em>features='default'</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep" title="Permalink to this definition">¶</a></dt>
 <dd><p>A transformer for calculating a feature representation from segmented time series data.</p>
 <p>This transformer calculates features from the segmented time series’, by computing the same
 feature set for each segment from each time series in the data set.</p>
@@ -854,6 +855,9 @@ multivariate segmented time series along axis 1 (the segment) eg:</p>
 </div>
 <p class="last">If features is not specified, a default feature dictionary will be used (see base_features).
 See <code class="docutils literal notranslate"><span class="pre">feature_functions</span></code> for example implementations.</p>
+</dd>
+<dt><strong>verbose: boolean, optional (default false)</strong></dt>
+<dd><p class="first last">Controls the verbosity of output messages</p>
 </dd>
 </dl>
 </td>
@@ -946,6 +950,205 @@ parameter.</p>
 <dl class="method">
 <dt id="seglearn.transform.FeatureRep.transform">
 <code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRep.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRep.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the segmented time series data into feature data.
+If contextual data is included in X, it is returned with the feature data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Segmented time series data and (optionally) contextual data</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array shape [n_series, …]</span></dt>
+<dd><p class="first last">Feature representation of segmented time series data and contextual data</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="seglearn.transform.FeatureRepMix">
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">FeatureRepMix</code><span class="sig-paren">(</span><em>transformers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRepMix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRepMix" title="Permalink to this definition">¶</a></dt>
+<dd><p>A transformer for calculating a feature representation from segmented time series data.</p>
+<p>This transformer calculates features from the segmented time series’, by applying the supplied
+list of FeatureRep transformers on the specified columns of data. Non-specified columns are
+dropped.</p>
+<p>The segmented time series data is expected to enter this transform in the form of
+num_samples x segment_size x num_features and to leave this transform in the form of
+num_samples x num_features. The term columns refers to the last dimension of both
+representations.</p>
+<dl class="docutils">
+<dt>Note: This code is partially taken (_validate and _transformers functions with docstring) from</dt>
+<dd>the scikit-learn ColumnTransformer made available under the 3-Clause BSD license.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>transformers</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of (name, transformer, columns) to be applied on the segmented time series</span></dt>
+<dd><dl class="first last docutils">
+<dt>name <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">unique string which is used to prefix the f_labels of the FeatureRep below</p>
+</dd>
+<dt>transformer <span class="classifier-delimiter">:</span> <span class="classifier">FeatureRep transform</span></dt>
+<dd><p class="first last">to be applied on the columns specified below</p>
+</dd>
+<dt>columns <span class="classifier-delimiter">:</span> <span class="classifier">integer, slice or boolean mask</span></dt>
+<dd><p class="first last">to specify the columns to be transformed</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRepMix</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.feature_functions</span> <span class="k">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">skew</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="p">(</span><span class="s1">&#39;union&#39;</span><span class="p">,</span> <span class="n">FeatureRepMix</span><span class="p">([</span>
+<span class="gp">&gt;&gt;&gt; </span>                <span class="p">(</span><span class="s1">&#39;ftr_a&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">}),</span> <span class="mi">0</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>                <span class="p">(</span><span class="s1">&#39;ftr_b&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">var</span><span class="p">}),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]),</span>
+<span class="gp">&gt;&gt;&gt; </span>                <span class="p">(</span><span class="s1">&#39;ftr_c&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="n">std</span><span class="p">}),</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">)),</span>
+<span class="gp">&gt;&gt;&gt; </span>                <span class="p">(</span><span class="s1">&#39;ftr_d&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;skew&#39;</span><span class="p">:</span> <span class="n">skew</span><span class="p">}),</span> <span class="n">mask</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="p">])),</span>
+<span class="gp">&gt;&gt;&gt; </span>            <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span><span class="n">RandomForestClassifier</span><span class="p">())])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>f_labels</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of string feature labels (in order) corresponding to the computed features</span></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.FeatureRepMix.fit" title="seglearn.transform.FeatureRepMix.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
+<td>Fit the transform</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X[,&nbsp;y])</td>
+<td>Fit to data, then transform it.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.FeatureRepMix.get_params" title="seglearn.transform.FeatureRepMix.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</td>
+<td>Get parameters for this transformer.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#seglearn.transform.FeatureRepMix.set_params" title="seglearn.transform.FeatureRepMix.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**kwargs)</td>
+<td>Set the parameters of this transformer.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#seglearn.transform.FeatureRepMix.transform" title="seglearn.transform.FeatureRepMix.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
+<td>Transform the segmented time series data into feature data.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="seglearn.transform.FeatureRepMix.fit">
+<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRepMix.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRepMix.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
+<dd><p class="first last">Segmented time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
+<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires this
+parameter.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
+<dd><p class="first last">Returns self.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.FeatureRepMix.get_params">
+<code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRepMix.get_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRepMix.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for this transformer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>deep</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, will return the parameters for this transformer and contained transformers.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">mapping of string to any parameter names mapped to their values.</span></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.FeatureRepMix.set_params">
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRepMix.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRepMix.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this transformer.</p>
+<p>Valid parameter keys can be listed with <code class="docutils literal notranslate"><span class="pre">get_params()</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.transform.FeatureRepMix.transform">
+<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#FeatureRepMix.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.FeatureRepMix.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform the segmented time series data into feature data.
 If contextual data is included in X, it is returned with the feature data.</p>
 <table class="docutils field-list" frame="void" rules="none">
