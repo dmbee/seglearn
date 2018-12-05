@@ -12,5 +12,6 @@ Core Development
 
 Contributors
 ------------
+::
 
-- Matthias Gazzari
+    - Matthias Gazzari: mail@qtux.eu
