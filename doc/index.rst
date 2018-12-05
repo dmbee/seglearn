@@ -26,6 +26,7 @@ See the source code repository on github: https://github.com/dmbee/seglearn
 
    user_guide
    api
+   change_log
 
 
 .. toctree::
@@ -40,7 +41,8 @@ See the source code repository on github: https://github.com/dmbee/seglearn
    :hidden:
    :caption: Addtional Information
 
-   about
+   authors
+   citations
 
 
 `Getting started <install.html>`_
@@ -67,11 +69,14 @@ all functions, and all parameters available for the algorithms.
 A set of examples illustrating the use of the different algorithms. It
 complements the `User Guide <user_guide.html>`_.
 
-`About seglearn <about.html>`_
---------------------------------------
+`Authors <authors.html>`_
+-------------------------
 
-Who we are, and how to cite us.
+`Citing Seglearn <citations.html>`_
+-------------------------
 
+`Change Log <change_log.html>`_
+-------------------------------
 
 
 Indices and tables

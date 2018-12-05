@@ -730,7 +730,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
             Xt = [self._interp(t_lin[i], t[i], Xt[i][:, 1], kind=self.kind) for i in np.arange(N)]
         elif D > 1:
             Xt = [np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:, j], kind=self.kind)
-                                   for j in range(1, D+1)]) for i in np.arange(N)]
+                                   for j in range(1, D + 1)]) for i in np.arange(N)]
         if Xc is not None:
             Xt = TS_Data(Xt, Xc)
 
@@ -774,6 +774,8 @@ class FeatureRep(BaseEstimator, TransformerMixin):
 
         If features is not specified, a default feature dictionary will be used (see base_features).
         See ``feature_functions`` for example implementations.
+    verbose: boolean, optional (default false)
+        Controls the verbosity of output messages
 
     Attributes
     ----------
@@ -799,7 +801,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
 
     '''
 
-    def __init__(self, features='default'):
+    def __init__(self, features='default', verbose = False):
         if features == 'default':
             self.features = base_features()
         else:
@@ -807,6 +809,10 @@ class FeatureRep(BaseEstimator, TransformerMixin):
                 raise TypeError("features must either 'default' or an instance of type dict")
             self.features = features
 
+        if type(verbose) != bool:
+            raise TypeError("verbose parameter must be type boolean")
+
+        self.verbose = verbose
         self.f_labels = None
 
     def fit(self, X, y=None):
@@ -828,7 +834,8 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         '''
         check_ts_data(X, y)
         self._reset()
-        print("X Shape: ", X.shape)
+        if self.verbose:
+            print("X Shape: ", X.shape)
         self.f_labels = self._generate_feature_labels(X)
         return self
 
@@ -938,10 +945,12 @@ class FeatureRepMix(_BaseComposition, TransformerMixin):
     Parameters
     ----------
     transformers : list of (name, transformer, columns) to be applied on the segmented time series
-
-        name : unique string which is used to prefix the f_labels of the FeatureRep below
-        transformer : FeatureRep transform to be applied on the columns specified below
-        columns : integer, slice or boolean mask to specify the columns to be transformed
+        name : string
+            unique string which is used to prefix the f_labels of the FeatureRep below
+        transformer : FeatureRep transform
+            to be applied on the columns specified below
+        columns : integer, slice or boolean mask
+            to specify the columns to be transformed
 
     Attributes
     ----------
