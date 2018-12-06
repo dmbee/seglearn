@@ -351,7 +351,6 @@ def test_pad_trunc():
 
 
 def test_interp():
-    # univariate time series
     N = 100
     t = np.arange(N) + np.random.rand(N)
     X = [np.column_stack([t, np.random.rand(N)])]
@@ -363,7 +362,6 @@ def test_interp():
 
     assert len(Xc[0]) == N / 2
     assert len(yc[0]) == N / 2
-    assert np.ndim(Xc[0]) == 1
 
     y = [np.random.randint(0, 5, N)]
     interp = transform.Interp(5, kind='cubic', categorical_target=True)
@@ -372,78 +370,29 @@ def test_interp():
 
     assert len(Xc[0]) == N / 5
     assert len(yc[0]) == N / 5
-    assert np.ndim(Xc[0]) == 1
     assert np.all(np.isin(yc, np.arange(6)))
-
-    # multivariate time series
+    
+def test_stacked_interp():
     N = 100
-    D = 5
     t = np.arange(N) + np.random.rand(N)
-    X = [np.column_stack([t, np.random.rand(N,D)])]
+    s = np.random.choice(['a','b','c'], size = N)
+    v = np.arange(N) + np.random.rand(N)
+    df = np.column_stack([s,t,v])
+    X = [df,df,np.vstack((df,df))]
     y = [np.random.rand(N)]
-
-    interp = transform.Interp(2)
-    interp.fit(X)
-    Xc, yc, swt = interp.transform(X, y)
+    
+    stacked_interp = transform.Stacked_Interp(2)
+    stacked_interp.fit(X)
+    Xc, yc, swt = stacked_interp.transform(X, y)
 
     assert len(Xc[0]) == N / 2
     assert len(yc[0]) == N / 2
-    assert Xc[0].shape[1] == D
 
     y = [np.random.randint(0, 5, N)]
-    interp = transform.Interp(5, kind='cubic', categorical_target=True)
-    interp.fit(X, y)
-    Xc, yc, swt = interp.transform(X, y)
+    stacked_interp = transform.Stacked_Interp(5, kind='cubic', categorical_target=True)
+    stacked_interp.fit(X, y)
+    Xc, yc, swt = stacked_interp.transform(X, y)
 
     assert len(Xc[0]) == N / 5
     assert len(yc[0]) == N / 5
-    assert Xc[0].shape[1] == D
     assert np.all(np.isin(yc, np.arange(6)))
-
-
-def test_feature_rep_mix():
-    union = transform.FeatureRepMix([
-        ('a', transform.FeatureRep(features={'mean': mean}), 0),
-        ('b', transform.FeatureRep(features={'mean': mean}), 1),
-        ('c', transform.FeatureRep(features={'mean': mean}), [2,3]),
-        ('d', transform.FeatureRep(features={'mean': mean}), slice(0,2)),
-        ('e', transform.FeatureRep(features={'mean': mean}), [False, False, True, True]),
-    ])
-
-    # multivariate ts
-    X = np.random.rand(100, 10, 4)
-    y = np.ones(100)
-    union.fit(X, y)
-    Xt = union.transform(X)
-    assert Xt.shape[0] == len(X)
-    assert len(union.f_labels) == Xt.shape[1]
-
-    # ts with multivariate contextual data
-    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100, 3))
-    y = np.ones(100)
-    union.fit(X, y)
-    Xt = union.transform(X)
-    assert Xt.shape[0] == len(X)
-    assert len(union.f_labels) == Xt.shape[1]
-
-    # ts with univariate contextual data
-    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100))
-    y = np.ones(100)
-    union.fit(X, y)
-    Xt = union.transform(X)
-    assert Xt.shape[0] == len(X)
-    assert len(union.f_labels) == Xt.shape[1]
-
-    # univariate ts
-    uni_union = transform.FeatureRepMix([
-        ('a', transform.FeatureRep(features={'mean': mean}), 0),
-        ('b', transform.FeatureRep(features={'mean': mean}), [0]),
-        ('c', transform.FeatureRep(features={'mean': mean}), slice(0,1)),
-        ('d', transform.FeatureRep(features={'mean': mean}), [True]),
-    ])
-    X = np.random.rand(100, 10)
-    y = np.ones(100)
-    uni_union.fit(X, y)
-    Xt = uni_union.transform(X)
-    assert Xt.shape[0] == len(X)
-    assert len(uni_union.f_labels) == Xt.shape[1]
