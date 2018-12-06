@@ -89,31 +89,9 @@ After installation, you can use `pytest` to run the test suite from seglearn's r
 
 Change Log
 ----------
-Version 1.0.2:
 
-* Added further features
-
-Version 1.0.1:
-
-* Improvements to documentation, error checking, and unit tests
-* feature_functions min and max changed to minimum and maximum respectively
-
-Version 1.0.0:
-
-* Major API change integrating preprocessing and estimation into single pipeline (Pype)
-* Note this is unfortunately not backwards compatible
-* Added Interp transformer for resampling time series
-
-Version 0.2.0:
-
-* Added transformer for segmenting data set with padding and / or truncation
-* Implemented random_state initialization for SegPipe
-* Corrected documentation for FeatureRep
-
-Version 0.1.6:
-
-* First stable version
-
+Version history can be viewed in the `Change Log
+<https://dmbee.github.io/seglearn/change_log.html>`_.
 
 Development
 -----------
@@ -123,16 +101,8 @@ of the scikit-learn community. Therefore, you can refer to their
 `Development Guide
 <http://scikit-learn.org/stable/developers>`_.
 
-About
------
-
-This package was developed by::
-
-    David M. Burns MD, PhD(c)
-    Sunnybrook Research Institute
-    University of Toronto
-    Email: david.mo.burns@gmail.com
-
+Please submit new pull requests on the dev branch with unit tests and an example to
+demonstrate any new functionality / api changes.
 
 Citing seglearn
 ~~~~~~~~~~~~~~~
