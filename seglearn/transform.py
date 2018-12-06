@@ -16,7 +16,7 @@ from .base import TS_Data
 from .util import get_ts_data_parts, check_ts_data
 
 __all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep',
-           'FeatureRepMix']
+           'FeatureRepMix', 'FunctionXYTransformer']
 
 
 class XyTransformerMixin(object):
@@ -1141,3 +1141,80 @@ class FeatureRepMix(_BaseComposition, TransformerMixin):
             fts = np.column_stack([fts, Xc])
 
         return fts
+
+class FunctionXYTransformer(BaseEstimator, XyTransformerMixin):
+    '''
+    Transformer for applying a custom function on datasets where X is time series data, optionally
+    with contextual variables and y is also time series data with the same sampling interval as X.
+
+    Parameters
+    ----------
+    func : function, optional (default=None)
+        the function to be applied on Xt and yt (Xt and yt are unaltered if no function is provided)
+    func_kwargs : dictionary, optional (default={})
+        keyword arguments to be passed to the function call
+
+    Returns
+    -------
+    self : object
+        returns self
+    '''
+
+    def __init__(self, func=None, func_kwargs={}):
+        self.func = func
+        self.func_kwargs = func_kwargs
+
+    def fit(self, X, y=None):
+        '''
+        Fit the transform
+
+        Parameters
+        ----------
+        X : array-like, shape [n_samples, ...]
+            time series data and (optionally) contextual data
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
+
+        Returns
+        -------
+        self : object
+            returns self
+        '''
+        check_ts_data(X, y)
+        return self
+
+    def transform(self, X, y, sample_weight=None):
+        '''
+        Transforms the time series data and the target vector based on the provided function.
+        Note this transformation may change the number of samples in the data.
+        Currently sample weights always returned as None.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_samples, ...]
+           time series data and (optionally) contextual data
+        y : array-like, shape [n_samples, ...] (default=None)
+            target vector
+        sample_weight : array-like, shape [n_series] (default=None)
+            sample weights
+
+        Returns
+        -------
+        Xt : array-like, shape [n_samples, ...]
+            transformed time series data
+        yt : array-like, shape [n_samples, ...]
+            expanded target vector
+        sample_weight_new : None
+
+        '''
+        check_ts_data(X, y)
+
+        if self.func is None:
+            return X, y, None
+        else:
+            Xt, Xc = get_ts_data_parts(X)
+            Xt, yt = self.func(Xt, y, **self.func_kwargs)
+            if Xc is not None:
+                Xt = TS_Data(Xt, Xc)
+            return Xt, yt, None
