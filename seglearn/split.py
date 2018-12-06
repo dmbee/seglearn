@@ -9,6 +9,7 @@ Note that splitting along the temporal axis violates the assumption of independe
 and test samples, as successive samples in a sequence or series are not iid. However, temporal
 splitting is still useful in certain cases such as for the analysis of a single sequence / series.
 '''
+
 # Author: David Burns
 # License: BSD
 

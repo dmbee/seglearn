@@ -22,14 +22,12 @@ from seglearn.transform import SegmentX
 
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-               conv_filters=64, lstm_units=100):
-    # create a crnn model with keras with two cnn layers, and one rnn layer
+               conv_filters=10, lstm_units=10):
+    # create a crnn model with keras with one cnn layers, and one rnn layer
     input_shape = (width, n_vars)
     model = Sequential()
     model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
                      padding='valid', activation='relu', input_shape=input_shape))
-    model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
-                     padding='valid', activation='relu'))
     model.add(LSTM(units=lstm_units, dropout=0.1, recurrent_dropout=0.1))
     model.add(Dense(n_classes, activation="softmax"))
 
@@ -50,7 +48,7 @@ Xs, ys, cv = splitter.split(X, y)
 # create a segment learning pipeline
 width = 100
 pipe = Pype([('seg', SegmentX()),
-             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=5, batch_size=256, verbose=0))])
+             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
 # create a parameter dictionary using the sklearn API
 #
@@ -63,7 +61,7 @@ par_grid = {'seg__width': [50, 100, 200],
             'seg__overlap': [0.],
             'crnn__width': ['seg__width']}
 
-clf = GridSearchCV(pipe, par_grid, cv=cv)
+clf = GridSearchCV(pipe, par_grid, cv=cv, verbose=2)
 clf.fit(Xs, ys)
 scores = clf.cv_results_['mean_test_score']
 stds = clf.cv_results_['std_test_score']

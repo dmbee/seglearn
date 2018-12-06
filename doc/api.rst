@@ -6,5 +6,6 @@ API Documentation
 * :doc:`feature_functions`
 * :doc:`util`
 * :doc:`split`
+* :doc:`preprocessing`
 * :doc:`datasets`
 * :doc:`base`
