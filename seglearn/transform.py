@@ -691,7 +691,7 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
              raise ValueError("X variable must have more than 1 channel")
         return self
     
-    def check_data(self, X, N):
+    def _check_data(self, X, N):
         '''
         Retrieve unique identifiers and checks that identifiers are consistent between time series.
 
@@ -744,13 +744,7 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
         sample_weight_new : array-like or None
             None is returned if target is changed. Otherwise it is returned unchanged.
         '''
-        print("")
-        print("*****Local Transform Output*****")
-        print("")
-        print("Line 759 of local transform - X and y passed into stacked_interp.transform")
-        print("X = " + str(X))
-        print("y = " + str(y))
-        print("------>>>>X[0].shape = " + str(X[0].shape))
+        
         
         Xt, Xc = get_ts_data_parts(X)
         yt = y
@@ -761,16 +755,7 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
         N=len(Xt) # number of series
         #y=np.array(y)
         
-        
-        print("Number of series = " + str(N))
-
-        #yt1 = [np.column_stack([Xt[i][:,0],yt[i]]) for i in np.arange(N)] #column stack target y with the sensor values
-        
-        Xt1 = [Xt[i][Xt[i][:,1].argsort()]for i in np.arange(N)] #sort by sample time
-        
-        s, N1=self.check_data(Xt,N) #retrieve unique identifiers and number
-        
-        print("s="+str(s))
+        s = np.unique(Xt[0][:,1]) # check the data - done in _init
         
         X_new = []
         y_new = []
@@ -818,6 +803,11 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
         
         if Xc is not None:
             Xt = TS_Data(Xt, Xc)
+            
+        print("")
+        print("")
+        print("*****Local Transform Output*****")
+        print("X after Stacked_Interp= " + str(X))
           
         return X_new, y_new, swt
 

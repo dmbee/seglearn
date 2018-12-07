@@ -384,6 +384,23 @@ def test_stacked_interp():
     X = [df,df]
     y = [y, y]
     
-    stacked_interp = Stacked_Interp(0.5)
+    stacked_interp = transform.Stacked_Interp(0.5)
     stacked_interp.fit(X,y)
     Xt, yc, swt = stacked_interp.transform(X,y)
+    
+    #Test 2
+    N = 100
+    t = np.arange(N) + np.random.rand(N)
+    s = np.random.choice([1,2,3], size = N) #No problem if it doesn't choose all of them - just 1 less sensor to deal with
+    v1 = np.arange(N) + np.random.rand(N)
+    df = np.column_stack([t,s,v1])
+    X = [df,df,df]
+    dm = np.arange(N) + np.random.rand(N)
+    y = [dm, dm, dm]
+
+    stacked_interp = transform.Stacked_Interp(5)
+    stacked_interp.fit(X,y)
+
+    Xt, yc, swt = stacked_interp.transform(X,y)
+    
+    

@@ -44,9 +44,10 @@ N = len(X)
 
 sensors = {'a':1, 'b':2, 'w':3}
 
-#Conver the alpha characters representing the sensor identifiers to floats
+#Convert the alpha characters representing the sensor identifiers to floats
 for i in np.arange(N):
     X[i][:,0] = [sensors[j] for j in X[i][:,0]]
+    X[i][:,[0, 1]] = X[i][:,[1, 0]]
     X[i] = np.array(X[i]).astype(float)
 
 #X=[[sensors[j] for j in X[i][:,0]]]] for i in np.arange(N)]
@@ -54,21 +55,19 @@ for i in np.arange(N):
 #X = [[sensors[j] for j in X[i][:,0]] for i in np.arange(N)]
 
 # I am adding in a column to represent targets (y) since my data doesn't include it
-y = [np.array(np.random.choice(['1','2','3','4','5'], size = len(X[i]))).astype(float) for i in np.arange(len(X))]
-
-
-print("")
-print("*****plot_stacked_interp output*****")
-print("")
-print("X = " + str((X)))
-print("y="+str(y))
-print("X[0].shape = " + str(X[0].shape))
-print("------>>>>X[1].shape = " + str(X[1].shape))
+y = [np.array(np.arange(len(X[i])) + np.random.rand(len(X[i]))).astype(float) for i in np.arange(N)]
 
 #This data is in ns
 sample_period = (1. / 100.)*10**9
 
-clf = Pype([('stacked_interp', Stacked_Interp(sample_period, categorical_target=True)),
+
+#This data is in ns
+sample_period = (1. / 100.)*10**9
+
+print("X before fit = " + str(X))
+
+#clf = Pype([('stacked_interp', Stacked_Interp(sample_period, categorical_target=True)), changed categorical target to false 
+clf = Pype([('stacked_interp', Stacked_Interp(sample_period, categorical_target=False)),
             ('segment', SegmentX(width=100)),
             ('features', FeatureRep()),
             ('scaler', StandardScaler()),
