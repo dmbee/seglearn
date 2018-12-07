@@ -447,3 +447,76 @@ def test_feature_rep_mix():
     Xt = uni_union.transform(X)
     assert Xt.shape[0] == len(X)
     assert len(uni_union.f_labels) == Xt.shape[1]
+
+
+def test_function_xy_transform():
+    constant = 10
+    identity = transform.FunctionXYTransformer()
+    def replace(Xt, yt, value):
+        return np.ones(Xt.shape) * value, np.ones(yt.shape) * value
+
+    custom = transform.FunctionXYTransformer(replace, func_kwargs={"value": constant})
+
+    # univariate ts
+    X = np.random.rand(100, 10)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans, ytrans, _ = identity.transform(X, y)
+    assert Xtrans is X
+    assert ytrans is y
+
+    custom.fit(X, y)
+    Xtrans, ytrans, _ = custom.transform(X, y)
+    assert np.array_equal(Xtrans, np.ones(X.shape) * constant)
+    assert np.array_equal(ytrans, np.ones(y.shape) * constant)
+
+    # multivariate ts
+    X = np.random.rand(100, 10, 4)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans, ytrans, _ = identity.transform(X, y)
+    assert Xtrans is X
+    assert ytrans is y
+
+    custom.fit(X, y)
+    Xtrans, ytrans, _ = custom.transform(X, y)
+    assert np.array_equal(Xtrans, np.ones(X.shape) * constant)
+    assert np.array_equal(ytrans, np.ones(y.shape) * constant)
+
+    # ts with univariate contextual data
+    Xt = np.random.rand(100, 10, 4)
+    Xc = np.random.rand(100)
+    X = TS_Data(Xt, Xc)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans, ytrans, _ = identity.transform(X, y)
+    assert Xtrans == X
+    assert ytrans is y
+    
+    custom.fit(X, y)
+    Xtrans, ytrans, _ = custom.transform(X, y)
+    Xtt, Xtc = get_ts_data_parts(Xtrans)
+    assert np.array_equal(Xtt, np.ones(Xt.shape) * constant)
+    assert Xtc is Xc
+    assert np.array_equal(ytrans, np.ones(y.shape) * constant)
+
+    # ts with multivariate contextual data
+    Xt = np.random.rand(100, 10, 4)
+    Xc = np.random.rand(100, 3)
+    X = TS_Data(Xt, Xc)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans, ytrans, _ = identity.transform(X, y)
+    assert Xtrans == X
+    assert ytrans is y
+    
+    custom.fit(X, y)
+    Xtrans, ytrans, _ = custom.transform(X, y)
+    Xtt, Xtc = get_ts_data_parts(Xtrans)
+    assert np.array_equal(Xtt, np.ones(Xt.shape) * constant)
+    assert Xtc is Xc
+    assert np.array_equal(ytrans, np.ones(y.shape) * constant)
