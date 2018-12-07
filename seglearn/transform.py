@@ -1153,6 +1153,10 @@ class FunctionXYTransformer(BaseEstimator, XyTransformerMixin):
         the function to be applied on Xt and yt (Xt and yt are unaltered if no function is provided)
     func_kwargs : dictionary, optional (default={})
         keyword arguments to be passed to the function call
+    disable_resample : bool, optional (default=True)
+        whether or not to allow resampling operations (i.e. functions that change the number of
+        samples) - WARNING: enabling this might be dangerous as this transform will be applied on
+        training and test data
 
     Returns
     -------
@@ -1160,9 +1164,10 @@ class FunctionXYTransformer(BaseEstimator, XyTransformerMixin):
         returns self
     '''
 
-    def __init__(self, func=None, func_kwargs={}):
+    def __init__(self, func=None, func_kwargs={}, disable_resample=True):
         self.func = func
         self.func_kwargs = func_kwargs
+        self.disable_resample = disable_resample
 
     def fit(self, X, y=None):
         '''
@@ -1214,7 +1219,11 @@ class FunctionXYTransformer(BaseEstimator, XyTransformerMixin):
             return X, y, None
         else:
             Xt, Xc = get_ts_data_parts(X)
+            n_samples = len(Xt)
             Xt, yt = self.func(Xt, y, **self.func_kwargs)
+            if self.disable_resample and (len(Xt) != n_samples or len(yt) != n_samples):
+                raise ValueError("Changing the number of samples inside a FunctionXYTransformer is"
+                                 "disabled.")
             if Xc is not None:
                 Xt = TS_Data(Xt, Xc)
             return Xt, yt, None
