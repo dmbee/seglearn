@@ -37,7 +37,8 @@ np.random.seed(123124)
 # load the data
 data = load_watch_stacked()
 
-X = np.array(data)
+#X = np.array(data)
+X=data
 
 N = len(X)
 #print("N = " + str(N))
@@ -65,6 +66,7 @@ sample_period = (1. / 100.)*10**9
 sample_period = (1. / 100.)*10**9
 
 print("X before fit = " + str(X))
+print("Number of time series before fit = " + str(len(X)))
 
 #clf = Pype([('stacked_interp', Stacked_Interp(sample_period, categorical_target=True)), changed categorical target to false 
 clf = Pype([('stacked_interp', Stacked_Interp(sample_period, categorical_target=False)),

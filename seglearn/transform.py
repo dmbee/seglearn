@@ -753,6 +753,7 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
         D=Xt[0][0].shape[0]-2 # number of data channels -- subtracting Sensor Type and Sample Time [ns] - we need this
         
         N=len(Xt) # number of series
+        print("Number of time series received by Stacked_Interp = " + str(N))
         #y=np.array(y)
         
         s = np.unique(Xt[0][:,1]) # check the data - done in _init
@@ -807,7 +808,7 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
         print("")
         print("")
         print("*****Local Transform Output*****")
-        print("X after Stacked_Interp= " + str(X))
+        print("X after Stacked_Interp= " + str(X_new))
           
         return X_new, y_new, swt
 
