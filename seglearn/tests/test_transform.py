@@ -3,6 +3,7 @@
 
 import pytest
 import warnings
+import pickle
 
 import numpy as np
 
@@ -10,6 +11,8 @@ import seglearn.transform as transform
 from seglearn.base import TS_Data
 from seglearn.feature_functions import all_features, mean
 from seglearn.util import get_ts_data_parts
+from sklearn.utils import shuffle
+from sklearn.base import BaseEstimator
 
 
 def test_sliding_window():
@@ -718,3 +721,84 @@ def test_function_transform():
     illegal_resampler.fit(X, y)
     with pytest.raises(ValueError):
         Xtrans = illegal_resampler.transform(X)
+
+# MUST be defined in the global scope for pickling to work correctly
+def mock_resample(ndarray):
+    return ndarray[:len(ndarray) // 2]
+class MockImblearnSampler(BaseEstimator):
+    def __init__(self, mocked_param="mock"):
+        pass
+    @staticmethod
+    def _check_X_y(X, y):
+        return X, y, True
+    def fit_resample(self, X, y):
+        X, y, _ = self._check_X_y(X, y)
+        return mock_resample(X), mock_resample(y)
+
+def test_patch_sampler():
+    # test patch_sampler on a class without a fit_resample function
+    class EmptyClass(object):
+        pass
+    with pytest.raises(TypeError):
+        transform.patch_sampler(EmptyClass)
+
+    # test patch_sampler on a mocked imbalanced-learn Sampler class
+    unpatched_sampler = MockImblearnSampler()
+    patched_sampler = transform.patch_sampler(MockImblearnSampler)(shuffle=True, random_state=0)
+    assert str(patched_sampler.__class__) != str(unpatched_sampler.__class__)
+    pickled_sampler = pickle.dumps(patched_sampler)
+    unpickled_sampler = pickle.loads(pickled_sampler)
+    assert str(patched_sampler.__class__) == str(unpickled_sampler.__class__)
+
+    # test representation
+    assert "mocked_param" in repr(patched_sampler)
+    assert "random_state" in repr(patched_sampler)
+    assert "shuffle" in repr(patched_sampler)
+
+    # multivariate ts
+    X = np.random.rand(100, 10, 4)
+    y = np.ones(100)
+    Xt, yt, _ = patched_sampler.transform(X, y)
+    assert Xt is X
+    assert yt is y
+    Xt, yt, _ = patched_sampler.fit_transform(X, y)
+    X, y = shuffle(mock_resample(X), mock_resample(y), random_state=0)
+    assert np.array_equal(Xt, X)
+    assert np.array_equal(yt, y)
+
+    # ts with multivariate contextual data
+    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100, 3))
+    Xt_orig, _ = get_ts_data_parts(X)
+    y = np.ones(100)
+    Xt, yt, _ = patched_sampler.transform(X, y)
+    assert Xt is X
+    assert yt is y
+    Xt, yt, _ = patched_sampler.fit_transform(X, y)
+    Xtt, Xtc = get_ts_data_parts(Xt)
+    Xt_orig, y = shuffle(mock_resample(Xt_orig), mock_resample(y), random_state=0)
+    assert np.array_equal(Xtt, Xt_orig)
+    assert np.array_equal(yt, y)
+
+    # ts with univariate contextual data
+    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100))
+    Xt_orig, _ = get_ts_data_parts(X)
+    y = np.ones(100)
+    Xt, yt, _ = patched_sampler.transform(X, y)
+    assert Xt is X
+    assert yt is y
+    Xt, yt, _ = patched_sampler.fit_transform(X, y)
+    Xtt, Xtc = get_ts_data_parts(Xt)
+    Xt_orig, y = shuffle(mock_resample(Xt_orig), mock_resample(y), random_state=0)
+    assert np.array_equal(Xtt, Xt_orig)
+    assert np.array_equal(yt, y)
+
+    # univariate ts
+    X = np.random.rand(100, 10)
+    y = np.ones(100)
+    Xt, yt, _ = patched_sampler.transform(X, y)
+    assert Xt is X
+    assert yt is y
+    Xt, yt, _ = patched_sampler.fit_transform(X, y)
+    X, y = shuffle(mock_resample(X), mock_resample(y), random_state=0)
+    assert np.array_equal(Xt, X)
+    assert np.array_equal(yt, y)
