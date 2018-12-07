@@ -373,26 +373,17 @@ def test_interp():
     assert np.all(np.isin(yc, np.arange(6)))
     
 def test_stacked_interp():
-    N = 100
-    t = np.arange(N) + np.random.rand(N)
-    s = np.random.choice(['a','b','c'], size = N)
-    v = np.arange(N) + np.random.rand(N)
-    df = np.column_stack([s,t,v])
-    X = [df,df,np.vstack((df,df))]
-    y = [np.random.rand(N)]
+    #Test 1
+    t = np.array([1,1,2,3,3,4,5,5]).astype(float)
+    s = np.array([0,1,0,0,1,1,0,1]).astype(float)
+    v1 = np.array([3,4,5,7,10,13,14,20]).astype(float)
+    v2 = np.array([3,6,3,6,11,12,13,15]).astype(float)
+    y = np.array([1,2,2,2,3,3,4,4]).astype(float)
+    df = np.column_stack([t,s,v1,v2])
+
+    X = [df,df]
+    y = [y, y]
     
-    stacked_interp = transform.Stacked_Interp(2)
-    stacked_interp.fit(X)
-    Xc, yc, swt = stacked_interp.transform(X, y)
-
-    assert len(Xc[0]) == N / 2
-    assert len(yc[0]) == N / 2
-
-    y = [np.random.randint(0, 5, N)]
-    stacked_interp = transform.Stacked_Interp(5, kind='cubic', categorical_target=True)
-    stacked_interp.fit(X, y)
-    Xc, yc, swt = stacked_interp.transform(X, y)
-
-    assert len(Xc[0]) == N / 5
-    assert len(yc[0]) == N / 5
-    assert np.all(np.isin(yc, np.arange(6)))
+    stacked_interp = Stacked_Interp(0.5)
+    stacked_interp.fit(X,y)
+    Xt, yc, swt = stacked_interp.transform(X,y)
