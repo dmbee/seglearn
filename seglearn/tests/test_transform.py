@@ -1,6 +1,8 @@
 # Author: David Burns
 # License: BSD
 
+import pytest
+
 import numpy as np
 
 import seglearn.transform as transform
@@ -520,3 +522,22 @@ def test_function_xy_transform():
     assert np.array_equal(Xtt, np.ones(Xt.shape) * constant)
     assert Xtc is Xc
     assert np.array_equal(ytrans, np.ones(y.shape) * constant)
+
+    # test resampling
+    def resample(Xt, yt):
+        return Xt.reshape(1, -1), yt.reshape(1, -1)
+
+    illegal_resampler = transform.FunctionXYTransformer(resample)
+    permitted_resampler = transform.FunctionXYTransformer(resample, disable_resample=False)
+
+    X = np.random.rand(100, 10)
+    y = np.ones(100)
+
+    illegal_resampler.fit(X, y)
+    with pytest.raises(ValueError):
+        Xtrans, ytrans, _ = illegal_resampler.transform(X, y)
+
+    permitted_resampler.fit(X, y)
+    Xtrans, ytrans, _ = permitted_resampler.transform(X, y)
+    assert len(Xtrans) == 1
+    assert len(ytrans) == 1
