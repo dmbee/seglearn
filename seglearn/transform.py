@@ -16,7 +16,7 @@ from .base import TS_Data
 from .util import get_ts_data_parts, check_ts_data
 
 __all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep',
-           'FeatureRepMix']
+           'FeatureRepMix', 'FunctionTransformer']
 
 
 class XyTransformerMixin(object):
@@ -1141,3 +1141,73 @@ class FeatureRepMix(_BaseComposition, TransformerMixin):
             fts = np.column_stack([fts, Xc])
 
         return fts
+
+class FunctionTransformer(BaseEstimator, TransformerMixin):
+    '''
+    Transformer for applying a custom function to time series data.
+
+    Parameters
+    ----------
+    func : function, optional (default=None)
+        the function to be applied to Xt, the time series part of X (contextual variables Xc are
+        passed through unaltered) - X remains unchanged if no function is supplied
+    func_kwargs : dictionary, optional (default={})
+        keyword arguments to be passed to the function call
+
+    Returns
+    -------
+    self : object
+        returns self
+    '''
+
+    def __init__(self, func=None, func_kwargs={}):
+        self.func = func
+        self.func_kwargs = func_kwargs
+
+    def fit(self, X, y=None):
+        '''
+        Fit the transform
+
+        Parameters
+        ----------
+        X : array-like, shape [n_samples, ...]
+            time series data and (optionally) contextual data
+        y : None
+            there is no need of a target in a transformer, yet the pipeline API requires this
+
+        Returns
+        -------
+        self : object
+            returns self
+        '''
+        check_ts_data(X, y)
+        return self
+
+    def transform(self, X):
+        '''
+        Transforms the time series data based on the provided function. Note this transformation
+        must not change the number of samples in the data.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_samples, ...]
+            time series data and (optionally) contextual data
+
+        Returns
+        -------
+        Xt : array-like, shape [n_samples, ...]
+            transformed time series data
+
+        '''
+        if self.func is None:
+            return X
+        else:
+            Xt, Xc = get_ts_data_parts(X)
+            n_samples = len(Xt)
+            Xt = self.func(Xt, **self.func_kwargs)
+            if len(Xt) != n_samples:
+                raise ValueError("Changing the number of samples inside a FunctionTransformer is"
+                                 "disabled.")
+            if Xc is not None:
+                Xt = TS_Data(Xt, Xc)
+            return Xt
