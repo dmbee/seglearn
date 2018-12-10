@@ -958,7 +958,7 @@
 <span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; fts = {&#39;mean&#39;: mean, &#39;var&#39;: var, &#39;std&#39;: std, &#39;skew&#39;: skew}</span>
 <span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, SegmentX()),</span>
-<span class="sd">    &gt;&gt;&gt;             (&#39;ftr&#39;, FeatureRep(features = fts))),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;ftr&#39;, FeatureRep(features = fts)),</span>
 <span class="sd">    &gt;&gt;&gt;             (&#39;rf&#39;,RandomForestClassifier())])</span>
 <span class="sd">    &gt;&gt;&gt; clf.fit(X, y)</span>
 <span class="sd">    &gt;&gt;&gt; print(clf.score(X, y))</span>
