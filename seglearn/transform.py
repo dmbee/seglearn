@@ -20,7 +20,7 @@ from seglearn.feature_functions import base_features
 from seglearn.base import TS_Data
 from seglearn.util import get_ts_data_parts, check_ts_data
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Stacked_Interp', 'Interp', 'FeatureRep']
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'StackedInterp', 'Interp', 'FeatureRep']
 
 
 class XyTransformerMixin(object):
@@ -320,6 +320,9 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         yt = y
 
         N = len(Xt)  # number of time series
+        print("Length of time series = " + str(N))
+
+        print("...segmenting X...")
 
         if Xt[0].ndim > 1:
             Xt = np.array([sliding_tensor(Xt[i], self.width, self.step) for i in np.arange(N)])
@@ -333,8 +336,10 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             Xc = expand_variables_to_segments(Xc, Nt)
             Xt = TS_Data(Xt, Xc)
 
+        print("...segmenting y...")
         if yt is not None:
             yt = np.array([sliding_window(yt[i], self.width, self.step) for i in np.arange(N)])
+
             yt = np.concatenate(yt)
             yt = self.y_func(yt)
 
@@ -510,7 +515,14 @@ def sliding_window(time_series, width, step):
     w : array like shape [n_segments, width]
         resampled time series segments
     '''
+    #print("time_series[0] = " + str(time_series[0]))
+    #print("ts shape = " + str(time_series.shape))
+    #print("width = " + str(width))
+    #print("step = " + str(step))
     w = np.hstack(time_series[i:1 + i - width or None:step] for i in range(0, width))
+    #print("w = " + str(w))
+    #print("w shape = " + str(w.shape))
+    #print("w.reshape((int(len(w) / width), width), order='F') = " + str(w.reshape((int(len(w) / width), width), order='F').shape))
     return w.reshape((int(len(w) / width), width), order='F')
 
 
@@ -632,8 +644,7 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         return Xt, yt, swt
 
 
-
-class Stacked_Interp(BaseEstimator, XyTransformerMixin):
+class StackedInterp(BaseEstimator, XyTransformerMixin):
     '''
     Extension of Interp where input is in stacked format.
     Transformer for resampling time series data to a fixed period over closed interval
@@ -712,7 +723,7 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
         
         if len(X) > 1:
             sval = np.unique(X[0][:,1])
-            if not np.all([np.all(np.unique(X[i][:,1]) == sval) for i in range(1, len(X))]):
+            if not np.all([np.all(np.unique(X[i][:, 1]) == sval) for i in range(1, len(X))]):
                 pass
 
     def _interp(self, t_new, t, x, kind):
@@ -745,73 +756,104 @@ class Stacked_Interp(BaseEstimator, XyTransformerMixin):
             None is returned if target is changed. Otherwise it is returned unchanged.
         '''
         
-        
-        Xt, Xc = get_ts_data_parts(X)
+        xt, xc = get_ts_data_parts(X)
         yt = y
         swt = sample_weight
 
-        D=Xt[0][0].shape[0]-2 # number of data channels -- subtracting Sensor Type and Sample Time [ns] - we need this
+        d = xt[0][0].shape[0]-2 # number of data channels -- subtracting Sensor Type and Sample Time [ns] - we need this
         
-        N=len(Xt) # number of series
-        print("Number of time series received by Stacked_Interp = " + str(N))
-        #y=np.array(y)
+        n = len(xt) # number of series
+        print("Number of time series received by Stacked_Interp = " + str(n))
+        # y=np.array(y)
+        print("X inside = " + str(X))
+        print("len of x not xt = " + str(len(X)))
+
+        print("xt[0].shape = " + str(xt[0].shape))
         
-        s = np.unique(Xt[0][:,1]) # check the data - done in _init
-        
-        X_new = []
+        s = np.unique(xt[0][:, 1])  # check the data - done in _init
+
+
+        print("s = " + str(s))
+
+
+        x_new = []
         y_new = []
 
-        for i in np.arange(N):
+        for i in np.arange(n):
         
-            #Xs = [X[i][X[i][:,s] == s[j]] for j in s] #Doesn't work - if s is 0 and 1, compares to columns 1 and 2, which isn't what we want
-            Xs = [Xt[i][Xt[i][:,1] == s[j]] for j in np.arange(len(s))] # splits series into a list for each sensor
+            # xs = [x[i][x[i][:,s] == s[j]] for j in s] # Doesn't work - if s is 0 and 1,
+            # compares to columns 1 and 2, which isn't what we want
+            xs = [xt[i][xt[i][:, 1] == s[j]] for j in np.arange(len(s))]  # splits series into a list for each sensor
             
-            #find latest/earliest sample time for each identifier's first/last time sample time  
-            tmin = np.max([np.min(Xs[j][:,0]) for j in np.arange(len(s))])
-            tmax = np.min([np.max(Xs[j][:,0]) for j in np.arange(len(s))])
+            # find latest/earliest sample time for each identifier's first/last time sample time
+            t_min = np.max([np.min(xs[j][:, 0]) for j in np.arange(len(s))])
+            t_max = np.min([np.max(xs[j][:, 0]) for j in np.arange(len(s))])
 
-            #Generate a regular series of timestamps starting at tStart and tEnd for sample_period
-            t_lin = np.arange(tmin, tmax, self.sample_period)
+            print("tmin=", str(t_min))
+
+            # Generate a regular series of timestamps starting at tStart and tEnd for sample_period
+            t_lin = np.arange(t_min, t_max, self.sample_period)
             
-            #interp1d error - returns NaN when the first value of the value that's being interpolated to (i.e. t_lin) matches the first 2 values of the origin array (X or Y)
-            #see here: https://stackoverflow.com/questions/18998981/why-does-interp1d-in-scipy-give-a-nan-when-the-first-2-values-of-the-x-array-are
-            #Note that this is not a problem with not having an extrapolate fill value - which is likely the problem in that link - but divide by zero
-            #still exists - will almost certainly not be an issue with real time series data, but "Faked" data where N=10 can produce this error
-            t_lin[0]=t_lin[0]+0.00000001*(t_lin[0]) 
+            # interp1d error - returns NaN when the first value of the value that's being interpolated to
+            # (i.e. t_lin) matches the first 2 values of the origin array (X or Y)
+            # see here: https://stackoverflow.com/questions/18998981/why-does-interp1d-in-scipy-give-a-nan-when-the-first-2-values-of-the-x-array-are
+            # Note that this is not a problem with not having an extrapolate fill value
+            # - which is likely the problem in that link - but divide by zero
+            # still exists - will almost certainly not be an issue with real time series data,
+            # but "Faked" data where N=10 can produce this error
+            t_lin[0] = t_lin[0]+0.00000001*(t_lin[0])
     
-            #Interpolate for the new regular sample times
-            if D == 1:
-                #Xt = [self._interp(t_lin, t[j], np.array(Xt[j][:, 2]).astype(float), kind=self.kind) for j in np.arange(N1)]
-                X_new.append(np.column_stack([self._interp(t_lin, Xs[j][:,0], Xs[j][:,2], kind=self.kind) for j in np.arange(len(s))]))
-            elif D > 1:
-                #below doesn't work - creates 3x2 rather than iterating over the 3 twice, so returns dimensional error for t comparison
-                #X_new.append(np.column_stack([self._interp(t_lin, Xs[j][:,0], Xs[j][:,2:],kind=self.kind) for j in np.arange(len(s))]))
+            # Interpolate for the new regular sample times
+            if d == 1:
+                # xt = [self._interp(t_lin, t[j], np.array(Xt[j][:, 2]).astype(float),
+                # kind=self.kind) for j in np.arange(N1)]
+                x_new.append(np.column_stack([self._interp(t_lin, xs[j][:, 0], xs[j][:, 2], kind=self.kind)
+                                              for j in np.arange(len(s))]))
+            elif d > 1:
+                # below doesn't work - creates 3x2 rather than iterating over the 3 twice,
+                # so returns dimensional error for t comparison
+                # x_new.append(np.column_stack([self._interp(t_lin, Xs[j][:,0], Xs[j][:,2:],
+                # kind=self.kind) for j in np.arange(len(s))]))
 
-                #Working version
-                X_new.append(np.column_stack([np.column_stack([self._interp(t_lin, Xs[j][:,0], Xs[j][:,k],kind=self.kind) 
-                                                           for k in np.arange(2,2+D)]) for j in np.arange(len(s))]))
+                # Working version
+
+
+                #x_temp = [np.column_stack([self._interp(t_lin, xs[j][:, 0], xs[j][:, k], kind=self.kind) for k in np.arange(2, 2+d)])]
+
+
+                #for j in np.arange(len(s)):
+                #    for k in np.arange(2, 2+d):
+                #        np.column_stack(self._interp(t_lin, xs[j][:, 0], xs[j][:, k], kind=self.kind))
+
+
+                #[ for j in np.arange(len(s))]
+                 #   x_new.append(())
+
+                x_new.append(np.column_stack([np.column_stack([self._interp(t_lin, xs[j][:,0], xs[j][:, k], kind=self.kind) for k in np.arange(2, 2+d)]) for j in np.arange(len(s))]))
 
             if yt is not None and len(np.atleast_1d(yt[i])) > 1:
                 # y is a time series
                 swt = None
                 if self.categorical_target is True:
-                    y_new.append([self._interp(t_lin, Xt[i][:, 0], yt[i], kind='nearest')])
+                    y_new.append(self._interp(t_lin, xt[i][:, 0], yt[i], kind='nearest'))
                 else:
-                    y_new.append([self._interp(t_lin, Xt[i][:, 0], yt[i], kind=self.kind)])
+                    y_new.append(self._interp(t_lin, xt[i][:, 0], yt[i], kind=self.kind))
             else:
-            # y is static - leave y alone
+                # y is static - leave y alone
                 pass
         
-        if Xc is not None:
-            Xt = TS_Data(Xt, Xc)
+        if xc is not None:
+            x_new = TS_Data(x_new, xc)
             
         print("")
         print("")
         print("*****Local Transform Output*****")
-        print("X after Stacked_Interp= " + str(X_new))
+        #print("X after Stacked_Interp= " + str(x_new))
+        #print("y after Stacked_Interp= " + str(y_new))
+        print("After Xt[0].shape = " + str(x_new[0].shape))
+        print("After yt[0].shape = " + str(y_new[0].shape))
           
-        return X_new, y_new, swt
-
+        return x_new, y_new, swt
 
 
 class Interp(BaseEstimator, XyTransformerMixin):
@@ -907,6 +949,9 @@ class Interp(BaseEstimator, XyTransformerMixin):
         N = len(Xt)  # number of series
         D = Xt[0].shape[1] - 1  # number of data channels
 
+        print("N = number of series = " + str(N))
+        print("Xt[0].shape = " + str(Xt[0].shape))
+
         # 1st channel is time
         t = [Xt[i][:, 0] for i in np.arange(N)]
         t_lin = [np.arange(Xt[i][0, 0], Xt[i][-1, 0], self.sample_period) for i in np.arange(N)]
@@ -929,6 +974,9 @@ class Interp(BaseEstimator, XyTransformerMixin):
         else:
             # y is static - leave y alone
             pass
+
+        print("After Xt[0].shape = " + str(Xt[0].shape))
+        print("After yt[0].shape = " + str(yt[0].shape))
 
         return Xt, yt, swt
 

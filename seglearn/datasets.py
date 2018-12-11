@@ -7,10 +7,6 @@ This module is for loading time series data sets
 import numpy as np
 from os.path import dirname
 
-#for CSV imports with multiple time series at once
-import glob
-import csv
-
 __all__ = ['load_watch','load_watch_stacked']
 
 
@@ -82,6 +78,16 @@ def load_watch_stacked():
     '''
     
     module_path = dirname(__file__)
+
+    data = []
+
+    data1 = np.loadtxt(module_path + "/data/U1-E1-L-1.csv", delimiter=',', skiprows=1, dtype=float)
+    data2 = np.loadtxt(module_path + "/data/U1-E2-L-1.csv", delimiter=',', skiprows=1, dtype=float)
+
+    data.append(data1)
+    data.append(data2)
+
+    """
     allFiles = glob.glob(module_path + "/data/*.csv")
     data = []
     for file_ in allFiles:
@@ -93,4 +99,6 @@ def load_watch_stacked():
                 df.append(row)
         df = np.array(df)
         data.append(df)
+        
+    """
     return data

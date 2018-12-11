@@ -384,9 +384,12 @@ def test_stacked_interp():
     X = [df,df]
     y = [y, y]
     
-    stacked_interp = transform.Stacked_Interp(0.5)
+    stacked_interp = transform.StackedInterp(0.5)
     stacked_interp.fit(X,y)
     Xt, yc, swt = stacked_interp.transform(X,y)
+
+    print("Xt result = " + str(Xt))
+    print("yt result = " + str(yc))
     
     #Test 2
     N = 100
@@ -398,9 +401,10 @@ def test_stacked_interp():
     dm = np.arange(N) + np.random.rand(N)
     y = [dm, dm, dm]
 
-    stacked_interp = transform.Stacked_Interp(5)
+    stacked_interp = transform.StackedInterp(5)
     stacked_interp.fit(X,y)
 
     Xt, yc, swt = stacked_interp.transform(X,y)
     
-    
+
+test_stacked_interp()
