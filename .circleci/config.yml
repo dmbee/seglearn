@@ -11,6 +11,8 @@ jobs:
       - checkout
       - run:
           command: |
+            sudo -E apt-get -yq update
+            sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install dvipng texlive-latex-base texlive-latex-extra
             wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
             chmod +x miniconda.sh && ./miniconda.sh -b -p ~/miniconda
             export PATH="~/miniconda/bin:$PATH"
