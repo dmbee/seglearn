@@ -1158,6 +1158,23 @@ class FunctionTransformer(BaseEstimator, TransformerMixin):
     -------
     self : object
         returns self
+
+    Examples
+    --------
+
+    >>> from seglearn.transform import FunctionTransformer
+    >>> import numpy as np
+    >>>
+    >>> def choose_cols(Xt, cols):
+    >>>     return [time_series[:, cols] for time_series in Xt]
+    >>>
+    >>> X = [np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]),
+    >>>     np.array([[30, 40, 50], [60, 70, 80], [90, 100, 110]])]
+    >>> y = [np.array([True, False, False, True]),
+    >>>     np.array([False, True, False])]
+    >>> trans = FunctionTransformer(choose_cols, func_kwargs={"cols":[0,1]})
+    >>> X = trans.fit_transform(X, y)
+
     '''
 
     def __init__(self, func=None, func_kwargs={}):
@@ -1206,8 +1223,7 @@ class FunctionTransformer(BaseEstimator, TransformerMixin):
             n_samples = len(Xt)
             Xt = self.func(Xt, **self.func_kwargs)
             if len(Xt) != n_samples:
-                raise ValueError("Changing the number of samples inside a FunctionTransformer is"
-                                 "disabled.")
+                raise ValueError("FunctionTransformer changes sample number (not supported).")
             if Xc is not None:
                 Xt = TS_Data(Xt, Xc)
             return Xt
