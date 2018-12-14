@@ -2,30 +2,24 @@
 ===========================
 Resampling Time Series Data
 ===========================
-This is a basic example using the pipeline to learn resample a time series
+This is a basic example illustrating the resampling of stacked format time series data
 This may be useful for resampling irregularly sampled time series, or for determining
 an optimal sampling frequency for the data
 '''
-# Author: David Burns
+# Author: Phil Boyer
 # License: BSD
-
-###REMOVE THE FOLLOWING AFTER LOCAL TESTING
-from seglearn.datasets import load_watch_stacked
-from seglearn.transform import StackedInterp
 
 import matplotlib.pyplot as plt
 import numpy as np
-#from sklearn.ensemble import RandomForestClassifier
+
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 
-# from seglearn.datasets import load_watch_stacked
+from seglearn.datasets import load_stacked_data
 from seglearn.pipe import Pype
 from seglearn.split import TemporalKFold
-# from seglearn.transform import FeatureRep, SegmentX, Stacked_Interp
-from seglearn.transform import FeatureRep, SegmentXY
-#from seglearn.transform import FeatureRep, SegmentX
+from seglearn.transform import FeatureRep, SegmentXY, StackedInterp
 
 def calc_segment_width(params):
     # number of samples in a 2 second period
@@ -35,43 +29,29 @@ def calc_segment_width(params):
 
 
 def calc_segment_width_b(params):
-    # number of samples in a 2 second period
-    period = params['stacked_interp__sample_period']/10**9
-    print("period = " + str(period))
+    # number of samples in a 2 second period -- input data in nanoseconds
+    period = params['stacked_interp__sample_period']/(inNanoseconds*10**9)
     return int(2. / period)
 
+
+# Boolean: 1 if input data is in nanoseconds - 0 if not
+inNanoseconds = 1
 
 # seed RNGESUS
 np.random.seed(123124)
 
 # load the data
-X = load_watch_stacked()
+X = load_stacked_data()
 
 print("data = " + str(X))
 
-#X = np.array(data)
-
 N = len(X)
-#print("N = " + str(N))
-
-
-#sensors = {'a':1, 'b':2, 'w':3}
-
-#Convert the alpha characters representing the sensor identifiers to floats
-#for i in np.arange(N):
- #   X[i][:,0] = [sensors[j] for j in X[i][:,0]]
-  #  X[i][:,[0, 1]] = X[i][:,[1, 0]]
-  #  X[i] = np.array(X[i]).astype(float)
-
-#X=[[sensors[j] for j in X[i][:,0]]]] for i in np.arange(N)]
-#X = [np.array([sensors[j] for j in X[i][:,0]]) for i in np.arange(N)]
-#X = [[sensors[j] for j in X[i][:,0]] for i in np.arange(N)]
 
 # I am adding in a column to represent targets (y) since my data doesn't include it
 y = [np.array(np.arange(len(X[i])) + np.random.rand(len(X[i]))).astype(float) for i in np.arange(N)]
 
-#This data is in ns
-sample_period = (1. / 100.)*10**9
+# Define the sample period of the resampled data
+sample_period = (1. / 100.)*(inNanoseconds*10**9)
 
 print("X before fit = " + str(X))
 
@@ -109,7 +89,10 @@ Xs, ys, cv = splitter.split(X, y)
 
 # here we use a callable parameter to force the segmenter width to equal 2 seconds
 # note this is an extension of the sklearn api for setting class parameters
-par_grid = {'stacked_interp__sample_period': [(10. / 100.)*10**9, (1. / 100.)*10**9, (1. / 500.)*10**9, (1. / 100.)*10**9],
+par_grid = {'stacked_interp__sample_period': [(10. / 100.)*(inNanoseconds*10**9),
+                                              (1. / 100.)*(inNanoseconds*10**9),
+                                              (1. / 500.)*(inNanoseconds*10**9),
+                                              (1. / 100.)*(inNanoseconds*10**9)],
             'segment__width': [calc_segment_width_b]}
 
 clf = GridSearchCV(clf, par_grid, cv=cv)

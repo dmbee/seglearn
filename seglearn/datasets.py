@@ -7,7 +7,7 @@ This module is for loading time series data sets
 import numpy as np
 from os.path import dirname
 
-__all__ = ['load_watch','load_watch_stacked']
+__all__ = ['load_watch','load_stacked_data']
 
 
 def load_watch():
@@ -45,36 +45,20 @@ def load_watch():
     data = np.load(module_path + "/data/watch_dataset.npy").item()
     return data
 
-def load_watch_stacked():
+def load_stacked_data():
     '''
-    Loads some of the 9-axis inertial sensor data from my smartwatch project. The sensor data was
-    recorded as study subjects performed sets of 20 shoulder exercise repetitions while wearing a
-    smartwatch. It is a multivariate time series.
-
-    The study can be found here: https://arxiv.org/abs/1802.01489
+    Loads 2 time series of 9-axis inertial sensor data. It is an unlabelled multivariate time series.
 
     Returns
-    -------
-    data : dict
-        data['X'] : list, length 140
-            | inertial sensor data, each element with shape [n_samples, 6]
-            | sampled at 50 Hz
-        data['y'] : array, length 140
-            target vector (exercise type)
-        data['side'] : array, length 140
-            the extremity side, 1 = right, 0 = left
-        data['subject'] : array, length 140
-            the subject (participant) number
-        data['X_labels'] : str list, length 6
-            ordered labels for the sensor data variables
-        data['y_labels'] :str list, length 7
-            ordered labels for the target (exercise type)
+    data: list, length 2
+        inertial sensor data, each element with shape [n_samples, 5]
+        irregularly sampled in time (base 50 Hz) and stacked from 3 inertial sensors indicated by integer value (1,2,3)
 
     Examples
     --------
     >>> from seglearn.datasets import load_watch_stacked
-    >>> data = load_watch()
-    >>> print(data.keys())
+    >>> data = load_watch_stacked()
+    >>> print(data)
     '''
     
     module_path = dirname(__file__)
@@ -87,18 +71,4 @@ def load_watch_stacked():
     data.append(data1)
     data.append(data2)
 
-    """
-    allFiles = glob.glob(module_path + "/data/*.csv")
-    data = []
-    for file_ in allFiles:
-        with open(file_, newline='') as csvfile:
-            reader = csv.reader(csvfile)
-            next(reader)
-            df=[]
-            for row in reader:
-                df.append(row)
-        df = np.array(df)
-        data.append(df)
-        
-    """
     return data

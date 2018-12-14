@@ -371,40 +371,50 @@ def test_interp():
     assert len(Xc[0]) == N / 5
     assert len(yc[0]) == N / 5
     assert np.all(np.isin(yc, np.arange(6)))
-    
-def test_stacked_interp():
-    #Test 1
-    t = np.array([1,1,2,3,3,4,5,5]).astype(float)
-    s = np.array([0,1,0,0,1,1,0,1]).astype(float)
-    v1 = np.array([3,4,5,7,10,13,14,20]).astype(float)
-    v2 = np.array([3,6,3,6,11,12,13,15]).astype(float)
-    y = np.array([1,2,2,2,3,3,4,4]).astype(float)
-    df = np.column_stack([t,s,v1,v2])
 
-    X = [df,df]
+
+def test_stacked_interp():
+    # Test 1
+    t = np.array([1.1, 1.2, 2.1, 3.3, 3.4, 3.5]).astype(float)
+    s = np.array([0, 1, 0, 0, 1, 1]).astype(float)
+    v1 = np.array([3, 4, 5, 7, 15, 25]).astype(float)
+    v2 = np.array([5, 7, 6, 9, 22, 35]).astype(float)
+    y = np.array([1, 2, 2, 2, 3, 3]).astype(float)
+    df = np.column_stack([t, s, v1, v2])
+
+    X = [df, df]
     y = [y, y]
     
     stacked_interp = transform.StackedInterp(0.5)
-    stacked_interp.fit(X,y)
-    Xt, yc, swt = stacked_interp.transform(X,y)
+    stacked_interp.fit(X, y)
+    Xc, yc, swt = stacked_interp.transform(X, y)
 
-    print("Xt result = " + str(Xt))
-    print("yt result = " + str(yc))
-    
-    #Test 2
+    # --Checks--
+    # linearly sampled time within bounds = 1.2, 1.7, 2.2, 2.7, 3.2 --> len(Xc[0]) = 5
+    assert len(Xc[0]) == 5
+    # Xc shape[1] = unique(s) * no. dimensions of values (V1) = 2 * 2 = 4
+    assert Xc[0].shape[1] == 4
+
+    # Test 2
     N = 100
+    sample_period = 0.5
     t = np.arange(N) + np.random.rand(N)
-    s = np.random.choice([1,2,3], size = N) #No problem if it doesn't choose all of them - just 1 less sensor to deal with
+    s = np.array([1, 2] * int(N/2))
+    np.random.shuffle(s)
+
     v1 = np.arange(N) + np.random.rand(N)
-    df = np.column_stack([t,s,v1])
-    X = [df,df,df]
+    v2 = np.arange(N) + np.random.rand(N)
+    v3 = np.arange(N) + np.random.rand(N)
+    df = np.column_stack([t, s, v1, v2, v3])
+    X = [df, df, df]
     dm = np.arange(N) + np.random.rand(N)
     y = [dm, dm, dm]
 
-    stacked_interp = transform.StackedInterp(5)
-    stacked_interp.fit(X,y)
+    stacked_interp = transform.StackedInterp(sample_period)
+    stacked_interp.fit(X, y)
 
-    Xt, yc, swt = stacked_interp.transform(X,y)
-    
+    Xc, yc, swt = stacked_interp.transform(X, y)
 
-test_stacked_interp()
+    # --Checks--
+    assert Xc[0].shape[1] == len(np.unique(s)) * (X[0].shape[1]-2)
+    assert len(Xc[0]) <= N/sample_period
