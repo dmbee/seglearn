@@ -39,9 +39,6 @@ data = load_watch()
 X = data['X']
 y = data['y']
 
-print("Test X = " + str(X))
-print("Test X len = " + str(len(X)))
-
 # I am adding in a column to represent time (50 Hz sampling), since my data doesn't include it
 # the Interp class assumes time is the first column in the series
 X = np.array([np.column_stack([np.arange(len(X[i])) / 50., X[i]]) for i in np.arange(len(X))])
@@ -55,7 +52,6 @@ clf = Pype([('interp', Interp(1. / 25., categorical_target=True)),
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
-print("Train X len = " + str(len(X_train)))
 
 clf.fit(X_train, y_train)
 score = clf.score(X_test, y_test)

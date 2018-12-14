@@ -704,7 +704,7 @@ class StackedInterp(BaseEstimator, XyTransformerMixin):
         '''
         
         if len(X) > 1:
-            sval = np.unique(X[0][:,1])
+            sval = np.unique(X[0][:, 1])
             if not np.all([np.all(np.unique(X[i][:, 1]) == sval) for i in range(1, len(X))]):
                 pass
 
@@ -792,12 +792,6 @@ class StackedInterp(BaseEstimator, XyTransformerMixin):
         
         if xc is not None:
             x_new = TS_Data(x_new, xc)
-            
-        print("")
-        print("")
-        print("*****Local Transform Output*****")
-        print("After Xt[0].shape = " + str(x_new[0].shape))
-        print("After yt[0].shape = " + str(y_new[0].shape))
           
         return x_new, y_new, swt
 
