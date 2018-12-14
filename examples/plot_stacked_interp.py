@@ -12,20 +12,8 @@ an optimal sampling frequency for the data
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.preprocessing import StandardScaler
-
 from seglearn.datasets import load_stacked_data
-from seglearn.pipe import Pype
-from seglearn.split import TemporalKFold
-from seglearn.transform import FeatureRep, SegmentXY, StackedInterp
-
-def calc_segment_width(params):
-    # number of samples in a 2 second period -- input data in nanoseconds
-    period = params['stacked_interp__sample_period']/(inNanoseconds*10**9)
-    return int(2. / period)
-
+from seglearn.transform import StackedInterp
 
 # Boolean: 1 if input data is in nanoseconds - 0 if not
 inNanoseconds = 1
