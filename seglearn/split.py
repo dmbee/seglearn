@@ -14,6 +14,7 @@ splitting is still useful in certain cases such as for the analysis of a single 
 # License: BSD
 
 import numpy as np
+from sklearn.model_selection._split import _build_repr
 
 from .util import check_ts_data, get_ts_data_parts
 from .base import TS_Data
@@ -48,6 +49,9 @@ class TemporalKFold(object):
         if n_splits < 2:
             raise ValueError("TemporalKFold: n_splits must be >= 2 (set to %d)" % n_splits)
         self.n_splits = n_splits
+
+    def __repr__(self):
+        return _build_repr(self)
 
     def split(self, X, y):
         '''
