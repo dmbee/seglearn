@@ -29,15 +29,15 @@ df = np.column_stack([t, s, v1, v2])
 X = [df, df]
 y = [y, y]
 
-print("X input = " + str(X))
+print("\nX input = " + str(X))
 
 stacked_interp = StackedInterp(0.5)
 stacked_interp.fit(X, y)
 Xc, yc, swt = stacked_interp.transform(X, y)
 
-print ("X interpolated: " + str(Xc))
+print ("\nX interpolated: " + str(Xc))
 
-print(">> Example 2 <<")
+print("\n>> Example 2 <<")
 
 # Example 2 - Stacked input with 3 sensors / 3 axis in 2 time series at irregular sample times
 
