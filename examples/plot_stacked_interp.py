@@ -36,6 +36,18 @@ sample_periods = [(10. / 100.)*(inNanoseconds*10**9), (1. / 100.)*(inNanoseconds
 
 f, axarr = plt.subplots(2, 3)
 
+# Matplotlib style parameters
+left = 0.125  # the left side of the subplots of the figure
+right = 0.9  # the right side of the subplots of the figure
+bottom = 0.1  # the bottom of the subplots of the figure
+top = 0.9  # the top of the subplots of the figure
+wspace = 0.3  # the amount of width reserved for space between subplots,
+# expressed as a fraction of the average axis width
+hspace = 0.4  # the amount of height reserved for space between subplots,
+# expressed as a fraction of the average axis height
+
+plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
+
 for j in np.arange(len(sample_periods)):
     print("\nSample Period = " + str(sample_periods[j] / (inNanoseconds * 10 ** 9)) + " s")
     stacked_interp = StackedInterp(sample_periods[j])
@@ -50,5 +62,22 @@ for j in np.arange(len(sample_periods)):
                               + str(sample_periods[j]/(inNanoseconds*10**9)) + " s")
         axarr[i, j].set_xlabel("Sample Number")
         axarr[i, j].set_ylabel("Value")
+
+        # set the grid on
+        axarr[i, j].grid('on')
+
+        # adjust axis label font
+        xlab = axarr[i, j].xaxis.get_label()
+        ylab = axarr[i, j].yaxis.get_label()
+
+        xlab.set_style('italic')
+        xlab.set_size(8)
+        ylab.set_style('italic')
+        ylab.set_size(8)
+
+        # adjust title font
+        ttl = axarr[i, j].title
+        ttl.set_weight('bold')
+        ttl.set_size('8')
 
 plt.show()
