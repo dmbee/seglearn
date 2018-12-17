@@ -15,6 +15,32 @@ import numpy as np
 from seglearn.datasets import load_stacked_data
 from seglearn.transform import StackedInterp
 
+print(">> Example 1 <<")
+
+# Example 1 - Simple stacked input with values from 2 sensors / 2 axis at irregular sample times
+
+t = np.array([1.1, 1.2, 2.1, 3.3, 3.4, 3.5]).astype(float)
+s = np.array([0, 1, 0, 0, 1, 1]).astype(float)
+v1 = np.array([3, 4, 5, 7, 15, 25]).astype(float)
+v2 = np.array([5, 7, 6, 9, 22, 35]).astype(float)
+y = np.array([1, 2, 2, 2, 3, 3]).astype(float)
+df = np.column_stack([t, s, v1, v2])
+
+X = [df, df]
+y = [y, y]
+
+print("X input = " + str(X))
+
+stacked_interp = StackedInterp(0.5)
+stacked_interp.fit(X, y)
+Xc, yc, swt = stacked_interp.transform(X, y)
+
+print ("X interpolated: " + str(Xc))
+
+print(">> Example 2 <<")
+
+# Example 2 - Stacked input with 3 sensors / 3 axis in 2 time series at irregular sample times
+
 # Boolean: 1 if input data is in nanoseconds - 0 if not
 inNanoseconds = 1
 
@@ -55,10 +81,12 @@ for j in np.arange(len(sample_periods)):
     Xc, yc, swt = stacked_interp.transform(X, y)
 
     for i in np.arange(N):
+
         print("X[" + str(i) + "] length = " + str(len(X[i])))
         print("X[" + str(i) + "] length after interpolation to sample period = " + str(len(Xc[i])))
+
         axarr[i, j].plot(Xc[i])
-        axarr[i, j].set_title("Interpolated Series " + str(i) + " : Sample Period = "
+        axarr[i, j].set_title("InterpSeries " + str(i) + ", P = "
                               + str(sample_periods[j]/(inNanoseconds*10**9)) + " s")
         axarr[i, j].set_xlabel("Sample Number")
         axarr[i, j].set_ylabel("Value")
