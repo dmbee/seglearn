@@ -89,7 +89,7 @@ for j in np.arange(len(sample_periods)):
         axarr[i, j].set_title("InterpSeries " + str(i) + ", P = "
                               + str(sample_periods[j]/(inNanoseconds*10**9)) + " s")
         axarr[i, j].set_xlabel("Sample Number")
-        axarr[i, j].set_ylabel("Value")
+        axarr[i, j].set_ylabel("Sensor Axis Value")
 
         # set the grid on
         axarr[i, j].grid('on')
