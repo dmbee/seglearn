@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.0.6
+
+* ``FunctionTransformer`` contributed by Matthias Gazzari
+
 Version 1.0.5
 
 * ``FeatureRepMix`` transformer contributed by Matthias Gazzari (qtux)

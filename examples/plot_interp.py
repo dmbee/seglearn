@@ -49,6 +49,7 @@ clf = Pype([('interp', Interp(1. / 25., categorical_target=True)),
             ('scaler', StandardScaler()),
             ('rf', RandomForestClassifier(n_estimators=20))])
 
+
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
 
