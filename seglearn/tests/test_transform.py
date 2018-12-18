@@ -1,6 +1,8 @@
 # Author: David Burns
 # License: BSD
 
+import pytest
+
 import numpy as np
 
 import seglearn.transform as transform
@@ -414,7 +416,130 @@ def test_stacked_interp():
     stacked_interp.fit(X, y)
 
     Xc, yc, swt = stacked_interp.transform(X, y)
-
+    
     # --Checks--
     assert Xc[0].shape[1] == len(np.unique(s)) * (X[0].shape[1]-2)
     assert len(Xc[0]) <= N/sample_period
+
+    
+def test_feature_rep_mix():
+    union = transform.FeatureRepMix([
+        ('a', transform.FeatureRep(features={'mean': mean}), 0),
+        ('b', transform.FeatureRep(features={'mean': mean}), 1),
+        ('c', transform.FeatureRep(features={'mean': mean}), [2,3]),
+        ('d', transform.FeatureRep(features={'mean': mean}), slice(0,2)),
+        ('e', transform.FeatureRep(features={'mean': mean}), [False, False, True, True]),
+    ])
+  
+    # multivariate ts
+    X = np.random.rand(100, 10, 4)
+    y = np.ones(100)
+    union.fit(X, y)
+    Xt = union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(union.f_labels) == Xt.shape[1]
+
+    # ts with multivariate contextual data
+    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100, 3))
+    y = np.ones(100)
+    union.fit(X, y)
+    Xt = union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(union.f_labels) == Xt.shape[1]
+
+    # ts with univariate contextual data
+    X = TS_Data(np.random.rand(100, 10, 4), np.random.rand(100))
+    y = np.ones(100)
+    union.fit(X, y)
+    Xt = union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(union.f_labels) == Xt.shape[1]
+
+    # univariate ts
+    uni_union = transform.FeatureRepMix([
+        ('a', transform.FeatureRep(features={'mean': mean}), 0),
+        ('b', transform.FeatureRep(features={'mean': mean}), [0]),
+        ('c', transform.FeatureRep(features={'mean': mean}), slice(0,1)),
+        ('d', transform.FeatureRep(features={'mean': mean}), [True]),
+    ])
+    X = np.random.rand(100, 10)
+    y = np.ones(100)
+    uni_union.fit(X, y)
+    Xt = uni_union.transform(X)
+    assert Xt.shape[0] == len(X)
+    assert len(uni_union.f_labels) == Xt.shape[1]
+
+
+def test_function_transform():
+    constant = 10
+    identity = transform.FunctionTransformer()
+    def replace(Xt, value):
+        return np.ones(Xt.shape) * value
+    custom = transform.FunctionTransformer(replace, func_kwargs={"value": constant})
+
+    # univariate ts
+    X = np.random.rand(100, 10)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans = identity.transform(X)
+    assert Xtrans is X
+
+    custom.fit(X, y)
+    Xtrans = custom.transform(X)
+    assert np.array_equal(Xtrans, np.ones(X.shape) * constant)
+
+    # multivariate ts
+    X = np.random.rand(100, 10, 4)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans = identity.transform(X)
+    assert Xtrans is X
+
+    custom.fit(X, y)
+    Xtrans = custom.transform(X)
+    assert np.array_equal(Xtrans, np.ones(X.shape) * constant)
+
+    # ts with univariate contextual data
+    Xt = np.random.rand(100, 10, 4)
+    Xc = np.random.rand(100)
+    X = TS_Data(Xt, Xc)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans = identity.transform(X)
+    assert Xtrans is X
+
+    custom.fit(X, y)
+    Xtrans = custom.transform(X)
+    Xtt, Xtc = get_ts_data_parts(Xtrans)
+    assert np.array_equal(Xtt, np.ones(Xt.shape) * constant)
+    assert Xtc is Xc
+
+    # ts with multivariate contextual data
+    Xt = np.random.rand(100, 10, 4)
+    Xc = np.random.rand(100, 3)
+    X = TS_Data(Xt, Xc)
+    y = np.ones(100)
+
+    identity.fit(X, y)
+    Xtrans = identity.transform(X)
+    assert Xtrans is X
+
+    custom.fit(X, y)
+    Xtrans = custom.transform(X)
+    Xtt, Xtc = get_ts_data_parts(Xtrans)
+    assert np.array_equal(Xtt, np.ones(Xt.shape) * constant)
+    assert Xtc is Xc
+
+    # test resampling
+    def resample(Xt):
+        return Xt.reshape(1, -1)
+
+    illegal_resampler = transform.FunctionTransformer(resample)
+    X = np.random.rand(100, 10)
+    y = np.ones(100)
+    illegal_resampler.fit(X, y)
+    with pytest.raises(ValueError):
+        Xtrans = illegal_resampler.transform(X)
