@@ -4,6 +4,7 @@ Change Log
 Version 1.0.6
 
 * ``FunctionTransformer`` contributed by Matthias Gazzari
+* __repr__ attributed added to TemporalKFold by Matthias Gazzari
 
 Version 1.0.5
 
