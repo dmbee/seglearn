@@ -15,6 +15,7 @@ from .util import check_ts_data, check_ts_data_with_ts_target, ts_stats, get_ts_
 __all__ = ['TS_Data', 'FeatureRep', 'FeatureRepMix', 'PadTrunc', 'Interp', 'Pype', 'SegmentX',
            'SegmentXY', 'SegmentXYForecast', 'TemporalKFold', 'temporal_split', 'check_ts_data',
            'check_ts_data_with_ts_target', 'ts_stats', 'get_ts_data_parts', 'all_features',
-           'base_features', 'load_watch', 'TargetRunLengthEncoder', '__version__']
+           'base_features', 'load_watch', 'TargetRunLengthEncoder', 'FunctionTransformer',
+           '__version__']
 
 __author__ = 'David Burns david.mo.burns@gmail.com'

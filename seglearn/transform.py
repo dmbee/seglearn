@@ -8,19 +8,16 @@ import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_random_state, check_array
 from sklearn.exceptions import NotFittedError
+from sklearn.utils.metaestimators import _BaseComposition
 from scipy.interpolate import interp1d
 
-##Return this to previous after testing
-'''
 from .feature_functions import base_features
 from .base import TS_Data
 from .util import get_ts_data_parts, check_ts_data
-'''
-from seglearn.feature_functions import base_features
-from seglearn.base import TS_Data
-from seglearn.util import get_ts_data_parts, check_ts_data
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'StackedInterp', 'Interp', 'FeatureRep']
+
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'StackedInterp', 'Interp',
+           'FeatureRep', 'FeatureRepMix', 'FunctionTransformer']
 
 
 class XyTransformerMixin(object):
@@ -1084,3 +1081,306 @@ class FeatureRep(BaseEstimator, TransformerMixin):
             f_labels += s_labels
 
         return f_labels
+
+
+class FeatureRepMix(_BaseComposition, TransformerMixin):
+    '''
+    A transformer for calculating a feature representation from segmented time series data.
+
+    This transformer calculates features from the segmented time series', by applying the supplied
+    list of FeatureRep transformers on the specified columns of data. Non-specified columns are
+    dropped.
+
+    The segmented time series data is expected to enter this transform in the form of
+    num_samples x segment_size x num_features and to leave this transform in the form of
+    num_samples x num_features. The term columns refers to the last dimension of both
+    representations.
+
+    Note: This code is partially taken (_validate and _transformers functions with docstring) from
+          the scikit-learn ColumnTransformer made available under the 3-Clause BSD license.
+
+    Parameters
+    ----------
+    transformers : list of (name, transformer, columns) to be applied on the segmented time series
+        name : string
+            unique string which is used to prefix the f_labels of the FeatureRep below
+        transformer : FeatureRep transform
+            to be applied on the columns specified below
+        columns : integer, slice or boolean mask
+            to specify the columns to be transformed
+
+    Attributes
+    ----------
+    f_labels : list of string feature labels (in order) corresponding to the computed features
+
+    Examples
+    --------
+
+    >>> from seglearn.transform import FeatureRepMix, FeatureRep, SegmentX
+    >>> from seglearn.pipe import Pype
+    >>> from seglearn.feature_functions import mean, var, std, skew
+    >>> from seglearn.datasets import load_watch
+    >>> from sklearn.ensemble import RandomForestClassifier
+    >>> data = load_watch()
+    >>> X = data['X']
+    >>> y = data['y']
+    >>> mask = [False, False, False, True, True, True]
+    >>> clf = Pype([('seg', SegmentX()),
+    >>>             ('union', FeatureRepMix([
+    >>>                 ('ftr_a', FeatureRep(features={'mean': mean}), 0),
+    >>>                 ('ftr_b', FeatureRep(features={'var': var}), [0,1,2]),
+    >>>                 ('ftr_c', FeatureRep(features={'std': std}), slice(3,7)),
+    >>>                 ('ftr_d', FeatureRep(features={'skew': skew}), mask),
+    >>>             ])),
+    >>>             ('rf',RandomForestClassifier())])
+    >>> clf.fit(X, y)
+    >>> print(clf.score(X, y))
+
+    '''
+
+    def __init__(self, transformers):
+        self.transformers = transformers
+        self.f_labels = None
+
+    @property
+    def _transformers(self):
+        '''
+        Internal list of transformers only containing the name and transformers, dropping the
+        columns. This is for the implementation of get_params via BaseComposition._get_params which
+        expects lists of tuples of len 2.
+        '''
+        return [(name, trans) for name, trans, _ in self.transformers]
+
+    @_transformers.setter
+    def _transformers(self, value):
+        self.transformers = [
+            (name, trans, col) for ((name, trans), (_, _, col))
+            in zip(value, self.transformers)]
+
+    def get_params(self, deep=True):
+        '''
+        Get parameters for this transformer.
+
+        Parameters
+        ----------
+        deep : boolean, optional
+            If True, will return the parameters for this transformer and contained transformers.
+
+        Returns
+        -------
+        params : mapping of string to any parameter names mapped to their values.
+        '''
+        return self._get_params('_transformers', deep=deep)
+
+    def set_params(self, **kwargs):
+        '''
+        Set the parameters of this transformer.
+
+        Valid parameter keys can be listed with ``get_params()``.
+
+        Returns
+        -------
+        self
+        '''
+        self._set_params('_transformers', **kwargs)
+        return self
+
+    @staticmethod
+    def _select(Xt, cols):
+        '''
+        Select slices of the last dimension from time series data of the form
+        num_samples x segment_size x num_features.
+        '''
+        return np.atleast_3d(Xt)[:, :, cols]
+
+    @staticmethod
+    def _retrieve_indices(cols):
+        '''
+        Retrieve a list of indices corresponding to the provided column specification.
+        '''
+        if isinstance(cols, int):
+            return [cols]
+        elif isinstance(cols, slice):
+            start = cols.start if cols.start else 0
+            stop = cols.stop
+            step = cols.step if cols.step else 1
+            return list(range(start, stop, step))
+        elif isinstance(cols, list) and cols:
+            if isinstance(cols[0], bool):
+                return np.flatnonzero(np.asarray(cols))
+            elif isinstance(cols[0], int):
+                return cols
+        else:
+            raise TypeError('No valid column specifier. Only a scalar, list or slice of all'
+                            'integers or a boolean mask are allowed.')
+
+    def fit(self, X, y=None):
+        '''
+        Fit the transform
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Segmented time series data and (optionally) contextual data
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+        '''
+        Xt, Xc = get_ts_data_parts(X)
+        self.f_labels = []
+
+        # calculated features (prefix with the FeatureRep name and correct the index)
+        for name, trans, cols in self.transformers:
+            indices = self._retrieve_indices(cols)
+            trans.fit(self._select(Xt, cols))
+            for label, index in zip(trans.f_labels, indices):
+                self.f_labels.append(name + '_' + label.rsplit('_', 1)[0] + '_' + str(index))
+
+        # contextual features
+        if Xc is not None:
+            Ns = len(np.atleast_1d(Xc[0]))
+            self.f_labels += ['context_' + str(i) for i in range(Ns)]
+
+        return self
+
+    def _validate(self):
+        '''
+        Internal function to validate the transformer before applying all internal transformers.
+        '''
+        if self.f_labels is None:
+            raise NotFittedError('FeatureRepMix')
+
+        if not self.transformers:
+            return
+
+        names, transformers, _ = zip(*self.transformers)
+
+        # validate names
+        self._validate_names(names)
+
+        # validate transformers
+        for trans in transformers:
+            if not isinstance(trans, FeatureRep):
+                raise TypeError("All transformers must be an instance of FeatureRep."
+                                " '%s' (type %s) doesn't." % (trans, type(trans)))
+
+    def transform(self, X):
+        '''
+        Transform the segmented time series data into feature data.
+        If contextual data is included in X, it is returned with the feature data.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Segmented time series data and (optionally) contextual data
+
+        Returns
+        -------
+        X_new : array shape [n_series, ...]
+            Feature representation of segmented time series data and contextual data
+
+        '''
+        self._validate()
+
+        Xt, Xc = get_ts_data_parts(X)
+        check_array(Xt, dtype='numeric', ensure_2d=False, allow_nd=True)
+
+        # calculated features
+        fts = np.column_stack([trans.transform(self._select(Xt, cols))
+                               for _, trans, cols in self.transformers])
+        # contextual features
+        if Xc is not None:
+            fts = np.column_stack([fts, Xc])
+
+        return fts
+
+class FunctionTransformer(BaseEstimator, TransformerMixin):
+    '''
+    Transformer for applying a custom function to time series data.
+
+    Parameters
+    ----------
+    func : function, optional (default=None)
+        the function to be applied to Xt, the time series part of X (contextual variables Xc are
+        passed through unaltered) - X remains unchanged if no function is supplied
+    func_kwargs : dictionary, optional (default={})
+        keyword arguments to be passed to the function call
+
+    Returns
+    -------
+    self : object
+        returns self
+
+    Examples
+    --------
+
+    >>> from seglearn.transform import FunctionTransformer
+    >>> import numpy as np
+    >>>
+    >>> def choose_cols(Xt, cols):
+    >>>     return [time_series[:, cols] for time_series in Xt]
+    >>>
+    >>> X = [np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]),
+    >>>     np.array([[30, 40, 50], [60, 70, 80], [90, 100, 110]])]
+    >>> y = [np.array([True, False, False, True]),
+    >>>     np.array([False, True, False])]
+    >>> trans = FunctionTransformer(choose_cols, func_kwargs={"cols":[0,1]})
+    >>> X = trans.fit_transform(X, y)
+
+    '''
+
+    def __init__(self, func=None, func_kwargs={}):
+        self.func = func
+        self.func_kwargs = func_kwargs
+
+    def fit(self, X, y=None):
+        '''
+        Fit the transform
+
+        Parameters
+        ----------
+        X : array-like, shape [n_samples, ...]
+            time series data and (optionally) contextual data
+        y : None
+            there is no need of a target in a transformer, yet the pipeline API requires this
+
+        Returns
+        -------
+        self : object
+            returns self
+        '''
+        check_ts_data(X, y)
+        return self
+
+    def transform(self, X):
+        '''
+        Transforms the time series data based on the provided function. Note this transformation
+        must not change the number of samples in the data.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_samples, ...]
+            time series data and (optionally) contextual data
+
+        Returns
+        -------
+        Xt : array-like, shape [n_samples, ...]
+            transformed time series data
+
+        '''
+        if self.func is None:
+            return X
+        else:
+            Xt, Xc = get_ts_data_parts(X)
+            n_samples = len(Xt)
+            Xt = self.func(Xt, **self.func_kwargs)
+            if len(Xt) != n_samples:
+                raise ValueError("FunctionTransformer changes sample number (not supported).")
+            if Xc is not None:
+                Xt = TS_Data(Xt, Xc)
+            return Xt
