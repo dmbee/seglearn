@@ -101,8 +101,8 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+    overlap : float range [0,1]
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
@@ -231,8 +231,9 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1)
-        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+    overlap : float range [0,1]
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1
+        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample
     y_func : function
         returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
     shuffle : bool, optional
@@ -257,7 +258,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self._validate_params()
 
         self.step = int(self.width * (1. - self.overlap))
-        self.step = self.step if self.step >= 1 else 1
+        self.step = max(1, self.step)
 
     def _validate_params(self):
         if not self.width >= 1:
