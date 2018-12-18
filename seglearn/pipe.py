@@ -87,9 +87,6 @@ class Pype(Pipeline):
         self : Pipeline
             This estimator
         """
-        print("VV X len = " + str(len(X)))
-        print("VV y len = " + str(len(y)))
-
         Xt, yt, fit_params = self._fit(X, y, **fit_params)
 
         self.N_train = len(yt)
@@ -111,39 +108,22 @@ class Pype(Pipeline):
             step, param = pname.split('__', 1)
             fit_params_steps[step][param] = pval
 
-        print("VV1 X len = " + str(len(X)))
-        print("VV1 y len = " + str(len(y)))
-
         Xt = X
         yt = y
 
         # iterate through all but last
         for step_idx, (name, transformer) in enumerate(self.steps[:-1]):
             if transformer is None:
-                print("VV1 h1 = ")
                 pass
             else:
                 # not doing cloning for now...
                 if isinstance(transformer, XyTransformerMixin):
-                    #print("VV2 Xt[0].shape = " + str(Xt[0].shape))
-                    #print("VV2 yt[0].shape = " + str(yt[0].shape))
-                    #print("transformer = " + str(transformer))
                     Xt, yt, _ = transformer.fit_transform(Xt, yt, sample_weight=None,
                                                           **fit_params_steps[name])
-                    #print("VV2 after Xt[0].shape = " + str(Xt[0].shape))
-                    #print("VV2 after yt[0].shape = " + str(yt[0].shape))
-                    #print("VV2 after yt[0] = " + str(yt[0]))
                 else:
-                    #print("VV3 Xt[0].shape = " + str(Xt[0].shape))
-                    #print("VV3 yt[0].shape = " + str(yt[0].shape))
-                    #print("transformer = " + str(transformer))
                     Xt = transformer.fit_transform(Xt, yt, **fit_params_steps[name])
-                    #print("VV3 after Xt[0].shape = " + str(Xt[0].shape))
-                    #print("VV3 after yt[0].shape = " + str(yt[0].shape))
-                    #print("VV3 after yt[0] = " + str(yt[0]))
 
         if self._final_estimator is None:
-            print("VV1 h4 = ")
             return Xt, yt, {}
         return Xt, yt, fit_params_steps[self.steps[-1][0]]
 

@@ -4,8 +4,8 @@ This module is for loading time series data sets
 # Author: David Burns
 # License: BSD
 
-import numpy as np
 from os.path import dirname
+import numpy as np
 
 __all__ = ['load_watch','load_stacked_data']
 
