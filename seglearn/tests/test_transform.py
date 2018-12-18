@@ -353,7 +353,6 @@ def test_pad_trunc():
 
 
 def test_interp():
-    # univariate time series
     N = 100
     t = np.arange(N) + np.random.rand(N)
     X = [np.column_stack([t, np.random.rand(N)])]
@@ -365,7 +364,6 @@ def test_interp():
 
     assert len(Xc[0]) == N / 2
     assert len(yc[0]) == N / 2
-    assert np.ndim(Xc[0]) == 1
 
     y = [np.random.randint(0, 5, N)]
     interp = transform.Interp(5, kind='cubic', categorical_target=True)
@@ -374,35 +372,56 @@ def test_interp():
 
     assert len(Xc[0]) == N / 5
     assert len(yc[0]) == N / 5
-    assert np.ndim(Xc[0]) == 1
     assert np.all(np.isin(yc, np.arange(6)))
 
-    # multivariate time series
+
+def test_stacked_interp():
+    # Test 1
+    t = np.array([1.1, 1.2, 2.1, 3.3, 3.4, 3.5]).astype(float)
+    s = np.array([0, 1, 0, 0, 1, 1]).astype(float)
+    v1 = np.array([3, 4, 5, 7, 15, 25]).astype(float)
+    v2 = np.array([5, 7, 6, 9, 22, 35]).astype(float)
+    y = np.array([1, 2, 2, 2, 3, 3]).astype(float)
+    df = np.column_stack([t, s, v1, v2])
+
+    X = [df, df]
+    y = [y, y]
+    
+    stacked_interp = transform.StackedInterp(0.5)
+    stacked_interp.fit(X, y)
+    Xc, yc, swt = stacked_interp.transform(X, y)
+
+    # --Checks--
+    # linearly sampled time within bounds = 1.2, 1.7, 2.2, 2.7, 3.2 --> len(Xc[0]) = 5
+    assert len(Xc[0]) == 5
+    # Xc shape[1] = unique(s) * no. dimensions of values (V1) = 2 * 2 = 4
+    assert Xc[0].shape[1] == 4
+
+    # Test 2
     N = 100
-    D = 5
+    sample_period = 0.5
     t = np.arange(N) + np.random.rand(N)
-    X = [np.column_stack([t, np.random.rand(N,D)])]
-    y = [np.random.rand(N)]
+    s = np.array([1, 2] * int(N/2))
+    np.random.shuffle(s)
 
-    interp = transform.Interp(2)
-    interp.fit(X)
-    Xc, yc, swt = interp.transform(X, y)
+    v1 = np.arange(N) + np.random.rand(N)
+    v2 = np.arange(N) + np.random.rand(N)
+    v3 = np.arange(N) + np.random.rand(N)
+    df = np.column_stack([t, s, v1, v2, v3])
+    X = [df, df, df]
+    dm = np.arange(N) + np.random.rand(N)
+    y = [dm, dm, dm]
 
-    assert len(Xc[0]) == N / 2
-    assert len(yc[0]) == N / 2
-    assert Xc[0].shape[1] == D
+    stacked_interp = transform.StackedInterp(sample_period)
+    stacked_interp.fit(X, y)
 
-    y = [np.random.randint(0, 5, N)]
-    interp = transform.Interp(5, kind='cubic', categorical_target=True)
-    interp.fit(X, y)
-    Xc, yc, swt = interp.transform(X, y)
+    Xc, yc, swt = stacked_interp.transform(X, y)
+    
+    # --Checks--
+    assert Xc[0].shape[1] == len(np.unique(s)) * (X[0].shape[1]-2)
+    assert len(Xc[0]) <= N/sample_period
 
-    assert len(Xc[0]) == N / 5
-    assert len(yc[0]) == N / 5
-    assert Xc[0].shape[1] == D
-    assert np.all(np.isin(yc, np.arange(6)))
-
-
+    
 def test_feature_rep_mix():
     union = transform.FeatureRepMix([
         ('a', transform.FeatureRep(features={'mean': mean}), 0),
@@ -411,7 +430,7 @@ def test_feature_rep_mix():
         ('d', transform.FeatureRep(features={'mean': mean}), slice(0,2)),
         ('e', transform.FeatureRep(features={'mean': mean}), [False, False, True, True]),
     ])
-
+  
     # multivariate ts
     X = np.random.rand(100, 10, 4)
     y = np.ones(100)

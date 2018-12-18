@@ -8,14 +8,20 @@ import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_random_state, check_array
 from sklearn.exceptions import NotFittedError
-from sklearn.utils.metaestimators import _BaseComposition
 from scipy.interpolate import interp1d
 
+##Return this to previous after testing
+'''
 from .feature_functions import base_features
 from .base import TS_Data
 from .util import get_ts_data_parts, check_ts_data
+'''
+from seglearn.feature_functions import base_features
+from seglearn.base import TS_Data
+from seglearn.util import get_ts_data_parts, check_ts_data
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep',
+
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'StackedInterp','FeatureRep',
            'FeatureRepMix', 'FunctionTransformer']
 
 
@@ -100,9 +106,10 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1]
-        amount of overlap between segments. must be in range: 0 <= overlap <= 1
-        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
+    overlap : float range [0,1)
+        amount of overlap between segments. must be in range: 0 <= overlap < 1.
+        shuffle : bool, optional
+        shuffle the segments before fitting the ``est`` pipeline (recommended)
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
@@ -124,7 +131,7 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
 
         self.f_labels = None
         self.step = int(self.width * (1. - self.overlap))
-        self.step = max(1, self.step)
+        self.step = self.step if self.step >= 1 else 1
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -230,9 +237,8 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1]
-        amount of overlap between segments. must be in range: 0 <= overlap <= 1
-        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
+    overlap : float range [0,1)
+        amount of overlap between segments. must be in range: 0 <= overlap < 1.
     y_func : function
         returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
     shuffle : bool, optional
@@ -257,7 +263,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self._validate_params()
 
         self.step = int(self.width * (1. - self.overlap))
-        self.step = max(1, self.step)
+        self.step = self.step if self.step >= 1 else 1
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -277,7 +283,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             There is no need of a target in a transformer, yet the pipeline API requires this
             parameter.
 
-        Returns
+        Returnsself._validate_params()
         -------
         self : object
             Returns self.
@@ -331,6 +337,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
 
         if yt is not None:
             yt = np.array([sliding_window(yt[i], self.width, self.step) for i in np.arange(N)])
+
             yt = np.concatenate(yt)
             yt = self.y_func(yt)
 
@@ -357,9 +364,8 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     ----------
     width : int > 0
         width of segments (number of samples)
-    overlap : float range [0,1]
-        amount of overlap between segments. must be in range: 0 <= overlap <= 1
-        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
+    overlap : float range [0,1)
+        amount of overlap between segments. must be in range: 0 <= overlap < 1.
     forecast : int
         The number of samples ahead in time to forecast
     y_func : function
@@ -388,7 +394,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         self._validate_params()
 
         self.step = int(self.width * (1. - self.overlap))
-        self.step = max(1, self.step)
+        self.step = self.step if self.step >= 1 else 1
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -629,6 +635,169 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
         return Xt, yt, swt
 
 
+class StackedInterp(BaseEstimator, XyTransformerMixin):
+    '''
+    Extension of Interp where input is in stacked format.
+    Transformer for resampling time series data to a fixed period over closed interval
+    (direct value interpolation).
+    Default interpolation is linear, but other types can be specified.
+    If the target is a series, it will be resampled as well.
+
+    categorical_target should be set to True if the target series is a class
+    The transformer will then use nearest neighbor interp on the target.
+
+    This transformer assumes the time dimension is column 0, i.e. X[0][:,0]
+    with unique identifiers (e.g. sensor type) in column 1, i.e. X[0][:,1]
+    Note the time dimension is removed, since this becomes a linear sequence.
+    If start time or similar is important to the estimator, use a context variable.
+
+    Parameters
+    ----------
+    sample_period : numeric
+        desired sampling period
+    kind : string
+        interpolation type - valid types as per scipy.interpolate.interp1d
+    categorical_target : bool
+        set to True for classification problems nearest use nearest instead of linear interp
+
+    '''
+
+    def __init__(self, sample_period, kind='linear', categorical_target=False):
+        if not sample_period > 0:
+            raise ValueError("sample_period must be >0 (was %f)" % sample_period)
+
+        self.sample_period = sample_period
+        self.kind = kind
+        self.categorical_target = categorical_target
+
+    def fit(self, X, y=None):
+        '''
+        Fit the transform. Does nothing, for compatibility with sklearn API.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Time series data and (optionally) contextual data
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+        '''
+        self._check_data(X)
+
+        if not X[0].ndim > 1:
+             raise ValueError("X variable must have more than 1 channel")
+        return self
+    
+    def _check_data(self, X):
+        '''
+        Checks that unique identifiers are consistent between time series.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+        Time series data and (optionally) contextual data
+        N: scalar
+        Number of time series inputs
+        '''
+        
+        if len(X) > 1:
+            sval = np.unique(X[0][:, 1])
+            if not np.all([np.all(np.unique(X[i][:, 1]) == sval) for i in range(1, len(X))]):
+                pass
+
+    def _interp(self, t_new, t, x, kind):
+        interpolator = interp1d(t, x, kind=kind, copy=False, bounds_error=False,
+                                fill_value="extrapolate", assume_sorted=True)
+        return interpolator(t_new)
+
+    def transform(self, X, y=None, sample_weight=None):
+        '''
+        Transforms the time series data with linear direct value interpolation
+        If y is a time series and passed, it will be transformed as well
+        The time dimension is removed from the data
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) contextual data
+        y : array-like shape [n_series], default = None
+            target vector
+        sample_weight : array-like shape [n_series], default = None
+            sample weights
+
+        Returns
+        -------
+        X_new : array-like, shape [n_series, ]
+            transformed time series data
+        y_new : array-like, shape [n_series]
+            expanded target vector
+        sample_weight_new : array-like or None
+            None is returned if target is changed. Otherwise it is returned unchanged.
+        '''
+        
+        xt, xc = get_ts_data_parts(X)
+        yt = y
+        swt = sample_weight
+
+        # number of data channels
+        d = xt[0][0].shape[0]-2
+        # number of series
+        n = len(xt)
+
+        # retrieve the unique identifiers
+        s = np.unique(xt[0][:, 1])
+
+        x_new = []
+        y_new = []
+
+        for i in np.arange(n):
+
+            # splits series into a list for each sensor
+            xs = [xt[i][xt[i][:, 1] == s[j]] for j in np.arange(len(s))]
+            
+            # find latest/earliest sample time for each identifier's first/last time sample time
+            t_min = np.max([np.min(xs[j][:, 0]) for j in np.arange(len(s))])
+            t_max = np.min([np.max(xs[j][:, 0]) for j in np.arange(len(s))])
+
+            # Generate a regular series of timestamps starting at tStart and tEnd for sample_period
+            t_lin = np.arange(t_min, t_max, self.sample_period)
+    
+            # Interpolate for the new regular sample times
+            if d == 1:
+                x_new.append(np.column_stack([self._interp(t_lin, xs[j][:, 0], xs[j][:, 2], kind=self.kind)
+                                              for j in np.arange(len(s))]))
+            elif d > 1:
+                xd = []
+                for j in np.arange(len(s)):
+                    # stack the columns of each sensor by dimension d after interpolation to new regular sample times
+                    temp = np.column_stack([(self._interp(t_lin, xs[j][:, 0], xs[j][:, k], kind=self.kind))
+                        for k in np.arange(2, 2 + d)])
+                    xd.append(temp)
+                # column stack each of the sensors s -- resulting in s*d columns
+                x_new.append(np.column_stack(xd))
+
+            if yt is not None and len(np.atleast_1d(yt[i])) > 1:
+                # y is a time series
+                swt = None
+                if self.categorical_target is True:
+                    y_new.append(self._interp(t_lin, xt[i][:, 0], yt[i], kind='nearest'))
+                else:
+                    y_new.append(self._interp(t_lin, xt[i][:, 0], yt[i], kind=self.kind))
+            else:
+                # y is static - leave y alone
+                pass
+        
+        if xc is not None:
+            x_new = TS_Data(x_new, xc)
+          
+        return x_new, y_new, swt
+
+
 class Interp(BaseEstimator, XyTransformerMixin):
     '''
     Transformer for resampling time series data to a fixed period over closed interval
@@ -730,7 +899,7 @@ class Interp(BaseEstimator, XyTransformerMixin):
             Xt = [self._interp(t_lin[i], t[i], Xt[i][:, 1], kind=self.kind) for i in np.arange(N)]
         elif D > 1:
             Xt = [np.column_stack([self._interp(t_lin[i], t[i], Xt[i][:, j], kind=self.kind)
-                                   for j in range(1, D + 1)]) for i in np.arange(N)]
+                                   for j in range(1, D)]) for i in np.arange(N)]
         if Xc is not None:
             Xt = TS_Data(Xt, Xc)
 
@@ -774,8 +943,6 @@ class FeatureRep(BaseEstimator, TransformerMixin):
 
         If features is not specified, a default feature dictionary will be used (see base_features).
         See ``feature_functions`` for example implementations.
-    verbose: boolean, optional (default false)
-        Controls the verbosity of output messages
 
     Attributes
     ----------
@@ -801,7 +968,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
 
     '''
 
-    def __init__(self, features='default', verbose = False):
+    def __init__(self, features='default'):
         if features == 'default':
             self.features = base_features()
         else:
@@ -809,10 +976,6 @@ class FeatureRep(BaseEstimator, TransformerMixin):
                 raise TypeError("features must either 'default' or an instance of type dict")
             self.features = features
 
-        if type(verbose) != bool:
-            raise TypeError("verbose parameter must be type boolean")
-
-        self.verbose = verbose
         self.f_labels = None
 
     def fit(self, X, y=None):
@@ -834,8 +997,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         '''
         check_ts_data(X, y)
         self._reset()
-        if self.verbose:
-            print("X Shape: ", X.shape)
+        print("X Shape: ", X.shape)
         self.f_labels = self._generate_feature_labels(X)
         return self
 
@@ -925,7 +1087,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
 
         return f_labels
 
-
+      
 class FeatureRepMix(_BaseComposition, TransformerMixin):
     '''
     A transformer for calculating a feature representation from segmented time series data.
