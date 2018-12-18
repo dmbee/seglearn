@@ -21,7 +21,7 @@ from seglearn.base import TS_Data
 from seglearn.util import get_ts_data_parts, check_ts_data
 
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'StackedInterp','FeatureRep',
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'StackedInterp', 'FeatureRep',
            'FeatureRepMix', 'FunctionTransformer']
 
 
