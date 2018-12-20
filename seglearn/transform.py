@@ -233,7 +233,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         width of segments (number of samples)
     overlap : float range [0,1]
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
-        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample
+        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     y_func : function
         returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
     shuffle : bool, optional
