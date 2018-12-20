@@ -2,7 +2,7 @@
 ===========================
 Resampling Stacked Time Series Data
 ===========================
-This is a basic example illustrating the resampling of stacked format time series data
+This is a basic example illustrating the resampling of stacked format time series data.
 This may be useful for resampling irregularly sampled time series in stacked format, or for determining
 an optimal sampling frequency for the data
 '''
