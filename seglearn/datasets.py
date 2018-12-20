@@ -7,7 +7,7 @@ This module is for loading time series data sets
 from os.path import dirname
 import numpy as np
 
-__all__ = ['load_watch','load_stacked_data']
+__all__ = ['load_watch']
 
 
 def load_watch():
@@ -43,32 +43,4 @@ def load_watch():
     '''
     module_path = dirname(__file__)
     data = np.load(module_path + "/data/watch_dataset.npy").item()
-    return data
-
-def load_stacked_data():
-    '''
-    Loads 2 time series of 9-axis inertial sensor data. It is an unlabelled multivariate time series.
-
-    Returns
-    data: list, length 2
-        inertial sensor data, each element with shape [n_samples, 5]
-        irregularly sampled in time (base 50 Hz) and stacked from 3 inertial sensors indicated by integer value (1,2,3)
-
-    Examples
-    --------
-    >>> from seglearn.datasets import load_watch_stacked
-    >>> data = load_watch_stacked()
-    >>> print(data)
-    '''
-    
-    module_path = dirname(__file__)
-
-    data = []
-
-    data1 = np.loadtxt(module_path + "/data/U1-E1-L-1.csv", delimiter=',', skiprows=1, dtype=float)
-    data2 = np.loadtxt(module_path + "/data/U1-E2-L-1.csv", delimiter=',', skiprows=1, dtype=float)
-
-    data.append(data1)
-    data.append(data2)
-
     return data

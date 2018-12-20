@@ -632,9 +632,15 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
 
 class StackedInterp(BaseEstimator, XyTransformerMixin):
     '''
-    Extension of Interp where input is in stacked format.
-    Transformer for resampling time series data to a fixed period over closed interval
-    (direct value interpolation).
+    Extension of Interp where input is in stacked format. Transformer for resampling
+    time series data to a fixed period over closed interval (direct value interpolation).
+
+    Input data must be in at least 3 columns of type (time, var_type, var_value)
+    Additional columns are treated as additional channels of var_value
+    (e.g. time, var_type, var_value1, var_value2)
+
+    Each input time series must be consistent between var_types and var_value channel number.
+
     Default interpolation is linear, but other types can be specified.
     If the target is a series, it will be resampled as well.
 
@@ -643,7 +649,8 @@ class StackedInterp(BaseEstimator, XyTransformerMixin):
 
     This transformer assumes the time dimension is column 0, i.e. X[0][:,0]
     with unique identifiers (e.g. sensor type) in column 1, i.e. X[0][:,1]
-    Note the time dimension is removed, since this becomes a linear sequence.
+    Note the time dimension is removed, since this becomes a linear sequence, as well as the
+    var_value identifier.
     If start time or similar is important to the estimator, use a context variable.
 
     Parameters
@@ -683,27 +690,26 @@ class StackedInterp(BaseEstimator, XyTransformerMixin):
             Returns self.
         '''
         self._check_data(X)
-
-        if not X[0].ndim > 1:
-             raise ValueError("X variable must have more than 1 channel")
+        if not X[0].ndim >= 2:
+             raise ValueError("X input must be 2 dim array or greater")
         return self
     
     def _check_data(self, X):
         '''
-        Checks that unique identifiers are consistent between time series.
+        Checks that unique identifiers vaf_types are consistent between time series.
 
         Parameters
         ----------
         X : array-like, shape [n_series, ...]
-        Time series data and (optionally) contextual data
-        N: scalar
-        Number of time series inputs
+            Time series data and (optionally) contextual data
         '''
         
         if len(X) > 1:
             sval = np.unique(X[0][:, 1])
-            if not np.all([np.all(np.unique(X[i][:, 1]) == sval) for i in range(1, len(X))]):
+            if np.all([np.all(np.unique(X[i][:, 1]) == sval) for i in range(1, len(X))]):
                 pass
+            else:
+                raise ValueError("Unique identifier var_types not consistent between time series")
 
     def _interp(self, t_new, t, x, kind):
         interpolator = interp1d(t, x, kind=kind, copy=False, bounds_error=False,
@@ -734,7 +740,7 @@ class StackedInterp(BaseEstimator, XyTransformerMixin):
         sample_weight_new : array-like or None
             None is returned if target is changed. Otherwise it is returned unchanged.
         '''
-        
+        check_ts_data(X, y)
         xt, xc = get_ts_data_parts(X)
         yt = y
         swt = sample_weight
