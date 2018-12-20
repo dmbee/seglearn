@@ -15,8 +15,9 @@ from .feature_functions import base_features
 from .base import TS_Data
 from .util import get_ts_data_parts, check_ts_data
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'Interp', 'FeatureRep',
-           'FeatureRepMix', 'FunctionTransformer']
+
+__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'StackedInterp', 'Interp',
+           'FeatureRep', 'FeatureRepMix', 'FunctionTransformer']
 
 
 class XyTransformerMixin(object):
@@ -627,6 +628,175 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
             yt = np.array(yt)
 
         return Xt, yt, swt
+
+
+class StackedInterp(BaseEstimator, XyTransformerMixin):
+    '''
+    Extension of Interp where input is in stacked format. Transformer for resampling
+    time series data to a fixed period over closed interval (direct value interpolation).
+
+    Input data must be in at least 3 columns of type (time, var_type, var_value)
+    Additional columns are treated as additional channels of var_value
+    (e.g. time, var_type, var_value1, var_value2)
+
+    Each input time series must be consistent between var_types and var_value channel number.
+
+    Default interpolation is linear, but other types can be specified.
+    If the target is a series, it will be resampled as well.
+
+    categorical_target should be set to True if the target series is a class
+    The transformer will then use nearest neighbor interp on the target.
+
+    This transformer assumes the time dimension is column 0, i.e. X[0][:,0]
+    with unique identifiers (e.g. sensor type) in column 1, i.e. X[0][:,1]
+    Note the time dimension is removed, since this becomes a linear sequence, as well as the
+    var_value identifier.
+    If start time or similar is important to the estimator, use a context variable.
+
+    Parameters
+    ----------
+    sample_period : numeric
+        desired sampling period
+    kind : string
+        interpolation type - valid types as per scipy.interpolate.interp1d
+    categorical_target : bool
+        set to True for classification problems nearest use nearest instead of linear interp
+
+    '''
+
+    def __init__(self, sample_period, kind='linear', categorical_target=False):
+        if not sample_period > 0:
+            raise ValueError("sample_period must be >0 (was %f)" % sample_period)
+
+        self.sample_period = sample_period
+        self.kind = kind
+        self.categorical_target = categorical_target
+
+    def fit(self, X, y=None):
+        '''
+        Fit the transform. Does nothing, for compatibility with sklearn API.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Time series data and (optionally) contextual data
+        y : None
+            There is no need of a target in a transformer, yet the pipeline API requires this
+            parameter.
+
+        Returns
+        -------
+        self : object
+            Returns self.
+        '''
+        self._check_data(X)
+        if not X[0].ndim >= 2:
+             raise ValueError("X input must be 2 dim array or greater")
+        return self
+    
+    def _check_data(self, X):
+        '''
+        Checks that unique identifiers vaf_types are consistent between time series.
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+            Time series data and (optionally) contextual data
+        '''
+        
+        if len(X) > 1:
+            sval = np.unique(X[0][:, 1])
+            if np.all([np.all(np.unique(X[i][:, 1]) == sval) for i in range(1, len(X))]):
+                pass
+            else:
+                raise ValueError("Unique identifier var_types not consistent between time series")
+
+    def _interp(self, t_new, t, x, kind):
+        interpolator = interp1d(t, x, kind=kind, copy=False, bounds_error=False,
+                                fill_value="extrapolate", assume_sorted=True)
+        return interpolator(t_new)
+
+    def transform(self, X, y=None, sample_weight=None):
+        '''
+        Transforms the time series data with linear direct value interpolation
+        If y is a time series and passed, it will be transformed as well
+        The time dimension is removed from the data
+
+        Parameters
+        ----------
+        X : array-like, shape [n_series, ...]
+           Time series data and (optionally) contextual data
+        y : array-like shape [n_series], default = None
+            target vector
+        sample_weight : array-like shape [n_series], default = None
+            sample weights
+
+        Returns
+        -------
+        X_new : array-like, shape [n_series, ]
+            transformed time series data
+        y_new : array-like, shape [n_series]
+            expanded target vector
+        sample_weight_new : array-like or None
+            None is returned if target is changed. Otherwise it is returned unchanged.
+        '''
+        check_ts_data(X, y)
+        xt, xc = get_ts_data_parts(X)
+        yt = y
+        swt = sample_weight
+
+        # number of data channels
+        d = xt[0][0].shape[0]-2
+        # number of series
+        n = len(xt)
+
+        # retrieve the unique identifiers
+        s = np.unique(xt[0][:, 1])
+
+        x_new = []
+        y_new = []
+
+        for i in np.arange(n):
+
+            # splits series into a list for each sensor
+            xs = [xt[i][xt[i][:, 1] == s[j]] for j in np.arange(len(s))]
+            
+            # find latest/earliest sample time for each identifier's first/last time sample time
+            t_min = np.max([np.min(xs[j][:, 0]) for j in np.arange(len(s))])
+            t_max = np.min([np.max(xs[j][:, 0]) for j in np.arange(len(s))])
+
+            # Generate a regular series of timestamps starting at tStart and tEnd for sample_period
+            t_lin = np.arange(t_min, t_max, self.sample_period)
+    
+            # Interpolate for the new regular sample times
+            if d == 1:
+                x_new.append(np.column_stack([self._interp(t_lin, xs[j][:, 0], xs[j][:, 2], kind=self.kind)
+                                              for j in np.arange(len(s))]))
+            elif d > 1:
+                xd = []
+                for j in np.arange(len(s)):
+                    # stack the columns of each sensor by dimension d after interpolation to new regular sample times
+                    temp = np.column_stack([(self._interp(t_lin, xs[j][:, 0], xs[j][:, k], kind=self.kind))
+                        for k in np.arange(2, 2 + d)])
+                    xd.append(temp)
+                # column stack each of the sensors s -- resulting in s*d columns
+                x_new.append(np.column_stack(xd))
+
+            if yt is not None and len(np.atleast_1d(yt[i])) > 1:
+                # y is a time series
+                swt = None
+                if self.categorical_target is True:
+                    y_new.append(self._interp(t_lin, xt[i][:, 0], yt[i], kind='nearest'))
+                else:
+                    y_new.append(self._interp(t_lin, xt[i][:, 0], yt[i], kind=self.kind))
+            else:
+                # y is static - leave y alone
+                pass
+        
+        if xc is not None:
+            x_new = TS_Data(x_new, xc)
+          
+        return x_new, y_new, swt
 
 
 class Interp(BaseEstimator, XyTransformerMixin):
