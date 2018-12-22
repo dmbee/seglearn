@@ -403,7 +403,7 @@ def test_interp():
     assert np.all(np.isin(yc, np.arange(6)))
 
 
-def test_stacked_interp():
+def test_interp_long_to_wide():
     # Test 1
     t = np.array([1.1, 1.2, 2.1, 3.3, 3.4, 3.5]).astype(float)
     s = np.array([0, 1, 0, 0, 1, 1]).astype(float)
@@ -415,7 +415,7 @@ def test_stacked_interp():
     X = [df, df]
     y = [y, y]
     
-    stacked_interp = transform.StackedInterp(0.5)
+    stacked_interp = transform.InterpLongToWide(0.5)
     stacked_interp.fit(X, y)
     Xc, yc, swt = stacked_interp.transform(X, y)
 
@@ -424,8 +424,15 @@ def test_stacked_interp():
     assert len(Xc[0]) == 5
     # Xc shape[1] = unique(s) * no. dimensions of values (V1) = 2 * 2 = 4
     assert Xc[0].shape[1] == 4
+    assert swt is None
 
     # Test 2
+    y = [1,2]
+    stacked_interp.fit(X, y)
+    Xc, yc, swt = stacked_interp.transform(X, y)
+    assert np.array_equal(yc, y)
+
+    # Test 3
     N = 100
     sample_period = 0.5
     t = np.arange(N) + np.random.rand(N)
@@ -440,7 +447,7 @@ def test_stacked_interp():
     dm = np.arange(N) + np.random.rand(N)
     y = [dm, dm, dm]
 
-    stacked_interp = transform.StackedInterp(sample_period)
+    stacked_interp = transform.InterpLongToWide(sample_period)
     stacked_interp.fit(X, y)
 
     Xc, yc, swt = stacked_interp.transform(X, y)
