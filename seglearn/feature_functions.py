@@ -236,6 +236,8 @@ class hist(object):
 
         return histogram
 
+    def __repr__(self):
+        return "%s(bins=%s)" % (self.__class__.__name__, self.bins)
 
 def corr2(X):
     ''' computes correlations between all variable pairs in a segmented time series
@@ -273,6 +275,8 @@ class zero_crossing(object):
         sign = np.heaviside(-1 * X[:,:-1] * X[:,1:], 0)
         abs_diff = np.abs(np.diff(X, axis=1))
         return np.sum(sign * abs_diff > self.threshold, axis=1, dtype=X.dtype)
+    def __repr__(self):
+        return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
 
 
 class slope_sign_changes(object):
@@ -283,6 +287,8 @@ class slope_sign_changes(object):
     def __call__(self, X):
         change = (X[:,1:-1] - X[:,:-2]) * (X[:,1:-1] - X[:,2:])
         return np.sum(change > self.threshold, axis=1, dtype=X.dtype)
+    def __repr__(self):
+        return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
 
 
 def waveform_length(X):
@@ -311,3 +317,5 @@ class willison_amplitude(object):
     def __call__(self, X):
         segment_size = X.shape[1]
         return np.sum(np.abs(np.diff(X, axis=1)) > self.threshold, axis=1)
+    def __repr__(self):
+        return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
