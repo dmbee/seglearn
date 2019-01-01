@@ -236,6 +236,9 @@ class hist(object):
 
         return histogram
 
+    def __repr__(self):
+        return "%s(bins=%s)" % (self.__class__.__name__, self.bins)
+
 
 def corr2(X):
     ''' computes correlations between all variable pairs in a segmented time series
@@ -267,22 +270,32 @@ def mean_abs(X):
 class zero_crossing(object):
     ''' number of zero crossings among two consecutive samples above a certain threshold for each
     variable in the segmented time series'''
+
     def __init__(self, threshold=0):
         self.threshold = threshold
+
     def __call__(self, X):
-        sign = np.heaviside(-1 * X[:,:-1] * X[:,1:], 0)
+        sign = np.heaviside(-1 * X[:, :-1] * X[:, 1:], 0)
         abs_diff = np.abs(np.diff(X, axis=1))
         return np.sum(sign * abs_diff > self.threshold, axis=1, dtype=X.dtype)
+
+    def __repr__(self):
+        return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
 
 
 class slope_sign_changes(object):
     ''' number of changes between positive and negative slope among three consecutive samples
     above a certain threshold for each variable in the segmented time series'''
-    def __init__(self,threshold=0):
+
+    def __init__(self, threshold=0):
         self.threshold = threshold
+
     def __call__(self, X):
-        change = (X[:,1:-1] - X[:,:-2]) * (X[:,1:-1] - X[:,2:])
+        change = (X[:, 1:-1] - X[:, :-2]) * (X[:, 1:-1] - X[:, 2:])
         return np.sum(change > self.threshold, axis=1, dtype=X.dtype)
+
+    def __repr__(self):
+        return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
 
 
 def waveform_length(X):
@@ -306,8 +319,13 @@ def emg_var(X):
 
 class willison_amplitude(object):
     ''' the Willison amplitude for each variable in the segmented time series '''
+
     def __init__(self, threshold=0):
         self.threshold = threshold
+
     def __call__(self, X):
         segment_size = X.shape[1]
         return np.sum(np.abs(np.diff(X, axis=1)) > self.threshold, axis=1)
+
+    def __repr__(self):
+        return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
