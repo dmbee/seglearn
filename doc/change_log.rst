@@ -3,6 +3,7 @@ Change Log
 
 Version 1.0.6
 
+* ``__repr__`` defined for callable feature classes
 * ``FunctionTransformer`` contributed by Matthias Gazzari
 * __repr__ attributed added to ``TemporalKFold`` by Matthias Gazzari
 * ``InterpLongToWide`` contributed by Philip Boyer
