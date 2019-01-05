@@ -17,17 +17,21 @@ def test_sliding_window():
     ts = np.random.rand(N)
     for step in 1 + np.arange(width):
         sts = transform.sliding_window(ts, width, step)
-        assert sts.shape[1] == width
+        sts_c = transform.sliding_window(ts, width, step, 'C')
+        assert sts.flags.f_contiguous and sts_c.flags.c_contiguous
+        assert sts.shape[1] == width and sts_c.shape[1] == width
         Nsts = 1 + (N - width) // step
-        assert Nsts == sts.shape[0]
-        assert np.all(np.isin(sts, ts))
+        assert Nsts == sts.shape[0] and Nsts == sts_c.shape[0]
+        assert np.all(np.isin(sts, ts)) and np.all(np.isin(sts_c, ts))
 
         # reconstruct the ts
         if step == 1:
             assert np.array_equal(np.concatenate((sts[:, 0], sts[-1, 1:width])), ts)
+            assert np.array_equal(np.concatenate((sts_c[:, 0], sts_c[-1, 1:width])), ts)
 
         if step == width:
             assert np.array_equal(sts.ravel(), ts)
+            assert np.array_equal(sts_c.ravel(), ts)
 
 
 def test_sliding_tensor():
@@ -46,6 +50,18 @@ def test_sliding_tensor():
 
         # todo: reconstruct tensor ts
 
+    final_tensor = []
+    for step in 1 + np.arange(width):
+        sts = transform.sliding_tensor(ts, width, step, 'C')
+        final_tensor.append(sts)
+        assert sts.flags.c_contiguous
+        assert sts.shape[1] == width
+        assert sts.shape[2] == V
+        Nsts = 1 + (N - width) // step
+        assert Nsts == sts.shape[0]
+        for j in range(V):
+            assert np.all(np.isin(sts[:, :, j], ts[:, j]))
+    assert np.concatenate(final_tensor).flags.c_contiguous
 
 def test_feature_rep():
     # multivariate ts
