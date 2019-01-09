@@ -122,9 +122,9 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         self.random_state = random_state
         self._validate_params()
 
-        self.f_labels = None
-        self.step = int(self.width * (1. - self.overlap))
-        self.step = max(1, self.step)
+    @property
+    def step(self):
+        return max(1, int(self.width * (1. - self.overlap)))
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -256,8 +256,9 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self.random_state = random_state
         self._validate_params()
 
-        self.step = int(self.width * (1. - self.overlap))
-        self.step = max(1, self.step)
+    @property
+    def step(self):
+        return max(1, int(self.width * (1. - self.overlap)))
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -387,8 +388,9 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         self.random_state = random_state
         self._validate_params()
 
-        self.step = int(self.width * (1. - self.overlap))
-        self.step = max(1, self.step)
+    @property
+    def step(self):
+        return max(1, int(self.width * (1. - self.overlap)))
 
     def _validate_params(self):
         if not self.width >= 1:
