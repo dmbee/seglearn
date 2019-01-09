@@ -103,6 +103,8 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     overlap : float range [0,1]
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
+    step : int range [1, width] (default=None)
+        number of samples to advance adjacent segments (note: this takes precedence over overlap)
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
@@ -120,23 +122,32 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     separate fit and predict overlap parameters
     '''
 
-    def __init__(self, width=100, overlap=0.5, shuffle=False, random_state=None, order='F'):
+    def __init__(self, width=100, overlap=0.5, step=None, shuffle=False, random_state=None,
+                 order='F'):
         self.width = width
-        self.overlap = overlap
+        self.overlap = overlap if step is None else None
+        self.step = step
         self.shuffle = shuffle
         self.random_state = random_state
         self.order = order
         self._validate_params()
 
     @property
-    def step(self):
-        return max(1, int(self.width * (1. - self.overlap)))
+    def _step(self):
+        if self.step is not None:
+            return self.step
+        else:
+            return max(1, int(self.width * (1. - self.overlap)))
 
     def _validate_params(self):
         if not self.width >= 1:
             raise ValueError("width must be >=1 (was %d)" % self.width)
-        if not (self.overlap >= 0.0 and self.overlap <= 1.0):
+        if self.overlap is not None and not (self.overlap >= 0.0 and self.overlap <= 1.0):
             raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
+        if self.step is not None and not (self.step >= 1 and self.step <= self.width):
+            raise ValueError('step must be >=1 and <=width=%s (was %s)' % (self.width, self.step))
+        if self.overlap is None and self.step is None:
+            raise ValueError('Either overlap or step must be set to a valid number')
         if not self.order in ('C', 'F'):
             raise ValueError('order must be either "C" or "F" (was %s' % self.order)
 
@@ -195,10 +206,10 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width, self.step, self.order)
+            Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
                            for i in np.arange(N)])
         else:
-            Xt = np.array([sliding_window(Xt[i], self.width, self.step, self.order)
+            Xt = np.array([sliding_window(Xt[i], self.width, self._step, self.order)
                            for i in np.arange(N)])
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
@@ -243,6 +254,8 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     overlap : float range [0,1]
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
+    step : int range [1, width] (default=None)
+        number of samples to advance adjacent segments (note: this takes precedence over overlap)
     y_func : function
         returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
     shuffle : bool, optional
@@ -263,10 +276,11 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Returns self.
     '''
 
-    def __init__(self, width=100, overlap=0.5, y_func=last, shuffle=False, random_state=None,
-                 order='F'):
+    def __init__(self, width=100, overlap=0.5, step=None, y_func=last, shuffle=False,
+                 random_state=None, order='F'):
         self.width = width
-        self.overlap = overlap
+        self.overlap = overlap if step is None else None
+        self.step = step
         self.y_func = y_func
         self.shuffle = shuffle
         self.random_state = random_state
@@ -274,14 +288,21 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         self._validate_params()
 
     @property
-    def step(self):
-        return max(1, int(self.width * (1. - self.overlap)))
+    def _step(self):
+        if self.step is not None:
+            return self.step
+        else:
+            return max(1, int(self.width * (1. - self.overlap)))
 
     def _validate_params(self):
         if not self.width >= 1:
             raise ValueError("width must be >=1 (was %d)" % self.width)
-        if not (self.overlap >= 0.0 and self.overlap <= 1.0):
+        if self.overlap is not None and not (self.overlap >= 0.0 and self.overlap <= 1.0):
             raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
+        if self.step is not None and not (self.step >= 1 and self.step <= self.width):
+            raise ValueError('step must be >=1 and <=width=%s (was %s)' % (self.width, self.step))
+        if self.overlap is None and self.step is None:
+            raise ValueError('Either overlap or step must be set to a valid number')
         if not self.order in ('C', 'F'):
             raise ValueError('order must be either "C" or "F" (was %s' % self.order)
 
@@ -338,10 +359,10 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width, self.step, self.order)
+            Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
                            for i in np.arange(N)])
         else:
-            Xt = np.array([sliding_window(Xt[i], self.width, self.step, self.order)
+            Xt = np.array([sliding_window(Xt[i], self.width, self._step, self.order)
                            for i in np.arange(N)])
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
@@ -352,7 +373,7 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             Xt = TS_Data(Xt, Xc)
 
         if yt is not None:
-            yt = np.array([sliding_window(yt[i], self.width, self.step, self.order)
+            yt = np.array([sliding_window(yt[i], self.width, self._step, self.order)
                            for i in np.arange(N)])
             yt = np.concatenate(yt)
             yt = self.y_func(yt)
@@ -383,6 +404,8 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     overlap : float range [0,1]
         amount of overlap between segments. must be in range: 0 <= overlap <= 1
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
+    step : int range [1, width] (default=None)
+        number of samples to advance adjacent segments (note: this takes precedence over overlap)
     forecast : int
         The number of samples ahead in time to forecast
     y_func : function
@@ -405,10 +428,11 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         Returns self.
     '''
 
-    def __init__(self, width=100, overlap=0.5, forecast=10, y_func=last, shuffle=False,
+    def __init__(self, width=100, overlap=0.5, step=None, forecast=10, y_func=last, shuffle=False,
                  random_state=None, order='F'):
         self.width = width
-        self.overlap = overlap
+        self.overlap = overlap if step is None else None
+        self.step = step
         self.forecast = forecast
         self.y_func = y_func
         self.shuffle = shuffle
@@ -417,14 +441,21 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         self._validate_params()
 
     @property
-    def step(self):
-        return max(1, int(self.width * (1. - self.overlap)))
+    def _step(self):
+        if self.step is not None:
+            return self.step
+        else:
+            return max(1, int(self.width * (1. - self.overlap)))
 
     def _validate_params(self):
         if not self.width >= 1:
             raise ValueError("width must be >=1 (was %d)" % self.width)
-        if not (self.overlap >= 0.0 and self.overlap <= 1.0):
+        if self.overlap is not None and not (self.overlap >= 0.0 and self.overlap <= 1.0):
             raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
+        if self.step is not None and not (self.step >= 1 and self.step <= self.width):
+            raise ValueError('step must be >=1 and <=width=%s (was %s)' % (self.width, self.step))
+        if self.overlap is None and self.step is None:
+            raise ValueError('Either overlap or step must be set to a valid number')
         if not self.forecast >= 1:
             raise ValueError("forecase must be >=1 (was %d)" % self.forecast)
         if not self.order in ('C', 'F'):
@@ -485,10 +516,10 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width + self.forecast, self.step, self.order)
+            Xt = np.array([sliding_tensor(Xt[i], self.width + self.forecast, self._step, self.order)
                            for i in np.arange(N)])
         else:
-            Xt = np.array([sliding_window(Xt[i], self.width + self.forecast, self.step, self.order)
+            Xt = np.array([sliding_window(Xt[i], self.width + self.forecast, self._step, self.order)
                            for i in np.arange(N)])
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
@@ -502,7 +533,7 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
             Xt = TS_Data(Xt, Xc)
 
         if yt is not None:
-            yt = np.array([sliding_window(yt[i], self.width + self.forecast, self.step, self.order)
+            yt = np.array([sliding_window(yt[i], self.width + self.forecast, self._step, self.order)
                            for i in np.arange(N)])
             yt = np.concatenate(yt)
             yt = yt[:, self.width:(self.width + self.forecast)]  # target y
