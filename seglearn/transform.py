@@ -109,17 +109,23 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         Randomized segment shuffling will return different results for each call to
         ``transform``. If you have set ``shuffle`` to True and want the same result
         with each call to ``fit``, set ``random_state`` to an integer.
+    order : str, optional (default='F')
+        Determines the index order of the segmented time series. 'C' means C-like index order (first
+        index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
+        'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
+        feature representations.
 
     Todo
     ----
     separate fit and predict overlap parameters
     '''
 
-    def __init__(self, width=100, overlap=0.5, shuffle=False, random_state=None):
+    def __init__(self, width=100, overlap=0.5, shuffle=False, random_state=None, order='F'):
         self.width = width
         self.overlap = overlap
         self.shuffle = shuffle
         self.random_state = random_state
+        self.order = order
         self._validate_params()
 
         self.f_labels = None
@@ -131,6 +137,8 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
             raise ValueError("width must be >=1 (was %d)" % self.width)
         if not (self.overlap >= 0.0 and self.overlap <= 1.0):
             raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
+        if not self.order in ('C', 'F'):
+            raise ValueError('order must be either "C" or "F" (was %s' % self.order)
 
     def fit(self, X, y=None):
         '''
@@ -187,9 +195,11 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width, self.step) for i in np.arange(N)])
+            Xt = np.array([sliding_tensor(Xt[i], self.width, self.step, self.order)
+                           for i in np.arange(N)])
         else:
-            Xt = np.array([sliding_window(Xt[i], self.width, self.step) for i in np.arange(N)])
+            Xt = np.array([sliding_window(Xt[i], self.width, self.step, self.order)
+                           for i in np.arange(N)])
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
         Xt = np.concatenate(Xt)
@@ -241,6 +251,11 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Randomized segment shuffling will return different results for each call to ``transform``.
         If you have set ``shuffle`` to True and want the same result with each call to ``fit``,
         set ``random_state`` to an integer.
+    order : str, optional (default='F')
+        Determines the index order of the segmented time series. 'C' means C-like index order (first
+        index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
+        'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
+        feature representations.
 
     Returns
     -------
@@ -248,12 +263,14 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         Returns self.
     '''
 
-    def __init__(self, width=100, overlap=0.5, y_func=last, shuffle=False, random_state=None):
+    def __init__(self, width=100, overlap=0.5, y_func=last, shuffle=False, random_state=None,
+                 order='F'):
         self.width = width
         self.overlap = overlap
         self.y_func = y_func
         self.shuffle = shuffle
         self.random_state = random_state
+        self.order = order
         self._validate_params()
 
         self.step = int(self.width * (1. - self.overlap))
@@ -264,6 +281,8 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             raise ValueError("width must be >=1 (was %d)" % self.width)
         if not (self.overlap >= 0.0 and self.overlap <= 1.0):
             raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
+        if not self.order in ('C', 'F'):
+            raise ValueError('order must be either "C" or "F" (was %s' % self.order)
 
     def fit(self, X, y=None):
         '''
@@ -318,9 +337,11 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
         N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width, self.step) for i in np.arange(N)])
+            Xt = np.array([sliding_tensor(Xt[i], self.width, self.step, self.order)
+                           for i in np.arange(N)])
         else:
-            Xt = np.array([sliding_window(Xt[i], self.width, self.step) for i in np.arange(N)])
+            Xt = np.array([sliding_window(Xt[i], self.width, self.step, self.order)
+                           for i in np.arange(N)])
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
         Xt = np.concatenate(Xt)
@@ -330,7 +351,8 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
             Xt = TS_Data(Xt, Xc)
 
         if yt is not None:
-            yt = np.array([sliding_window(yt[i], self.width, self.step) for i in np.arange(N)])
+            yt = np.array([sliding_window(yt[i], self.width, self.step, self.order)
+                           for i in np.arange(N)])
             yt = np.concatenate(yt)
             yt = self.y_func(yt)
 
@@ -370,6 +392,11 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         Randomized segment shuffling will return different results for each call to ``transform``.
         If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set
         ``random_state`` to an integer.
+    order : str, optional (default='F')
+        Determines the index order of the segmented time series. 'C' means C-like index order (first
+        index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
+        'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
+        feature representations.
 
     Returns
     -------
@@ -378,13 +405,14 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     '''
 
     def __init__(self, width=100, overlap=0.5, forecast=10, y_func=last, shuffle=False,
-                 random_state=None):
+                 random_state=None, order='F'):
         self.width = width
         self.overlap = overlap
         self.forecast = forecast
         self.y_func = y_func
         self.shuffle = shuffle
         self.random_state = random_state
+        self.order = order
         self._validate_params()
 
         self.step = int(self.width * (1. - self.overlap))
@@ -397,6 +425,8 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
             raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
         if not self.forecast >= 1:
             raise ValueError("forecase must be >=1 (was %d)" % self.forecast)
+        if not self.order in ('C', 'F'):
+            raise ValueError('order must be either "C" or "F" (was %s' % self.order)
 
     def fit(self, X=None, y=None):
         '''
@@ -453,11 +483,11 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
         N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width + self.forecast, self.step) for i in
-                           np.arange(N)])
+            Xt = np.array([sliding_tensor(Xt[i], self.width + self.forecast, self.step, self.order)
+                           for i in np.arange(N)])
         else:
-            Xt = np.array([sliding_window(Xt[i], self.width + self.forecast, self.step) for i in
-                           np.arange(N)])
+            Xt = np.array([sliding_window(Xt[i], self.width + self.forecast, self.step, self.order)
+                           for i in np.arange(N)])
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
         Xt = np.concatenate(Xt)
@@ -470,8 +500,8 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
             Xt = TS_Data(Xt, Xc)
 
         if yt is not None:
-            yt = np.array([sliding_window(yt[i], self.width + self.forecast, self.step) for i in
-                           np.arange(N)])
+            yt = np.array([sliding_window(yt[i], self.width + self.forecast, self.step, self.order)
+                           for i in np.arange(N)])
             yt = np.concatenate(yt)
             yt = yt[:, self.width:(self.width + self.forecast)]  # target y
             yt = self.y_func(yt)
@@ -489,7 +519,7 @@ def expand_variables_to_segments(v, Nt):
     return np.concatenate([np.full((Nt[i], N_v), v[i]) for i in np.arange(len(v))])
 
 
-def sliding_window(time_series, width, step):
+def sliding_window(time_series, width, step, order='F'):
     '''
     Segments univariate time series with sliding window
 
@@ -508,10 +538,14 @@ def sliding_window(time_series, width, step):
         resampled time series segments
     '''
     w = np.hstack(time_series[i:1 + i - width or None:step] for i in range(0, width))
-    return w.reshape((int(len(w) / width), width), order='F')
+    result = w.reshape((int(len(w) / width), width), order='F')
+    if order == 'F':
+        return result
+    else:
+        return np.ascontiguousarray(result)
 
 
-def sliding_tensor(mv_time_series, width, step):
+def sliding_tensor(mv_time_series, width, step, order='F'):
     '''
     segments multivariate time series with sliding window
 
@@ -530,7 +564,7 @@ def sliding_tensor(mv_time_series, width, step):
         segmented multivariate time series data
     '''
     D = mv_time_series.shape[1]
-    data = [sliding_window(mv_time_series[:, j], width, step) for j in range(D)]
+    data = [sliding_window(mv_time_series[:, j], width, step, order) for j in range(D)]
     return np.stack(data, axis=2)
 
 
