@@ -55,7 +55,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 
 # create a segment learning pipeline
 width = 100
-pipe = Pype([('seg', SegmentX()),
+pipe = Pype([('seg', SegmentX(order='C')),
              ('crnn', KerasClassifier(build_fn=crnn_model, epochs=5, batch_size=256,
                                       verbose=0, validation_split=0.2))])
 

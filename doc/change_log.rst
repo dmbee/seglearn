@@ -3,6 +3,7 @@ Change Log
 
 Version 1.0.6
 
+* ``order`` parameter defined for Segment transformers. Using 'C' ordering speeds up ANN computations.
 * ``__repr__`` defined for callable feature classes
 * ``FunctionTransformer`` contributed by Matthias Gazzari
 * __repr__ attributed added to ``TemporalKFold`` by Matthias Gazzari

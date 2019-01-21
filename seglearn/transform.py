@@ -112,6 +112,8 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
     order : str, optional (default='F')
         Determines the index order of the segmented time series. 'C' means C-like index order (first
         index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
+        'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
+        feature representations.
 
     Todo
     ----
@@ -252,6 +254,8 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
     order : str, optional (default='F')
         Determines the index order of the segmented time series. 'C' means C-like index order (first
         index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
+        'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
+        feature representations.
 
     Returns
     -------
@@ -391,6 +395,8 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
     order : str, optional (default='F')
         Determines the index order of the segmented time series. 'C' means C-like index order (first
         index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
+        'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
+        feature representations.
 
     Returns
     -------
