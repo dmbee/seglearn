@@ -61,8 +61,8 @@ Valid Sequence Data Representations
 
 Time series data can be represented as a list or array of arrays as follows::
 
+    >>> from numpy import array
     >>> from numpy.random import rand
-    >>> from np import array
 
     >>> # multivariate time series data: (N = 3, variables = 5)
     >>> X = [rand(100,5), rand(200,5), rand(50,5)]
