@@ -15,7 +15,6 @@ install:
   - pip install .
   - pip install 'pytest>=3.6'
   - pip install pytest-cov coverage coveralls
-  - pip install travis-sphinx
 
 script:
   - pytest --cov seglearn
