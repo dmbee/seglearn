@@ -87,7 +87,7 @@ Setup
 
     # create a segment learning pipeline
     width = 100
-    pipe = Pype([('seg', SegmentX()),
+    pipe = Pype([('seg', SegmentX(order='C')),
                  ('crnn', KerasClassifier(build_fn=crnn_model, epochs=5, batch_size=256,
                                           verbose=0, validation_split=0.2))])
 
@@ -127,11 +127,11 @@ Accessing training history
  .. code-block:: none
 
     val_loss    ...          acc
-    0  2.041546    ...     0.121492
-    1  1.943124    ...     0.162700
-    2  1.893089    ...     0.219538
-    3  1.858942    ...     0.245115
-    4  1.820395    ...     0.273535
+    0  2.041565    ...     0.121492
+    1  1.943131    ...     0.162700
+    2  1.893084    ...     0.219538
+    3  1.858945    ...     0.245115
+    4  1.820433    ...     0.273535
 
     [5 rows x 4 columns]
 
@@ -159,7 +159,7 @@ Training Curves
 
 
 
-**Total running time of the script:** ( 2 minutes  33.106 seconds)
+**Total running time of the script:** ( 2 minutes  3.000 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:
