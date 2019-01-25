@@ -13,7 +13,8 @@ install:
   - pip install scipy
   - pip install -r requirements.txt
   - pip install .
-  - pip install pytest pytest-cov coverage coveralls
+  - pip install 'pytest>=3.6'
+  - pip install pytest-cov coverage coveralls
   - pip install travis-sphinx
 
 script:
