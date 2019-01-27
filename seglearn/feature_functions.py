@@ -90,7 +90,6 @@ def hudgins_features(threshold=0):
     '''Return a dict of Hudgin's time domain features used for EMG time series classification.'''
     return {
         'mean_abs_value': mean_abs,
-        'mean_abs_value_slope': means_abs_diff,
         'zero_crossings': zero_crossing(threshold),
         'slope_sign_changes': slope_sign_changes(threshold),
         'waveform_length': waveform_length,
@@ -101,7 +100,6 @@ def emg_features(threshold=0):
     '''Return a dictionary of popular features used for EMG time series classification.'''
     return {
         'mean_abs_value': mean_abs,
-        'mean_abs_value_slope': means_abs_diff,
         'zero_crossings': zero_crossing(threshold),
         'slope_sign_changes': slope_sign_changes(threshold),
         'waveform_length': waveform_length,
@@ -277,7 +275,7 @@ class zero_crossing(object):
     def __call__(self, X):
         sign = np.heaviside(-1 * X[:, :-1] * X[:, 1:], 0)
         abs_diff = np.abs(np.diff(X, axis=1))
-        return np.sum(sign * abs_diff > self.threshold, axis=1, dtype=X.dtype)
+        return np.sum(sign * abs_diff >= self.threshold, axis=1, dtype=X.dtype)
 
     def __repr__(self):
         return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
@@ -292,7 +290,7 @@ class slope_sign_changes(object):
 
     def __call__(self, X):
         change = (X[:, 1:-1] - X[:, :-2]) * (X[:, 1:-1] - X[:, 2:])
-        return np.sum(change > self.threshold, axis=1, dtype=X.dtype)
+        return np.sum(change >= self.threshold, axis=1, dtype=X.dtype)
 
     def __repr__(self):
         return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
@@ -325,7 +323,7 @@ class willison_amplitude(object):
 
     def __call__(self, X):
         segment_size = X.shape[1]
-        return np.sum(np.abs(np.diff(X, axis=1)) > self.threshold, axis=1)
+        return np.sum(np.abs(np.diff(X, axis=1)) >= self.threshold, axis=1)
 
     def __repr__(self):
         return "%s(threshold=%s)" % (self.__class__.__name__, self.threshold)
