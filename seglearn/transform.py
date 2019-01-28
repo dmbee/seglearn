@@ -539,7 +539,7 @@ def sliding_window(time_series, width, step, order='F'):
     w : array like shape [n_segments, width]
         resampled time series segments
     '''
-    w = np.hstack(time_series[i:1 + i - width or None:step] for i in range(0, width))
+    w = np.hstack([time_series[i:1 + i - width or None:step] for i in range(0, width)])
     result = w.reshape((int(len(w) / width), width), order='F')
     if order == 'F':
         return result
