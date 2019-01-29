@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.7
+
+* step parameter defined for Segment transformers, which can be used to specify the sliding
+window segmentation instead of overlap parameter (Matthias Gazzari) 
+
 Version 1.0.6
 
 * ``order`` parameter defined for Segment transformers. Using 'C' ordering improves ANN estimator performance.
