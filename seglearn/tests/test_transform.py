@@ -108,6 +108,31 @@ def test_feature_rep():
 
 
 def test_segmentx():
+    # test illegal parameter settings
+    with pytest.raises(ValueError):
+        transform.SegmentX(width=0)                  # illegal width value
+    with pytest.raises(ValueError):
+        transform.SegmentX(overlap=None, step=None)  # either overlap or step must be defined
+    with pytest.raises(ValueError):
+        transform.SegmentX(overlap=-1, step=None)    # illegal overlap value
+    with pytest.raises(ValueError):
+        transform.SegmentX(step=0)                   # illegal step value
+    with pytest.raises(ValueError):
+        transform.SegmentX(order=None)               # illegal order
+
+    # test _step property working as expected
+    seg = transform.SegmentX(width=10, overlap=0.5)
+    assert seg._step == 5
+
+    # test precedence of step over overlap
+    seg = transform.SegmentX(width=10, overlap=1, step=1)
+    assert seg._step == 1
+
+    # illegal overlap value, but valid step value
+    seg = transform.SegmentX(overlap=-1, step=1)
+    assert seg._step == 1
+
+    # test shape of segmented data
     width = 5
     nvars = 5
     seg = transform.SegmentX(width=width)
@@ -167,6 +192,31 @@ def test_segmentx():
 
 
 def test_segmentxy():
+    # test illegal parameter settings
+    with pytest.raises(ValueError):
+        transform.SegmentXY(width=0)                  # illegal width value
+    with pytest.raises(ValueError):
+        transform.SegmentXY(overlap=None, step=None)  # either overlap or step must be defined
+    with pytest.raises(ValueError):
+        transform.SegmentXY(overlap=-1, step=None)    # illegal overlap value
+    with pytest.raises(ValueError):
+        transform.SegmentXY(step=0)                   # illegal step value
+    with pytest.raises(ValueError):
+        transform.SegmentXY(order=None)               # illegal order
+
+    # test _step property working as expected
+    seg = transform.SegmentXY(width=10, overlap=0.5)
+    assert seg._step == 5
+
+    # test precedence of step over overlap
+    seg = transform.SegmentXY(width=10, overlap=1, step=1)
+    assert seg._step == 1
+
+    # illegal overlap value, but valid step value
+    seg = transform.SegmentXY(overlap=-1, step=1)
+    assert seg._step == 1
+
+    # test shape of segmented data
     Nt = 100
     width = 5
     nvars = 5
@@ -227,6 +277,33 @@ def test_segmentxy():
 
 
 def test_segmentxyforecast():
+    # test illegal parameter settings
+    with pytest.raises(ValueError):
+        transform.SegmentXYForecast(width=0)                  # illegal width value
+    with pytest.raises(ValueError):
+        transform.SegmentXYForecast(overlap=None, step=None)  # either overlap or step must be defined
+    with pytest.raises(ValueError):
+        transform.SegmentXYForecast(overlap=-1, step=None)    # illegal overlap value
+    with pytest.raises(ValueError):
+        transform.SegmentXYForecast(step=0)                   # illegal step value
+    with pytest.raises(ValueError):
+        transform.SegmentXYForecast(order=None)               # illegal order
+    with pytest.raises(ValueError):
+        transform.SegmentXYForecast(forecast=0)               # illegal forecast value
+
+    # test _step property working as expected
+    seg = transform.SegmentXYForecast(width=10, overlap=0.5)
+    assert seg._step == 5
+
+    # test precedence of step over overlap
+    seg = transform.SegmentXYForecast(width=10, overlap=1, step=1)
+    assert seg._step == 1
+
+    # illegal overlap value, but valid step value
+    seg = transform.SegmentXYForecast(overlap=-1, step=1)
+    assert seg._step == 1
+
+    # test shape of segmented data
     Nt = 100
     width = 5
     nvars = 5
