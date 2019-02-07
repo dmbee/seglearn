@@ -153,7 +153,7 @@ def std(X):
 
 def var(X):
     ''' statistical variance for each variable in a segmented time series '''
-    return np.std(X, axis=1)
+    return np.var(X, axis=1)
 
 
 def variation(X):
