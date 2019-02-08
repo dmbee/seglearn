@@ -31,14 +31,14 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
     {'n_series': 140, 'n_classes': 7, 'n_TS_vars': 6, 'n_context_vars': 2, 'Total_Time': 4882.04, 'Series_Time_Mean': 34.87171428571428, 'Series_Time_Std': 8.757850351285423, 'Series_Time_Range': (18.94, 52.36)}
 
     DATA STATS - BY CLASS
-      Class_labels       ...         Series_Time_Max
-    0          PEN       ...                   31.10
-    1          ABD       ...                   49.10
-    2          FEL       ...                   50.84
-    3           IR       ...                   52.36
-    4           ER       ...                   49.24
-    5         TRAP       ...                   45.12
-    6          ROW       ...                   38.66
+      Class_labels  ...  Series_Time_Max
+    0          PEN  ...            31.10
+    1          ABD  ...            49.10
+    2          FEL  ...            50.84
+    3           IR  ...            52.36
+    4           ER  ...            49.24
+    5         TRAP  ...            45.12
+    6          ROW  ...            38.66
 
     [7 rows x 7 columns]
 
@@ -110,7 +110,7 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.153 seconds)
+**Total running time of the script:** ( 0 minutes  0.175 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_watchdata.py:

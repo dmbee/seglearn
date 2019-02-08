@@ -28,23 +28,23 @@ This example demonstrates how to do model selection in a pipeline where segments
 
     Fitting 3 folds for each of 3 candidates, totalling 9 fits
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  18.3s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  14.4s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  39.8s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  17.4s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  29.5s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  14.2s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  19.2s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  15.1s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  20.5s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  23.3s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  16.9s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  30.5s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  18.4s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  29.8s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  24.8s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  34.0s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  17.3s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  29.9s
 
 
 
@@ -122,7 +122,7 @@ This example demonstrates how to do model selection in a pipeline where segments
     plt.fill_between(par_grid['seg__width'], scores - stds, scores + stds, alpha=0.2, color='navy')
     plt.show()
 
-**Total running time of the script:** ( 4 minutes  15.241 seconds)
+**Total running time of the script:** ( 4 minutes  7.391 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection2.py:

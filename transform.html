@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Transforms &mdash; seglearn 1.0.6 documentation</title>
+  <title>Time Series Transforms &mdash; seglearn 1.0.7 documentation</title>
   
 
   
@@ -57,7 +57,7 @@
             
             
               <div class="version">
-                1.0.6
+                1.0.7
               </div>
             
           
@@ -168,7 +168,7 @@
 <p>This module is for transforming time series data.</p>
 <dl class="class">
 <dt id="seglearn.transform.SegmentX">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentX</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>shuffle=False</em>, <em>random_state=None</em>, <em>order='F'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentX</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>step=None</em>, <em>shuffle=False</em>, <em>random_state=None</em>, <em>order='F'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentX" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformer for sliding window segmentation for datasets where
 X is time series data, optionally with contextual variables
 and each time series in X has a single target value y</p>
@@ -179,13 +179,16 @@ through a feature representation or directly with a neural network.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>width</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 0</span></dt>
 <dd><p class="first last">width of segments (number of samples)</p>
 </dd>
 <dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1]</span></dt>
 <dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1
 (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</p>
+</dd>
+<dt><strong>step</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int range [1, width] (default=None)</span></dt>
+<dd><p class="first last">number of samples to advance adjacent segments (note: this takes precedence over overlap)</p>
 </dd>
 <dt><strong>shuffle</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
 <dd><p class="first last">shuffle the segments after transform (recommended for batch optimizations)</p>
@@ -201,12 +204,6 @@ index changes slowest) and ‘F’ means Fortran-like index order (last index ch
 ‘C’ ordering is suggested for neural network estimators, and ‘F’ ordering is suggested for computing
 feature representations.</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>step</strong></dt>
-<dd></dd>
 </dl>
 </td>
 </tr>
@@ -313,7 +310,7 @@ If y and sample_weight are provided, they are transformed to align to the new sa
 
 <dl class="class">
 <dt id="seglearn.transform.SegmentXY">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXY</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>y_func=&lt;function last&gt;</em>, <em>shuffle=False</em>, <em>random_state=None</em>, <em>order='F'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXY</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>step=None</em>, <em>y_func=&lt;function last&gt;</em>, <em>shuffle=False</em>, <em>random_state=None</em>, <em>order='F'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXY" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformer for sliding window segmentation for datasets where
 X is time series data, optionally with contextual variables
 and y is also time series data with the same sampling interval as X</p>
@@ -335,6 +332,9 @@ through a feature representation or directly with a neural network.</p>
 <dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1
 (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</p>
 </dd>
+<dt><strong>step</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int range [1, width] (default=None)</span></dt>
+<dd><p class="first last">number of samples to advance adjacent segments (note: this takes precedence over overlap)</p>
+</dd>
 <dt><strong>y_func</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
 <dd><p class="first last">returns target from array of target segments (eg <code class="docutils literal notranslate"><span class="pre">last</span></code>, <code class="docutils literal notranslate"><span class="pre">middle</span></code>, or <code class="docutils literal notranslate"><span class="pre">mean</span></code>)</p>
 </dd>
@@ -355,16 +355,10 @@ feature representations.</p>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first docutils">
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
 <dd><p class="first last">Returns self.</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>step</strong></dt>
-<dd></dd>
 </dl>
 </td>
 </tr>
@@ -469,7 +463,7 @@ Currently sample weights always returned as None</p>
 
 <dl class="class">
 <dt id="seglearn.transform.SegmentXYForecast">
-<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXYForecast</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>forecast=10</em>, <em>y_func=&lt;function last&gt;</em>, <em>shuffle=False</em>, <em>random_state=None</em>, <em>order='F'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXYForecast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXYForecast" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">seglearn.transform.</code><code class="descname">SegmentXYForecast</code><span class="sig-paren">(</span><em>width=100</em>, <em>overlap=0.5</em>, <em>step=None</em>, <em>forecast=10</em>, <em>y_func=&lt;function last&gt;</em>, <em>shuffle=False</em>, <em>random_state=None</em>, <em>order='F'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#SegmentXYForecast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.SegmentXYForecast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forecast sliding window segmentation for time series or sequence datasets</p>
 <p>The target y is mapped to segments from their parent series,
 using the <code class="docutils literal notranslate"><span class="pre">forecast</span></code> and <code class="docutils literal notranslate"><span class="pre">y_func</span></code> parameters to determine the mapping behavior.
@@ -488,6 +482,9 @@ through a feature representation or directly with a neural network.</p>
 <dt><strong>overlap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float range [0,1]</span></dt>
 <dd><p class="first last">amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1
 (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</p>
+</dd>
+<dt><strong>step</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int range [1, width] (default=None)</span></dt>
+<dd><p class="first last">number of samples to advance adjacent segments (note: this takes precedence over overlap)</p>
 </dd>
 <dt><strong>forecast</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">The number of samples ahead in time to forecast</p>
@@ -512,16 +509,10 @@ feature representations.</p>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first docutils">
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
 <dd><p class="first last">Returns self.</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>step</strong></dt>
-<dd></dd>
 </dl>
 </td>
 </tr>
@@ -1524,6 +1515,7 @@ must not change the number of samples in the data.</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   

@@ -137,7 +137,7 @@ OPTION 1: Use the score SegPipe score method
 
  .. code-block:: none
 
-    Accuracy score:  0.7547495682210709
+    Accuracy score:  0.7556131260794473
 
 
 OPTION 2: generate true and predicted target values for the segments
@@ -169,7 +169,7 @@ OPTION 2: generate true and predicted target values for the segments
 
  .. code-block:: none
 
-    F1 score:  0.7675626416250413
+    F1 score:  0.7683103625934831
 
 
 OPTION 3: scoring during model selection
@@ -207,11 +207,11 @@ OPTION 3: scoring during model selection
 
  .. code-block:: none
 
-    CV Scores:     fit_time     ...       train_score
-    0  0.742655     ...          0.999708
-    1  0.795226     ...          1.000000
-    2  0.758955     ...          1.000000
-    3  0.824353     ...          1.000000
+    CV Scores:     fit_time  ...  train_score
+    0  0.677390  ...     0.999708
+    1  0.724416  ...     1.000000
+    2  0.735410  ...     1.000000
+    3  0.716957  ...     1.000000
 
     [4 rows x 4 columns]
 
@@ -242,11 +242,11 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
 
  .. code-block:: none
 
-    CV F1 Scores:     fit_time     ...       train_score
-    0  0.815177     ...               1.0
-    1  0.884273     ...               1.0
-    2  0.864004     ...               1.0
-    3  0.967278     ...               1.0
+    CV F1 Scores:     fit_time  ...  train_score
+    0  0.700713  ...          1.0
+    1  0.759349  ...          1.0
+    2  0.731954  ...          1.0
+    3  0.771646  ...          1.0
 
     [4 rows x 4 columns]
 
@@ -287,16 +287,16 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
  .. code-block:: none
 
-    CV Scores (workaround):     fit_time      ...        test_f1_macro
-    0  0.693604      ...             0.788125
-    1  0.848300      ...             0.828601
-    2  0.788592      ...             0.809802
-    3  0.723687      ...             0.814700
+    CV Scores (workaround):     fit_time  ...  test_f1_macro
+    0  0.637984  ...       0.785605
+    1  0.765484  ...       0.828601
+    2  0.732074  ...       0.809848
+    3  0.659859  ...       0.815395
 
     [4 rows x 6 columns]
 
 
-**Total running time of the script:** ( 0 minutes  19.644 seconds)
+**Total running time of the script:** ( 0 minutes  17.650 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:
