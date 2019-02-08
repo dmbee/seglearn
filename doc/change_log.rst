@@ -4,7 +4,8 @@ Change Log
 Version 1.0.7
 
 * step parameter defined for Segment transformers, which can be used to specify the sliding
-window segmentation instead of overlap parameter (Matthias Gazzari) 
+window segmentation instead of overlap parameter (Matthias Gazzari)
+* bug fix - variance feature calculation
 
 Version 1.0.6
 
