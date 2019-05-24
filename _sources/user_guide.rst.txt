@@ -88,6 +88,13 @@ The ``TS_Data`` class is provided as an indexable / iterable that can store time
     >>> Xc = rand(3,2)
     >>> X = TS_Data(Xt, Xc)
 
+``TS_Data`` can be initialized from a pandas dataframe using column 'ts_data' for the time series::
+
+    >>> import pandas as pd
+    >>> df = pd.DataFrame(Xc)
+    >>> df['ts_data'] = Xt
+    >>> X = TS_Data.from_df(df)
+
 There is a caveat for datasets that are a single time series. For compatibility with the seglearn segmenter classes, they need to be represented as a list::
 
     >>> X = [rand(1000,10)]

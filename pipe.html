@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Segmented Time Series Pipeline &mdash; seglearn 1.0.7 documentation</title>
+  <title>Segmented Time Series Pipeline &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -174,24 +176,17 @@ time series data and sequences using a sliding window segmentation</p>
 sample_weight, and the number of samples.</p>
 <p>It also adds some new options for setting hyper-parameters with callables and in reference to
 other parameters (see examples).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>steps</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
-<dd><p class="first last">List of (name, transform) tuples (implementing fit/transform) that are chained, in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>steps</strong><span class="classifier">list</span></dt><dd><p>List of (name, transform) tuples (implementing fit/transform) that are chained, in the
 order in which they are chained, with the last object an estimator.</p>
 </dd>
-<dt><strong>scorer</strong> <span class="classifier-delimiter">:</span> <span class="classifier">sklearn scorer object</span></dt>
-<dd></dd>
-<dt><strong>memory</strong> <span class="classifier-delimiter">:</span> <span class="classifier">currently not implemented</span></dt>
-<dd></dd>
+<dt><strong>scorer</strong><span class="classifier">sklearn scorer object</span></dt><dd></dd>
+<dt><strong>memory</strong><span class="classifier">currently not implemented</span></dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
@@ -209,371 +204,295 @@ order in which they are chained, with the last object an estimator.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>N_train</strong> <span class="classifier-delimiter">:</span> <span class="classifier">number of training samples - available after calling fit method</span></dt>
-<dd></dd>
-<dt><strong>N_test</strong> <span class="classifier-delimiter">:</span> <span class="classifier">number of testing samples - available after calling predict, or score methods</span></dt>
-<dd></dd>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>N_train</strong><span class="classifier">number of training samples - available after calling fit method</span></dt><dd></dd>
+<dt><strong>N_test</strong><span class="classifier">number of testing samples - available after calling predict, or score methods</span></dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.decision_function" title="seglearn.pipe.Pype.decision_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decision_function</span></code></a>(X)</td>
-<td>Apply transforms, and decision_function of the final estimator</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.decision_function" title="seglearn.pipe.Pype.decision_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decision_function</span></code></a>(self, X)</p></td>
+<td><p>Apply transforms, and decision_function of the final estimator</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.fit" title="seglearn.pipe.Pype.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit the model</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.fit" title="seglearn.pipe.Pype.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self, X[, y])</p></td>
+<td><p>Fit the model</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_predict</span></code>(X[,&nbsp;y])</td>
-<td>Applies fit_predict of last step in pipeline after transforms.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_predict</span></code>(self, X[, y])</p></td>
+<td><p>Applies fit_predict of last step in pipeline after transforms.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.fit_transform" title="seglearn.pipe.Pype.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit the model and transform with the final estimator Fits all the transforms one after the other and transforms the data, then uses fit_transform on transformed data with the final estimator.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.fit_transform" title="seglearn.pipe.Pype.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(self, X[, y])</p></td>
+<td><p>Fit the model and transform with the final estimator Fits all the transforms one after the other and transforms the data, then uses fit_transform on transformed data with the final estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.predict" title="seglearn.pipe.Pype.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</td>
-<td>Apply transforms to the data, and predict with the final estimator</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict" title="seglearn.pipe.Pype.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(self, X)</p></td>
+<td><p>Apply transforms to the data, and predict with the final estimator</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.predict_log_proba" title="seglearn.pipe.Pype.predict_log_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_log_proba</span></code></a>(X)</td>
-<td>Apply transforms, and predict_log_proba of the final estimator</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_log_proba" title="seglearn.pipe.Pype.predict_log_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_log_proba</span></code></a>(self, X)</p></td>
+<td><p>Apply transforms, and predict_log_proba of the final estimator</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.predict_proba" title="seglearn.pipe.Pype.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</td>
-<td>Apply transforms, and predict_proba of the final estimator</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_proba" title="seglearn.pipe.Pype.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(self, X)</p></td>
+<td><p>Apply transforms, and predict_proba of the final estimator</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.score" title="seglearn.pipe.Pype.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X[,&nbsp;y,&nbsp;sample_weight])</td>
-<td>Apply transforms, and score with the final estimator</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.score" title="seglearn.pipe.Pype.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(self, X[, y, sample_weight])</p></td>
+<td><p>Apply transforms, and score with the final estimator</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.set_params" title="seglearn.pipe.Pype.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.set_params" title="seglearn.pipe.Pype.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self, \*\*params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.pipe.Pype.transform" title="seglearn.pipe.Pype.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[,&nbsp;y])</td>
-<td>Apply transforms, and transform with the final estimator This also works where final estimator is <code class="docutils literal notranslate"><span class="pre">None</span></code>: all prior transformations are applied.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.transform" title="seglearn.pipe.Pype.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(self, X[, y])</p></td>
+<td><p>Apply transforms, and transform with the final estimator This also works where final estimator is <code class="docutils literal notranslate"><span class="pre">None</span></code>: all prior transformations are applied.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#seglearn.pipe.Pype.transform_predict" title="seglearn.pipe.Pype.transform_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_predict</span></code></a>(X,&nbsp;y)</td>
-<td>Apply transforms to the data, and predict with the final estimator.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.transform_predict" title="seglearn.pipe.Pype.transform_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_predict</span></code></a>(self, X, y)</p></td>
+<td><p>Apply transforms to the data, and predict with the final estimator.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="seglearn.pipe.Pype.decision_function">
-<code class="descname">decision_function</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.decision_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.decision_function" title="Permalink to this definition">¶</a></dt>
+<code class="descname">decision_function</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.decision_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.decision_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and decision_function of the final estimator</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
 of the pipeline.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y_score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt>
-<dd></dd>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>y_score</strong><span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model</p>
 <p>Fit all the transforms one after the other and transform the
 data, then fit the transformed data using the final estimator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Training data. Must fulfill input requirements of first step of the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Training data. Must fulfill input requirements of first step of the
 pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable, default=None</span></dt>
-<dd><p class="first last">Training targets. Must fulfill label requirements for all steps of
+<dt><strong>y</strong><span class="classifier">iterable, default=None</span></dt><dd><p>Training targets. Must fulfill label requirements for all steps of
 the pipeline.</p>
 </dd>
-<dt><strong>**fit_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict of string -&gt; object</span></dt>
-<dd><p class="first last">Parameters passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method of each step, where
+<dt><strong>**fit_params</strong><span class="classifier">dict of string -&gt; object</span></dt><dd><p>Parameters passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method of each step, where
 each parameter name is prefixed such that parameter <code class="docutils literal notranslate"><span class="pre">p</span></code> for step
 <code class="docutils literal notranslate"><span class="pre">s</span></code> has key <code class="docutils literal notranslate"><span class="pre">s__p</span></code>.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Pipeline</span></dt>
-<dd><p class="first last">This estimator</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">Pipeline</span></dt><dd><p>This estimator</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model and transform with the final estimator
 Fits all the transforms one after the other and transforms the
 data, then uses fit_transform on transformed data with the final
 estimator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Training data. Must fulfill input requirements of first step of the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Training data. Must fulfill input requirements of first step of the
 pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable, default=None</span></dt>
-<dd><p class="first last">Training targets. Must fulfill label requirements for all steps of
+<dt><strong>y</strong><span class="classifier">iterable, default=None</span></dt><dd><p>Training targets. Must fulfill label requirements for all steps of
 the pipeline.</p>
 </dd>
-<dt><strong>**fit_params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict of string -&gt; object</span></dt>
-<dd><p class="first last">Parameters passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method of each step, where
+<dt><strong>**fit_params</strong><span class="classifier">dict of string -&gt; object</span></dt><dd><p>Parameters passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method of each step, where
 each parameter name is prefixed such that parameter <code class="docutils literal notranslate"><span class="pre">p</span></code> for step
 <code class="docutils literal notranslate"><span class="pre">s</span></code> has key <code class="docutils literal notranslate"><span class="pre">s__p</span></code>.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_transformed_features]</span></dt>
-<dd><p class="first last">Transformed samples</p>
 </dd>
-<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples]</span></dt>
-<dd><p class="first last">Transformed target</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">array-like, shape = [n_samples, n_transformed_features]</span></dt><dd><p>Transformed samples</p>
+</dd>
+<dt><strong>yt</strong><span class="classifier">array-like, shape = [n_samples]</span></dt><dd><p>Transformed target</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms to the data, and predict with the final estimator</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
 of the pipeline.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>yp</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first last">Predicted transformed target</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>yp</strong><span class="classifier">array-like</span></dt><dd><p>Predicted transformed target</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.predict_log_proba">
-<code class="descname">predict_log_proba</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_log_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_log_proba" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict_log_proba</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_log_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_log_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and predict_log_proba of the final estimator</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
 of the pipeline.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y_score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt>
-<dd></dd>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>y_score</strong><span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.predict_proba">
-<code class="descname">predict_proba</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_proba" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict_proba</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and predict_proba of the final estimator</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
 of the pipeline.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y_proba</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt>
-<dd><p class="first last">Predicted probability of each class</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>y_proba</strong><span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt><dd><p>Predicted probability of each class</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.score" title="Permalink to this definition">¶</a></dt>
+<code class="descname">score</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and score with the final estimator</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
 of the pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable, default=None</span></dt>
-<dd><p class="first last">Targets used for scoring. Must fulfill label requirements for all
+<dt><strong>y</strong><span class="classifier">iterable, default=None</span></dt><dd><p>Targets used for scoring. Must fulfill label requirements for all
 steps of the pipeline.</p>
 </dd>
-<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, default=None</span></dt>
-<dd><p class="first last">If not None, this argument is passed as <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> keyword
+<dt><strong>sample_weight</strong><span class="classifier">array-like, default=None</span></dt><dd><p>If not None, this argument is passed as <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> keyword
 argument to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method of the final estimator.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd></dd>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>score</strong><span class="classifier">float</span></dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.
 Valid parameter keys can be listed with <code class="docutils literal notranslate"><span class="pre">get_params()</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
-<dd></dd>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>self</dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and transform with the final estimator
 This also works where final estimator is <code class="docutils literal notranslate"><span class="pre">None</span></code>: all prior
 transformations are applied.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Data to transform. Must fulfill input requirements of first step
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to transform. Must fulfill input requirements of first step
 of the pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first last">Target</p>
+<dt><strong>y</strong><span class="classifier">array-like</span></dt><dd><p>Target</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples, n_transformed_features]</span></dt>
-<dd><p class="first last">Transformed data</p>
 </dd>
-<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape = [n_samples]</span></dt>
-<dd><p class="first last">Transformed target</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">array-like, shape = [n_samples, n_transformed_features]</span></dt><dd><p>Transformed data</p>
+</dd>
+<dt><strong>yt</strong><span class="classifier">array-like, shape = [n_samples]</span></dt><dd><p>Transformed target</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.transform_predict">
-<code class="descname">transform_predict</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform_predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform_predict</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms to the data, and predict with the final estimator.
 Unlike predict, this also returns the transformed target</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">iterable</span></dt>
-<dd><p class="first last">Data to predict on. Must fulfill input requirements of first step
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
 of the pipeline.</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first last">target</p>
+<dt><strong>y</strong><span class="classifier">array-like</span></dt><dd><p>target</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first last">Transformed target</p>
 </dd>
-<dt><strong>yp</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like</span></dt>
-<dd><p class="first last">Predicted transformed target</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>yt</strong><span class="classifier">array-like</span></dt><dd><p>Transformed target</p>
+</dd>
+<dt><strong>yp</strong><span class="classifier">array-like</span></dt><dd><p>Predicted transformed target</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -608,26 +527,16 @@ of the pipeline.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

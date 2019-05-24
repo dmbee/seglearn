@@ -14,9 +14,6 @@ Classifying Segments Directly with a Neural Network
 This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data
 
 
-
-
-
 .. image:: /auto_examples/images/sphx_glr_plot_segment_rep_001.png
     :class: sphx-glr-single-img
 
@@ -31,7 +28,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
     N series in test:  35
     N segments in train:  3519
     N segments in test:  1158
-    Accuracy score:  0.3721934377838293
+    Accuracy score:  0.3937823846550185
 
 
 
@@ -39,7 +36,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 |
 
 
-.. code-block:: python
+.. code-block:: default
 
     # Author: David Burns
     # License: BSD
@@ -99,7 +96,10 @@ This is a basic example using a convolutional recurrent neural network to learn 
     img = mpimg.imread('segments.jpg')
     plt.imshow(img)
 
-**Total running time of the script:** ( 8 minutes  19.079 seconds)
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 2 minutes  15.148 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_segment_rep.py:

@@ -22,9 +22,6 @@ approach you will sometimes see with time series forecasting (and which may or m
 useful in your application).
 
 
-
-
-
 .. image:: /auto_examples/images/sphx_glr_plot_forecast_001.png
     :class: sphx-glr-single-img
 
@@ -47,7 +44,7 @@ useful in your application).
 |
 
 
-.. code-block:: python
+.. code-block:: default
 
     # Author: David Burns
     # License: BSD
@@ -118,7 +115,10 @@ useful in your application).
     plt.legend()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.042 seconds)
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  0.173 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_forecast.py:

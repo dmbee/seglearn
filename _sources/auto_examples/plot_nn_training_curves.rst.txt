@@ -13,10 +13,7 @@ Plotting Neural Network Training Curves
 
 This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data
 
-
-
-
-.. code-block:: python
+.. code-block:: default
 
     # Author: David Burns
     # License: BSD
@@ -44,8 +41,7 @@ Simple NN Model
 #############################################
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
@@ -73,8 +69,7 @@ Setup
 #############################################
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # load the data
@@ -101,8 +96,7 @@ Accessing training history
 #############################################
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # this is a bit of a hack, because history object is returned by the
@@ -127,11 +121,11 @@ Accessing training history
  .. code-block:: none
 
     val_loss  ...       acc
-    0  2.041563  ...  0.121492
-    1  1.943138  ...  0.162700
-    2  1.893081  ...  0.219538
-    3  1.858949  ...  0.245115
-    4  1.820415  ...  0.273890
+    0  2.045525  ...  0.120426
+    1  1.945945  ...  0.162345
+    2  1.894055  ...  0.219538
+    3  1.859627  ...  0.245115
+    4  1.820950  ...  0.274245
 
     [5 rows x 4 columns]
 
@@ -140,8 +134,7 @@ Training Curves
 #############################################
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     plt.plot(epoch, ac_train, 'o', label="train")
@@ -159,7 +152,10 @@ Training Curves
 
 
 
-**Total running time of the script:** ( 4 minutes  4.472 seconds)
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 1 minutes  11.577 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

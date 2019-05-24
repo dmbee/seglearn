@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Resampling Time Series Data &mdash; seglearn 1.0.7 documentation</title>
+  <title>Resampling Time Series Data &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,13 +17,20 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
@@ -31,21 +38,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Scoring Time Series Estimators" href="plot_scoring.html" />
     <link rel="prev" title="Hyperparameter Selection 2" href="plot_model_selection2.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -183,8 +185,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-interp-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-interp-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="resampling-time-series-data">
 <span id="sphx-glr-auto-examples-plot-interp-py"></span><h1>Resampling Time Series Data<a class="headerlink" href="#resampling-time-series-data" title="Permalink to this headline">¶</a></h1>
@@ -203,19 +205,19 @@ Accuracy score:  0.7334437086092715
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">GridSearchCV</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">TemporalKFold</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">,</span> <span class="n">Interp</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="k">import</span> <span class="n">TemporalKFold</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">,</span> <span class="n">Interp</span>
 
 
 <span class="k">def</span> <span class="nf">calc_segment_width</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
@@ -237,7 +239,7 @@ Accuracy score:  0.7334437086092715
 <span class="c1"># the Interp class assumes time is the first column in the series</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="o">/</span> <span class="mf">50.</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))])</span>
 
-<span class="n">clf</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;interp&#39;</span><span class="p">,</span> <span class="n">Interp</span><span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="mf">25.</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">([(</span><span class="s1">&#39;interp&#39;</span><span class="p">,</span> <span class="n">Interp</span><span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="mf">25.</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
             <span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">)),</span>
             <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
             <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
@@ -249,11 +251,11 @@ Accuracy score:  0.7334437086092715
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N series in train: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N series in test: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in train: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_train</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N series in train: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N series in test: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N segments in train: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 
 <span class="c1"># lets try a few different sampling periods</span>
 <span class="c1"># temporal splitting of data</span>
@@ -279,12 +281,14 @@ Accuracy score:  0.7334437086092715
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  14.466 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  11.679 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-interp-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/61445bbd2d0c7e98e4d4d38e909f7c65/plot_interp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_interp.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/61445bbd2d0c7e98e4d4d38e909f7c65/plot_interp.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_interp.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/882dca684427a08869732acdfc763f66/plot_interp.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_interp.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/882dca684427a08869732acdfc763f66/plot_interp.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_interp.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -300,7 +304,7 @@ Accuracy score:  0.7334437086092715
         <a href="plot_scoring.html" class="btn btn-neutral float-right" title="Scoring Time Series Estimators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_model_selection2.html" class="btn btn-neutral" title="Hyperparameter Selection 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_model_selection2.html" class="btn btn-neutral float-left" title="Hyperparameter Selection 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -326,26 +330,16 @@ Accuracy score:  0.7334437086092715
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

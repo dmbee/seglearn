@@ -14,8 +14,6 @@ Hyperparameter Selection 1
 This example demonstrates how to do model selection in a feature representation pipeline using a grid search
 
 
-
-
 .. image:: /auto_examples/images/sphx_glr_plot_model_selection1_001.png
     :class: sphx-glr-single-img
 
@@ -23,7 +21,7 @@ This example demonstrates how to do model selection in a feature representation 
 
 
 
-.. code-block:: python
+.. code-block:: default
 
 
     # Author: David Burns
@@ -91,7 +89,10 @@ This example demonstrates how to do model selection in a feature representation 
                      par_grid['seg__overlap'], 'width', 'overlap')
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  22.616 seconds)
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  14.242 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection1.py:

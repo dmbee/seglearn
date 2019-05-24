@@ -1,5 +1,9 @@
 :orphan:
 
+
+
+.. _sphx_glr_auto_examples:
+
 .. _general_examples:
 
 General examples

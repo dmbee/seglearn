@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Datasets &mdash; seglearn 1.0.7 documentation</title>
+  <title>Datasets &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -173,41 +175,30 @@
 recorded as study subjects performed sets of 20 shoulder exercise repetitions while wearing a
 smartwatch. It is a multivariate time series.</p>
 <p>The study can be found here: <a class="reference external" href="https://arxiv.org/abs/1802.01489">https://arxiv.org/abs/1802.01489</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
-<dd><dl class="first last docutils">
-<dt>data[‘X’] <span class="classifier-delimiter">:</span> <span class="classifier">list, length 140</span></dt>
-<dd><div class="first last line-block">
+<dl class="field-list">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl>
+<dt><strong>data</strong><span class="classifier">dict</span></dt><dd><dl>
+<dt>data[‘X’]<span class="classifier">list, length 140</span></dt><dd><div class="line-block">
 <div class="line">inertial sensor data, each element with shape [n_samples, 6]</div>
 <div class="line">sampled at 50 Hz</div>
 </div>
 </dd>
-<dt>data[‘y’] <span class="classifier-delimiter">:</span> <span class="classifier">array, length 140</span></dt>
-<dd><p class="first last">target vector (exercise type)</p>
+<dt>data[‘y’]<span class="classifier">array, length 140</span></dt><dd><p>target vector (exercise type)</p>
 </dd>
-<dt>data[‘side’] <span class="classifier-delimiter">:</span> <span class="classifier">array, length 140</span></dt>
-<dd><p class="first last">the extremity side, 1 = right, 0 = left</p>
+<dt>data[‘side’]<span class="classifier">array, length 140</span></dt><dd><p>the extremity side, 1 = right, 0 = left</p>
 </dd>
-<dt>data[‘subject’] <span class="classifier-delimiter">:</span> <span class="classifier">array, length 140</span></dt>
-<dd><p class="first last">the subject (participant) number</p>
+<dt>data[‘subject’]<span class="classifier">array, length 140</span></dt><dd><p>the subject (participant) number</p>
 </dd>
-<dt>data[‘X_labels’] <span class="classifier-delimiter">:</span> <span class="classifier">str list, length 6</span></dt>
-<dd><p class="first last">ordered labels for the sensor data variables</p>
+<dt>data[‘X_labels’]<span class="classifier">str list, length 6</span></dt><dd><p>ordered labels for the sensor data variables</p>
 </dd>
-<dt>data[‘y_labels’] :str list, length 7</dt>
-<dd><p class="first last">ordered labels for the target (exercise type)</p>
+<dt>data[‘y_labels’] :str list, length 7</dt><dd><p>ordered labels for the target (exercise type)</p>
 </dd>
 </dl>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
@@ -246,26 +237,16 @@ smartwatch. It is a multivariate time series.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Guide &mdash; seglearn 1.0.7 documentation</title>
+  <title>User Guide &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,13 +17,20 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
@@ -31,21 +38,16 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API Documentation" href="api.html" />
     <link rel="prev" title="Install and contribution" href="install.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -201,16 +203,16 @@
 <h2>What this Package Includes<a class="headerlink" href="#what-this-package-includes" title="Permalink to this headline">¶</a></h2>
 <p>The main contributions of this package are:</p>
 <ol class="arabic simple">
-<li><code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is contextual</li>
-<li><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is a time series or sequence.</li>
-<li><code class="docutils literal notranslate"><span class="pre">SegmentXYForecast</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.</li>
-<li><code class="docutils literal notranslate"><span class="pre">PadTrunc</span></code> - transformer class for fixing time series / sequence length using a combination of padding and truncation</li>
-<li><code class="docutils literal notranslate"><span class="pre">Interp</span></code> - transformer class for resampling time series data</li>
-<li><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data</li>
-<li><code class="docutils literal notranslate"><span class="pre">FeatureRepMix</span></code> - transformer class for computing feature representations where a different <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> can be applied to each time series variable</li>
-<li><code class="docutils literal notranslate"><span class="pre">Pype</span></code> - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> - an indexable / iterable class for storing time series &amp; contextual data</li>
-<li><code class="docutils literal notranslate"><span class="pre">split</span></code> - a module for splitting time series or sequences along the temporal axis</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is contextual</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is a time series or sequence.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SegmentXYForecast</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PadTrunc</span></code> - transformer class for fixing time series / sequence length using a combination of padding and truncation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Interp</span></code> - transformer class for resampling time series data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FeatureRepMix</span></code> - transformer class for computing feature representations where a different <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> can be applied to each time series variable</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Pype</span></code> - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> - an indexable / iterable class for storing time series &amp; contextual data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">split</span></code> - a module for splitting time series or sequences along the temporal axis</p></li>
 </ol>
 </div>
 <div class="section" id="what-this-package-doesn-t-include">
@@ -247,6 +249,13 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
 </pre></div>
 </div>
+<p><code class="docutils literal notranslate"><span class="pre">TS_Data</span></code> can be initialized from a pandas dataframe using column ‘ts_data’ for the time series:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">Xc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ts_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Xt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>There is a caveat for datasets that are a single time series. For compatibility with the seglearn segmenter classes, they need to be represented as a list:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">10</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">)]</span>
@@ -262,21 +271,17 @@
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<table class="docutils footnote" frame="void" id="id1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[1]</td><td>Christopher M. Bishop. Pattern Recognition and Machine Learning.
-Springer, New York. 2nd Edition, April 2011. ISBN 978-0-387-31073-2.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[2]</td><td>Thomas G. Dietterich. Machine Learning for Sequential Data: A Review.
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets">1</span></dt>
+<dd><p>Christopher M. Bishop. Pattern Recognition and Machine Learning.
+Springer, New York. 2nd Edition, April 2011. ISBN 978-0-387-31073-2.</p>
+</dd>
+<dt class="label" id="id2"><span class="brackets">2</span></dt>
+<dd><p>Thomas G. Dietterich. Machine Learning for Sequential Data: A Review.
 In Structural, Syntactic, and Statistical Pattern Recognition.
-Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td></tr>
-</tbody>
-</table>
+Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -291,7 +296,7 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
         <a href="api.html" class="btn btn-neutral float-right" title="API Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral" title="Install and contribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="install.html" class="btn btn-neutral float-left" title="Install and contribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -317,26 +322,16 @@ Springer, Berlin, Heidelberg, 2002. ISBN 978-3-540-44011-6 978-3-540-70659-5</td
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

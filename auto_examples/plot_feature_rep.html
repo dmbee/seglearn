@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Basic Feature Representation Classification Pipeline &mdash; seglearn 1.0.7 documentation</title>
+  <title>Basic Feature Representation Classification Pipeline &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,13 +17,20 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
@@ -31,21 +38,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html" />
     <link rel="prev" title="Working with Time Series Data" href="plot_watchdata.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -183,8 +185,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-feature-rep-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-feature-rep-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="basic-feature-representation-classification-pipeline">
 <span id="sphx-glr-auto-examples-plot-feature-rep-py"></span><h1>Basic Feature Representation Classification Pipeline<a class="headerlink" href="#basic-feature-representation-classification-pipeline" title="Permalink to this headline">¶</a></h1>
@@ -197,10 +199,10 @@ N segments in train:  3419
 N segments in test:  1258
 Accuracy score:  0.6836248012718601
 CV Scores:     fit_time  ...  train_score
-0  0.999112  ...     0.999416
-1  1.019181  ...     1.000000
-2  1.194913  ...     0.999717
-3  1.114201  ...     1.000000
+0  0.759080  ...     0.999416
+1  0.715362  ...     1.000000
+2  0.706084  ...     0.999717
+3  0.682980  ...     1.000000
 
 [4 rows x 4 columns]
 Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#39;, &#39;mean_4&#39;, &#39;mean_5&#39;, &#39;median_0&#39;, &#39;median_1&#39;, &#39;median_2&#39;, &#39;median_3&#39;, &#39;median_4&#39;, &#39;median_5&#39;, &#39;abs_energy_0&#39;, &#39;abs_energy_1&#39;, &#39;abs_energy_2&#39;, &#39;abs_energy_3&#39;, &#39;abs_energy_4&#39;, &#39;abs_energy_5&#39;, &#39;std_0&#39;, &#39;std_1&#39;, &#39;std_2&#39;, &#39;std_3&#39;, &#39;std_4&#39;, &#39;std_5&#39;, &#39;var_0&#39;, &#39;var_1&#39;, &#39;var_2&#39;, &#39;var_3&#39;, &#39;var_4&#39;, &#39;var_5&#39;, &#39;min_0&#39;, &#39;min_1&#39;, &#39;min_2&#39;, &#39;min_3&#39;, &#39;min_4&#39;, &#39;min_5&#39;, &#39;max_0&#39;, &#39;max_1&#39;, &#39;max_2&#39;, &#39;max_3&#39;, &#39;max_4&#39;, &#39;max_5&#39;, &#39;skew_0&#39;, &#39;skew_1&#39;, &#39;skew_2&#39;, &#39;skew_3&#39;, &#39;skew_4&#39;, &#39;skew_5&#39;, &#39;kurt_0&#39;, &#39;kurt_1&#39;, &#39;kurt_2&#39;, &#39;kurt_3&#39;, &#39;kurt_4&#39;, &#39;kurt_5&#39;, &#39;mse_0&#39;, &#39;mse_1&#39;, &#39;mse_2&#39;, &#39;mse_3&#39;, &#39;mse_4&#39;, &#39;mse_5&#39;, &#39;mnx_0&#39;, &#39;mnx_1&#39;, &#39;mnx_2&#39;, &#39;mnx_3&#39;, &#39;mnx_4&#39;, &#39;mnx_5&#39;]
@@ -209,22 +211,22 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="kn">as</span> <span class="nn">mpimg</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">make_scorer</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="nn">mpimg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">make_scorer</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
 
 <span class="c1"># seed RNGESUS</span>
 <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123124</span><span class="p">)</span>
@@ -246,11 +248,11 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N series in train: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N series in test: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in train: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_train</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N series in train: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N series in test: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N segments in train: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 
 <span class="c1"># now lets add some contextual data</span>
 <span class="n">Xc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;side&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]))</span>
@@ -260,22 +262,24 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
 
 <span class="c1"># and do a cross validation</span>
 <span class="n">scoring</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 
 <span class="c1"># lets see what feature we used</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Features: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">f_labels</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">f_labels</span><span class="p">)</span>
 
 <span class="n">img</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;feet.jpg&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  9.634 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.314 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-feature-rep-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/b1bd494fa5c8ee575cff9b83566774f1/plot_feature_rep.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_feature_rep.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/b1bd494fa5c8ee575cff9b83566774f1/plot_feature_rep.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_feature_rep.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/ae53b60105cad989b13f2c5c6adcfb4e/plot_feature_rep.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_feature_rep.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/ae53b60105cad989b13f2c5c6adcfb4e/plot_feature_rep.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_feature_rep.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -291,7 +295,7 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
         <a href="plot_segment_rep.html" class="btn btn-neutral float-right" title="Classifying Segments Directly with a Neural Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_watchdata.html" class="btn btn-neutral" title="Working with Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_watchdata.html" class="btn btn-neutral float-left" title="Working with Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -317,26 +321,16 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

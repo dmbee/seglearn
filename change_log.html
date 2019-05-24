@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Change Log &mdash; seglearn 1.0.7 documentation</title>
+  <title>Change Log &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,13 +17,20 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
@@ -31,21 +38,16 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="General examples" href="auto_examples/index.html" />
     <link rel="prev" title="API Documentation" href="api.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -167,60 +169,65 @@
             
   <div class="section" id="change-log">
 <h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
+<p>Version 1.0.8</p>
+<ul class="simple">
+<li><p>added function for creating TS_Data from pandas</p></li>
+<li><p>minor bug fixes</p></li>
+</ul>
 <p>Version 1.0.7</p>
 <ul class="simple">
-<li>step parameter defined for Segment transformers, which can be used to specify the sliding</li>
+<li><p>step parameter defined for Segment transformers, which can be used to specify the sliding</p></li>
 </ul>
 <p>window segmentation instead of overlap parameter (Matthias Gazzari)
 * bug fix - variance feature calculation</p>
 <p>Version 1.0.6</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">order</span></code> parameter defined for Segment transformers. Using ‘C’ ordering improves ANN estimator performance.</li>
-<li><code class="docutils literal notranslate"><span class="pre">__repr__</span></code> defined for callable feature classes</li>
-<li><code class="docutils literal notranslate"><span class="pre">FunctionTransformer</span></code> contributed by Matthias Gazzari</li>
-<li>__repr__ attributed added to <code class="docutils literal notranslate"><span class="pre">TemporalKFold</span></code> by Matthias Gazzari</li>
-<li><code class="docutils literal notranslate"><span class="pre">InterpLongToWide</span></code> contributed by Philip Boyer</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">order</span></code> parameter defined for Segment transformers. Using ‘C’ ordering improves ANN estimator performance.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__repr__</span></code> defined for callable feature classes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FunctionTransformer</span></code> contributed by Matthias Gazzari</p></li>
+<li><p>__repr__ attributed added to <code class="docutils literal notranslate"><span class="pre">TemporalKFold</span></code> by Matthias Gazzari</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">InterpLongToWide</span></code> contributed by Philip Boyer</p></li>
 </ul>
 <p>Version 1.0.5</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">FeatureRepMix</span></code> transformer contributed by Matthias Gazzari (qtux)</li>
-<li>Added verbosity control to <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> transformer</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FeatureRepMix</span></code> transformer contributed by Matthias Gazzari (qtux)</p></li>
+<li><p>Added verbosity control to <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> transformer</p></li>
 </ul>
 <p>Version 1.0.4:</p>
 <ul class="simple">
-<li>Fixed bug with <code class="docutils literal notranslate"><span class="pre">Interp</span></code> transformer and improved its unit testing</li>
-<li>Added preprocessing module with <code class="docutils literal notranslate"><span class="pre">TargetRunLengthEncoder</span></code> transform</li>
-<li>Further features functions contributed by Matthias Gazzari (qtux)</li>
+<li><p>Fixed bug with <code class="docutils literal notranslate"><span class="pre">Interp</span></code> transformer and improved its unit testing</p></li>
+<li><p>Added preprocessing module with <code class="docutils literal notranslate"><span class="pre">TargetRunLengthEncoder</span></code> transform</p></li>
+<li><p>Further features functions contributed by Matthias Gazzari (qtux)</p></li>
 </ul>
 <p>Version 1.0.3:</p>
 <ul class="simple">
-<li>Continuous integration fixes</li>
-<li>Documentation and unit testing improvements</li>
+<li><p>Continuous integration fixes</p></li>
+<li><p>Documentation and unit testing improvements</p></li>
 </ul>
 <p>Version 1.0.2:</p>
 <ul class="simple">
-<li>Added further features</li>
+<li><p>Added further features</p></li>
 </ul>
 <p>Version 1.0.1:</p>
 <ul class="simple">
-<li>Improvements to documentation, error checking, and unit tests</li>
-<li>feature_functions min and max changed to minimum and maximum respectively</li>
+<li><p>Improvements to documentation, error checking, and unit tests</p></li>
+<li><p>feature_functions min and max changed to minimum and maximum respectively</p></li>
 </ul>
 <p>Version 1.0.0:</p>
 <ul class="simple">
-<li>Major API change integrating preprocessing and estimation into single pipeline (Pype)</li>
-<li>Note this is unfortunately not backwards compatible</li>
-<li>Added Interp transformer for resampling time series</li>
+<li><p>Major API change integrating preprocessing and estimation into single pipeline (Pype)</p></li>
+<li><p>Note this is unfortunately not backwards compatible</p></li>
+<li><p>Added Interp transformer for resampling time series</p></li>
 </ul>
 <p>Version 0.2.0:</p>
 <ul class="simple">
-<li>Added transformer for segmenting data set with padding and / or truncation</li>
-<li>Implemented random_state initialization for SegPipe</li>
-<li>Corrected documentation for FeatureRep</li>
+<li><p>Added transformer for segmenting data set with padding and / or truncation</p></li>
+<li><p>Implemented random_state initialization for SegPipe</p></li>
+<li><p>Corrected documentation for FeatureRep</p></li>
 </ul>
 <p>Version 0.1.6:</p>
 <ul class="simple">
-<li>First stable version</li>
+<li><p>First stable version</p></li>
 </ul>
 </div>
 
@@ -235,7 +242,7 @@
         <a href="auto_examples/index.html" class="btn btn-neutral float-right" title="General examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="api.html" class="btn btn-neutral" title="API Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-left" title="API Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -261,26 +268,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

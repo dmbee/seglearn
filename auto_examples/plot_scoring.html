@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.7 documentation</title>
+  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,13 +17,20 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
@@ -31,21 +38,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Authors" href="../authors.html" />
     <link rel="prev" title="Resampling Time Series Data" href="plot_interp.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -192,8 +194,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-scoring-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-scoring-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="scoring-time-series-estimators">
 <span id="sphx-glr-auto-examples-plot-scoring-py"></span><h1>Scoring Time Series Estimators<a class="headerlink" href="#scoring-time-series-estimators" title="Permalink to this headline">¶</a></h1>
@@ -201,30 +203,30 @@
 calculate performance scores for time series estimators.</p>
 <p>This pipeline has been designed to evaluate performance using
 segments (not series’) as instances of the data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
 
 <span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">make_scorer</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">make_scorer</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">cross_validate</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="k">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
 </pre></div>
 </div>
 <div class="section" id="confusion-plot">
 <h2>CONFUSION PLOT<a class="headerlink" href="#confusion-plot" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span>
-                          <span class="n">normalize</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span>
+                          <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                           <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; plots confusion matrix &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
@@ -237,7 +239,7 @@ segments (not series’) as instances of the data.</p>
     <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;.2f&#39;</span> <span class="k">if</span> <span class="n">normalize</span> <span class="k">else</span> <span class="s1">&#39;d&#39;</span>
     <span class="n">thresh</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">/</span> <span class="mf">2.</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="n">cm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">format</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">fmt</span><span class="p">),</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="nb">format</span><span class="p">(</span><span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="n">fmt</span><span class="p">),</span>
                  <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
                  <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span> <span class="k">if</span> <span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">thresh</span> <span class="k">else</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
 
@@ -249,7 +251,7 @@ segments (not series’) as instances of the data.</p>
 </div>
 <div class="section" id="setup">
 <h2>SETUP<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the data</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
@@ -269,9 +271,9 @@ segments (not series’) as instances of the data.</p>
 </div>
 <div class="section" id="option-1-use-the-score-segpipe-score-method">
 <h2>OPTION 1: Use the score SegPipe score method<a class="headerlink" href="#option-1-use-the-score-segpipe-score-method" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -281,10 +283,10 @@ segments (not series’) as instances of the data.</p>
 </div>
 <div class="section" id="option-2-generate-true-and-predicted-target-values-for-the-segments">
 <h2>OPTION 2: generate true and predicted target values for the segments<a class="headerlink" href="#option-2-generate-true-and-predicted-target-values-for-the-segments" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transform_predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transform_predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 <span class="c1"># use any of the sklearn scorers</span>
 <span class="n">f1_macro</span> <span class="o">=</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;F1 score: &quot;</span><span class="p">,</span> <span class="n">f1_macro</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F1 score: &quot;</span><span class="p">,</span> <span class="n">f1_macro</span><span class="p">)</span>
 
 <span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
 <span class="n">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y_labels&#39;</span><span class="p">])</span>
@@ -298,9 +300,9 @@ segments (not series’) as instances of the data.</p>
 </div>
 <div class="section" id="option-3-scoring-during-model-selection">
 <h2>OPTION 3: scoring during model selection<a class="headerlink" href="#option-3-scoring-during-model-selection" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model selection using the built-in score method for the final estimator</span>
-<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># model selection using the built-in score method for the final estimator</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CV Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 
 <span class="c1"># model selection with scoring functions / dictionaries</span>
 <span class="c1">#</span>
@@ -317,10 +319,10 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV Scores:     fit_time  ...  train_score
-0  0.677390  ...     0.999708
-1  0.724416  ...     1.000000
-2  0.735410  ...     1.000000
-3  0.716957  ...     1.000000
+0  0.790563  ...     0.999708
+1  0.901073  ...     1.000000
+2  0.763207  ...     1.000000
+3  0.782781  ...     1.000000
 
 [4 rows x 4 columns]
 </pre></div>
@@ -328,21 +330,21 @@ segments (not series’) as instances of the data.</p>
 </div>
 <div class="section" id="scoring-workaround-1-use-another-scorer-function">
 <h2>SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION<a class="headerlink" href="#scoring-workaround-1-use-another-scorer-function" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ``SegPipe`` can be initialized with a scorer callable made with sklearn.metrics.make_scorer</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ``SegPipe`` can be initialized with a scorer callable made with sklearn.metrics.make_scorer</span>
 <span class="c1"># this can be used to cross_validate or grid search with any 1 score</span>
 
 <span class="n">scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">f1_score</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s1">&#39;macro&#39;</span><span class="p">)</span>
 <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pype</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">scorer</span><span class="p">)</span>
-<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV F1 Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+<span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CV F1 Scores: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV F1 Scores:     fit_time  ...  train_score
-0  0.700713  ...          1.0
-1  0.759349  ...          1.0
-2  0.731954  ...          1.0
-3  0.771646  ...          1.0
+0  0.801679  ...          1.0
+1  0.891723  ...          1.0
+2  0.888366  ...          1.0
+3  0.861009  ...          1.0
 
 [4 rows x 4 columns]
 </pre></div>
@@ -350,7 +352,7 @@ segments (not series’) as instances of the data.</p>
 </div>
 <div class="section" id="scoring-workaround-2-work-outside-the-pipeline">
 <h2>SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE<a class="headerlink" href="#scoring-workaround-2-work-outside-the-pipeline" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to have multiple score computed, the only way is as follows</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you want to have multiple score computed, the only way is as follows</span>
 <span class="c1">#</span>
 <span class="c1"># First transform the time series data into segments and then use an sklearn Pipeline</span>
 <span class="c1">#</span>
@@ -366,26 +368,28 @@ segments (not series’) as instances of the data.</p>
 
 <span class="n">scoring</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;precision_macro&#39;</span><span class="p">,</span> <span class="s1">&#39;recall_macro&#39;</span><span class="p">,</span> <span class="s1">&#39;f1_macro&#39;</span><span class="p">]</span>
 <span class="n">cv_scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span>
-                           <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;CV Scores (workaround): &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
+                           <span class="n">cv</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">return_train_score</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CV Scores (workaround): &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_scores</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV Scores (workaround):     fit_time  ...  test_f1_macro
-0  0.637984  ...       0.785605
-1  0.765484  ...       0.828601
-2  0.732074  ...       0.809848
-3  0.659859  ...       0.815395
+0  0.722846  ...       0.785605
+1  0.817698  ...       0.828601
+2  0.785685  ...       0.809848
+3  0.728863  ...       0.815395
 
 [4 rows x 6 columns]
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  17.650 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  19.937 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/17e4fd290277699455418db0c1642d5d/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/17e4fd290277699455418db0c1642d5d/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/f6ccee9e54ef6464d5f7808c1e3c061c/plot_scoring.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_scoring.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/f6ccee9e54ef6464d5f7808c1e3c061c/plot_scoring.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_scoring.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -402,7 +406,7 @@ segments (not series’) as instances of the data.</p>
         <a href="../authors.html" class="btn btn-neutral float-right" title="Authors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_interp.html" class="btn btn-neutral" title="Resampling Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_interp.html" class="btn btn-neutral float-left" title="Resampling Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -428,26 +432,16 @@ segments (not series’) as instances of the data.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -14,9 +14,6 @@ Continuous Target and Time Series Regression
 In this example, we use the pipeline to learn a continuous time series target with a regressor
 
 
-
-
-
 .. image:: /auto_examples/images/sphx_glr_plot_regression_001.png
     :class: sphx-glr-single-img
 
@@ -33,9 +30,9 @@ In this example, we use the pipeline to learn a continuous time series target wi
     N segments in test:  24
     Score:  0.9735806135052695
     CV Scores:     fit_time  ...  train_score
-    0  0.005082  ...     0.032275
-    1  0.004762  ...     0.126310
-    2  0.004721  ...     0.097838
+    0  0.003501  ...     0.032275
+    1  0.003297  ...     0.126310
+    2  0.003199  ...     0.097838
 
     [3 rows x 4 columns]
 
@@ -45,7 +42,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
 |
 
 
-.. code-block:: python
+.. code-block:: default
 
     # Author: David Burns
     # License: BSD
@@ -111,7 +108,10 @@ In this example, we use the pipeline to learn a continuous time series target wi
     cv_scores = cross_validate(pipe, X, y, cv=cv, return_train_score=True)
     print("CV Scores: ", pd.DataFrame(cv_scores))
 
-**Total running time of the script:** ( 0 minutes  0.091 seconds)
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  0.219 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_regression.py:

@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.0.8
+
+* added function for creating TS_Data from pandas
+* minor bug fixes
+
 Version 1.0.7
 
 * step parameter defined for Segment transformers, which can be used to specify the sliding

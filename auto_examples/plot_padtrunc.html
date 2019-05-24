@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pipeline using Time Series Padding and Truncation &mdash; seglearn 1.0.7 documentation</title>
+  <title>Pipeline using Time Series Padding and Truncation &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,13 +17,20 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
@@ -31,21 +38,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Working with Time Series Data" href="plot_watchdata.html" />
     <link rel="prev" title="Linear Discriminant Analysis" href="plot_lda.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -183,8 +185,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-padtrunc-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-padtrunc-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="pipeline-using-time-series-padding-and-truncation">
 <span id="sphx-glr-auto-examples-plot-padtrunc-py"></span><h1>Pipeline using Time Series Padding and Truncation<a class="headerlink" href="#pipeline-using-time-series-padding-and-truncation" title="Permalink to this headline">¶</a></h1>
@@ -202,19 +204,19 @@ Accuracy score:  0.8285714285714286
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
 
-<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="kn">as</span> <span class="nn">mpimg</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVC</span>
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="nn">mpimg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">LinearSVC</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">PadTrunc</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">PadTrunc</span>
 
 <span class="c1"># load the data</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
@@ -231,28 +233,30 @@ Accuracy score:  0.8285714285714286
              <span class="p">(</span><span class="s1">&#39;svc&#39;</span><span class="p">,</span> <span class="n">LinearSVC</span><span class="p">())])</span>
 
 <span class="c1"># split the data</span>
-<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                                     <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
 
 <span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 <span class="n">score</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N series in train: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N series in test: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in train: &quot;</span><span class="p">,</span> <span class="n">pipe</span><span class="o">.</span><span class="n">N_train</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">pipe</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N series in train: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N series in test: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N segments in train: &quot;</span><span class="p">,</span> <span class="n">pipe</span><span class="o">.</span><span class="n">N_train</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;N segments in test: &quot;</span><span class="p">,</span> <span class="n">pipe</span><span class="o">.</span><span class="n">N_test</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 
 <span class="n">img</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;trunk.jpg&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.135 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.238 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-padtrunc-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/01dde30e425d592522cdb1a75af73bc1/plot_padtrunc.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_padtrunc.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/01dde30e425d592522cdb1a75af73bc1/plot_padtrunc.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_padtrunc.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/bd69cde6499d85f4f4dfc856c623bd9d/plot_padtrunc.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_padtrunc.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/bd69cde6499d85f4f4dfc856c623bd9d/plot_padtrunc.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_padtrunc.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -268,7 +272,7 @@ Accuracy score:  0.8285714285714286
         <a href="plot_watchdata.html" class="btn btn-neutral float-right" title="Working with Time Series Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_lda.html" class="btn btn-neutral" title="Linear Discriminant Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_lda.html" class="btn btn-neutral float-left" title="Linear Discriminant Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -294,26 +298,16 @@ Accuracy score:  0.8285714285714286
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Temporal K Fold Data Splitter &mdash; seglearn 1.0.7 documentation</title>
+  <title>Temporal K Fold Data Splitter &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -181,19 +183,14 @@ splitting is still useful in certain cases such as for the analysis of a single 
 <p>By splitting the time series’, the number of samples in the data set is changed and so new
 arrays for the data and target are returned by the <code class="docutils literal notranslate"><span class="pre">split</span></code> function in addition to the
 iterator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>n_splits</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int &gt; 1</span></dt>
-<dd><p class="first last">number of folds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_splits</strong><span class="classifier">int &gt; 1</span></dt><dd><p>number of folds</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="k">import</span> <span class="n">TemporalKFold</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
@@ -203,50 +200,41 @@ iterator.</p>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.split.TemporalKFold.split" title="seglearn.split.TemporalKFold.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(X,&nbsp;y)</td>
-<td>Splits time series data and target arrays, and generates splitting indices</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.split.TemporalKFold.split" title="seglearn.split.TemporalKFold.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(self, X, y)</p></td>
+<td><p>Splits time series data and target arrays, and generates splitting indices</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="seglearn.split.TemporalKFold.split">
-<code class="descname">split</code><span class="sig-paren">(</span><em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold.split" title="Permalink to this definition">¶</a></dt>
+<code class="descname">split</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splits time series data and target arrays, and generates splitting indices</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series, ]</span></dt>
-<dd><p class="first last">target vector</p>
+<dt><strong>y</strong><span class="classifier">array-like shape [n_series, ]</span></dt><dd><p>target vector</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series * n_splits, ]</span></dt>
-<dd><p class="first last">Split time series data and contextual data</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series * n_splits]</span></dt>
-<dd><p class="first last">Split target data</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series * n_splits, ]</span></dt><dd><p>Split time series data and contextual data</p>
 </dd>
-<dt><strong>cv</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list, shape [2, n_splits]</span></dt>
-<dd><p class="first last">Splitting indices</p>
+<dt><strong>y</strong><span class="classifier">array-like, shape [n_series * n_splits]</span></dt><dd><p>Split target data</p>
+</dd>
+<dt><strong>cv</strong><span class="classifier">list, shape [2, n_splits]</span></dt><dd><p>Splitting indices</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -256,37 +244,26 @@ iterator.</p>
 <code class="descclassname">seglearn.split.</code><code class="descname">temporal_split</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>test_size=0.25</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#temporal_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.temporal_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split time series or sequence data along the time axis.
 Test data is drawn from the end of each series / sequence</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series, ]</span></dt>
-<dd><p class="first last">target vector</p>
+<dt><strong>y</strong><span class="classifier">array-like shape [n_series, ]</span></dt><dd><p>target vector</p>
 </dd>
-<dt><strong>test_size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">between 0 and 1, amount to allocate to test</p>
+<dt><strong>test_size</strong><span class="classifier">float</span></dt><dd><p>between 0 and 1, amount to allocate to test</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_train</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
-<dd></dd>
-<dt><strong>X_test</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
-<dd></dd>
-<dt><strong>y_train</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
-<dd></dd>
-<dt><strong>y_test</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
-<dd></dd>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_train</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
+<dt><strong>X_test</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
+<dt><strong>y_train</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
+<dt><strong>y_test</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -319,26 +296,16 @@ Test data is drawn from the end of each series / sequence</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

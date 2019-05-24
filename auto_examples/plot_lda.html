@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Linear Discriminant Analysis &mdash; seglearn 1.0.7 documentation</title>
+  <title>Linear Discriminant Analysis &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,13 +17,20 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
@@ -31,21 +38,16 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Pipeline using Time Series Padding and Truncation" href="plot_padtrunc.html" />
     <link rel="prev" title="Simple FeatureRepMix Example" href="plot_feature_rep_mix_example.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -183,21 +185,21 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-lda-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-lda-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="linear-discriminant-analysis">
 <span id="sphx-glr-auto-examples-plot-lda-py"></span><h1>Linear Discriminant Analysis<a class="headerlink" href="#linear-discriminant-analysis" title="Permalink to this headline">¶</a></h1>
 <p>This example demonstrates how the pipeline can be used to perform transformation of time series data, such as linear discriminant analysis for visualization purposes</p>
 <img alt="../_images/sphx_glr_plot_lda_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_lda_001.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="kn">import</span> <span class="n">LinearDiscriminantAnalysis</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.discriminant_analysis</span> <span class="k">import</span> <span class="n">LinearDiscriminantAnalysis</span>
 
-<span class="kn">import</span> <span class="nn">seglearn</span> <span class="kn">as</span> <span class="nn">sgl</span>
+<span class="kn">import</span> <span class="nn">seglearn</span> <span class="k">as</span> <span class="nn">sgl</span>
 
 
 <span class="k">def</span> <span class="nf">plot_embedding</span><span class="p">(</span><span class="n">emb</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_labels</span><span class="p">):</span>
@@ -235,12 +237,14 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  3.467 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.295 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-lda-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/e8dd1df576ad54ace7d5d3f4b47dd827/plot_lda.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lda.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/e8dd1df576ad54ace7d5d3f4b47dd827/plot_lda.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_lda.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/af159357f67718ca3cc2968a670ad745/plot_lda.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_lda.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/af159357f67718ca3cc2968a670ad745/plot_lda.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_lda.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -256,7 +260,7 @@
         <a href="plot_padtrunc.html" class="btn btn-neutral float-right" title="Pipeline using Time Series Padding and Truncation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_feature_rep_mix_example.html" class="btn btn-neutral" title="Simple FeatureRepMix Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_feature_rep_mix_example.html" class="btn btn-neutral float-left" title="Simple FeatureRepMix Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -282,26 +286,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

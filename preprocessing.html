@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Preprocessing &mdash; seglearn 1.0.7 documentation</title>
+  <title>Time Series Preprocessing &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -179,111 +181,89 @@ that encode the target variable as a series (e.g. MHEALTH and PAMAP2)</p>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">seglearn</span></code> can handle datasets with target variables encoded as a series natively
 (using <code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code>) and so this preprocessing is not required but may be helpful for some tasks.
 Effectively it will let you use <code class="docutils literal notranslate"><span class="pre">SegmentX</span></code> on datasets that would otherwise require <code class="docutils literal notranslate"><span class="pre">SegmentXY</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>min_length</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer &gt; 1</span></dt>
-<dd><p class="first last">minimum number of samples in a run for it to be included in the transformed data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>min_length</strong><span class="classifier">integer &gt; 1</span></dt><dd><p>minimum number of samples in a run for it to be included in the transformed data</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="seglearn.preprocessing.TargetRunLengthEncoder.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;y])</td>
-<td>Fit the transform</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="seglearn.preprocessing.TargetRunLengthEncoder.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self, X[, y])</p></td>
+<td><p>Fit the transform</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X,&nbsp;y[,&nbsp;sample_weight])</td>
-<td>Fit the data and transform (required by sklearn API)</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X, y[, sample_weight])</p></td>
+<td><p>Fit the data and transform (required by sklearn API)</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</td>
-<td>Get parameters for this estimator.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</td>
-<td>Set the parameters of this estimator.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, \*\*params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="seglearn.preprocessing.TargetRunLengthEncoder.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X,&nbsp;y[,&nbsp;sample_weight])</td>
-<td>Transforms the time series data with run length encoding of the target variable Note this transformation changes the number of samples in the data If sample_weight is provided, it is transformed to align to the new target encoding</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="seglearn.preprocessing.TargetRunLengthEncoder.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(self, X, y[, sample_weight])</p></td>
+<td><p>Transforms the time series data with run length encoding of the target variable Note this transformation changes the number of samples in the data If sample_weight is provided, it is transformed to align to the new target encoding</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the transform</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None</span></dt>
-<dd><p class="first last">There is no need of a target in a transformer, yet the pipeline API requires
+<dt><strong>y</strong><span class="classifier">None</span></dt><dd><p>There is no need of a target in a transformer, yet the pipeline API requires
 this parameter.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong> <span class="classifier-delimiter">:</span> <span class="classifier">object</span></dt>
-<dd><p class="first last">Returns self.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>Returns self.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the time series data with run length encoding of the target variable
 Note this transformation changes the number of samples in the data
 If sample_weight is provided, it is transformed to align to the new target encoding</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series, …]</span></dt>
-<dd><p class="first last">target variable encoded as a time series</p>
+<dt><strong>y</strong><span class="classifier">array-like shape [n_series, …]</span></dt><dd><p>target variable encoded as a time series</p>
 </dd>
-<dt><strong>sample_weight</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_series], default = None</span></dt>
-<dd><p class="first last">sample weights</p>
+<dt><strong>sample_weight</strong><span class="classifier">array-like shape [n_series], default = None</span></dt><dd><p>sample weights</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_rle_series, ]</span></dt>
-<dd><p class="first last">transformed time series data</p>
 </dd>
-<dt><strong>yt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_rle_series]</span></dt>
-<dd><p class="first last">target values for each series</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">array-like, shape [n_rle_series, ]</span></dt><dd><p>transformed time series data</p>
 </dd>
-<dt><strong>sample_weight_new</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like shape [n_rle_series]</span></dt>
-<dd><p class="first last">sample weights</p>
+<dt><strong>yt</strong><span class="classifier">array-like, shape [n_rle_series]</span></dt><dd><p>target values for each series</p>
+</dd>
+<dt><strong>sample_weight_new</strong><span class="classifier">array-like shape [n_rle_series]</span></dt><dd><p>sample weights</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -318,26 +298,16 @@ If sample_weight is provided, it is transformed to align to the new target encod
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

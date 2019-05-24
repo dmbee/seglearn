@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Feature Functions &mdash; seglearn 1.0.7 documentation</title>
+  <title>Feature Functions &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -180,8 +182,8 @@ time series data</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">np.atleast_3d</span></code> is used if accessing the third dimension, as some datasets will</p>
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">np.atleast_3d</span></code> is used if accessing the third dimension, as some datasets will</p>
 </div>
 <p>have only a single time series variable. See <code class="docutils literal notranslate"><span class="pre">hist4</span></code> as an example.</p>
 </div></blockquote>
@@ -210,8 +212,8 @@ time series data</p>
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">all_features</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#all_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.all_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns dictionary of all features in the module</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Some of the features (hist4, corr) are relatively expensive to compute</p>
+<p class="admonition-title">Note</p>
+<p>Some of the features (hist4, corr) are relatively expensive to compute</p>
 </div>
 </dd></dl>
 
@@ -227,8 +229,8 @@ series data</p>
 <code class="descclassname">seglearn.feature_functions.</code><code class="descname">corr2</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#corr2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.corr2" title="Permalink to this definition">¶</a></dt>
 <dd><p>computes correlations between all variable pairs in a segmented time series</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">this feature is expensive to compute with the current implementation, and cannot be</p>
+<p class="admonition-title">Note</p>
+<p>this feature is expensive to compute with the current implementation, and cannot be</p>
 </div>
 <p>used with univariate time series</p>
 </dd></dl>
@@ -257,18 +259,18 @@ series data</p>
 <em class="property">class </em><code class="descclassname">seglearn.feature_functions.</code><code class="descname">hist</code><span class="sig-paren">(</span><em>bins=4</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.hist" title="Permalink to this definition">¶</a></dt>
 <dd><p>histogram for each variable in a segmented time series</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">this feature is expensive to compute with the current implementation</p>
+<p class="admonition-title">Note</p>
+<p>this feature is expensive to compute with the current implementation</p>
 </div>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
-<td>Call self as a function.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self, X)</p></td>
+<td><p>Call self as a function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -364,14 +366,14 @@ series data</p>
 <dd><p>number of changes between positive and negative slope among three consecutive samples
 above a certain threshold for each variable in the segmented time series</p>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
-<td>Call self as a function.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self, X)</p></td>
+<td><p>Call self as a function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -413,14 +415,14 @@ series</p>
 <em class="property">class </em><code class="descclassname">seglearn.feature_functions.</code><code class="descname">willison_amplitude</code><span class="sig-paren">(</span><em>threshold=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/feature_functions.html#willison_amplitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.feature_functions.willison_amplitude" title="Permalink to this definition">¶</a></dt>
 <dd><p>the Willison amplitude for each variable in the segmented time series</p>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
-<td>Call self as a function.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self, X)</p></td>
+<td><p>Call self as a function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -432,14 +434,14 @@ series</p>
 <dd><p>number of zero crossings among two consecutive samples above a certain threshold for each
 variable in the segmented time series</p>
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(X)</td>
-<td>Call self as a function.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self, X)</p></td>
+<td><p>Call self as a function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -476,26 +478,16 @@ variable in the segmented time series</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

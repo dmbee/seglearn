@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Input and Checking Utilities &mdash; seglearn 1.0.7 documentation</title>
+  <title>Data Input and Checking Utilities &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -170,109 +172,82 @@
 <dt id="seglearn.util.get_ts_data_parts">
 <code class="descclassname">seglearn.util.</code><code class="descname">get_ts_data_parts</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#get_ts_data_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.get_ts_data_parts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Separates time series data object into time series variables and contextual variables</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Xt</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, ]</span></dt>
-<dd><p class="first last">Time series data</p>
 </dd>
-<dt><strong>Xs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, n_contextd = np.colum _variables]</span></dt>
-<dd><p class="first last">contextual variables</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd><p>Time series data</p>
+</dd>
+<dt><strong>Xs</strong><span class="classifier">array-like, shape [n_series, n_contextd = np.colum _variables]</span></dt><dd><p>contextual variables</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="seglearn.util.check_ts_data">
 <code class="descclassname">seglearn.util.</code><code class="descname">check_ts_data</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks time series data is good. If not raises value error.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="seglearn.util.check_ts_data_with_ts_target">
 <code class="descclassname">seglearn.util.</code><code class="descname">check_ts_data_with_ts_target</code><span class="sig-paren">(</span><em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data_with_ts_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data_with_ts_target" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks time series data with time series target is good. If not raises value error.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">target data</p>
+<dt><strong>y</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>target data</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="seglearn.util.ts_stats">
 <code class="descclassname">seglearn.util.</code><code class="descname">ts_stats</code><span class="sig-paren">(</span><em>Xt</em>, <em>y</em>, <em>fs=1.0</em>, <em>class_labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#ts_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.ts_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates some helpful statistics about the data X</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series, …]</span></dt>
-<dd><p class="first last">Time series data and (optionally) contextual data</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
 </dd>
-<dt><strong>y</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape [n_series]</span></dt>
-<dd><p class="first last">target data</p>
+<dt><strong>y</strong><span class="classifier">array-like, shape [n_series]</span></dt><dd><p>target data</p>
 </dd>
-<dt><strong>fs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">sampling frequency</p>
+<dt><strong>fs</strong><span class="classifier">float</span></dt><dd><p>sampling frequency</p>
 </dd>
-<dt><strong>class_labels</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of strings, default None</span></dt>
-<dd><p class="first last">List of target class names</p>
+<dt><strong>class_labels</strong><span class="classifier">list of strings, default None</span></dt><dd><p>List of target class names</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
-<dd><div class="first last line-block">
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>results</strong><span class="classifier">dict</span></dt><dd><div class="line-block">
 <div class="line">Dictionary of relevant statistics for the time series data</div>
 <div class="line">results[‘total’] has stats for the whole data set</div>
 <div class="line">results[‘by_class’] has stats segragated by target class</div>
 </div>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -305,26 +280,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

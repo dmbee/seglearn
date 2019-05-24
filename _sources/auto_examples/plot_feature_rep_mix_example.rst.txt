@@ -18,8 +18,6 @@ See API documentation for an example.
 
 
 
-
-
 .. rst-class:: sphx-glr-script-out
 
  Out:
@@ -43,7 +41,7 @@ See API documentation for an example.
 |
 
 
-.. code-block:: python
+.. code-block:: default
 
 
     # Author: Matthias Gazzari
@@ -81,7 +79,10 @@ See API documentation for an example.
     df = pd.DataFrame(data=X, columns=union.f_labels)
     print(df)
 
-**Total running time of the script:** ( 0 minutes  0.213 seconds)
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  0.197 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_feature_rep_mix_example.py:

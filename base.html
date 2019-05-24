@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Data Base Class &mdash; seglearn 1.0.7 documentation</title>
+  <title>Time Series Data Base Class &mdash; seglearn 1.0.8 documentation</title>
   
 
   
@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -57,7 +59,7 @@
             
             
               <div class="version">
-                1.0.7
+                1.0.8
               </div>
             
           
@@ -171,19 +173,25 @@
 <em class="property">class </em><code class="descclassname">seglearn.base.</code><code class="descname">TS_Data</code><span class="sig-paren">(</span><em>ts_data</em>, <em>context_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/base.html#TS_Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.base.TS_Data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterable/indexable class for time series data with context data
 Numpy arrays are sufficient time series data alone is needed</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>ts_data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like, shape (N, )</span></dt>
-<dd><p class="first last">time series data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ts_data</strong><span class="classifier">array-like, shape (N, )</span></dt><dd><p>time series data</p>
 </dd>
-<dt><strong>context_data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array-like (N, )</span></dt>
-<dd><p class="first last">contextual data</p>
+<dt><strong>context_data</strong><span class="classifier">array-like (N, )</span></dt><dd><p>contextual data</p>
 </dd>
 </dl>
-</td>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 48%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>from_df</strong></p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -219,26 +227,16 @@ Numpy arrays are sufficient time series data alone is needed</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

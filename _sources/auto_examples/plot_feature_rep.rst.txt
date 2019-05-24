@@ -14,9 +14,6 @@ Basic Feature Representation Classification Pipeline
 This is a basic example using the pipeline to learn a feature representation of the time series data
 
 
-
-
-
 .. image:: /auto_examples/images/sphx_glr_plot_feature_rep_001.png
     :class: sphx-glr-single-img
 
@@ -33,10 +30,10 @@ This is a basic example using the pipeline to learn a feature representation of 
     N segments in test:  1258
     Accuracy score:  0.6836248012718601
     CV Scores:     fit_time  ...  train_score
-    0  0.999112  ...     0.999416
-    1  1.019181  ...     1.000000
-    2  1.194913  ...     0.999717
-    3  1.114201  ...     1.000000
+    0  0.759080  ...     0.999416
+    1  0.715362  ...     1.000000
+    2  0.706084  ...     0.999717
+    3  0.682980  ...     1.000000
 
     [4 rows x 4 columns]
     Features:  ['mean_0', 'mean_1', 'mean_2', 'mean_3', 'mean_4', 'mean_5', 'median_0', 'median_1', 'median_2', 'median_3', 'median_4', 'median_5', 'abs_energy_0', 'abs_energy_1', 'abs_energy_2', 'abs_energy_3', 'abs_energy_4', 'abs_energy_5', 'std_0', 'std_1', 'std_2', 'std_3', 'std_4', 'std_5', 'var_0', 'var_1', 'var_2', 'var_3', 'var_4', 'var_5', 'min_0', 'min_1', 'min_2', 'min_3', 'min_4', 'min_5', 'max_0', 'max_1', 'max_2', 'max_3', 'max_4', 'max_5', 'skew_0', 'skew_1', 'skew_2', 'skew_3', 'skew_4', 'skew_5', 'kurt_0', 'kurt_1', 'kurt_2', 'kurt_3', 'kurt_4', 'kurt_5', 'mse_0', 'mse_1', 'mse_2', 'mse_3', 'mse_4', 'mse_5', 'mnx_0', 'mnx_1', 'mnx_2', 'mnx_3', 'mnx_4', 'mnx_5']
@@ -47,7 +44,7 @@ This is a basic example using the pipeline to learn a feature representation of 
 |
 
 
-.. code-block:: python
+.. code-block:: default
 
     # Author: David Burns
     # License: BSD
@@ -109,7 +106,10 @@ This is a basic example using the pipeline to learn a feature representation of 
     img = mpimg.imread('feet.jpg')
     plt.imshow(img)
 
-**Total running time of the script:** ( 0 minutes  9.634 seconds)
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  6.314 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_feature_rep.py:
