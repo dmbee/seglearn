@@ -2,6 +2,7 @@
 # License: BSD
 
 import numpy as np
+import pandas as pd
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -40,6 +41,11 @@ def test_pipe_transformation():
     y = [1, 2, 3]
     transformation_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+    transformation_test(pipe, X, y)
+
     # SegmentXY transform pipe
     pipe = Pype([('seg', SegmentXY()),
                  ('ftr', FeatureRep()),
@@ -48,6 +54,11 @@ def test_pipe_transformation():
     Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
     y = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
+    transformation_test(pipe, X, y)
+
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
     transformation_test(pipe, X, y)
 
     # Forecast transform pipe
@@ -60,6 +71,11 @@ def test_pipe_transformation():
     y = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
     transformation_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+    transformation_test(pipe, X, y)
+
     # Padtrunc transform pipe
     pipe = Pype([('trunc', PadTrunc()),
                  ('ftr', FeatureRep()),
@@ -68,6 +84,11 @@ def test_pipe_transformation():
     Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
     y = [1, 2, 3]
+    transformation_test(pipe, X, y)
+
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
     transformation_test(pipe, X, y)
 
 
@@ -105,6 +126,11 @@ def test_pipe_classification():
     y = [5]
     classifier_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+    classifier_test(pipe, X, y)
+
     # multiple time series
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
     Xc = np.random.rand(3, 3)
@@ -112,11 +138,21 @@ def test_pipe_classification():
     y = [1, 2, 3]
     classifier_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+    classifier_test(pipe, X, y)
+
     # univariate data
     Xt = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
     Xc = np.random.rand(3)
     X = TS_Data(Xt, Xc)
     y = [1, 2, 3]
+    classifier_test(pipe, X, y)
+
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
     classifier_test(pipe, X, y)
 
 
@@ -148,6 +184,11 @@ def test_pipe_regression():
     y = [np.random.rand(1000)]
     regression_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+    regression_test(pipe, X, y)
+
     # multiple time seres
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
     Xc = np.random.rand(3, 3)
@@ -155,11 +196,23 @@ def test_pipe_regression():
     y = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
     regression_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+    regression_test(pipe, X, y)
+
     # cross val
     Xt = np.array([np.random.rand(1000, 10)] * 5)
     Xc = np.random.rand(5, 3)
     X = TS_Data(Xt, Xc)
     y = np.array([np.random.rand(1000)] * 5)
+    cross_validate(pipe, X, y, cv=3)
+
+    X = pd.DataFrame(Xc)
+    Xt = [np.random.rand(1000, 10)] * 5
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+
     cross_validate(pipe, X, y, cv=3)
 
 
@@ -194,12 +247,22 @@ def test_pipe_forecast():
 
     forecast_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
+    forecast_test(pipe, X, y)
+
     # multiple time seres
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
     Xc = np.random.rand(3, 3)
     X = TS_Data(Xt, Xc)
     y = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
 
+    forecast_test(pipe, X, y)
+
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
     forecast_test(pipe, X, y)
 
     # cross val
@@ -209,6 +272,12 @@ def test_pipe_forecast():
     X = TS_Data(Xt, Xc)
     y = np.array([np.random.rand(1000)] * 5)
 
+    cross_validate(pipe, X, y, cv=3)
+
+    X = pd.DataFrame(Xc)
+    Xt = [np.random.rand(1000, 10)] * 5
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
     cross_validate(pipe, X, y, cv=3)
 
 
@@ -228,6 +297,10 @@ def test_pipe_PadTrunc():
     y = [5]
     classifier_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    classifier_test(pipe, X, y)
+
     # multiple time series
     Xt = [np.random.rand(1000, 10), np.random.rand(100, 10), np.random.rand(500, 10)]
     Xc = np.random.rand(3, 3)
@@ -235,9 +308,18 @@ def test_pipe_PadTrunc():
     y = [1, 2, 3]
     classifier_test(pipe, X, y)
 
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    classifier_test(pipe, X, y)
+
     # univariate data
     Xt = [np.random.rand(1000), np.random.rand(100), np.random.rand(500)]
     Xc = np.random.rand(3)
     X = TS_Data(Xt, Xc)
     y = [1, 2, 3]
+    classifier_test(pipe, X, y)
+
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xt
+    X = TS_Data.from_df(X)
     classifier_test(pipe, X, y)

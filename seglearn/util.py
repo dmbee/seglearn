@@ -27,6 +27,7 @@ def get_ts_data_parts(X):
         contextual variables
 
     '''
+
     if not isinstance(X, TS_Data):
         return X, None
     return X.ts_data, X.context_data

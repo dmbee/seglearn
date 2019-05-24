@@ -2,6 +2,7 @@
 # License: BSD
 
 import numpy as np
+import pandas as pd
 
 from seglearn.datasets import load_watch
 from seglearn.base import TS_Data
@@ -43,3 +44,15 @@ def test_watch():
     df = load_watch()
     data = TS_Data(df['X'], df['side'])
     assert isinstance(data, TS_Data)
+
+def test_pd():
+    ts = np.array([np.random.rand(100, 10), np.random.rand(200, 10), np.random.rand(20, 10)])
+    c = np.random.rand(3, 10)
+
+    df = pd.DataFrame(c)
+    df['ts_data'] = ts
+    data = TS_Data.from_df(df)
+
+    assert np.all([np.array_equal(data.ts_data[i], ts[i]) for i in range(len(ts))])
+    assert np.array_equal(data.context_data, c)
+

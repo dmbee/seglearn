@@ -2,6 +2,7 @@
 # License: BSD
 
 import numpy as np
+import pandas as pd
 
 from seglearn.preprocessing import TargetRunLengthEncoder
 from seglearn.base import TS_Data
@@ -57,6 +58,22 @@ def test_trle():
     assert len(Xt[0]) == 26 and len(Xt[1]) == 70
     assert swt[0] == 1 and swt[1] == 1
     assert Xtc[0] == 5 and Xtc[1] == 5
+
+    X = pd.DataFrame(Xc)
+    X['ts_data'] = Xts
+    X = TS_Data.from_df(X)
+
+    rle = TargetRunLengthEncoder(min_length=5)
+    rle.fit(X)
+    Xt, yt, swt = rle.transform(X, y, sw)
+    Xtc = Xt.context_data
+
+    assert len(Xt) == len(yt) and len(swt) == len(yt) and len(yt) == 2
+    assert yt[0] == 2 and yt[1] == 4
+    assert len(Xt[0]) == 26 and len(Xt[1]) == 70
+    assert swt[0] == 1 and swt[1] == 1
+    assert Xtc[0] == 5 and Xtc[1] == 5
+
 
 
 

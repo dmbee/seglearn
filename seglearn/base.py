@@ -32,6 +32,10 @@ class TS_Data(object):
         self.N = N
         self.shape = [N]  # need for safe_indexing with sklearn
 
+    @classmethod
+    def from_df(cls, df):
+        return cls(np.array(df['ts_data']), np.array(df.drop(columns=['ts_data'])))
+
     def __iter__(self):
         return self
 
@@ -46,3 +50,12 @@ class TS_Data(object):
 
     def __len__(self):
         return self.N
+
+# xytransfomer
+# X, y = transform(X, y)
+
+# tstransformer
+# X, y, t = transform(X, y, t = None)
+# lens all equal
+
+# segment(tstransformer).transform(X, y, t, concat ? false, to return listed seqs)

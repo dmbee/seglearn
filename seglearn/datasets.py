@@ -42,5 +42,5 @@ def load_watch():
     >>> print(data.keys())
     '''
     module_path = dirname(__file__)
-    data = np.load(module_path + "/data/watch_dataset.npy").item()
+    data = np.load(module_path + "/data/watch_dataset.npy", allow_pickle=True).item()
     return data
