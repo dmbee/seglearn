@@ -7,7 +7,6 @@ time series data and sequences using a sliding window segmentation
 
 from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
-from sklearn.externals import six
 
 from .transform import XyTransformerMixin
 
@@ -104,7 +103,7 @@ class Pype(Pipeline):
 
         fit_params_steps = dict((name, {}) for name, step in self.steps
                                 if step is not None)
-        for pname, pval in six.iteritems(fit_params):
+        for pname, pval in fit_params.items():
             step, param = pname.split('__', 1)
             fit_params_steps[step][param] = pval
 
@@ -353,7 +352,7 @@ class Pype(Pipeline):
         items = self.steps
         names, _ = zip(*items)
 
-        keys = list(six.iterkeys(params))
+        keys = list(params.keys())
 
         for name in keys:
             if '__' not in name and name in names:
