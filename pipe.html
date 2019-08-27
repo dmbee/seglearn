@@ -171,7 +171,7 @@
 time series data and sequences using a sliding window segmentation</p>
 <dl class="class">
 <dt id="seglearn.pipe.Pype">
-<em class="property">class </em><code class="descclassname">seglearn.pipe.</code><code class="descname">Pype</code><span class="sig-paren">(</span><em>steps</em>, <em>scorer=None</em>, <em>memory=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">seglearn.pipe.</code><code class="sig-name descname">Pype</code><span class="sig-paren">(</span><em class="sig-param">steps</em>, <em class="sig-param">scorer=None</em>, <em class="sig-param">memory=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype" title="Permalink to this definition">¶</a></dt>
 <dd><p>This pipeline extends the sklearn Pipeline to support transformers that change X, y,
 sample_weight, and the number of samples.</p>
 <p>It also adds some new options for setting hyper-parameters with callables and in reference to
@@ -213,7 +213,7 @@ order in which they are chained, with the last object an estimator.</p>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-center">
+<table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -259,7 +259,7 @@ order in which they are chained, with the last object an estimator.</p>
 </table>
 <dl class="method">
 <dt id="seglearn.pipe.Pype.decision_function">
-<code class="descname">decision_function</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.decision_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.decision_function" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">decision_function</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.decision_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.decision_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and decision_function of the final estimator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -279,7 +279,7 @@ of the pipeline.</p>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model</p>
 <p>Fit all the transforms one after the other and transform the
 data, then fit the transformed data using the final estimator.</p>
@@ -309,7 +309,7 @@ each parameter name is prefixed such that parameter <code class="docutils litera
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.fit_transform">
-<code class="descname">fit_transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em>, <em>**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit_transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit_transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">**fit_params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.fit_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.fit_transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the model and transform with the final estimator
 Fits all the transforms one after the other and transforms the
 data, then uses fit_transform on transformed data with the final
@@ -342,7 +342,7 @@ each parameter name is prefixed such that parameter <code class="docutils litera
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms to the data, and predict with the final estimator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -363,7 +363,7 @@ of the pipeline.</p>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.predict_log_proba">
-<code class="descname">predict_log_proba</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_log_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_log_proba" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict_log_proba</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_log_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_log_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and predict_log_proba of the final estimator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -383,7 +383,7 @@ of the pipeline.</p>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.predict_proba">
-<code class="descname">predict_proba</code><span class="sig-paren">(</span><em>self</em>, <em>X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_proba" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict_proba</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and predict_proba of the final estimator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -404,7 +404,7 @@ of the pipeline.</p>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.score">
-<code class="descname">score</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and score with the final estimator</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -430,7 +430,7 @@ argument to the <code class="docutils literal notranslate"><span class="pre">sco
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.set_params">
-<code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">**params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.
 Valid parameter keys can be listed with <code class="docutils literal notranslate"><span class="pre">get_params()</span></code>.</p>
 <dl class="field-list simple">
@@ -444,7 +444,7 @@ Valid parameter keys can be listed with <code class="docutils literal notranslat
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and transform with the final estimator
 This also works where final estimator is <code class="docutils literal notranslate"><span class="pre">None</span></code>: all prior
 transformations are applied.</p>
@@ -471,7 +471,7 @@ of the pipeline.</p>
 
 <dl class="method">
 <dt id="seglearn.pipe.Pype.transform_predict">
-<code class="descname">transform_predict</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform_predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform_predict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.transform_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.transform_predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms to the data, and predict with the final estimator.
 Unlike predict, this also returns the transformed target</p>
 <dl class="field-list simple">

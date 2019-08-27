@@ -170,7 +170,7 @@
 <p>This module is for preprocessing time series data.</p>
 <dl class="class">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder">
-<em class="property">class </em><code class="descclassname">seglearn.preprocessing.</code><code class="descname">TargetRunLengthEncoder</code><span class="sig-paren">(</span><em>min_length=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">seglearn.preprocessing.</code><code class="sig-name descname">TargetRunLengthEncoder</code><span class="sig-paren">(</span><em class="sig-param">min_length=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a data set with a categorical target variable encoded as a time series and transforms it
 with run length encoding (RLE) of the target variable</p>
 <p>RLE finds contiguous runs of the same target value within the input data and derives the
@@ -190,7 +190,7 @@ Effectively it will let you use <code class="docutils literal notranslate"><span
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-center">
+<table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -215,7 +215,7 @@ Effectively it will let you use <code class="docutils literal notranslate"><span
 </table>
 <dl class="method">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder.fit">
-<code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the transform</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -238,7 +238,7 @@ this parameter.</p>
 
 <dl class="method">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder.transform">
-<code class="descname">transform</code><span class="sig-paren">(</span><em>self</em>, <em>X</em>, <em>y</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the time series data with run length encoding of the target variable
 Note this transformation changes the number of samples in the data
 If sample_weight is provided, it is transformed to align to the new target encoding</p>
