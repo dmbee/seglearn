@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Time Series Transforms &mdash; seglearn 1.0.8 documentation</title>
+  <title>Time Series Transforms &mdash; seglearn 1.0.9 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.8
+                1.0.9
               </div>
             
           
@@ -622,7 +622,7 @@ If y is a time series and passed, it will be transformed as well</p>
 
 <dl class="class">
 <dt id="seglearn.transform.InterpLongToWide">
-<em class="property">class </em><code class="sig-prename descclassname">seglearn.transform.</code><code class="sig-name descname">InterpLongToWide</code><span class="sig-paren">(</span><em class="sig-param">sample_period</em>, <em class="sig-param">kind='linear'</em>, <em class="sig-param">categorical_target=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#InterpLongToWide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.InterpLongToWide" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">seglearn.transform.</code><code class="sig-name descname">InterpLongToWide</code><span class="sig-paren">(</span><em class="sig-param">sample_period</em>, <em class="sig-param">kind='linear'</em>, <em class="sig-param">categorical_target=False</em>, <em class="sig-param">assume_sorted=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#InterpLongToWide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.InterpLongToWide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts time series in long format dataframes (where variables are sampled at different times)
 to wide format data frames usable by the rest of seglearn using direct value interpolation.</p>
 <p>Input data for this class must have at least 3 columns of type (time, var_type, var_value)
@@ -645,6 +645,8 @@ in the removal of the time column and var_type columns in the data.</p>
 </dd>
 <dt><strong>categorical_target</strong><span class="classifier">bool</span></dt><dd><p>set to True for classification problems to use nearest instead of linear interp for  the
 target</p>
+</dd>
+<dt><strong>assume_sorted</strong><span class="classifier">bool</span></dt><dd><p>assume time series data are sorted by time stamp</p>
 </dd>
 </dl>
 </dd>
@@ -747,7 +749,7 @@ The time dimension is removed from the data</p>
 
 <dl class="class">
 <dt id="seglearn.transform.Interp">
-<em class="property">class </em><code class="sig-prename descclassname">seglearn.transform.</code><code class="sig-name descname">Interp</code><span class="sig-paren">(</span><em class="sig-param">sample_period</em>, <em class="sig-param">kind='linear'</em>, <em class="sig-param">categorical_target=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#Interp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.Interp" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">seglearn.transform.</code><code class="sig-name descname">Interp</code><span class="sig-paren">(</span><em class="sig-param">sample_period</em>, <em class="sig-param">kind='linear'</em>, <em class="sig-param">categorical_target=False</em>, <em class="sig-param">assume_sorted=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/transform.html#Interp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.transform.Interp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transformer for resampling time series data to a fixed period over closed interval
 (direct value interpolation).
 Default interpolation is linear, but other types can be specified.
@@ -766,6 +768,8 @@ If start time or similar is important to the estimator, use a context variable.<
 </dd>
 <dt><strong>categorical_target</strong><span class="classifier">bool</span></dt><dd><p>set to True for classification problems to use nearest instead of linear interp for  the
 target</p>
+</dd>
+<dt><strong>assume_sorted</strong><span class="classifier">bool</span></dt><dd><p>assume time series data is sorted by timestamp</p>
 </dd>
 </dl>
 </dd>

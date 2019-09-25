@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.util &mdash; seglearn 1.0.8 documentation</title>
+  <title>seglearn.util &mdash; seglearn 1.0.9 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.8
+                1.0.9
               </div>
             
           
@@ -164,9 +164,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for seglearn.util</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module has utilities for time series data input checking</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
@@ -176,8 +176,9 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get_ts_data_parts&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data_with_ts_target&#39;</span><span class="p">,</span> <span class="s1">&#39;ts_stats&#39;</span><span class="p">]</span>
 
+
 <div class="viewcode-block" id="get_ts_data_parts"><a class="viewcode-back" href="../../util.html#seglearn.util.get_ts_data_parts">[docs]</a><span class="k">def</span> <span class="nf">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Separates time series data object into time series variables and contextual variables</span>
 
 <span class="sd">    Parameters</span>
@@ -192,7 +193,7 @@
 <span class="sd">    Xs : array-like, shape [n_series, n_contextd = np.colum _variables]</span>
 <span class="sd">        contextual variables</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">TS_Data</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="kc">None</span>
@@ -200,15 +201,21 @@
 
 
 <div class="viewcode-block" id="check_ts_data"><a class="viewcode-back" href="../../util.html#seglearn.util.check_ts_data">[docs]</a><span class="k">def</span> <span class="nf">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks time series data is good. If not raises value error.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    X : array-like, shape [n_series, ...]</span>
 <span class="sd">       Time series data and (optionally) contextual data</span>
+<span class="sd">       </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ts_target : bool</span>
+<span class="sd">        target (y) is a time series      </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">Nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">Ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
@@ -221,18 +228,21 @@
         <span class="n">Ntx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
         <span class="n">Nty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
 
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Ntx</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>
-            <span class="k">return</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>  <span class="c1"># all targets are single values</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Ntx</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>  <span class="c1"># y is a time series</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Nty</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>  <span class="c1"># target vector (eg multilabel or onehot)</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid time series lengths.</span><span class="se">\n</span><span class="s2">&quot;</span>
                              <span class="s2">&quot;Ns: &quot;</span><span class="p">,</span> <span class="n">Nx</span><span class="p">,</span>
                              <span class="s2">&quot;Ntx: &quot;</span><span class="p">,</span> <span class="n">Ntx</span><span class="p">,</span>
                              <span class="s2">&quot;Nty: &quot;</span><span class="p">,</span> <span class="n">Nty</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="check_ts_data_with_ts_target"><a class="viewcode-back" href="../../util.html#seglearn.util.check_ts_data_with_ts_target">[docs]</a><span class="k">def</span> <span class="nf">check_ts_data_with_ts_target</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks time series data with time series target is good. If not raises value error.</span>
 
 <span class="sd">    Parameters</span>
@@ -241,7 +251,7 @@
 <span class="sd">       Time series data and (optionally) contextual data</span>
 <span class="sd">    y : array-like, shape [n_series, ...]</span>
 <span class="sd">        target data</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">Nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">Ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
@@ -264,7 +274,7 @@
 
 
 <div class="viewcode-block" id="ts_stats"><a class="viewcode-back" href="../../util.html#seglearn.util.ts_stats">[docs]</a><span class="k">def</span> <span class="nf">ts_stats</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">class_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generates some helpful statistics about the data X</span>
 
 <span class="sd">    Parameters</span>
@@ -286,7 +296,7 @@
 <span class="sd">        | results[&#39;total&#39;] has stats for the whole data set</span>
 <span class="sd">        | results[&#39;by_class&#39;] has stats segragated by target class</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">check_ts_data</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
     <span class="n">Xt</span><span class="p">,</span> <span class="n">Xs</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
 
@@ -328,6 +338,35 @@
                <span class="s1">&#39;by_class&#39;</span><span class="p">:</span> <span class="n">by_class</span><span class="p">}</span>
 
     <span class="k">return</span> <span class="n">results</span></div>
+
+<span class="k">def</span> <span class="nf">interp_sort</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    sorts time series x by timestamp t, removing duplicates in the first entry</span>
+
+<span class="sd">    this is required to user the scipy interp1d methods which returns nan when there are duplicate</span>
+<span class="sd">    values for t_min</span>
+
+<span class="sd">    this can be removed once the scipy issue is fixed</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : array-like, shape [n]</span>
+<span class="sd">        timestamps</span>
+<span class="sd">    x : array-like, shape [n, ]</span>
+<span class="sd">        data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># prevents nan bring returned when there are duplicate values of min(x)</span>
+    <span class="n">gt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">gt</span><span class="p">]</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">ind</span><span class="p">[</span><span class="n">gt</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ind</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span>
 </pre></div>
 
            </div>

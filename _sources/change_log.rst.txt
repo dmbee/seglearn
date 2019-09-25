@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.0.9
+
+* allows for vector targets, to support one-hot or multi-label encoding
+* supports unsorted time series data
+* supports time series data with duplicate time stamps (fixing scipy interp sorting)
+* fixed numpy deprecation warning for test_base
+
 Version 1.0.8
 
 * added function for creating TS_Data from pandas

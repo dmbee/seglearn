@@ -28,25 +28,25 @@ This example demonstrates how to do model selection in a pipeline where segments
     Fitting 3 folds for each of 3 candidates, totalling 9 fits
     [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  33.7s
-    [Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:   33.7s remaining:    0.0s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  35.4s
+    [Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:   35.4s remaining:    0.0s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  37.0s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  34.5s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  38.9s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  28.0s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  33.6s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  22.0s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  45.7s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  20.0s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  49.2s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  22.7s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  53.8s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  23.3s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total= 1.0min
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  27.2s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  51.7s
-    [Parallel(n_jobs=1)]: Done   9 out of   9 | elapsed:  6.7min finished
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  30.3s
+    [Parallel(n_jobs=1)]: Done   9 out of   9 | elapsed:  4.1min finished
 
 
 
@@ -128,7 +128,7 @@ This example demonstrates how to do model selection in a pipeline where segments
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 7 minutes  38.348 seconds)
+   **Total running time of the script:** ( 4 minutes  47.689 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection2.py:
