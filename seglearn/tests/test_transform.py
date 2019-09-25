@@ -495,6 +495,22 @@ def test_interp():
     assert Xc[0].shape[1] == D
     assert np.all(np.isin(yc, np.arange(6)))
 
+    # sorthing case
+    N = 100
+    t = np.arange(N)
+    t[0:3] = 0
+    X = [np.column_stack([t, np.random.rand(N)])]
+    y = [np.random.rand(N)]
+
+    interp = transform.Interp(sample_period=2, assume_sorted=False)
+    interp.fit(X)
+    Xc, yc, swt = interp.transform(X, y)
+
+    assert len(Xc[0]) == N / 2
+    assert len(yc[0]) == N / 2
+    assert np.ndim(Xc[0]) == 1
+    assert np.count_nonzero(np.isnan(Xc)) == 0
+
 
 def test_interp_long_to_wide():
     # Test 1
@@ -520,7 +536,7 @@ def test_interp_long_to_wide():
     assert swt is None
 
     # Test 2
-    y = [1,2]
+    y = [1, 2]
     stacked_interp.fit(X, y)
     Xc, yc, swt = stacked_interp.transform(X, y)
     assert np.array_equal(yc, y)
@@ -548,6 +564,27 @@ def test_interp_long_to_wide():
     # --Checks--
     assert Xc[0].shape[1] == len(np.unique(s)) * (X[0].shape[1]-2)
     assert len(Xc[0]) <= N/sample_period
+
+    # Test 3 - duplicate entries for t
+    t = np.array([1.1, 1.1, 1.2, 2.1, 3.3, 3.4, 3.5]).astype(float)
+    s = np.array([0, 0, 1, 0, 0, 1, 1]).astype(float)
+    v1 = np.array([3, 3, 4, 5, 7, 15, 25]).astype(float)
+    v2 = np.array([5, 5, 7, 6, 9, 22, 35]).astype(float)
+    y = np.array([1, 1, 2, 2, 2, 3, 3]).astype(float)
+    df = np.column_stack([t, s, v1, v2])
+
+    X = [df, df]
+    y = [y, y]
+
+    stacked_interp = transform.InterpLongToWide(0.5)
+    stacked_interp.fit(X, y)
+    Xc, yc, swt = stacked_interp.transform(X, y)
+
+    # --Checks--
+    assert len(Xc[0]) == 5
+    assert Xc[0].shape[1] == 4
+    assert swt is None
+    assert np.count_nonzero(np.isnan(Xc)) == 0
 
 
 def test_feature_rep_mix():

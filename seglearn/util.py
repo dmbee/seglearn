@@ -1,6 +1,6 @@
-'''
+"""
 This module has utilities for time series data input checking
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -10,8 +10,9 @@ from seglearn.base import TS_Data
 
 __all__ = ['get_ts_data_parts', 'check_ts_data', 'check_ts_data_with_ts_target', 'ts_stats']
 
+
 def get_ts_data_parts(X):
-    '''
+    """
     Separates time series data object into time series variables and contextual variables
 
     Parameters
@@ -26,7 +27,7 @@ def get_ts_data_parts(X):
     Xs : array-like, shape [n_series, n_contextd = np.colum _variables]
         contextual variables
 
-    '''
+    """
 
     if not isinstance(X, TS_Data):
         return X, None
@@ -34,15 +35,21 @@ def get_ts_data_parts(X):
 
 
 def check_ts_data(X, y=None):
-    '''
+    """
     Checks time series data is good. If not raises value error.
 
     Parameters
     ----------
     X : array-like, shape [n_series, ...]
        Time series data and (optionally) contextual data
+       
+    Returns
+    -------
+    ts_target : bool
+        target (y) is a time series      
+        
+    """
 
-    '''
     if y is not None:
         Nx = len(X)
         Ny = len(y)
@@ -55,18 +62,21 @@ def check_ts_data(X, y=None):
         Ntx = np.array([len(Xt[i]) for i in np.arange(Nx)])
         Nty = np.array([len(np.atleast_1d(y[i])) for i in np.arange(Nx)])
 
-        if np.count_nonzero(Nty == 1) == Nx:
-            return
-        elif np.count_nonzero(Nty == Ntx) == Nx:
-            return
+        if np.count_nonzero(Nty == 1) == Nx:  # all targets are single values
+            return False
+        elif np.count_nonzero(Nty == Ntx) == Nx:  # y is a time series
+            return True
+        elif np.count_nonzero(Nty == Nty[0]) == Nx:  # target vector (eg multilabel or onehot)
+            return False
         else:
             raise ValueError("Invalid time series lengths.\n"
                              "Ns: ", Nx,
                              "Ntx: ", Ntx,
                              "Nty: ", Nty)
 
+
 def check_ts_data_with_ts_target(X, y=None):
-    '''
+    """
     Checks time series data with time series target is good. If not raises value error.
 
     Parameters
@@ -75,7 +85,7 @@ def check_ts_data_with_ts_target(X, y=None):
        Time series data and (optionally) contextual data
     y : array-like, shape [n_series, ...]
         target data
-    '''
+    """
     if y is not None:
         Nx = len(X)
         Ny = len(y)
@@ -98,7 +108,7 @@ def check_ts_data_with_ts_target(X, y=None):
 
 
 def ts_stats(Xt, y, fs=1.0, class_labels=None):
-    '''
+    """
     Generates some helpful statistics about the data X
 
     Parameters
@@ -120,7 +130,7 @@ def ts_stats(Xt, y, fs=1.0, class_labels=None):
         | results['total'] has stats for the whole data set
         | results['by_class'] has stats segragated by target class
 
-    '''
+    """
     check_ts_data(Xt)
     Xt, Xs = get_ts_data_parts(Xt)
 
@@ -162,3 +172,32 @@ def ts_stats(Xt, y, fs=1.0, class_labels=None):
                'by_class': by_class}
 
     return results
+
+def interp_sort(t, x):
+    """
+    sorts time series x by timestamp t, removing duplicates in the first entry
+
+    this is required to user the scipy interp1d methods which returns nan when there are duplicate
+    values for t_min
+
+    this can be removed once the scipy issue is fixed
+
+    Parameters
+    ----------
+    t : array-like, shape [n]
+        timestamps
+    x : array-like, shape [n, ]
+        data
+
+    Returns
+    -------
+
+    """
+    ind = np.argsort(t)
+    t = t[ind]
+    gt = t > t[0]  # prevents nan bring returned when there are duplicate values of min(x)
+    gt[0] = True
+    t = t[gt]
+    ind = ind[gt]
+    x = np.take(x, ind, axis=0)
+    return t, x

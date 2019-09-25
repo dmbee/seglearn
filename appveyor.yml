@@ -2,19 +2,12 @@ build: false
 
 environment:
   matrix:
-    - PYTHON: "C:\\Miniconda-x64"
-      PYTHON_VERSION: "2.7.x"
-      PYTHON_ARCH: "64"
-      NUMPY_VERSION: "1.13.1"
-      SCIPY_VERSION: "0.19.1"
-      SKLEARN_VERSION: "0.19.1"
-
     - PYTHON: "C:\\Miniconda3-x64"
       PYTHON_VERSION: "3.5.x"
       PYTHON_ARCH: "64"
       NUMPY_VERSION: "1.13.1"
       SCIPY_VERSION: "0.19.1"
-      SKLEARN_VERSION: "0.19.1"
+      SKLEARN_VERSION: "0.21.3"
 
     - PYTHON: "C:\\Miniconda3-x64"
       PYTHON_VERSION: "3.6.x"

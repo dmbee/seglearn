@@ -51,11 +51,3 @@ class TS_Data(object):
     def __len__(self):
         return self.N
 
-# xytransfomer
-# X, y = transform(X, y)
-
-# tstransformer
-# X, y, t = transform(X, y, t = None)
-# lens all equal
-
-# segment(tstransformer).transform(X, y, t, concat ? false, to return listed seqs)

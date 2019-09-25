@@ -15,8 +15,7 @@ def test_ts_data():
     data = TS_Data(ts, c)
 
     assert np.array_equal(data.context_data, c)
-    assert np.array_equal(data.ts_data, ts)
-
+    assert np.all([np.array_equal(data.ts_data[i], ts[i]) for i in range(len(ts))])
     assert isinstance(data[1], TS_Data)
     assert np.array_equal(data[1].ts_data, ts[1])
     assert np.array_equal(data[1].context_data, c[1])
