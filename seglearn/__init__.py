@@ -9,7 +9,8 @@ from .feature_functions import base_features, all_features
 from .pipe import Pype
 from .preprocessing import TargetRunLengthEncoder
 from .split import TemporalKFold, temporal_split
-from .transform import SegmentX, SegmentXY, SegmentXYForecast, PadTrunc, Interp, InterpLongToWide, FeatureRep
+from .transform import SegmentX, SegmentXY, SegmentXYForecast, PadTrunc, Interp, InterpLongToWide, FeatureRep, \
+    FeatureRepMix, FunctionTransformer
 from .util import check_ts_data, check_ts_data_with_ts_target, ts_stats, get_ts_data_parts
 
 __all__ = ['TS_Data', 'FeatureRep', 'FeatureRepMix', 'PadTrunc', 'Interp', 'InterpLongToWide', 'Pype', 'SegmentX',
