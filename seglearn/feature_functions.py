@@ -65,6 +65,7 @@ def all_features():
                 'abs_energy': abs_energy,
                 'std': std,
                 'var': var,
+                'mad': median_absolute_deviation,
                 'variation': variation,
                 'min': minimum,
                 'max': maximum,
@@ -154,6 +155,11 @@ def std(X):
 def var(X):
     ''' statistical variance for each variable in a segmented time series '''
     return np.var(X, axis=1)
+
+
+def median_absolute_deviation(X):
+    ''' median absolute deviation for each variable in a segmented time series '''
+    return stats.median_absolute_deviation(X, axis=1)
 
 
 def variation(X):
