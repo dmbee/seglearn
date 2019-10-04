@@ -231,6 +231,7 @@
                 <span class="s1">&#39;abs_energy&#39;</span><span class="p">:</span> <span class="n">abs_energy</span><span class="p">,</span>
                 <span class="s1">&#39;std&#39;</span><span class="p">:</span> <span class="n">std</span><span class="p">,</span>
                 <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">var</span><span class="p">,</span>
+                <span class="s1">&#39;mad&#39;</span><span class="p">:</span> <span class="n">median_absolute_deviation</span><span class="p">,</span>
                 <span class="s1">&#39;variation&#39;</span><span class="p">:</span> <span class="n">variation</span><span class="p">,</span>
                 <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">minimum</span><span class="p">,</span>
                 <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">maximum</span><span class="p">,</span>
@@ -320,6 +321,11 @@
 <div class="viewcode-block" id="var"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.var">[docs]</a><span class="k">def</span> <span class="nf">var</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39; statistical variance for each variable in a segmented time series &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="median_absolute_deviation"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.median_absolute_deviation">[docs]</a><span class="k">def</span> <span class="nf">median_absolute_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; median absolute deviation for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">median_absolute_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="variation"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.variation">[docs]</a><span class="k">def</span> <span class="nf">variation</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>

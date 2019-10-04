@@ -5,18 +5,18 @@
 
 Computation times
 =================
-**09:23.730** total execution time for **auto_examples** files:
+**12:27.545** total execution time for **auto_examples** files:
 
-- **03:59.752**: :ref:`sphx_glr_auto_examples_plot_model_selection2.py` (``plot_model_selection2.py``)
-- **03:15.559**: :ref:`sphx_glr_auto_examples_plot_segment_rep.py` (``plot_segment_rep.py``)
-- **01:06.814**: :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py` (``plot_nn_training_curves.py``)
-- **00:20.764**: :ref:`sphx_glr_auto_examples_plot_scoring.py` (``plot_scoring.py``)
-- **00:15.305**: :ref:`sphx_glr_auto_examples_plot_model_selection1.py` (``plot_model_selection1.py``)
-- **00:13.513**: :ref:`sphx_glr_auto_examples_plot_interp.py` (``plot_interp.py``)
-- **00:06.368**: :ref:`sphx_glr_auto_examples_plot_feature_rep.py` (``plot_feature_rep.py``)
-- **00:04.561**: :ref:`sphx_glr_auto_examples_plot_lda.py` (``plot_lda.py``)
-- **00:00.273**: :ref:`sphx_glr_auto_examples_plot_watchdata.py` (``plot_watchdata.py``)
-- **00:00.247**: :ref:`sphx_glr_auto_examples_plot_padtrunc.py` (``plot_padtrunc.py``)
-- **00:00.199**: :ref:`sphx_glr_auto_examples_plot_regression.py` (``plot_regression.py``)
-- **00:00.189**: :ref:`sphx_glr_auto_examples_plot_forecast.py` (``plot_forecast.py``)
-- **00:00.185**: :ref:`sphx_glr_auto_examples_plot_feature_rep_mix_example.py` (``plot_feature_rep_mix_example.py``)
+- **05:47.552**: :ref:`sphx_glr_auto_examples_plot_segment_rep.py` (``plot_segment_rep.py``)
+- **03:11.835**: :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py` (``plot_nn_training_curves.py``)
+- **02:34.961**: :ref:`sphx_glr_auto_examples_plot_model_selection2.py` (``plot_model_selection2.py``)
+- **00:16.087**: :ref:`sphx_glr_auto_examples_plot_scoring.py` (``plot_scoring.py``)
+- **00:15.697**: :ref:`sphx_glr_auto_examples_plot_model_selection1.py` (``plot_model_selection1.py``)
+- **00:10.479**: :ref:`sphx_glr_auto_examples_plot_interp.py` (``plot_interp.py``)
+- **00:06.991**: :ref:`sphx_glr_auto_examples_plot_feature_rep.py` (``plot_feature_rep.py``)
+- **00:02.776**: :ref:`sphx_glr_auto_examples_plot_lda.py` (``plot_lda.py``)
+- **00:00.278**: :ref:`sphx_glr_auto_examples_plot_watchdata.py` (``plot_watchdata.py``)
+- **00:00.262**: :ref:`sphx_glr_auto_examples_plot_regression.py` (``plot_regression.py``)
+- **00:00.248**: :ref:`sphx_glr_auto_examples_plot_padtrunc.py` (``plot_padtrunc.py``)
+- **00:00.192**: :ref:`sphx_glr_auto_examples_plot_forecast.py` (``plot_forecast.py``)
+- **00:00.186**: :ref:`sphx_glr_auto_examples_plot_feature_rep_mix_example.py` (``plot_feature_rep_mix_example.py``)
