@@ -5,6 +5,7 @@ This module has utilities for time series data input checking
 # License: BSD
 
 import numpy as np
+import warnings
 
 from seglearn.base import TS_Data
 
@@ -193,11 +194,17 @@ def interp_sort(t, x):
     -------
 
     """
+    if (len(t) != len(x)):
+        raise ValueError("Interpolation time and value errors not equal")
+
     ind = np.argsort(t)
     t = t[ind]
-    gt = t > t[0]  # prevents nan bring returned when there are duplicate values of min(x)
-    gt[0] = True
-    t = t[gt]
-    ind = ind[gt]
-    x = np.take(x, ind, axis=0)
+    x = x[ind]
+
+    t, ind = np.unique(t, return_index=True)
+
+    if len(t) < len(x):
+        warnings.warn("Interpolation time has duplicate time indices", UserWarning)
+        x = x[ind]
+
     return t, x
