@@ -31,9 +31,9 @@ In this example, we use the pipeline to learn a continuous time series target wi
     N segments in test:  24
     Score:  0.9735806135052695
     CV Scores:     fit_time  ...  train_score
-    0  0.005101  ...     0.032275
-    1  0.005588  ...     0.126310
-    2  0.005661  ...     0.097838
+    0  0.003555  ...     0.032275
+    1  0.003195  ...     0.126310
+    2  0.003185  ...     0.097838
 
     [3 rows x 4 columns]
 
@@ -113,7 +113,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.342 seconds)
+   **Total running time of the script:** ( 0 minutes  0.255 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_regression.py:

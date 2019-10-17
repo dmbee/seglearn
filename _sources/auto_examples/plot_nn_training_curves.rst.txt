@@ -122,11 +122,11 @@ Accessing training history
  .. code-block:: none
 
        val_loss  ...       acc
-    0  2.044756  ...  0.121137
-    1  1.945152  ...  0.161989
-    2  1.893805  ...  0.219183
-    3  1.859431  ...  0.244405
-    4  1.820842  ...  0.273179
+    0  2.049911  ...  0.120071
+    1  1.948923  ...  0.160924
+    2  1.895200  ...  0.217407
+    3  1.860571  ...  0.244405
+    4  1.822079  ...  0.273179
 
     [5 rows x 4 columns]
 
@@ -157,7 +157,7 @@ Training Curves
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 5 minutes  11.917 seconds)
+   **Total running time of the script:** ( 2 minutes  7.008 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

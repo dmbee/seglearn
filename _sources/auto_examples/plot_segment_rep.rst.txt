@@ -72,7 +72,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
     N series in test:  35
     N segments in train:  3519
     N segments in test:  1158
-    Accuracy score:  0.3842832482128769
+    Accuracy score:  0.3989637318052776
 
 
 
@@ -144,7 +144,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 8 minutes  11.641 seconds)
+   **Total running time of the script:** ( 8 minutes  6.979 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_segment_rep.py:
