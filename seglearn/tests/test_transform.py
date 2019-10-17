@@ -2,6 +2,7 @@
 # License: BSD
 
 import pytest
+import warnings
 
 import numpy as np
 
@@ -495,21 +496,25 @@ def test_interp():
     assert Xc[0].shape[1] == D
     assert np.all(np.isin(yc, np.arange(6)))
 
-    # sorthing case
+    # sorting case
     N = 100
     t = np.arange(N)
     t[0:3] = 0
     X = [np.column_stack([t, np.random.rand(N)])]
     y = [np.random.rand(N)]
 
-    interp = transform.Interp(sample_period=2, assume_sorted=False)
-    interp.fit(X)
-    Xc, yc, swt = interp.transform(X, y)
-
-    assert len(Xc[0]) == N / 2
-    assert len(yc[0]) == N / 2
-    assert np.ndim(Xc[0]) == 1
-    assert np.count_nonzero(np.isnan(Xc)) == 0
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        interp = transform.Interp(sample_period=2, assume_sorted=False)
+        interp.fit(X)
+        Xc, yc, swt = interp.transform(X, y)
+        assert len(w) == 2
+        assert issubclass(w[-1].category, UserWarning)
+        assert "duplicate" in str(w[-1].message)
+        assert len(Xc[0]) == N / 2
+        assert len(yc[0]) == N / 2
+        assert np.ndim(Xc[0]) == 1
+        assert np.count_nonzero(np.isnan(Xc)) == 0
 
 
 def test_interp_long_to_wide():
@@ -576,15 +581,20 @@ def test_interp_long_to_wide():
     X = [df, df]
     y = [y, y]
 
-    stacked_interp = transform.InterpLongToWide(0.5)
-    stacked_interp.fit(X, y)
-    Xc, yc, swt = stacked_interp.transform(X, y)
+    with warnings.catch_warnings(record=True) as w:
+        stacked_interp = transform.InterpLongToWide(0.5, assume_sorted=False)
+        stacked_interp.fit(X, y)
+        Xc, yc, swt = stacked_interp.transform(X, y)
 
-    # --Checks--
-    assert len(Xc[0]) == 5
-    assert Xc[0].shape[1] == 4
-    assert swt is None
-    assert np.count_nonzero(np.isnan(Xc)) == 0
+        assert len(w) == 1
+        assert issubclass(w[-1].category, UserWarning)
+        assert "duplicate" in str(w[-1].message)
+
+        # --Checks--
+        assert len(Xc[0]) == 5
+        assert Xc[0].shape[1] == 4
+        assert swt is None
+        assert np.count_nonzero(np.isnan(Xc)) == 0
 
 
 def test_feature_rep_mix():
