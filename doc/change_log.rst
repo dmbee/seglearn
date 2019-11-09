@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.1.0
+
+* Support for imbalanced-learn resamplers by Matthias Gazzari
+
 Version 1.0.9
 
 * allows for vector targets, to support one-hot or multi-label encoding

@@ -47,7 +47,8 @@ EXTRAS_REQUIRE = {
         'numpydoc',
         'matplotlib',
         'keras',
-        'pandas'
+        'pandas',
+        'imbalanced-learn>=0.4.3',
     ]
 }
 
