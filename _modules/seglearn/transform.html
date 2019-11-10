@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.transform &mdash; seglearn 1.0.10 documentation</title>
+  <title>seglearn.transform &mdash; seglearn 1.1.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.1.0
               </div>
             
           
@@ -174,7 +174,8 @@
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">interp1d</span>
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
 <span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="k">import</span> <span class="n">NotFittedError</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span><span class="p">,</span> <span class="n">check_array</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span><span class="p">,</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_consistent_length</span><span class="p">,</span> <span class="n">shuffle</span>
+<span class="kn">from</span> <span class="nn">inspect</span> <span class="k">import</span> <span class="n">signature</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.metaestimators</span> <span class="k">import</span> <span class="n">_BaseComposition</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
@@ -182,7 +183,7 @@
 <span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_ts_data_parts</span><span class="p">,</span> <span class="n">check_ts_data</span><span class="p">,</span> <span class="n">interp_sort</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SegmentX&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXY&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXYForecast&#39;</span><span class="p">,</span> <span class="s1">&#39;PadTrunc&#39;</span><span class="p">,</span> <span class="s1">&#39;InterpLongToWide&#39;</span><span class="p">,</span> <span class="s1">&#39;Interp&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;FeatureRep&#39;</span><span class="p">,</span> <span class="s1">&#39;FeatureRepMix&#39;</span><span class="p">,</span> <span class="s1">&#39;FunctionTransformer&#39;</span><span class="p">]</span>
+           <span class="s1">&#39;FeatureRep&#39;</span><span class="p">,</span> <span class="s1">&#39;FeatureRepMix&#39;</span><span class="p">,</span> <span class="s1">&#39;FunctionTransformer&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_sampler&#39;</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">XyTransformerMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -1671,6 +1672,155 @@
             <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Xt</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_InitializePickableSampler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Class for initializing a serialized/pickled and dynamically patched imbalanced-learn Sampler.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampler_class</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Recreate a dynamically patched Sampler by creating a _InitializePickableSampler object and</span>
+<span class="sd">        turning it into a patched Sampler by using the patch_sampler function.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">_InitializePickableSampler</span><span class="p">()</span>
+        <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">patch_sampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+
+<div class="viewcode-block" id="patch_sampler"><a class="viewcode-back" href="../../transform.html#seglearn.transform.patch_sampler">[docs]</a><span class="k">def</span> <span class="nf">patch_sampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return a dynamically patched imbalanced-learn Sampler class compatible with Pype.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;fit_resample&#39;</span><span class="p">),</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;_check_X_y&#39;</span><span class="p">),</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;_get_param_names&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">conditions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The sampler class to be patched must have a &quot;fit_resample&quot;, a &quot;_check_X_y&quot;&#39;</span>
+                        <span class="s1">&#39; method and a &quot;_get_param_names&quot; class method.&#39;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">PickableSampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Dynamically created (pickable) class derived from an imbalanced-learn Sampler and the</span>
+<span class="sd">        XyTransformerMixin in order to enable the use of the imbalanced-learn Sampler transforms</span>
+<span class="sd">        inside a seglearn Pype.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shuffle : boolean, optional (default=False)</span>
+<span class="sd">        random_state : int, RandomState instance or None, optional (default=None)</span>
+<span class="sd">            seed of the pseudo random number generator used for shuffling the resampled data</span>
+<span class="sd">        **kwargs : keyword arguments to be passed to the imbalanced-learn Sampler base class</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            returns self</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="c1"># set shuffle and random_state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+
+            <span class="c1"># call imbalanced-learn Sampler base class with the correct arguments</span>
+            <span class="n">orig_signature</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+            <span class="n">orig_args</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">orig_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                         <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;self&#39;</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="n">p</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;shuffle&quot;</span> <span class="ow">in</span> <span class="n">orig_args</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;shuffle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffle</span>
+            <span class="k">if</span> <span class="s2">&quot;random_state&quot;</span> <span class="ow">in</span> <span class="n">orig_args</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;random_state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random_state</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">_get_param_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Get parameters of the imbalanced-learn Sampler base class and the additional arguments</span>
+<span class="sd">            of the dynamically derived class.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">init_signature</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">))</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">init_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                          <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;self&#39;</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="n">p</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">]</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sampler_class</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="n">parameters</span><span class="p">))</span>
+
+        <span class="nd">@staticmethod</span>
+        <span class="k">def</span> <span class="nf">_check_X_y</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Circumvent the check whether dim(Xt) == 2.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">Xt_2d</span> <span class="o">=</span> <span class="n">Xt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">binarize_yt</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="n">PickableSampler</span><span class="p">)</span><span class="o">.</span><span class="n">_check_X_y</span><span class="p">(</span><span class="n">Xt_2d</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">binarize_yt</span>
+
+        <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Return the given segmented time series data (identity transform) when calling transform</span>
+<span class="sd">            without fit on this data (potentially making a prediction) to not alter test data.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            X : array-like, shape [n_series, ...]</span>
+<span class="sd">               time series data and (optionally) contextual data</span>
+<span class="sd">            y : array-like, shape [n_series] (default=None)</span>
+<span class="sd">                target vector</span>
+<span class="sd">            sample_weight : array-like shape [n_series] (default=None)</span>
+<span class="sd">                sample weights</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            X : array-like [n_series, ...]</span>
+<span class="sd">            y : array-like [n_series]</span>
+<span class="sd">            sample_weight : array-like shape [n_series]</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span>
+
+        <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Resample the given segmented time series data based on the Sampler transformer provided</span>
+<span class="sd">            as a bass class when calling fit (i.e. not making any prediction on the test data) on</span>
+<span class="sd">            this transformer.</span>
+<span class="sd">            Sample weights always returned as None.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            X : array-like, shape [n_series, ...]</span>
+<span class="sd">               time series data and (optionally) contextual data</span>
+<span class="sd">            y : array-like, shape [n_series] (default=None)</span>
+<span class="sd">                target vector</span>
+<span class="sd">            sample_weight : array-like shape [n_series] (default=None)</span>
+<span class="sd">                sample weights</span>
+<span class="sd">            **fit_params : dict of string -&gt; object</span>
+<span class="sd">                parameters for the inner imbalanced-learn Sampler object</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            X : array-like [n_series, ...]</span>
+<span class="sd">            y : array-like [n_series]</span>
+<span class="sd">            sample_weight : None</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
+                <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">            Definition on how to serialize/pickle an object of this dynamically created class.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">_InitializePickableSampler</span><span class="p">(),</span> <span class="p">(</span><span class="n">sampler_class</span><span class="p">,),</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+
+    <span class="n">new_class_name</span> <span class="o">=</span> <span class="s2">&quot;Patched&quot;</span> <span class="o">+</span> <span class="n">sampler_class</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">PickableSampler</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">new_class_name</span>
+    <span class="n">PickableSampler</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">=</span> <span class="n">new_class_name</span>
+    <span class="k">return</span> <span class="n">PickableSampler</span></div>
 </pre></div>
 
            </div>

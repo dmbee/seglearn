@@ -27,26 +27,26 @@ This example demonstrates how to do model selection in a pipeline where segments
 
     Fitting 3 folds for each of 3 candidates, totalling 9 fits
     [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  32.5s
-    [Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:   32.5s remaining:    0.0s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  28.9s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=50 .........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=50, total=  55.7s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  35.1s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  20.6s
+    [Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:   20.6s remaining:    0.0s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  25.9s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  17.6s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  34.3s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  22.3s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  59.4s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  16.1s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  38.3s
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  20.6s
     [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  42.5s
-    [Parallel(n_jobs=1)]: Done   9 out of   9 | elapsed:  5.9min finished
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  22.0s
+    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  22.8s
+    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  22.8s
+    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
+    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  22.9s
+    [Parallel(n_jobs=1)]: Done   9 out of   9 | elapsed:  3.1min finished
 
 
 
@@ -62,9 +62,10 @@ This example demonstrates how to do model selection in a pipeline where segments
     # License: BSD
 
     import matplotlib.pyplot as plt
-    from keras.layers import Dense, LSTM, Conv1D
-    from keras.models import Sequential
-    from keras.wrappers.scikit_learn import KerasClassifier
+    from tensorflow.python.keras.layers import Dense, LSTM, Conv1D
+    from tensorflow.python.keras.models import Sequential
+    from tensorflow.python.keras.wrappers.scikit_learn import KerasClassifier
+
     from sklearn.model_selection import GridSearchCV
 
     from seglearn.datasets import load_watch
@@ -74,7 +75,7 @@ This example demonstrates how to do model selection in a pipeline where segments
 
 
     def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-                   conv_filters=10, lstm_units=10):
+                   conv_filters=2, lstm_units=2):
         # create a crnn model with keras with one cnn layers, and one rnn layer
         input_shape = (width, n_vars)
         model = Sequential()
@@ -98,7 +99,6 @@ This example demonstrates how to do model selection in a pipeline where segments
     Xs, ys, cv = splitter.split(X, y)
 
     # create a segment learning pipeline
-    width = 100
     pipe = Pype([('seg', SegmentX(order='C')),
                  ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
@@ -109,7 +109,7 @@ This example demonstrates how to do model selection in a pipeline where segments
     #
     # note that if you want to set a parameter to a single value, it will still need to be as a list
 
-    par_grid = {'seg__width': [50, 100, 200],
+    par_grid = {'seg__width': [100, 200, 400],
                 'seg__overlap': [0.],
                 'crnn__width': ['seg__width']}
 
@@ -128,7 +128,7 @@ This example demonstrates how to do model selection in a pipeline where segments
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 6 minutes  33.529 seconds)
+   **Total running time of the script:** ( 3 minutes  37.488 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection2.py:

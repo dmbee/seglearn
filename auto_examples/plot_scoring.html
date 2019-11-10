@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Scoring Time Series Estimators &mdash; seglearn 1.0.10 documentation</title>
+  <title>Scoring Time Series Estimators &mdash; seglearn 1.1.0 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Authors" href="../authors.html" />
-    <link rel="prev" title="Resampling Time Series Data" href="plot_interp.html" /> 
+    <link rel="prev" title="Simple imbalanced-learn example" href="plot_imblearn.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.0.10
+                1.1.0
               </div>
             
           
@@ -110,6 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_imblearn.html">Simple imbalanced-learn example</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Scoring Time Series Estimators</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#confusion-plot">CONFUSION PLOT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#setup">SETUP</a></li>
@@ -277,7 +278,7 @@ segments (not series’) as instances of the data.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Accuracy score:  0.7556131260794473
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Accuracy score:  0.7875647668393783
 </pre></div>
 </div>
 </div>
@@ -294,7 +295,7 @@ segments (not series’) as instances of the data.</p>
 </div>
 <img alt="../_images/sphx_glr_plot_scoring_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_scoring_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>F1 score:  0.7683103625934831
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>F1 score:  0.798260921806575
 </pre></div>
 </div>
 </div>
@@ -319,10 +320,10 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV Scores:     fit_time  ...  train_score
-0  0.688483  ...     0.999708
-1  0.945991  ...     1.000000
-2  0.853445  ...     1.000000
-3  0.811066  ...     1.000000
+0  0.714515  ...          1.0
+1  0.764996  ...          1.0
+2  0.798733  ...          1.0
+3  0.717955  ...          1.0
 
 [4 rows x 4 columns]
 </pre></div>
@@ -341,10 +342,10 @@ segments (not series’) as instances of the data.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV F1 Scores:     fit_time  ...  train_score
-0  0.876684  ...          1.0
-1  0.792938  ...          1.0
-2  0.769031  ...          1.0
-3  0.925679  ...          1.0
+0  0.727639  ...          1.0
+1  0.749088  ...          1.0
+2  0.780290  ...          1.0
+3  0.930410  ...          1.0
 
 [4 rows x 4 columns]
 </pre></div>
@@ -382,15 +383,15 @@ segments (not series’) as instances of the data.</p>
 /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/ensemble/forest.py:245: FutureWarning: The default value of n_estimators will change from 10 in version 0.20 to 100 in 0.22.
   &quot;10 in version 0.20 to 100 in 0.22.&quot;, FutureWarning)
 CV Scores (workaround):     fit_time  ...  test_f1_macro
-0  1.937194  ...       0.785605
-1  0.763676  ...       0.828601
-2  0.796430  ...       0.809848
-3  0.870511  ...       0.815395
+0  0.850655  ...       0.774913
+1  0.899210  ...       0.822890
+2  0.805723  ...       0.808596
+3  0.990518  ...       0.802547
 
 [4 rows x 6 columns]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  21.724 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  19.289 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/0d14ca489a6acff880447a655740710b/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></p>
@@ -414,7 +415,7 @@ CV Scores (workaround):     fit_time  ...  test_f1_macro
         <a href="../authors.html" class="btn btn-neutral float-right" title="Authors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_interp.html" class="btn btn-neutral float-left" title="Resampling Time Series Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_imblearn.html" class="btn btn-neutral float-left" title="Simple imbalanced-learn example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -10,9 +10,10 @@ This example demonstrates how to do model selection in a pipeline where segments
 # License: BSD
 
 import matplotlib.pyplot as plt
-from keras.layers import Dense, LSTM, Conv1D
-from keras.models import Sequential
-from keras.wrappers.scikit_learn import KerasClassifier
+from tensorflow.python.keras.layers import Dense, LSTM, Conv1D
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.wrappers.scikit_learn import KerasClassifier
+
 from sklearn.model_selection import GridSearchCV
 
 from seglearn.datasets import load_watch
@@ -22,7 +23,7 @@ from seglearn.transform import SegmentX
 
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-               conv_filters=10, lstm_units=10):
+               conv_filters=2, lstm_units=2):
     # create a crnn model with keras with one cnn layers, and one rnn layer
     input_shape = (width, n_vars)
     model = Sequential()
@@ -46,7 +47,6 @@ splitter = TemporalKFold(n_splits=3)
 Xs, ys, cv = splitter.split(X, y)
 
 # create a segment learning pipeline
-width = 100
 pipe = Pype([('seg', SegmentX(order='C')),
              ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
@@ -57,7 +57,7 @@ pipe = Pype([('seg', SegmentX(order='C')),
 #
 # note that if you want to set a parameter to a single value, it will still need to be as a list
 
-par_grid = {'seg__width': [50, 100, 200],
+par_grid = {'seg__width': [100, 200, 400],
             'seg__overlap': [0.],
             'crnn__width': ['seg__width']}
 

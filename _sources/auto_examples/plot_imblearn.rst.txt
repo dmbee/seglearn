@@ -1,0 +1,202 @@
+.. note::
+    :class: sphx-glr-download-link-note
+
+    Click :ref:`here <sphx_glr_download_auto_examples_plot_imblearn.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
+
+.. _sphx_glr_auto_examples_plot_imblearn.py:
+
+
+===============================
+Simple imbalanced-learn example
+===============================
+
+This example demonstrates how to use imbalanced-learn resample transforms inside a seglearn Pype.
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Using TensorFlow backend.
+    Implementation details: transform and fit_transform methods:
+    Pipeline: Pype(memory=None, scorer=None,
+         steps=[('segment',
+                 SegmentXY(order='F', overlap=0, random_state=None, shuffle=False,
+                           step=None, width=1,
+                           y_func=<function last at 0x14922369d560>)),
+                ('resample',
+                 PatchedRandomUnderSampler(random_state=None, ratio=None,
+                                           replacement=False, return_indices=False,
+                                           sampling_strategy='auto',
+                                           shuffle=False))])
+    Calling a transform on the data does not change it ...
+    X (flattened): [ 0  1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10]
+    y [ True False False False False False  True False False False]
+    ... but calling fit_transform resamples the data.
+    X (flattened): [7 8 3 4 0 1 6 7]
+    y [False False  True  True]
+
+    VerboseDummyClassifier example:
+
+    Pipeline: Pype(memory=None, scorer=None,
+         steps=[('segment',
+                 SegmentXY(order='F', overlap=0, random_state=None, shuffle=False,
+                           step=None, width=1,
+                           y_func=<function last at 0x14922369d560>)),
+                ('resample',
+                 PatchedRandomUnderSampler(random_state=None, ratio=None,
+                                           replacement=False, return_indices=False,
+                                           sampling_strategy='auto',
+                                           shuffle=True)),
+                ('feature',
+                 FeatureRep(features={'min': <function minimum at 0x149213d40200>},
+                            verbose=False)),
+                ('estimator',
+                 VerboseDummyClassifier(constant=True, random_state=None,
+                                        strategy='constant'))])
+    Split the data into half training and half test data:
+    X_train: [array([[0, 1],
+           [1, 2],
+           [2, 3],
+           [3, 4],
+           [4, 5]])]
+    y_train: [array([ True, False, False, False, False])]
+    X_test: [array([[ 5,  6],
+           [ 6,  7],
+           [ 7,  8],
+           [ 8,  9],
+           [ 9, 10]])]
+    y_test: [array([False,  True, False, False, False])]
+
+    Fit on the training data (this includes resampling):
+    Fitting X (flattened): [0 1 4 5] on y: [ True False]
+
+    Score the fitted estimator on test data (this excludes resampling):
+    Scoring X (flattened): [ 5  6  6  7  7  8  8  9  9 10] on y: [False  True False False False]
+    Predicting X (flattened): [ 5  6  6  7  7  8  8  9  9 10]
+    Score:  0.2
+
+
+
+
+
+|
+
+
+.. code-block:: default
+
+
+    # Author: Matthias Gazzari
+    # License: BSD
+
+    import numpy as np
+
+    from sklearn.dummy import DummyClassifier
+
+    from seglearn.pipe import Pype
+    from seglearn.transform import SegmentXY, patch_sampler, FeatureRep
+    from seglearn.feature_functions import minimum
+    from seglearn.split import temporal_split
+
+
+    from imblearn.under_sampling import RandomUnderSampler
+
+    # Single univariate time series with 10 samples
+    X = [np.array([[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5,6], [6, 7], [7, 8], [8, 9], [9, 10]])]
+    # Time series target (imbalanced towards False)
+    y = [np.array([True, False, False, False, False, False, True, False, False, False])]
+
+    print("Implementation details: transform and fit_transform methods:")
+
+    pipe = Pype([
+        ('segment', SegmentXY(width=1, overlap=0)),
+        ('resample', patch_sampler(RandomUnderSampler)()),
+    ])
+    print("Pipeline:", pipe)
+
+    print("Calling a transform on the data does not change it ...")
+    Xf, yf = pipe.transform(X, y)
+    print("X (flattened):", Xf.flatten())
+    print("y", yf)
+
+    print("... but calling fit_transform resamples the data.")
+    Xf, yf = pipe.fit_transform(X, y)
+    print("X (flattened):", Xf.flatten())
+    print("y", yf)
+
+    print()
+    print("VerboseDummyClassifier example:")
+    print()
+
+    class VerboseDummyClassifier(DummyClassifier):
+        def fit(self, X, y, sample_weight=None):
+            print("Fitting X (flattened):", X.flatten(), "on y:", y)
+            return super(VerboseDummyClassifier, self).fit(X, y, sample_weight)
+        def predict(self, X):
+            print("Predicting X (flattened):", X.flatten())
+            return super(VerboseDummyClassifier, self).predict(X)
+        def score(self, X, y, sample_weight=None):
+            print("Scoring X (flattened):", X.flatten(), "on y:", y)
+            return super(VerboseDummyClassifier, self).score(X, y, sample_weight)
+
+    pipe = Pype([
+        ('segment', SegmentXY(width=1, overlap=0)),
+        ('resample', patch_sampler(RandomUnderSampler)(shuffle=True)),
+        ('feature', FeatureRep(features={"min":minimum})),
+        ('estimator', VerboseDummyClassifier(strategy="constant", constant=True)),
+    ])
+    print("Pipeline:", pipe)
+
+    print("Split the data into half training and half test data:")
+    X_train, X_test, y_train, y_test = temporal_split(X, y, 0.5)
+    print("X_train:", X_train)
+    print("y_train:", y_train)
+    print("X_test:", X_test)
+    print("y_test:", y_test)
+    print()
+
+    print("Fit on the training data (this includes resampling):")
+    pipe.fit(X_train, y_train)
+    print()
+
+    print("Score the fitted estimator on test data (this excludes resampling):")
+    score = pipe.score(X_test, y_test)
+    print("Score: ", score)
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  0.378 seconds)
+
+
+.. _sphx_glr_download_auto_examples_plot_imblearn.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Python source code: plot_imblearn.py <plot_imblearn.py>`
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Jupyter notebook: plot_imblearn.ipynb <plot_imblearn.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

@@ -25,54 +25,11 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
  .. code-block:: none
 
-    Using TensorFlow backend.
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      np_resource = np.dtype([("resource", np.ubyte, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint8 = np.dtype([("qint8", np.int8, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint16 = np.dtype([("qint16", np.int16, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      _np_qint32 = np.dtype([("qint32", np.int32, 1)])
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
-      np_resource = np.dtype([("resource", np.ubyte, 1)])
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
-
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
-
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
-
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:133: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.
-
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/keras/optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
-
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/keras/backend/tensorflow_backend.py:3295: The name tf.log is deprecated. Please use tf.math.log instead.
-
-    WARNING:tensorflow:From /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/tensorflow/python/ops/math_grad.py:1250: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.where in 2.0, which has the same broadcast rule as np.where
     N series in train:  105
     N series in test:  35
-    N segments in train:  3519
-    N segments in test:  1158
-    Accuracy score:  0.3989637318052776
+    N segments in train:  1783
+    N segments in test:  586
+    Accuracy score:  0.097269624
 
 
 
@@ -88,9 +45,9 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
     import matplotlib.image as mpimg
     import matplotlib.pyplot as plt
-    from keras.layers import Dense, LSTM, Conv1D
-    from keras.models import Sequential
-    from keras.wrappers.scikit_learn import KerasClassifier
+    from tensorflow.python.keras.layers import Dense, LSTM, Conv1D
+    from tensorflow.python.keras.models import Sequential
+    from tensorflow.python.keras.wrappers.scikit_learn import KerasClassifier
     from sklearn.model_selection import train_test_split
 
     from seglearn.datasets import load_watch
@@ -99,7 +56,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 
     def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-                   conv_filters=10, lstm_units=10):
+                   conv_filters=3, lstm_units=3):
         input_shape = (width, n_vars)
         model = Sequential()
         model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
@@ -121,13 +78,12 @@ This is a basic example using a convolutional recurrent neural network to learn 
     y = data['y']
 
     # create a segment learning pipeline
-    width = 100
-
-    pipe = Pype([('seg', SegmentX(order='C')),
-                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=8, batch_size=256, verbose=0))])
+    pipe = Pype([('seg', SegmentX(width=100, step=100, order='C')),
+                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
     # split the data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
 
     pipe.fit(X_train, y_train)
     score = pipe.score(X_test, y_test)
@@ -144,7 +100,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 8 minutes  6.979 seconds)
+   **Total running time of the script:** ( 1 minutes  3.948 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_segment_rep.py:

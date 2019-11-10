@@ -21,9 +21,9 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
     import matplotlib.pyplot as plt
     import numpy as np
-    from keras.layers import Dense, LSTM, Conv1D
-    from keras.models import Sequential
-    from keras.wrappers.scikit_learn import KerasClassifier
+    from tensorflow.python.keras.layers import Dense, LSTM, Conv1D
+    from tensorflow.python.keras.models import Sequential
+    from tensorflow.python.keras.wrappers.scikit_learn import KerasClassifier
     from pandas import DataFrame
     from sklearn.model_selection import train_test_split
 
@@ -46,7 +46,7 @@ Simple NN Model
 
 
     def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-                   conv_filters=10, lstm_units=10):
+                   conv_filters=3, lstm_units=3):
         input_shape = (width, n_vars)
         model = Sequential()
         model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
@@ -82,10 +82,10 @@ Setup
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
     # create a segment learning pipeline
-    width = 100
-    pipe = Pype([('seg', SegmentX(order='C')),
-                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=5, batch_size=256,
+    pipe = Pype([('seg', SegmentX(width=100, step=100, order='C')),
+                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=4, batch_size=256,
                                           verbose=0, validation_split=0.2))])
+
 
 
 
@@ -107,8 +107,8 @@ Accessing training history
 
     pipe.fit(X_train, y_train)
     print(DataFrame(pipe.history.history))
-    ac_train = pipe.history.history['acc']
-    ac_val = pipe.history.history['val_acc']
+    ac_train = pipe.history.history['accuracy']
+    ac_val = pipe.history.history['val_accuracy']
     epoch = np.arange(len(ac_train)) + 1
 
 
@@ -121,14 +121,13 @@ Accessing training history
 
  .. code-block:: none
 
-       val_loss  ...       acc
-    0  2.049911  ...  0.120071
-    1  1.948923  ...  0.160924
-    2  1.895200  ...  0.217407
-    3  1.860571  ...  0.244405
-    4  1.822079  ...  0.273179
+           loss  ...  val_accuracy
+    0  1.973197  ...      0.212885
+    1  1.964865  ...      0.210084
+    2  1.956981  ...      0.204482
+    3  1.949782  ...      0.201681
 
-    [5 rows x 4 columns]
+    [4 rows x 4 columns]
 
 
 
@@ -157,7 +156,7 @@ Training Curves
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 2 minutes  7.008 seconds)
+   **Total running time of the script:** ( 0 minutes  54.874 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

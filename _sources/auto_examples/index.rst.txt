@@ -255,6 +255,26 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to use imbalanced-learn resample transforms inside a seglearn Pyp...">
+
+.. only:: html
+
+    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_imblearn_thumb.png
+
+        :ref:`sphx_glr_auto_examples_plot_imblearn.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_imblearn
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This examples demonstrates some of the caveats / issues when trying to calculate performance sc...">
 
 .. only:: html
