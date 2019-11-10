@@ -47,9 +47,8 @@ splitter = TemporalKFold(n_splits=3)
 Xs, ys, cv = splitter.split(X, y)
 
 # create a segment learning pipeline
-width = 100
 pipe = Pype([('seg', SegmentX(order='C')),
-             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=64, verbose=0))])
+             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
 # create a parameter dictionary using the sklearn API
 #
@@ -58,7 +57,7 @@ pipe = Pype([('seg', SegmentX(order='C')),
 #
 # note that if you want to set a parameter to a single value, it will still need to be as a list
 
-par_grid = {'seg__width': [50, 100, 200],
+par_grid = {'seg__width': [100, 200, 400],
             'seg__overlap': [0.],
             'crnn__width': ['seg__width']}
 

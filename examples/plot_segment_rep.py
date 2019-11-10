@@ -22,7 +22,7 @@ from seglearn.transform import SegmentX
 
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
-               conv_filters=2, lstm_units=2):
+               conv_filters=3, lstm_units=3):
     input_shape = (width, n_vars)
     model = Sequential()
     model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
@@ -44,10 +44,8 @@ X = data['X']
 y = data['y']
 
 # create a segment learning pipeline
-width = 100
-
-pipe = Pype([('seg', SegmentX(order='C')),
-             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=64, verbose=0))])
+pipe = Pype([('seg', SegmentX(width=100, step=100, order='C')),
+             ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
 # split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
