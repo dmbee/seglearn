@@ -4,7 +4,7 @@
 
 .. _scikit-learn-contrib: https://github.com/scikit-learn-contrib
 
-|Travis|_ |Pypi|_ |PythonVersion|_ |CircleCI|_ |Coveralls|_
+|Travis|_ |Pypi|_ |PythonVersion|_ |CircleCI|_ |Coveralls|_ |Downloads|_
 
 .. |Travis| image:: https://travis-ci.org/dmbee/seglearn.svg?branch=master
 .. _Travis: https://travis-ci.org/dmbee/seglearn
@@ -20,6 +20,8 @@
 
 .. |Coveralls| image:: https://coveralls.io/repos/github/dmbee/seglearn/badge.svg?branch=master&&service=github
 .. _Coveralls: https://coveralls.io/github/dmbee/seglearn?branch=master&service=github
+
+.. |Downloads| image:: https://pepy.tech/badge/seglearn)](https://pepy.tech/project/seglearn
 
 
 seglearn
