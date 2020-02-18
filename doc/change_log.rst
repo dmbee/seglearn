@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.1.1
+
+* Fix for imbalanced-learn resamplers by Matthias Gazzari
+
 Version 1.1.0
 
 * Support for imbalanced-learn resamplers by Matthias Gazzari
