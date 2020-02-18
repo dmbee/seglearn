@@ -48,7 +48,7 @@ EXTRAS_REQUIRE = {
         'matplotlib',
         'keras',
         'pandas',
-        'imbalanced-learn>=0.4.3',
+        'imbalanced-learn>=0.6.0',
     ]
 }
 
