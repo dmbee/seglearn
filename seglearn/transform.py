@@ -1579,13 +1579,12 @@ def patch_sampler(sampler_class):
                           if p.name != 'self' and p.kind != p.VAR_KEYWORD]
             return sorted(set(sampler_class._get_param_names() + parameters))
 
-        @staticmethod
-        def _check_X_y(Xt, yt):
+        def _check_X_y(self, Xt, yt):
             '''
             Circumvent the check whether dim(Xt) == 2.
             '''
             Xt_2d = Xt.reshape(Xt.shape[0], -1)
-            _, yt, binarize_yt = super(PickableSampler, PickableSampler)._check_X_y(Xt_2d, yt)
+            _, yt, binarize_yt = super(PickableSampler, self)._check_X_y(Xt_2d, yt)
             Xt = check_array(Xt, dtype='numeric', ensure_2d=False, allow_nd=True)
             return Xt, yt, binarize_yt
 
