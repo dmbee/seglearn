@@ -19,9 +19,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_feature_rep_mix_example_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_feature_rep_mix_example_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_feature_rep_mix_example.py`
+     :ref:`sphx_glr_auto_examples_plot_feature_rep_mix_example.py`
 
 .. raw:: html
 
@@ -39,9 +39,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_lda_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_lda_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_lda.py`
+     :ref:`sphx_glr_auto_examples_plot_lda.py`
 
 .. raw:: html
 
@@ -59,9 +59,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_padtrunc_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_padtrunc_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_padtrunc.py`
+     :ref:`sphx_glr_auto_examples_plot_padtrunc.py`
 
 .. raw:: html
 
@@ -79,9 +79,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_watchdata_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_watchdata_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_watchdata.py`
+     :ref:`sphx_glr_auto_examples_plot_watchdata.py`
 
 .. raw:: html
 
@@ -95,33 +95,13 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series...">
-
-.. only:: html
-
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_feature_rep_thumb.png
-
-        :ref:`sphx_glr_auto_examples_plot_feature_rep.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_feature_rep
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct...">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_segment_rep_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_segment_rep_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_segment_rep.py`
+     :ref:`sphx_glr_auto_examples_plot_segment_rep.py`
 
 .. raw:: html
 
@@ -139,9 +119,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_regression_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_regression_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_regression.py`
+     :ref:`sphx_glr_auto_examples_plot_regression.py`
 
 .. raw:: html
 
@@ -155,13 +135,13 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct...">
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series...">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_nn_training_curves_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_feature_rep_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py`
+     :ref:`sphx_glr_auto_examples_plot_feature_rep.py`
 
 .. raw:: html
 
@@ -171,7 +151,7 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 .. toctree::
    :hidden:
 
-   /auto_examples/plot_nn_training_curves
+   /auto_examples/plot_feature_rep
 
 .. raw:: html
 
@@ -179,9 +159,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_model_selection1_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_model_selection1_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_model_selection1.py`
+     :ref:`sphx_glr_auto_examples_plot_model_selection1.py`
 
 .. raw:: html
 
@@ -199,9 +179,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_forecast_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_forecast_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_forecast.py`
+     :ref:`sphx_glr_auto_examples_plot_forecast.py`
 
 .. raw:: html
 
@@ -219,9 +199,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_model_selection2_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_model_selection2_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_model_selection2.py`
+     :ref:`sphx_glr_auto_examples_plot_model_selection2.py`
 
 .. raw:: html
 
@@ -235,13 +215,33 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_nn_training_curves_thumb.png
+
+     :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_nn_training_curves
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn resample a time series">
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_interp_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_interp_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_interp.py`
+     :ref:`sphx_glr_auto_examples_plot_interp.py`
 
 .. raw:: html
 
@@ -259,9 +259,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_imblearn_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_imblearn_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_imblearn.py`
+     :ref:`sphx_glr_auto_examples_plot_imblearn.py`
 
 .. raw:: html
 
@@ -279,9 +279,9 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. only:: html
 
-    .. figure:: /auto_examples/images/thumb/sphx_glr_plot_scoring_thumb.png
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_scoring_thumb.png
 
-        :ref:`sphx_glr_auto_examples_plot_scoring.py`
+     :ref:`sphx_glr_auto_examples_plot_scoring.py`
 
 .. raw:: html
 
@@ -294,7 +294,7 @@ General-purpose and introductory examples for the `seglearn` toolbox.
    /auto_examples/plot_scoring
 .. raw:: html
 
-    <div style='clear:both'></div>
+    <div class="sphx-glr-clear"></div>
 
 
 
@@ -304,15 +304,15 @@ General-purpose and introductory examples for the `seglearn` toolbox.
     :class: sphx-glr-footer-gallery
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
-    :download:`Download all examples in Python source code: auto_examples_python.zip <//home/ubuntu/project/doc/auto_examples/auto_examples_python.zip>`
+    :download:`Download all examples in Python source code: auto_examples_python.zip <//home/circleci/project/doc/auto_examples/auto_examples_python.zip>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//home/ubuntu/project/doc/auto_examples/auto_examples_jupyter.zip>`
+    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip <//home/circleci/project/doc/auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html

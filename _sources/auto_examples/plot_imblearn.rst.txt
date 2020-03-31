@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_auto_examples_plot_imblearn.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_auto_examples_plot_imblearn.py:
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_imblearn.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_imblearn.py:
 
 
 ===============================
@@ -24,14 +26,15 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
     Using TensorFlow backend.
     Implementation details: transform and fit_transform methods:
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
     Pipeline: Pype(memory=None, scorer=None,
          steps=[('segment',
                  SegmentXY(order='F', overlap=0, random_state=None, shuffle=False,
                            step=None, width=1,
-                           y_func=<function last at 0x14922369d560>)),
+                           y_func=<function last at 0x7fcca37b1a70>)),
                 ('resample',
-                 PatchedRandomUnderSampler(random_state=None, ratio=None,
-                                           replacement=False, return_indices=False,
+                 PatchedRandomUnderSampler(random_state=None, replacement=False,
                                            sampling_strategy='auto',
                                            shuffle=False))])
     Calling a transform on the data does not change it ...
@@ -43,18 +46,19 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
     VerboseDummyClassifier example:
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
     Pipeline: Pype(memory=None, scorer=None,
          steps=[('segment',
                  SegmentXY(order='F', overlap=0, random_state=None, shuffle=False,
                            step=None, width=1,
-                           y_func=<function last at 0x14922369d560>)),
+                           y_func=<function last at 0x7fcca37b1a70>)),
                 ('resample',
-                 PatchedRandomUnderSampler(random_state=None, ratio=None,
-                                           replacement=False, return_indices=False,
+                 PatchedRandomUnderSampler(random_state=None, replacement=False,
                                            sampling_strategy='auto',
                                            shuffle=True)),
                 ('feature',
-                 FeatureRep(features={'min': <function minimum at 0x149213d40200>},
+                 FeatureRep(features={'min': <function minimum at 0x7fcc942f77a0>},
                             verbose=False)),
                 ('estimator',
                  VerboseDummyClassifier(constant=True, random_state=None,
@@ -80,6 +84,7 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
     Scoring X (flattened): [ 5  6  6  7  7  8  8  9  9 10] on y: [False  True False False False]
     Predicting X (flattened): [ 5  6  6  7  7  8  8  9  9 10]
     Score:  0.2
+
 
 
 
@@ -171,7 +176,7 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.378 seconds)
+   **Total running time of the script:** ( 0 minutes  0.105 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_imblearn.py:
@@ -184,13 +189,13 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: plot_imblearn.py <plot_imblearn.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: plot_imblearn.ipynb <plot_imblearn.ipynb>`
 

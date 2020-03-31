@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_auto_examples_plot_segment_rep.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_auto_examples_plot_segment_rep.py:
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_segment_rep.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_segment_rep.py:
 
 
 ===================================================
@@ -25,11 +27,15 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
  .. code-block:: none
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
     N series in train:  105
     N series in test:  35
     N segments in train:  1783
     N segments in test:  586
-    Accuracy score:  0.097269624
+    Accuracy score:  0.10750853
+
+    <matplotlib.image.AxesImage object at 0x7fcba848db90>
 
 
 
@@ -100,7 +106,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  3.948 seconds)
+   **Total running time of the script:** ( 0 minutes  45.679 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_segment_rep.py:
@@ -113,13 +119,13 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: plot_segment_rep.py <plot_segment_rep.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: plot_segment_rep.ipynb <plot_segment_rep.ipynb>`
 

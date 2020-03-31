@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Simple imbalanced-learn example &mdash; seglearn 1.1.0 documentation</title>
+  <title>Simple imbalanced-learn example &mdash; seglearn 1.2.0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -34,6 +34,8 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Scoring Time Series Estimators" href="plot_scoring.html" />
@@ -61,7 +63,7 @@
             
             
               <div class="version">
-                1.1.0
+                1.2.0
               </div>
             
           
@@ -102,13 +104,13 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Simple imbalanced-learn example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
@@ -187,7 +189,7 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-imblearn-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-imblearn-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="simple-imbalanced-learn-example">
 <span id="sphx-glr-auto-examples-plot-imblearn-py"></span><h1>Simple imbalanced-learn example<a class="headerlink" href="#simple-imbalanced-learn-example" title="Permalink to this headline">¶</a></h1>
@@ -195,14 +197,15 @@
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Using TensorFlow backend.
 Implementation details: transform and fit_transform methods:
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 Pipeline: Pype(memory=None, scorer=None,
      steps=[(&#39;segment&#39;,
              SegmentXY(order=&#39;F&#39;, overlap=0, random_state=None, shuffle=False,
                        step=None, width=1,
-                       y_func=&lt;function last at 0x14922369d560&gt;)),
+                       y_func=&lt;function last at 0x7fcca37b1a70&gt;)),
             (&#39;resample&#39;,
-             PatchedRandomUnderSampler(random_state=None, ratio=None,
-                                       replacement=False, return_indices=False,
+             PatchedRandomUnderSampler(random_state=None, replacement=False,
                                        sampling_strategy=&#39;auto&#39;,
                                        shuffle=False))])
 Calling a transform on the data does not change it ...
@@ -214,18 +217,19 @@ y [False False  True  True]
 
 VerboseDummyClassifier example:
 
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 Pipeline: Pype(memory=None, scorer=None,
      steps=[(&#39;segment&#39;,
              SegmentXY(order=&#39;F&#39;, overlap=0, random_state=None, shuffle=False,
                        step=None, width=1,
-                       y_func=&lt;function last at 0x14922369d560&gt;)),
+                       y_func=&lt;function last at 0x7fcca37b1a70&gt;)),
             (&#39;resample&#39;,
-             PatchedRandomUnderSampler(random_state=None, ratio=None,
-                                       replacement=False, return_indices=False,
+             PatchedRandomUnderSampler(random_state=None, replacement=False,
                                        sampling_strategy=&#39;auto&#39;,
                                        shuffle=True)),
             (&#39;feature&#39;,
-             FeatureRep(features={&#39;min&#39;: &lt;function minimum at 0x149213d40200&gt;},
+             FeatureRep(features={&#39;min&#39;: &lt;function minimum at 0x7fcc942f77a0&gt;},
                         verbose=False)),
             (&#39;estimator&#39;,
              VerboseDummyClassifier(constant=True, random_state=None,
@@ -261,15 +265,15 @@ Score:  0.2
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.dummy</span> <span class="k">import</span> <span class="n">DummyClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.dummy</span> <span class="kn">import</span> <span class="n">DummyClassifier</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">SegmentXY</span><span class="p">,</span> <span class="n">patch_sampler</span><span class="p">,</span> <span class="n">FeatureRep</span>
-<span class="kn">from</span> <span class="nn">seglearn.feature_functions</span> <span class="k">import</span> <span class="n">minimum</span>
-<span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="k">import</span> <span class="n">temporal_split</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">SegmentXY</span><span class="p">,</span> <span class="n">patch_sampler</span><span class="p">,</span> <span class="n">FeatureRep</span>
+<span class="kn">from</span> <span class="nn">seglearn.feature_functions</span> <span class="kn">import</span> <span class="n">minimum</span>
+<span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">temporal_split</span>
 
 
-<span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="k">import</span> <span class="n">RandomUnderSampler</span>
+<span class="kn">from</span> <span class="nn">imblearn.under_sampling</span> <span class="kn">import</span> <span class="n">RandomUnderSampler</span>
 
 <span class="c1"># Single univariate time series with 10 samples</span>
 <span class="n">X</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]])]</span>
@@ -334,12 +338,12 @@ Score:  0.2
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.378 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.105 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-imblearn-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d7f79bd9255ce08638af395189103ec2/plot_imblearn.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_imblearn.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/80034162bc4143eb740c49221952752f/plot_imblearn.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_imblearn.ipynb</span></code></a></p>
 </div>
 </div>

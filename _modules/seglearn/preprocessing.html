@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.preprocessing &mdash; seglearn 1.1.0 documentation</title>
+  <title>seglearn.preprocessing &mdash; seglearn 1.2.0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -34,6 +34,8 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.1.0
+                1.2.0
               </div>
             
           
@@ -171,11 +173,11 @@
 <span class="c1"># License: BSD</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
-<span class="kn">from</span> <span class="nn">.util</span> <span class="k">import</span> <span class="n">get_ts_data_parts</span><span class="p">,</span> <span class="n">check_ts_data_with_ts_target</span>
-<span class="kn">from</span> <span class="nn">.transform</span> <span class="k">import</span> <span class="n">XyTransformerMixin</span><span class="p">,</span> <span class="n">expand_variables_to_segments</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">get_ts_data_parts</span><span class="p">,</span> <span class="n">check_ts_data_with_ts_target</span>
+<span class="kn">from</span> <span class="nn">.transform</span> <span class="kn">import</span> <span class="n">XyTransformerMixin</span><span class="p">,</span> <span class="n">expand_variables_to_segments</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TargetRunLengthEncoder&#39;</span><span class="p">]</span>
 
@@ -201,7 +203,7 @@
 <span class="sd">        minimum number of samples in a run for it to be included in the transformed data</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_length</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_length</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_length</span> <span class="o">=</span> <span class="n">min_length</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
 

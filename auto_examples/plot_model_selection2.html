@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Hyperparameter Selection 2 &mdash; seglearn 1.1.0 documentation</title>
+  <title>Hyperparameter Selection 2 &mdash; seglearn 1.2.0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -34,9 +34,11 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Resampling Time Series Data" href="plot_interp.html" />
+    <link rel="next" title="Plotting Neural Network Training Curves" href="plot_nn_training_curves.html" />
     <link rel="prev" title="Time Series Forecasting" href="plot_forecast.html" /> 
 </head>
 
@@ -61,7 +63,7 @@
             
             
               <div class="version">
-                1.1.0
+                1.2.0
               </div>
             
           
@@ -102,13 +104,13 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_imblearn.html">Simple imbalanced-learn example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
@@ -187,35 +189,55 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-model-selection2-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-model-selection2-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="hyperparameter-selection-2">
 <span id="sphx-glr-auto-examples-plot-model-selection2-py"></span><h1>Hyperparameter Selection 2<a class="headerlink" href="#hyperparameter-selection-2" title="Permalink to this headline">¶</a></h1>
 <p>This example demonstrates how to do model selection in a pipeline where segments are learned directly by a neural network</p>
 <img alt="../_images/sphx_glr_plot_model_selection2_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_model_selection2_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Fitting 3 folds for each of 3 candidates, totalling 9 fits
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
+Fitting 3 folds for each of 3 candidates, totalling 9 fits
 [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  20.6s
-[Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:   20.6s remaining:    0.0s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  28.7s
+[Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:   28.7s remaining:    0.0s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  17.6s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  29.6s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  22.3s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=  23.3s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  16.1s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  30.2s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  20.6s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  31.5s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  22.0s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=  36.2s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  22.8s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  27.6s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  22.8s
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  26.0s
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
-[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  22.9s
-[Parallel(n_jobs=1)]: Done   9 out of   9 | elapsed:  3.1min finished
+[CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=  35.5s
+[Parallel(n_jobs=1)]: Done   9 out of   9 | elapsed:  4.5min finished
+/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  FutureWarning)
 </pre></div>
 </div>
 <div class="line-block">
@@ -225,16 +247,16 @@
 <span class="c1"># License: BSD</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">tensorflow.python.keras.layers</span> <span class="k">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Conv1D</span>
-<span class="kn">from</span> <span class="nn">tensorflow.python.keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
-<span class="kn">from</span> <span class="nn">tensorflow.python.keras.wrappers.scikit_learn</span> <span class="k">import</span> <span class="n">KerasClassifier</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Conv1D</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.wrappers.scikit_learn</span> <span class="kn">import</span> <span class="n">KerasClassifier</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
-<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="k">import</span> <span class="n">TemporalKFold</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">SegmentX</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
+<span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">TemporalKFold</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">SegmentX</span>
 
 
 <span class="k">def</span> <span class="nf">crnn_model</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_vars</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">conv_kernel_size</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
@@ -289,12 +311,12 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 3 minutes  37.488 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 5 minutes  5.237 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-model-selection2-py">
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/2aa2e30871f9714e111e138a5478306a/plot_model_selection2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_model_selection2.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/8fe51a59fd3494cd1bc88cddcf8cf780/plot_model_selection2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_model_selection2.ipynb</span></code></a></p>
 </div>
 </div>
@@ -309,7 +331,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_interp.html" class="btn btn-neutral float-right" title="Resampling Time Series Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_nn_training_curves.html" class="btn btn-neutral float-right" title="Plotting Neural Network Training Curves" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="plot_forecast.html" class="btn btn-neutral float-left" title="Time Series Forecasting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

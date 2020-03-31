@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_auto_examples_plot_feature_rep_mix_example.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_auto_examples_plot_feature_rep_mix_example.py:
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_feature_rep_mix_example.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_feature_rep_mix_example.py:
 
 
 ============================
@@ -35,6 +37,7 @@ See API documentation for an example.
     0        0  ...       11
 
     [1 rows x 8 columns]
+
 
 
 
@@ -84,7 +87,7 @@ See API documentation for an example.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.175 seconds)
+   **Total running time of the script:** ( 0 minutes  0.161 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_feature_rep_mix_example.py:
@@ -97,13 +100,13 @@ See API documentation for an example.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: plot_feature_rep_mix_example.py <plot_feature_rep_mix_example.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: plot_feature_rep_mix_example.ipynb <plot_feature_rep_mix_example.ipynb>`
 

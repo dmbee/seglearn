@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_auto_examples_plot_scoring.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_auto_examples_plot_scoring.py:
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_scoring.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_scoring.py:
 
 
 ==============================
@@ -38,6 +40,7 @@ segments (not series') as instances of the data.
     from seglearn.datasets import load_watch
     from seglearn.pipe import Pype
     from seglearn.transform import FeatureRep, SegmentX
+
 
 
 
@@ -82,6 +85,7 @@ CONFUSION PLOT
 
 
 
+
 SETUP
 #############################################
 
@@ -109,6 +113,16 @@ SETUP
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+
+
 
 
 OPTION 1: Use the score SegPipe score method
@@ -133,6 +147,7 @@ OPTION 1: Use the score SegPipe score method
  .. code-block:: none
 
     Accuracy score:  0.7875647668393783
+
 
 
 
@@ -165,6 +180,7 @@ OPTION 2: generate true and predicted target values for the segments
  .. code-block:: none
 
     F1 score:  0.798260921806575
+
 
 
 
@@ -202,13 +218,22 @@ OPTION 3: scoring during model selection
 
  .. code-block:: none
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
     CV Scores:     fit_time  ...  train_score
-    0  0.714515  ...          1.0
-    1  0.764996  ...          1.0
-    2  0.798733  ...          1.0
-    3  0.717955  ...          1.0
+    0  0.556530  ...          1.0
+    1  0.588059  ...          1.0
+    2  0.585333  ...          1.0
+    3  0.566277  ...          1.0
 
     [4 rows x 4 columns]
+
 
 
 
@@ -237,13 +262,24 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
 
  .. code-block:: none
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
     CV F1 Scores:     fit_time  ...  train_score
-    0  0.727639  ...          1.0
-    1  0.749088  ...          1.0
-    2  0.780290  ...          1.0
-    3  0.930410  ...          1.0
+    0  0.565208  ...          1.0
+    1  0.610499  ...          1.0
+    2  0.586471  ...          1.0
+    3  0.579165  ...          1.0
 
     [4 rows x 4 columns]
+
 
 
 
@@ -282,28 +318,21 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
  .. code-block:: none
 
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/ensemble/forest.py:245: FutureWarning: The default value of n_estimators will change from 10 in version 0.20 to 100 in 0.22.
-      "10 in version 0.20 to 100 in 0.22.", FutureWarning)
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/ensemble/forest.py:245: FutureWarning: The default value of n_estimators will change from 10 in version 0.20 to 100 in 0.22.
-      "10 in version 0.20 to 100 in 0.22.", FutureWarning)
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/ensemble/forest.py:245: FutureWarning: The default value of n_estimators will change from 10 in version 0.20 to 100 in 0.22.
-      "10 in version 0.20 to 100 in 0.22.", FutureWarning)
-    /home/ubuntu/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/ensemble/forest.py:245: FutureWarning: The default value of n_estimators will change from 10 in version 0.20 to 100 in 0.22.
-      "10 in version 0.20 to 100 in 0.22.", FutureWarning)
     CV Scores (workaround):     fit_time  ...  test_f1_macro
-    0  0.850655  ...       0.774913
-    1  0.899210  ...       0.822890
-    2  0.805723  ...       0.808596
-    3  0.990518  ...       0.802547
+    0  1.641001  ...       0.817762
+    1  1.865272  ...       0.828056
+    2  1.881239  ...       0.828378
+    3  1.813864  ...       0.813035
 
     [4 rows x 6 columns]
 
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  19.289 seconds)
+   **Total running time of the script:** ( 0 minutes  16.901 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:
@@ -316,13 +345,13 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: plot_scoring.py <plot_scoring.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: plot_scoring.ipynb <plot_scoring.ipynb>`
 

@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_auto_examples_plot_padtrunc.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_auto_examples_plot_padtrunc.py:
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_padtrunc.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_padtrunc.py:
 
 
 =================================================
@@ -26,11 +28,15 @@ using padding and truncation instead of sliding window segmentation.
 
  .. code-block:: none
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
     N series in train:  105
     N series in test:  35
     N segments in train:  105
     N segments in test:  35
     Accuracy score:  0.8285714285714286
+
+    <matplotlib.image.AxesImage object at 0x7fcc8b698d10>
 
 
 
@@ -88,7 +94,7 @@ using padding and truncation instead of sliding window segmentation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.260 seconds)
+   **Total running time of the script:** ( 0 minutes  0.233 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_padtrunc.py:
@@ -101,13 +107,13 @@ using padding and truncation instead of sliding window segmentation.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: plot_padtrunc.py <plot_padtrunc.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: plot_padtrunc.ipynb <plot_padtrunc.ipynb>`
 

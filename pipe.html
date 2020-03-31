@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Segmented Time Series Pipeline &mdash; seglearn 1.1.0 documentation</title>
+  <title>Segmented Time Series Pipeline &mdash; seglearn 1.2.0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -34,6 +34,8 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 </head>
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.1.0
+                1.2.0
               </div>
             
           
@@ -188,11 +190,11 @@ order in which they are chained, with the last object an estimator.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="k">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="k">import</span> <span class="n">Pype</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="k">import</span> <span class="n">load_watch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="k">import</span> <span class="n">RandomForestClassifier</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
@@ -243,8 +245,14 @@ order in which they are chained, with the last object an estimator.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_proba" title="seglearn.pipe.Pype.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(self, X)</p></td>
 <td><p>Apply transforms, and predict_proba of the final estimator</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.score" title="seglearn.pipe.Pype.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(self, X[, y, sample_weight])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_segmented_series" title="seglearn.pipe.Pype.predict_segmented_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_segmented_series</span></code></a>(self, X[, …])</p></td>
+<td><p>Generates a prediction for each time series on the same sampling as the original series, by resampling a prediction performed with sliding window segmentation</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.score" title="seglearn.pipe.Pype.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(self, X[, y, sample_weight])</p></td>
 <td><p>Apply transforms, and score with the final estimator</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score_samples</span></code>(self, X)</p></td>
+<td><p>Apply transforms, and score_samples of the final estimator.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.set_params" title="seglearn.pipe.Pype.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self, \*\*params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
@@ -396,6 +404,32 @@ of the pipeline.</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>y_proba</strong><span class="classifier">array-like, shape = [n_samples, n_classes]</span></dt><dd><p>Predicted probability of each class</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="seglearn.pipe.Pype.predict_segmented_series">
+<code class="sig-name descname">predict_segmented_series</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">categorical_target=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_segmented_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_segmented_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a prediction for each time series on the same sampling as the original series, by resampling
+a prediction performed with sliding window segmentation</p>
+<p>Requires that one of the Segment transforms be part of the pipeline</p>
+<p>See plot_feature_rep.py example</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
+</dd>
+<dt><strong>categorical_target</strong><span class="classifier">boolean</span></dt><dd><p>Set to True for classification problems, and false for regression problems</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>yp</strong><span class="classifier">iterable</span></dt><dd><p>Time series predictions on the same sampling as X</p>
 </dd>
 </dl>
 </dd>

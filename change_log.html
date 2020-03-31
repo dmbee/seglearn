@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Change Log &mdash; seglearn 1.1.0 documentation</title>
+  <title>Change Log &mdash; seglearn 1.2.0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -34,6 +34,8 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="General examples" href="auto_examples/index.html" />
@@ -61,7 +63,7 @@
             
             
               <div class="version">
-                1.1.0
+                1.2.0
               </div>
             
           
@@ -169,6 +171,17 @@
             
   <div class="section" id="change-log">
 <h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
+<p>Version 1.2.1</p>
+<ul class="simple">
+<li><p>Implement predict_segmented_series for Pype, which resamples the prediction to the original time series sampling</p></li>
+<li><p>Updated feature rep example to show usage</p></li>
+<li><p>Introduced Segment class to replace SegmentX and SegmentXY, and as a base class for SegmentXYForecast to avoid code duplication</p></li>
+<li><p>Fix nn_training_curve example</p></li>
+</ul>
+<p>Version 1.1.1</p>
+<ul class="simple">
+<li><p>Fix for imbalanced-learn resamplers by Matthias Gazzari</p></li>
+</ul>
 <p>Version 1.1.0</p>
 <ul class="simple">
 <li><p>Support for imbalanced-learn resamplers by Matthias Gazzari</p></li>

@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_auto_examples_plot_regression.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_auto_examples_plot_regression.py:
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_regression.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_regression.py:
 
 
 ============================================
@@ -25,17 +27,14 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
  .. code-block:: none
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
     N series in train:  1
     N series in test:  1
     N segments in train:  74
     N segments in test:  24
     Score:  0.9735806135052695
-    CV Scores:     fit_time  ...  train_score
-    0  0.005877  ...     0.032275
-    1  0.005624  ...     0.126310
-    2  0.005609  ...     0.097838
 
-    [3 rows x 4 columns]
 
 
 
@@ -58,7 +57,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
     from seglearn.pipe import Pype
     from seglearn.split import temporal_split, TemporalKFold
-    from seglearn.transform import FeatureRep, SegmentXY, last
+    from seglearn.transform import FeatureRep, Segment, last
 
     # for a single time series, we need to make it a list
     X = [np.arange(10000) / 100.]
@@ -67,12 +66,11 @@ In this example, we use the pipeline to learn a continuous time series target wi
     # split the data along the time axis (our only option since we have only 1 time series)
     X_train, X_test, y_train, y_test = temporal_split(X, y)
 
-    # SegmentXY segments both X and y (as the name implies)
     # setting y_func = last, selects the last value from each y segment as the target
     # other options include transform.middle, or you can make your own function
     # see the API documentation for further details
 
-    pipe = Pype([('seg', SegmentXY(width=200, overlap=0.5, y_func=last)),
+    pipe = Pype([('seg', Segment(width=200, overlap=0.5, y_func=last)),
                  ('features', FeatureRep()),
                  ('lin', LinearRegression())])
 
@@ -101,19 +99,19 @@ In this example, we use the pipeline to learn a continuous time series target wi
     plt.legend()
     plt.show()
 
-    # now try a cross validation
-    X = [np.arange(4000) / 100.]
-    y = [np.sin(X[0])]
-
-    tkf = TemporalKFold()
-    X, y, cv = tkf.split(X, y)
-    cv_scores = cross_validate(pipe, X, y, cv=cv, return_train_score=True)
-    print("CV Scores: ", pd.DataFrame(cv_scores))
+    # # now try a cross validation
+    # X = [np.arange(4000) / 100.]
+    # y = [np.sin(X[0])]
+    #
+    # tkf = TemporalKFold()
+    # X, y, cv = tkf.split(X, y)
+    # cv_scores = cross_validate(pipe, X, y, cv=cv, return_train_score=True)
+    # print("CV Scores: ", pd.DataFrame(cv_scores))
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.394 seconds)
+   **Total running time of the script:** ( 0 minutes  0.137 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_regression.py:
@@ -126,13 +124,13 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: plot_regression.py <plot_regression.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: plot_regression.ipynb <plot_regression.ipynb>`
 

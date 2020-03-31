@@ -21,7 +21,7 @@ from sklearn.preprocessing import StandardScaler
 from seglearn.base import TS_Data
 from seglearn.datasets import load_watch
 from seglearn.pipe import Pype
-from seglearn.transform import FeatureRep, SegmentX
+from seglearn.transform import FeatureRep, Segment
 
 # seed RNGESUS
 np.random.seed(123124)
@@ -32,7 +32,7 @@ X = data['X']
 y = data['y']
 
 # create a feature representation pipeline
-clf = Pype([('segment', SegmentX()),
+clf = Pype([('segment', Segment()),
             ('features', FeatureRep()),
             ('scaler', StandardScaler()),
             ('rf', RandomForestClassifier(n_estimators=20))])
@@ -49,19 +49,29 @@ print("N segments in train: ", clf.N_train)
 print("N segments in test: ", clf.N_test)
 print("Accuracy score: ", score)
 
-# now lets add some contextual data
+# lets make a pretend series with different activities
+X_series = [np.concatenate(X_test[1:4], axis=0)]
+print("Pretend series y values: ", y_test[1:4])
+
+# plot the prediction
+yp = clf.predict_segmented_series(X_series, categorical_target=True)
+yp0 = yp[0]  # we only predicted one series
+t = np.arange(len(yp0)) * 0.02   # This data has 50 Hz sampling rate
+plt.plot(t, yp0)
+plt.ylabel("Prediction")
+plt.xlabel("Time [seconds]")
+plt.show()
+
+# let's try some context data
 Xc = np.column_stack((data['side'], data['subject']))
 Xt = np.array(data['X'])
 X = TS_Data(Xt, Xc)
 y = np.array(data['y'])
 
-# and do a cross validation
+# and a cross validation
 scoring = make_scorer(f1_score, average='macro')
 cv_scores = cross_validate(clf, X, y, cv=4, return_train_score=True)
 print("CV Scores: ", pd.DataFrame(cv_scores))
 
 # lets see what feature we used
 print("Features: ", clf.steps[1][1].f_labels)
-
-img = mpimg.imread('feet.jpg')
-plt.imshow(img)

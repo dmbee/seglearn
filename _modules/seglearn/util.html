@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.util &mdash; seglearn 1.1.0 documentation</title>
+  <title>seglearn.util &mdash; seglearn 1.2.0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -34,6 +34,8 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 </head>
@@ -59,7 +61,7 @@
             
             
               <div class="version">
-                1.1.0
+                1.2.0
               </div>
             
           
@@ -173,7 +175,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="k">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get_ts_data_parts&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data_with_ts_target&#39;</span><span class="p">,</span> <span class="s1">&#39;ts_stats&#39;</span><span class="p">]</span>
 
@@ -358,7 +360,10 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-
+<span class="sd">    t : array-like, shape [n]</span>
+<span class="sd">        timestamps</span>
+<span class="sd">    x : array-like, shape [n, ]</span>
+<span class="sd">        data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Interpolation time and value errors not equal&quot;</span><span class="p">)</span>
@@ -374,6 +379,56 @@
         <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">segmented_prediction_to_series</span><span class="p">(</span><span class="n">yp</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    resamples prediction on a single segmented series to original series sampling</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    yp : array-like, shape [n, ]</span>
+<span class="sd">        prediction on segmented series</span>
+<span class="sd">    step : int</span>
+<span class="sd">        segmentation step size (number of samples)</span>
+<span class="sd">    width : int</span>
+<span class="sd">        segmentation width (number of samples)</span>
+<span class="sd">    categorical_target : boolean</span>
+<span class="sd">        set to True for classification problems and False for regression problems</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    yt : array-like, shape [n, ]</span>
+<span class="sd">        resampled prediction</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># average regression predictions if highly overlapping</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">categorical_target</span> <span class="ow">and</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">width</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">segmentation_mask</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yp</span><span class="p">),</span> <span class="n">step</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">yp</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">yt</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">yt</span><span class="p">)</span> <span class="o">/</span> <span class="n">counts</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">yt</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">counts</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">yt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">yt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">yp</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">step</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ye</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">yp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:],</span> <span class="n">width</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yt</span><span class="p">,</span> <span class="n">ye</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">yt</span>
+
+
+<span class="k">def</span> <span class="nf">segmentation_mask</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">step</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">+</span> <span class="n">steps</span>
+    <span class="k">return</span> <span class="n">mask</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 </pre></div>
 
            </div>

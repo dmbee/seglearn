@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_auto_examples_plot_nn_training_curves.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_auto_examples_plot_nn_training_curves.py:
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_nn_training_curves.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_nn_training_curves.py:
 
 
 =======================================
@@ -29,7 +31,8 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
     from seglearn.datasets import load_watch
     from seglearn.pipe import Pype
-    from seglearn.transform import SegmentX
+    from seglearn.transform import Segment
+
 
 
 
@@ -66,6 +69,7 @@ Simple NN Model
 
 
 
+
 Setup
 #############################################
 
@@ -82,13 +86,23 @@ Setup
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
     # create a segment learning pipeline
-    pipe = Pype([('seg', SegmentX(width=100, step=100, order='C')),
+    pipe = Pype([('seg', Segment(width=100, step=100, order='C')),
                  ('crnn', KerasClassifier(build_fn=crnn_model, epochs=4, batch_size=256,
                                           verbose=0, validation_split=0.2))])
 
 
 
 
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
 
 
 
@@ -106,9 +120,19 @@ Accessing training history
     # a callable class with the desired properties should be made passed to build_fn
 
     pipe.fit(X_train, y_train)
-    print(DataFrame(pipe.history.history))
-    ac_train = pipe.history.history['accuracy']
-    ac_val = pipe.history.history['val_accuracy']
+    history = pipe.history.history
+    print(DataFrame(history))
+
+    # depends on version
+    if 'accuracy' in history:
+        ac_train = history['accuracy']
+        ac_val = history['val_accuracy']
+    elif 'acc' in history:
+        ac_train = history['acc']
+        ac_val = history['val_acc']
+    else:
+        raise ValueError("History object doesn't contain accuracy record")
+
     epoch = np.arange(len(ac_train)) + 1
 
 
@@ -122,12 +146,13 @@ Accessing training history
  .. code-block:: none
 
            loss  ...  val_accuracy
-    0  1.973197  ...      0.212885
-    1  1.964865  ...      0.210084
-    2  1.956981  ...      0.204482
-    3  1.949782  ...      0.201681
+    0  1.945685  ...      0.268908
+    1  1.934074  ...      0.277311
+    2  1.922528  ...      0.263305
+    3  1.914228  ...      0.274510
 
     [4 rows x 4 columns]
+
 
 
 
@@ -154,9 +179,10 @@ Training Curves
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  54.874 seconds)
+   **Total running time of the script:** ( 1 minutes  19.357 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:
@@ -169,13 +195,13 @@ Training Curves
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: plot_nn_training_curves.py <plot_nn_training_curves.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: plot_nn_training_curves.ipynb <plot_nn_training_curves.ipynb>`
 

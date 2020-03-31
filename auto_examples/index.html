@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>General examples &mdash; seglearn 1.1.0 documentation</title>
+  <title>General examples &mdash; seglearn 1.2.0 documentation</title>
   
 
   
@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -34,6 +34,8 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Simple FeatureRepMix Example" href="plot_feature_rep_mix_example.html" />
@@ -61,7 +63,7 @@
             
             
               <div class="version">
-                1.1.0
+                1.2.0
               </div>
             
           
@@ -102,13 +104,13 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_imblearn.html">Simple imbalanced-learn example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
@@ -210,45 +212,45 @@
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series..."><div class="figure align-default" id="id6">
-<img alt="../_images/sphx_glr_plot_feature_rep_thumb.png" src="../_images/sphx_glr_plot_feature_rep_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_feature_rep.html#sphx-glr-auto-examples-plot-feature-rep-py"><span class="std std-ref">Basic Feature Representation Classification Pipeline</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct..."><div class="figure align-default" id="id7">
+<div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct..."><div class="figure align-default" id="id6">
 <img alt="../_images/sphx_glr_plot_segment_rep_thumb.png" src="../_images/sphx_glr_plot_segment_rep_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_segment_rep.html#sphx-glr-auto-examples-plot-segment-rep-py"><span class="std std-ref">Classifying Segments Directly with a Neural Network</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_segment_rep.html#sphx-glr-auto-examples-plot-segment-rep-py"><span class="std std-ref">Classifying Segments Directly with a Neural Network</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="In this example, we use the pipeline to learn a continuous time series target with a regressor"><div class="figure align-default" id="id8">
+<div class="sphx-glr-thumbcontainer" tooltip="In this example, we use the pipeline to learn a continuous time series target with a regressor"><div class="figure align-default" id="id7">
 <img alt="../_images/sphx_glr_plot_regression_thumb.png" src="../_images/sphx_glr_plot_regression_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_regression.html#sphx-glr-auto-examples-plot-regression-py"><span class="std std-ref">Continuous Target and Time Series Regression</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_regression.html#sphx-glr-auto-examples-plot-regression-py"><span class="std std-ref">Continuous Target and Time Series Regression</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct..."><div class="figure align-default" id="id9">
-<img alt="../_images/sphx_glr_plot_nn_training_curves_thumb.png" src="../_images/sphx_glr_plot_nn_training_curves_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_nn_training_curves.html#sphx-glr-auto-examples-plot-nn-training-curves-py"><span class="std std-ref">Plotting Neural Network Training Curves</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series..."><div class="figure align-default" id="id8">
+<img alt="../_images/sphx_glr_plot_feature_rep_thumb.png" src="../_images/sphx_glr_plot_feature_rep_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_feature_rep.html#sphx-glr-auto-examples-plot-feature-rep-py"><span class="std std-ref">Basic Feature Representation Classification Pipeline</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to do model selection in a feature representation pipeline using ..."><div class="figure align-default" id="id10">
+<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to do model selection in a feature representation pipeline using ..."><div class="figure align-default" id="id9">
 <img alt="../_images/sphx_glr_plot_model_selection1_thumb.png" src="../_images/sphx_glr_plot_model_selection1_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_model_selection1.html#sphx-glr-auto-examples-plot-model-selection1-py"><span class="std std-ref">Hyperparameter Selection 1</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_model_selection1.html#sphx-glr-auto-examples-plot-model-selection1-py"><span class="std std-ref">Hyperparameter Selection 1</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="In this example, we use a feature representation pipeline to forecast a continuous time series ..."><div class="figure align-default" id="id11">
+<div class="sphx-glr-thumbcontainer" tooltip="In this example, we use a feature representation pipeline to forecast a continuous time series ..."><div class="figure align-default" id="id10">
 <img alt="../_images/sphx_glr_plot_forecast_thumb.png" src="../_images/sphx_glr_plot_forecast_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_forecast.html#sphx-glr-auto-examples-plot-forecast-py"><span class="std std-ref">Time Series Forecasting</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_forecast.html#sphx-glr-auto-examples-plot-forecast-py"><span class="std std-ref">Time Series Forecasting</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to do model selection in a pipeline where segments are learned di..."><div class="figure align-default" id="id12">
+<div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to do model selection in a pipeline where segments are learned di..."><div class="figure align-default" id="id11">
 <img alt="../_images/sphx_glr_plot_model_selection2_thumb.png" src="../_images/sphx_glr_plot_model_selection2_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_model_selection2.html#sphx-glr-auto-examples-plot-model-selection2-py"><span class="std std-ref">Hyperparameter Selection 2</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_model_selection2.html#sphx-glr-auto-examples-plot-model-selection2-py"><span class="std std-ref">Hyperparameter Selection 2</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using a convolutional recurrent neural network to learn segments direct..."><div class="figure align-default" id="id12">
+<img alt="../_images/sphx_glr_plot_nn_training_curves_thumb.png" src="../_images/sphx_glr_plot_nn_training_curves_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plot_nn_training_curves.html#sphx-glr-auto-examples-plot-nn-training-curves-py"><span class="std std-ref">Plotting Neural Network Training Curves</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
@@ -270,12 +272,12 @@
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div style='clear:both'></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
-<div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/9099f83837f00d81dfe2251b51c3fc8b/auto_examples_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></p>
+<div class="sphx-glr-clear"></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/3409d9766d352cc9f9b169d4a799a87a/auto_examples_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/8c294a7bb1a8a55767de330e8ec70c72/auto_examples_jupyter.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></p>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/d34667f097c619f8afda4bc936e7af21/auto_examples_jupyter.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">auto_examples_jupyter.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
