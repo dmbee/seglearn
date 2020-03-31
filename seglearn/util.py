@@ -4,6 +4,7 @@ This module has utilities for time series data input checking
 # Author: David Burns
 # License: BSD
 
+from pandas import DataFrame
 import numpy as np
 import warnings
 
@@ -30,10 +31,12 @@ def get_ts_data_parts(X):
 
     """
 
-    if not isinstance(X, TS_Data):
+    if isinstance(X, TS_Data):
+        return X.ts_data, X.context_data
+    elif isinstance(X, DataFrame):
+        return X.ts_data.values, X.drop(columns=['ts_data']).values
+    else:
         return X, None
-    return X.ts_data, X.context_data
-
 
 def check_ts_data(X, y=None):
     """
