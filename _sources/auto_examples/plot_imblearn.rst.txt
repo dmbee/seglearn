@@ -32,7 +32,7 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
          steps=[('segment',
                  SegmentXY(order='F', overlap=0, random_state=None, shuffle=False,
                            step=None, width=1,
-                           y_func=<function last at 0x7fcca37b1a70>)),
+                           y_func=<function last at 0x7f6cbb62ba70>)),
                 ('resample',
                  PatchedRandomUnderSampler(random_state=None, replacement=False,
                                            sampling_strategy='auto',
@@ -52,13 +52,13 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
          steps=[('segment',
                  SegmentXY(order='F', overlap=0, random_state=None, shuffle=False,
                            step=None, width=1,
-                           y_func=<function last at 0x7fcca37b1a70>)),
+                           y_func=<function last at 0x7f6cbb62ba70>)),
                 ('resample',
                  PatchedRandomUnderSampler(random_state=None, replacement=False,
                                            sampling_strategy='auto',
                                            shuffle=True)),
                 ('feature',
-                 FeatureRep(features={'min': <function minimum at 0x7fcc942f77a0>},
+                 FeatureRep(features={'min': <function minimum at 0x7f6cac1717a0>},
                             verbose=False)),
                 ('estimator',
                  VerboseDummyClassifier(constant=True, random_state=None,
@@ -176,7 +176,7 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.105 seconds)
+   **Total running time of the script:** ( 0 minutes  0.059 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_imblearn.py:

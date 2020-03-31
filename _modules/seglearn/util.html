@@ -172,6 +172,7 @@
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
@@ -198,10 +199,12 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">TS_Data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">ts_data</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">context_data</span></div>
-
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">TS_Data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">ts_data</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">context_data</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">ts_data</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ts_data&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="check_ts_data"><a class="viewcode-back" href="../../util.html#seglearn.util.check_ts_data">[docs]</a><span class="k">def</span> <span class="nf">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

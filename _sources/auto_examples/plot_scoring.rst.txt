@@ -227,10 +227,10 @@ OPTION 3: scoring during model selection
     /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
       FutureWarning)
     CV Scores:     fit_time  ...  train_score
-    0  0.556530  ...          1.0
-    1  0.588059  ...          1.0
-    2  0.585333  ...          1.0
-    3  0.566277  ...          1.0
+    0  0.555701  ...          1.0
+    1  0.601783  ...          1.0
+    2  0.583803  ...          1.0
+    3  0.577564  ...          1.0
 
     [4 rows x 4 columns]
 
@@ -273,10 +273,10 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
     /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
       FutureWarning)
     CV F1 Scores:     fit_time  ...  train_score
-    0  0.565208  ...          1.0
-    1  0.610499  ...          1.0
-    2  0.586471  ...          1.0
-    3  0.579165  ...          1.0
+    0  0.615483  ...          1.0
+    1  0.611870  ...          1.0
+    2  0.682074  ...          1.0
+    3  0.569624  ...          1.0
 
     [4 rows x 4 columns]
 
@@ -319,10 +319,10 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
  .. code-block:: none
 
     CV Scores (workaround):     fit_time  ...  test_f1_macro
-    0  1.641001  ...       0.817762
-    1  1.865272  ...       0.828056
-    2  1.881239  ...       0.828378
-    3  1.813864  ...       0.813035
+    0  1.692575  ...       0.817762
+    1  1.709353  ...       0.828056
+    2  1.749257  ...       0.828378
+    3  1.618607  ...       0.813035
 
     [4 rows x 6 columns]
 
@@ -332,7 +332,7 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  16.901 seconds)
+   **Total running time of the script:** ( 0 minutes  16.534 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:
