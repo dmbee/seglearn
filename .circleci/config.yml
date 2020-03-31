@@ -6,7 +6,7 @@ jobs:
       ignore:
         - gh-pages
     docker:
-      - image: circleci/build-image:ubuntu-14.04-XXL-upstart-1189-5614f37
+      - image: circleci/python:3.6.4
     steps:
       - checkout
       - run:
