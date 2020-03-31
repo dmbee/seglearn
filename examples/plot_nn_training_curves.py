@@ -19,7 +19,7 @@ from sklearn.model_selection import train_test_split
 
 from seglearn.datasets import load_watch
 from seglearn.pipe import Pype
-from seglearn.transform import SegmentX
+from seglearn.transform import Segment
 
 
 ##############################################
@@ -54,7 +54,7 @@ y = data['y']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
 # create a segment learning pipeline
-pipe = Pype([('seg', SegmentX(width=100, step=100, order='C')),
+pipe = Pype([('seg', Segment(width=100, step=100, order='C')),
              ('crnn', KerasClassifier(build_fn=crnn_model, epochs=4, batch_size=256,
                                       verbose=0, validation_split=0.2))])
 
@@ -69,9 +69,19 @@ pipe = Pype([('seg', SegmentX(width=100, step=100, order='C')),
 # a callable class with the desired properties should be made passed to build_fn
 
 pipe.fit(X_train, y_train)
-print(DataFrame(pipe.history.history))
-ac_train = pipe.history.history['accuracy']
-ac_val = pipe.history.history['val_accuracy']
+history = pipe.history.history
+print(DataFrame(history))
+
+# depends on version
+if 'accuracy' in history:
+    ac_train = history['accuracy']
+    ac_val = history['val_accuracy']
+elif 'acc' in history:
+    ac_train = history['acc']
+    ac_val = history['val_acc']
+else:
+    raise ValueError("History object doesn't contain accuracy record")
+
 epoch = np.arange(len(ac_train)) + 1
 
 ##############################################

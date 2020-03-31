@@ -107,6 +107,12 @@ def classifier_test(clf, X, y):
     score = clf.score(X, y)
     assert score <= 1.0 and score >= 0.0
 
+    if clf._get_segmenter():
+        s = clf.predict_segmented_series(X, categorical_target=True)
+        for i in np.arange(len(X)):
+            assert len(X[i]) == len(s[i])
+            assert np.all(np.isin(np.unique(s[i]), yv))
+
 
 def test_pipe_classification():
     # no context data, single time series
@@ -166,6 +172,13 @@ def regression_test(clf, X, y):
     assert np.all(yp == yp2)
     score = clf.score(X, y)
     assert score <= 1.0 and score >= 0.0
+
+    if clf._get_segmenter():
+        s = clf.predict_segmented_series(X, categorical_target=False)
+        for i in np.arange(len(X)):
+            assert len(X[i]) == len(s[i])
+            assert np.max(yp) >= np.max(s[i])
+            assert np.min(yp) <= np.min(s[i])
 
 
 def test_pipe_regression():
@@ -323,3 +336,4 @@ def test_pipe_PadTrunc():
     X['ts_data'] = Xt
     X = TS_Data.from_df(X)
     classifier_test(pipe, X, y)
+

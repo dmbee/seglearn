@@ -5,6 +5,7 @@ This module is for transforming time series data.
 # License: BSD
 
 import numpy as np
+import warnings
 from scipy.interpolate import interp1d
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.exceptions import NotFittedError
@@ -16,7 +17,7 @@ from .base import TS_Data
 from .feature_functions import base_features
 from .util import get_ts_data_parts, check_ts_data, interp_sort
 
-__all__ = ['SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'InterpLongToWide', 'Interp',
+__all__ = ['Segment', 'SegmentX', 'SegmentXY', 'SegmentXYForecast', 'PadTrunc', 'InterpLongToWide', 'Interp',
            'FeatureRep', 'FeatureRepMix', 'FunctionTransformer', 'patch_sampler']
 
 
@@ -87,15 +88,22 @@ def shuffle_data(X, y=None, sample_weight=None):
         return X, y, sample_weight
 
 
-class SegmentX(BaseEstimator, XyTransformerMixin):
+class Segment(BaseEstimator, XyTransformerMixin):
     """
     Transformer for sliding window segmentation for datasets where
     X is time series data, optionally with contextual variables
-    and each time series in X has a single target value y
+    and y can either have a single value for each time series or
+    itself be a time series with the same sampling interval as X
 
-    The target y is mapped to all segments from their parent series.
+    The target y is mapped to segments from their parent series.
+
+    If the target y is a time_series, the optional parameter y_func
+    determines the mapping behavior. The segment targets can be a single value,
+    or a sequence of values depending on ``y_func`` parameter.
+
     The transformed data consists of segment/target pairs that can be learned
     through a feature representation or directly with a neural network.
+
 
     Parameters
     ----------
@@ -106,39 +114,36 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
     step : int range [1, width] (default=None)
         number of samples to advance adjacent segments (note: this takes precedence over overlap)
+    y_func : function
+        returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)
     shuffle : bool, optional
         shuffle the segments after transform (recommended for batch optimizations)
     random_state : int, default = None
-        Randomized segment shuffling will return different results for each call to
-        ``transform``. If you have set ``shuffle`` to True and want the same result
-        with each call to ``fit``, set ``random_state`` to an integer.
+        Randomized segment shuffling will return different results for each call to ``transform``.
+        If you have set ``shuffle`` to True and want the same result with each call to ``fit``,
+        set ``random_state`` to an integer.
     order : str, optional (default='F')
         Determines the index order of the segmented time series. 'C' means C-like index order (first
         index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
         'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
         feature representations.
 
-    Todo
-    ----
-    separate fit and predict overlap parameters
+    Returns
+    -------
+    self : object
+        Returns self.
     """
 
-    def __init__(self, width=100, overlap=0.5, step=None, shuffle=False, random_state=None,
-                 order='F'):
+    def __init__(self, width=100, overlap=0.5, step=None, y_func=last, shuffle=False,
+                 random_state=None, order='F'):
         self.width = width
         self.overlap = overlap if step is None else None
         self.step = step
+        self.y_func = y_func
         self.shuffle = shuffle
         self.random_state = random_state
         self.order = order
         self._validate_params()
-
-    @property
-    def _step(self):
-        if self.step is not None:
-            return self.step
-        else:
-            return max(1, int(self.width * (1. - self.overlap)))
 
     def _validate_params(self):
         if not self.width >= 1:
@@ -151,6 +156,13 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
             raise ValueError('Either overlap or step must be set to a valid number')
         if not self.order in ('C', 'F'):
             raise ValueError('order must be either "C" or "F" (was %s' % self.order)
+
+    @property
+    def _step(self):
+        if self.step is not None:
+            return self.step
+        else:
+            return max(1, int(self.width * (1. - self.overlap)))
 
     def fit(self, X, y=None):
         """
@@ -199,11 +211,26 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         sample_weight_new : array-like shape [n_segments]
             expanded sample weights
         """
-        check_ts_data(X, y)
-        Xt, Xc = get_ts_data_parts(X)
+        ts_target = check_ts_data(X, y)
+        Xt, Nt = self._segmentX(X)
         yt = y
+
+        if yt is not None:
+            yt = self._segmentY(y, Nt, ts_target)
+
         swt = sample_weight
 
+        if swt is not None:
+            swt = expand_variables_to_segments(swt, Nt).ravel()
+
+        if self.shuffle is True:
+            check_random_state(self.random_state)
+            return shuffle_data(Xt, yt, swt)
+
+        return Xt, yt, swt
+
+    def _segmentX(self, X):
+        Xt, Xc = get_ts_data_parts(X)
         N = len(Xt)  # number of time series
 
         if Xt[0].ndim > 1:
@@ -216,27 +243,76 @@ class SegmentX(BaseEstimator, XyTransformerMixin):
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
         Xt = np.concatenate(Xt)
 
-        if yt is not None:
-            yt = expand_variables_to_segments(yt, Nt)
-            if yt.ndim > 1 and yt.shape[1] == 1:
-                yt = yt.ravel()
-
-        if swt is not None:
-            swt = expand_variables_to_segments(swt, Nt).ravel()
-
         if Xc is not None:
             Xc = expand_variables_to_segments(Xc, Nt)
             Xt = TS_Data(Xt, Xc)
 
-        if self.shuffle is True:
-            check_random_state(self.random_state)
-            return shuffle_data(Xt, yt, swt)
+        return Xt, Nt
 
-        return Xt, yt, swt
+    def _segmentY(self, y, Nt, ts_target=False):
+        if ts_target:
+            yt = np.array([sliding_window(y[i], self.width, self._step, self.order)
+                           for i in np.arange(len(y))])
+            yt = np.concatenate(yt)
+            yt = self.y_func(yt)
+        else:
+            yt = expand_variables_to_segments(y, Nt)
+            if yt.ndim > 1 and yt.shape[1] == 1:
+                yt = yt.ravel()
+        return yt
 
 
-class SegmentXY(BaseEstimator, XyTransformerMixin):
+class SegmentX(Segment):
     """
+    DEPRECATED - Use Segment class instead
+
+    Transformer for sliding window segmentation for datasets where
+    X is time series data, optionally with contextual variables
+    and each time series in X has a single target value y
+
+    The target y is mapped to all segments from their parent series.
+    The transformed data consists of segment/target pairs that can be learned
+    through a feature representation or directly with a neural network.
+
+    Parameters
+    ----------
+    width : int > 0
+        width of segments (number of samples)
+    overlap : float range [0,1]
+        amount of overlap between segments. must be in range: 0 <= overlap <= 1
+        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)
+    step : int range [1, width] (default=None)
+        number of samples to advance adjacent segments (note: this takes precedence over overlap)
+    shuffle : bool, optional
+        shuffle the segments after transform (recommended for batch optimizations)
+    random_state : int, default = None
+        Randomized segment shuffling will return different results for each call to
+        ``transform``. If you have set ``shuffle`` to True and want the same result
+        with each call to ``fit``, set ``random_state`` to an integer.
+    order : str, optional (default='F')
+        Determines the index order of the segmented time series. 'C' means C-like index order (first
+        index changes slowest) and 'F' means Fortran-like index order (last index changes slowest).
+        'C' ordering is suggested for neural network estimators, and 'F' ordering is suggested for computing
+        feature representations.
+
+    Todo
+    ----
+    separate fit and predict overlap parameters
+    """
+
+    def __init__(self, width=100, overlap=0.5, step=None, shuffle=False, random_state=None,
+                 order='F'):
+
+        super().__init__(width=width, overlap=overlap, step=step, shuffle=shuffle, random_state=random_state,
+                         order=order)
+
+        warnings.warn("deprecated, use Segment class", DeprecationWarning)
+
+
+class SegmentXY(Segment):
+    """
+    DEPRECATED - Use Segment class instead
+
     Transformer for sliding window segmentation for datasets where
     X is time series data, optionally with contextual variables
     and y is also time series data with the same sampling interval as X
@@ -281,114 +357,14 @@ class SegmentXY(BaseEstimator, XyTransformerMixin):
 
     def __init__(self, width=100, overlap=0.5, step=None, y_func=last, shuffle=False,
                  random_state=None, order='F'):
-        self.width = width
-        self.overlap = overlap if step is None else None
-        self.step = step
-        self.y_func = y_func
-        self.shuffle = shuffle
-        self.random_state = random_state
-        self.order = order
-        self._validate_params()
 
-    @property
-    def _step(self):
-        if self.step is not None:
-            return self.step
-        else:
-            return max(1, int(self.width * (1. - self.overlap)))
+        super().__init__(width=width, overlap=overlap, step=step, y_func=y_func, shuffle=shuffle, random_state=random_state,
+                         order=order)
 
-    def _validate_params(self):
-        if not self.width >= 1:
-            raise ValueError("width must be >=1 (was %d)" % self.width)
-        if self.overlap is not None and not (self.overlap >= 0.0 and self.overlap <= 1.0):
-            raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
-        if self.step is not None and not (self.step >= 1 and self.step <= self.width):
-            raise ValueError('step must be >=1 and <=width=%s (was %s)' % (self.width, self.step))
-        if self.overlap is None and self.step is None:
-            raise ValueError('Either overlap or step must be set to a valid number')
-        if not self.order in ('C', 'F'):
-            raise ValueError('order must be either "C" or "F" (was %s' % self.order)
-
-    def fit(self, X, y=None):
-        """
-        Fit the transform
-
-        Parameters
-        ----------
-        X : array-like, shape [n_series, ...]
-            Time series data and (optionally) contextual data
-        y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this
-            parameter.
-
-        Returns
-        -------
-        self : object
-            Returns self.
-        """
-        check_ts_data(X, y)
-        return self
-
-    def transform(self, X, y=None, sample_weight=None):
-        """
-        Transforms the time series data into segments
-        Note this transformation changes the number of samples in the data
-        If y is provided, it is segmented and transformed to align to the new samples as per
-        ``y_func``
-        Currently sample weights always returned as None
-
-        Parameters
-        ----------
-        X : array-like, shape [n_series, ...]
-           Time series data and (optionally) contextual data
-        y : array-like shape [n_series], default = None
-            target vector
-        sample_weight : array-like shape [n_series], default = None
-            sample weights
-
-        Returns
-        -------
-        Xt : array-like, shape [n_segments, ]
-            transformed time series data
-        yt : array-like, shape [n_segments]
-            expanded target vector
-        sample_weight_new : None
-
-        """
-        check_ts_data(X, y)
-        Xt, Xc = get_ts_data_parts(X)
-        yt = y
-
-        N = len(Xt)  # number of time series
-
-        if Xt[0].ndim > 1:
-            Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
-                           for i in np.arange(N)])
-        else:
-            Xt = np.array([sliding_window(Xt[i], self.width, self._step, self.order)
-                           for i in np.arange(N)])
-
-        Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
-        Xt = np.concatenate(Xt)
-
-        if Xc is not None:
-            Xc = expand_variables_to_segments(Xc, Nt)
-            Xt = TS_Data(Xt, Xc)
-
-        if yt is not None:
-            yt = np.array([sliding_window(yt[i], self.width, self._step, self.order)
-                           for i in np.arange(N)])
-            yt = np.concatenate(yt)
-            yt = self.y_func(yt)
-
-        if self.shuffle is True:
-            check_random_state(self.random_state)
-            Xt, yt, _ = shuffle_data(Xt, yt)
-
-        return Xt, yt, None
+        warnings.warn("deprecated, use Segment class", DeprecationWarning)
 
 
-class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
+class SegmentXYForecast(Segment):
     """
     Forecast sliding window segmentation for time series or sequence datasets
 
@@ -433,58 +409,18 @@ class SegmentXYForecast(BaseEstimator, XyTransformerMixin):
 
     def __init__(self, width=100, overlap=0.5, step=None, forecast=10, y_func=last, shuffle=False,
                  random_state=None, order='F'):
-        self.width = width
-        self.overlap = overlap if step is None else None
-        self.step = step
-        self.forecast = forecast
+
+        super().__init__(width=width, overlap=overlap, step=step, shuffle=shuffle, random_state=random_state,
+                         order=order)
+
+        if not forecast >= 1:
+            raise ValueError("forecast must be >=1 (was %d)" % forecast)
+
         self.y_func = y_func
-        self.shuffle = shuffle
-        self.random_state = random_state
-        self.order = order
-        self._validate_params()
+        self.forecast = forecast
 
-    @property
-    def _step(self):
-        if self.step is not None:
-            return self.step
-        else:
-            return max(1, int(self.width * (1. - self.overlap)))
 
-    def _validate_params(self):
-        if not self.width >= 1:
-            raise ValueError("width must be >=1 (was %d)" % self.width)
-        if self.overlap is not None and not (self.overlap >= 0.0 and self.overlap <= 1.0):
-            raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
-        if self.step is not None and not (self.step >= 1 and self.step <= self.width):
-            raise ValueError('step must be >=1 and <=width=%s (was %s)' % (self.width, self.step))
-        if self.overlap is None and self.step is None:
-            raise ValueError('Either overlap or step must be set to a valid number')
-        if not self.forecast >= 1:
-            raise ValueError("forecase must be >=1 (was %d)" % self.forecast)
-        if not self.order in ('C', 'F'):
-            raise ValueError('order must be either "C" or "F" (was %s' % self.order)
-
-    def fit(self, X=None, y=None):
-        """
-        Fit the transform
-
-        Parameters
-        ----------
-        X : array-like, shape [n_series, ...]
-            Time series data and (optionally) contextual data
-        y : None
-            There is no need of a target in a transformer, yet the pipeline API requires this
-            parameter.
-
-        Returns
-        -------
-        self : object
-            Returns self.
-        """
-        check_ts_data(X, y)
-        return self
-
-    def transform(self, X, y, sample_weight=None):
+    def transform(self, X, y=None, sample_weight=None):
         """
         Forecast sliding window segmentation for time series or sequence datasets.
         Note this transformation changes the number of samples in the data.

@@ -5,10 +5,12 @@ time series data and sequences using a sliding window segmentation
 # Author: David Burns
 # License: BSD
 
+import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
 
-from .transform import XyTransformerMixin
+from .transform import XyTransformerMixin, Segment
+from .util import segmented_prediction_to_series, check_ts_data
 
 
 class Pype(Pipeline):
@@ -103,6 +105,7 @@ class Pype(Pipeline):
 
         fit_params_steps = dict((name, {}) for name, step in self.steps
                                 if step is not None)
+
         for pname, pval in fit_params.items():
             step, param = pname.split('__', 1)
             fit_params_steps[step][param] = pval
@@ -339,6 +342,58 @@ class Pype(Pipeline):
         """
         Xt, _, _ = self._transform(X)
         return self._final_estimator.predict_log_proba(Xt)
+
+    def predict_segmented_series(self, X, categorical_target=False):
+        """
+        Generates a prediction for each time series on the same sampling as the original series, by resampling
+        a prediction performed with sliding window segmentation
+
+        Requires that one of the Segment transforms be part of the pipeline
+
+        See plot_feature_rep.py example
+
+        Parameters
+        ----------
+        X : iterable
+            Data to predict on. Must fulfill input requirements of first step
+            of the pipeline.
+
+        categorical_target : boolean
+            Set to True for classification problems, and false for regression problems
+
+        Returns
+        -------
+        yp : iterable
+            Time series predictions on the same sampling as X
+
+        """
+        segmenter = self._get_segmenter()
+
+        if not segmenter:
+            raise Exception("Pype does not contain valid segmenter transform")
+
+        width = segmenter.width
+        step = segmenter._step
+
+        ix = np.arange(len(X)) # series index
+        ixp, yp = self.transform_predict(X, ix)
+
+        sp = []
+        for i in ix:
+            ii = ixp == i
+            ypi = segmented_prediction_to_series(yp[ii], step, width, categorical_target)
+            d = len(X[i]) - len(ypi)
+            ypi = np.concatenate([ypi, np.repeat(ypi[-1:], d)], axis=0)
+            sp.append(ypi)
+
+        return np.array(sp)
+
+
+    def _get_segmenter(self):
+        for name, transformer in self.steps[:-1]:  # iterate through all but last
+            if isinstance(transformer, Segment):
+                return transformer
+
 
     def set_params(self, **params):
         """

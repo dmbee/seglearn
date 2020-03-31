@@ -192,7 +192,10 @@ def interp_sort(t, x):
 
     Returns
     -------
-
+    t : array-like, shape [n]
+        timestamps
+    x : array-like, shape [n, ]
+        data
     """
     if (len(t) != len(x)):
         raise ValueError("Interpolation time and value errors not equal")
@@ -208,3 +211,53 @@ def interp_sort(t, x):
         x = x[ind]
 
     return t, x
+
+
+def segmented_prediction_to_series(yp, step, width, categorical_target=False):
+    """
+    resamples prediction on a single segmented series to original series sampling
+
+    Parameters
+    ----------
+    yp : array-like, shape [n, ]
+        prediction on segmented series
+    step : int
+        segmentation step size (number of samples)
+    width : int
+        segmentation width (number of samples)
+    categorical_target : boolean
+        set to True for classification problems and False for regression problems
+
+    Returns
+    -------
+    yt : array-like, shape [n, ]
+        resampled prediction
+
+    """
+    # average regression predictions if highly overlapping
+    if not categorical_target and step < 0.5 * width:
+        mask = segmentation_mask(len(yp), step, width)
+        counts = np.bincount(mask)
+        yt = np.repeat(yp, width, axis=0)
+
+        if yt.ndim == 1:
+            yt = np.nan_to_num(np.bincount(mask, weights=yt) / counts)
+        else:
+            yt = np.column_stack(
+                [np.nan_to_num(np.bincount(mask, weights=yt[:, i]) / counts)
+                 for i in range(yt.shape[1])]
+            )
+        return yt
+    else:
+        yt = np.repeat(yp[0:-1], step, axis=0)
+        ye = np.repeat(yp[-1:], width, axis=0)
+        yt = np.append(yt, ye, axis=0)
+        return yt
+
+
+def segmentation_mask(N, step, width):
+    mask = np.tile(np.arange(width), (N, 1))
+    steps = np.array([np.arange(start=0, stop=N * step, step=step)]).transpose()
+    steps = np.tile(steps, (1, width))
+    mask = mask + steps
+    return mask.flatten()
