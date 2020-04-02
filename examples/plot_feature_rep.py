@@ -50,16 +50,19 @@ print("N segments in test: ", clf.N_test)
 print("Accuracy score: ", score)
 
 # lets make a pretend series with different activities
-X_series = [np.concatenate(X_test[1:4], axis=0)]
+X_series = np.concatenate(X_test[1:4], axis=0)
+y_series = np.concatenate([np.full(len(X_test[i]), y_test[i]) for i in range(1, 4)])
 print("Pretend series y values: ", y_test[1:4])
 
 # plot the prediction
-yp = clf.predict_unsegmented(X_series, categorical_target=True)
+yp = clf.predict_unsegmented([X_series], categorical_target=True)
 yp0 = yp[0]  # we only predicted one series
 t = np.arange(len(yp0)) * 0.02   # This data has 50 Hz sampling rate
-plt.plot(t, yp0)
+plt.plot(t, yp0, label='predicted')
+plt.plot(t, y_series, label='actual')
 plt.ylabel("Prediction")
 plt.xlabel("Time [seconds]")
+plt.legend()
 plt.show()
 
 # let's try some context data
