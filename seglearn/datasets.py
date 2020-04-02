@@ -1,6 +1,6 @@
-'''
+"""
 This module is for loading time series data sets
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -11,7 +11,7 @@ __all__ = ['load_watch']
 
 
 def load_watch():
-    '''
+    """
     Loads some of the 6-axis inertial sensor data from my smartwatch project. The sensor data was
     recorded as study subjects performed sets of 20 shoulder exercise repetitions while wearing a
     smartwatch. It is a multivariate time series.
@@ -40,7 +40,7 @@ def load_watch():
     >>> from seglearn.datasets import load_watch
     >>> data = load_watch()
     >>> print(data.keys())
-    '''
+    """
     module_path = dirname(__file__)
     data = np.load(module_path + "/data/watch_dataset.npy", allow_pickle=True).item()
     return data

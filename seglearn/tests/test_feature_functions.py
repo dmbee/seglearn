@@ -7,7 +7,7 @@ from seglearn import feature_functions
 
 
 def test_mv_feature_functions():
-    ''' test feature functions with multivariate data '''
+    """ test feature functions with multivariate data """
 
     # sliding window data is shape [n_segments, width, variables]
     N = 20
@@ -26,7 +26,7 @@ def test_mv_feature_functions():
 
 
 def test_uv_feature_functions():
-    ''' test feature functions with univariate data '''
+    """ test feature functions with univariate data """
     N = 20
     W = 30
     uv_data = np.random.rand(N, W)

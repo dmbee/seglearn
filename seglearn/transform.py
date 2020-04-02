@@ -148,9 +148,9 @@ class Segment(BaseEstimator, XyTransformerMixin):
     def _validate_params(self):
         if not self.width >= 1:
             raise ValueError("width must be >=1 (was %d)" % self.width)
-        if self.overlap is not None and not (self.overlap >= 0.0 and self.overlap <= 1.0):
+        if self.overlap is not None and not (0.0 <= self.overlap <= 1.0):
             raise ValueError("overlap must be >=0 and <=1.0 (was %.2f)" % self.overlap)
-        if self.step is not None and not (self.step >= 1 and self.step <= self.width):
+        if self.step is not None and not (1 <= self.step <= self.width):
             raise ValueError('step must be >=1 and <=width=%s (was %s)' % (self.width, self.step))
         if self.overlap is None and self.step is None:
             raise ValueError('Either overlap or step must be set to a valid number')
@@ -981,7 +981,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         multivariate segmented time series along axis 1 (the segment) eg:
             >>> def mean(X):
             >>>    F = np.mean(X, axis = 1)
-            >>>    return(F)
+            >>>    return F
             X : array-like shape [n_samples, segment_width, n_variables]
             F : array-like [n_samples, n_features]
             The number of features returned (n_features) must be >= 1
@@ -998,7 +998,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
     Examples
     --------
 
-    >>> from seglearn.transform import FeatureRep, SegmentX
+    >>> from seglearn.transform import FeatureRep, Segment
     >>> from seglearn.pipe import Pype
     >>> from seglearn.feature_functions import mean, var, std, skew
     >>> from seglearn.datasets import load_watch
@@ -1007,7 +1007,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
     >>> X = data['X']
     >>> y = data['y']
     >>> fts = {'mean': mean, 'var': var, 'std': std, 'skew': skew}
-    >>> clf = Pype([('seg', SegmentX()),
+    >>> clf = Pype([('seg', Segment()),
     >>>             ('ftr', FeatureRep(features = fts)),
     >>>             ('rf',RandomForestClassifier())])
     >>> clf.fit(X, y)
@@ -1173,7 +1173,7 @@ class FeatureRepMix(_BaseComposition, TransformerMixin):
     Examples
     --------
 
-    >>> from seglearn.transform import FeatureRepMix, FeatureRep, SegmentX
+    >>> from seglearn.transform import FeatureRepMix, FeatureRep, Segment
     >>> from seglearn.pipe import Pype
     >>> from seglearn.feature_functions import mean, var, std, skew
     >>> from seglearn.datasets import load_watch
@@ -1182,7 +1182,7 @@ class FeatureRepMix(_BaseComposition, TransformerMixin):
     >>> X = data['X']
     >>> y = data['y']
     >>> mask = [False, False, False, True, True, True]
-    >>> clf = Pype([('seg', SegmentX()),
+    >>> clf = Pype([('seg', Segment()),
     >>>             ('union', FeatureRepMix([
     >>>                 ('ftr_a', FeatureRep(features={'mean': mean}), 0),
     >>>                 ('ftr_b', FeatureRep(features={'var': var}), [0,1,2]),
@@ -1445,23 +1445,23 @@ class FunctionTransformer(BaseEstimator, TransformerMixin):
 
 
 class _InitializePickableSampler(object):
-    '''
+    """
     Class for initializing a serialized/pickled and dynamically patched imbalanced-learn Sampler.
-    '''
+    """
     def __call__(self, sampler_class):
-        '''
+        """
         Recreate a dynamically patched Sampler by creating a _InitializePickableSampler object and
         turning it into a patched Sampler by using the patch_sampler function.
-        '''
+        """
         obj = _InitializePickableSampler()
         obj.__class__ = patch_sampler(sampler_class)
         return obj
 
 
 def patch_sampler(sampler_class):
-    '''
+    """
     Return a dynamically patched imbalanced-learn Sampler class compatible with Pype.
-    '''
+    """
     conditions = [
         hasattr(sampler_class, 'fit_resample'),
         hasattr(sampler_class, '_check_X_y'),
@@ -1472,7 +1472,7 @@ def patch_sampler(sampler_class):
                         ' method and a "_get_param_names" class method.')
 
     class PickableSampler(sampler_class, XyTransformerMixin):
-        '''
+        """
         Dynamically created (pickable) class derived from an imbalanced-learn Sampler and the
         XyTransformerMixin in order to enable the use of the imbalanced-learn Sampler transforms
         inside a seglearn Pype.
@@ -1488,7 +1488,7 @@ def patch_sampler(sampler_class):
         -------
         self : object
             returns self
-        '''
+        """
         def __init__(self, shuffle=False, random_state=None, **kwargs):
             # set shuffle and random_state
             self.shuffle = shuffle
@@ -1506,26 +1506,26 @@ def patch_sampler(sampler_class):
 
         @classmethod
         def _get_param_names(cls):
-            '''
+            """
             Get parameters of the imbalanced-learn Sampler base class and the additional arguments
             of the dynamically derived class.
-            '''
+            """
             init_signature = signature(getattr(cls, '__init__'))
             parameters = [p.name for p in init_signature.parameters.values()
                           if p.name != 'self' and p.kind != p.VAR_KEYWORD]
             return sorted(set(sampler_class._get_param_names() + parameters))
 
         def _check_X_y(self, Xt, yt):
-            '''
+            """
             Circumvent the check whether dim(Xt) == 2.
-            '''
+            """
             Xt_2d = Xt.reshape(Xt.shape[0], -1)
             _, yt, binarize_yt = super(PickableSampler, self)._check_X_y(Xt_2d, yt)
             Xt = check_array(Xt, dtype='numeric', ensure_2d=False, allow_nd=True)
             return Xt, yt, binarize_yt
 
         def transform(self, X, y=None, sample_weight=None):
-            '''
+            """
             Return the given segmented time series data (identity transform) when calling transform
             without fit on this data (potentially making a prediction) to not alter test data.
 
@@ -1543,12 +1543,12 @@ def patch_sampler(sampler_class):
             X : array-like [n_series, ...]
             y : array-like [n_series]
             sample_weight : array-like shape [n_series]
-            '''
+            """
             check_ts_data(X, y)
             return X, y, sample_weight
 
         def fit_transform(self, X, y, sample_weight=None, **fit_params):
-            '''
+            """
             Resample the given segmented time series data based on the Sampler transformer provided
             as a bass class when calling fit (i.e. not making any prediction on the test data) on
             this transformer.
@@ -1570,7 +1570,7 @@ def patch_sampler(sampler_class):
             X : array-like [n_series, ...]
             y : array-like [n_series]
             sample_weight : None
-            '''
+            """
             check_ts_data(X, y)
             Xt, Xc = get_ts_data_parts(X)
             Xt, yt = super(PickableSampler, self).fit_resample(Xt, y, **fit_params)
@@ -1581,10 +1581,10 @@ def patch_sampler(sampler_class):
             return Xt, yt, None
 
         def __reduce__(self):
-            '''
+            """
             Definition on how to serialize/pickle an object of this dynamically created class.
-            '''
-            return (_InitializePickableSampler(), (sampler_class,), self.__dict__)
+            """
+            return _InitializePickableSampler(), (sampler_class,), self.__dict__
 
     new_class_name = "Patched" + sampler_class.__name__
     PickableSampler.__name__ = new_class_name

@@ -1,10 +1,10 @@
-'''
+"""
 ==========================
 Hyperparameter Selection 1
 ==========================
 
 This example demonstrates how to do model selection in a feature representation pipeline using a grid search
-'''
+"""
 
 # Author: David Burns
 # License: BSD
@@ -52,7 +52,7 @@ splitter = GroupKFold(n_splits=3)
 cv = splitter.split(X, y, groups=g)
 
 # create a feature representation pipeline
-pipe = sgl.Pype([('seg', sgl.SegmentX()),
+pipe = sgl.Pype([('seg', sgl.Segment()),
                  ('features', sgl.FeatureRep()),
                  ('scaler', StandardScaler()),
                  ('rf', RandomForestClassifier())])

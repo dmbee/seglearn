@@ -1,11 +1,11 @@
-'''
+"""
 ====================================================
 Basic Feature Representation Classification Pipeline
 ====================================================
 
 This is a basic example using the pipeline to learn a feature representation of the time series data
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -54,7 +54,7 @@ X_series = [np.concatenate(X_test[1:4], axis=0)]
 print("Pretend series y values: ", y_test[1:4])
 
 # plot the prediction
-yp = clf.predict_segmented_series(X_series, categorical_target=True)
+yp = clf.predict_unsegmented(X_series, categorical_target=True)
 yp0 = yp[0]  # we only predicted one series
 t = np.arange(len(yp0)) * 0.02   # This data has 50 Hz sampling rate
 plt.plot(t, yp0)

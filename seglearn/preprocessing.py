@@ -1,6 +1,6 @@
-'''
+"""
 This module is for preprocessing time series data.
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -14,7 +14,7 @@ from .transform import XyTransformerMixin, expand_variables_to_segments
 __all__ = ['TargetRunLengthEncoder']
 
 class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
-    '''
+    """
     Takes a data set with a categorical target variable encoded as a time series and transforms it
     with run length encoding (RLE) of the target variable
 
@@ -33,7 +33,7 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
     ----------
     min_length : integer > 1
         minimum number of samples in a run for it to be included in the transformed data
-    '''
+    """
 
     def __init__(self, min_length = 200):
         self.min_length = min_length
@@ -44,7 +44,7 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
             raise ValueError("min_length must be >1 (was %d)" % self.min_length)
 
     def fit(self, X, y=None):
-        '''
+        """
         Fit the transform
 
         Parameters
@@ -59,12 +59,12 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
         -------
         self : object
             Returns self.
-        '''
+        """
         check_ts_data_with_ts_target(X, y)
         return self
 
     def transform(self, X, y, sample_weight=None):
-        '''
+        """
         Transforms the time series data with run length encoding of the target variable
         Note this transformation changes the number of samples in the data
         If sample_weight is provided, it is transformed to align to the new target encoding
@@ -87,7 +87,7 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
             target values for each series
         sample_weight_new : array-like shape [n_rle_series]
             sample weights
-        '''
+        """
         check_ts_data_with_ts_target(X, y)
 
         Xt, Xc = get_ts_data_parts(X)
@@ -115,7 +115,7 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
         return Xtt, yt, swt
 
     def _rle(self, a):
-        '''
+        """
         rle implementation credit to Thomas Browne from his SOF post Sept 2015
 
         Parameters
@@ -131,26 +131,26 @@ class TargetRunLengthEncoder(BaseEstimator, XyTransformerMixin):
             start positions of each run
         ar : array, shape[nt,]
             values for each run
-        '''
+        """
         ia = np.asarray(a)
         n = len(ia)
         y = np.array(ia[1:] != ia[:-1])  # pairwise unequal (string safe)
         i = np.append(np.where(y), n - 1)  # must include last element posi
         z = np.diff(np.append(-1, i))  # run lengths
         p = np.cumsum(np.append(0, z))[:-1]  # positions
-        return (z, p, ia[i])
+        return z, p, ia[i]
 
     def _transform(self, X, y):
-        '''
+        """
         Transforms single series
-        '''
+        """
         z, p, y_rle = self._rle(y)
         p = np.append(p, len(y))
         big_enough = p[1:] - p[:-1] >= self.min_length
         Xt = []
 
         for i in range(len(y_rle)):
-            if (big_enough[i]):
+            if big_enough[i]:
                 Xt.append(X[p[i]:p[i+1]])
 
         yt = y_rle[big_enough].tolist()

@@ -1,4 +1,4 @@
-'''
+"""
 This module has functions or callable objects that can be used to compute features from segmented
 time series data
 
@@ -25,7 +25,7 @@ Examples
 >>> from seglearn.transform import FeatureRep
 >>> FeatureTransform = FeatureRep(features=all_features())
 
-'''
+"""
 
 # Author: David Burns
 # License: BSD
@@ -35,8 +35,8 @@ from scipy import stats
 
 
 def base_features():
-    ''' Returns dictionary of some basic features that can be calculated for segmented time
-    series data '''
+    """ Returns dictionary of some basic features that can be calculated for segmented time
+    series data """
     features = {'mean': mean,
                 'median': median,
                 'abs_energy': abs_energy,
@@ -52,10 +52,10 @@ def base_features():
 
 
 def all_features():
-    ''' Returns dictionary of all features in the module
+    """ Returns dictionary of all features in the module
 
     .. note:: Some of the features (hist4, corr) are relatively expensive to compute
-    '''
+    """
     features = {'mean': mean,
                 'median': median,
                 'gmean': gmean,
@@ -88,7 +88,7 @@ def all_features():
 
 
 def hudgins_features(threshold=0):
-    '''Return a dict of Hudgin's time domain features used for EMG time series classification.'''
+    """Return a dict of Hudgin's time domain features used for EMG time series classification."""
     return {
         'mean_abs_value': mean_abs,
         'zero_crossings': zero_crossing(threshold),
@@ -98,7 +98,7 @@ def hudgins_features(threshold=0):
 
 
 def emg_features(threshold=0):
-    '''Return a dictionary of popular features used for EMG time series classification.'''
+    """Return a dictionary of popular features used for EMG time series classification."""
     return {
         'mean_abs_value': mean_abs,
         'zero_crossings': zero_crossing(threshold),
@@ -113,97 +113,97 @@ def emg_features(threshold=0):
 
 
 def mean(X):
-    ''' statistical mean for each variable in a segmented time series '''
+    """ statistical mean for each variable in a segmented time series """
     return np.mean(X, axis=1)
 
 
 def median(X):
-    ''' statistical median for each variable in a segmented time series '''
+    """ statistical median for each variable in a segmented time series """
     return np.median(X, axis=1)
 
 
 def gmean(X):
-    ''' geometric mean for each variable '''
+    """ geometric mean for each variable """
     return stats.gmean(X, axis=1)
 
 
 def hmean(X):
-    ''' harmonic mean for each variable '''
+    """ harmonic mean for each variable """
     return stats.hmean(X, axis=1)
 
 
 def vec_sum(X):
-    ''' vector sum of each variable '''
+    """ vector sum of each variable """
     return np.sum(X, axis=1)
 
 
 def abs_sum(X):
-    ''' sum of absolute values '''
+    """ sum of absolute values """
     return np.sum(np.abs(X), axis=1)
 
 
 def abs_energy(X):
-    ''' absolute sum of squares for each variable '''
+    """ absolute sum of squares for each variable """
     return np.sum(X * X, axis=1)
 
 
 def std(X):
-    ''' statistical standard deviation for each variable in a segmented time series '''
+    """ statistical standard deviation for each variable in a segmented time series """
     return np.std(X, axis=1)
 
 
 def var(X):
-    ''' statistical variance for each variable in a segmented time series '''
+    """ statistical variance for each variable in a segmented time series """
     return np.var(X, axis=1)
 
 
 def median_absolute_deviation(X):
-    ''' median absolute deviation for each variable in a segmented time series '''
+    """ median absolute deviation for each variable in a segmented time series """
     return stats.median_absolute_deviation(X, axis=1)
 
 
 def variation(X):
-    ''' coefficient of variation '''
+    """ coefficient of variation """
     return stats.variation(X, axis=1)
 
 
 def minimum(X):
-    ''' minimum value for each variable in a segmented time series '''
+    """ minimum value for each variable in a segmented time series """
     return np.min(X, axis=1)
 
 
 def maximum(X):
-    ''' maximum value for each variable in a segmented time series '''
+    """ maximum value for each variable in a segmented time series """
     return np.max(X, axis=1)
 
 
 def skew(X):
-    ''' skewness for each variable in a segmented time series '''
+    """ skewness for each variable in a segmented time series """
     return stats.skew(X, axis=1)
 
 
 def kurt(X):
-    ''' kurtosis for each variable in a segmented time series '''
+    """ kurtosis for each variable in a segmented time series """
     return stats.kurtosis(X, axis=1)
 
 
 def mean_diff(X):
-    ''' mean temporal derivative '''
+    """ mean temporal derivative """
     return np.mean(np.diff(X, axis=1), axis=1)
 
 
 def means_abs_diff(X):
-    ''' mean absolute temporal derivative '''
+    """ mean absolute temporal derivative """
     return np.mean(np.abs(np.diff(X, axis=1)), axis=1)
 
 
 def mse(X):
-    ''' computes mean spectral energy for each variable in a segmented time series '''
+    """ computes mean spectral energy for each variable in a segmented time series """
     return np.mean(np.square(np.abs(np.fft.fft(X, axis=1))), axis=1)
 
 
 def mean_crossings(X):
-    ''' Computes number of mean crossings for each variable in a segmented time series '''
+    """ Computes number of mean crossings for each variable in a segmented time series """
     X = np.atleast_3d(X)
     N = X.shape[0]
     D = X.shape[2]
@@ -217,10 +217,10 @@ def mean_crossings(X):
 
 
 class hist(object):
-    ''' histogram for each variable in a segmented time series
+    """ histogram for each variable in a segmented time series
 
     .. note:: this feature is expensive to compute with the current implementation
-    '''
+    """
 
     def __init__(self, bins=4):
         if bins < 2:
@@ -245,11 +245,11 @@ class hist(object):
 
 
 def corr2(X):
-    ''' computes correlations between all variable pairs in a segmented time series
+    """ computes correlations between all variable pairs in a segmented time series
 
     .. note:: this feature is expensive to compute with the current implementation, and cannot be
     used with univariate time series
-    '''
+    """
     X = np.atleast_3d(X)
     N = X.shape[0]
     D = X.shape[2]
@@ -267,13 +267,13 @@ def corr2(X):
 
 
 def mean_abs(X):
-    ''' statistical mean of the absolute values for each variable in a segmented time series '''
+    """ statistical mean of the absolute values for each variable in a segmented time series """
     return np.mean(np.abs(X), axis=1)
 
 
 class zero_crossing(object):
-    ''' number of zero crossings among two consecutive samples above a certain threshold for each
-    variable in the segmented time series'''
+    """ number of zero crossings among two consecutive samples above a certain threshold for each
+    variable in the segmented time series"""
 
     def __init__(self, threshold=0):
         self.threshold = threshold
@@ -288,8 +288,8 @@ class zero_crossing(object):
 
 
 class slope_sign_changes(object):
-    ''' number of changes between positive and negative slope among three consecutive samples
-    above a certain threshold for each variable in the segmented time series'''
+    """ number of changes between positive and negative slope among three consecutive samples
+    above a certain threshold for each variable in the segmented time series"""
 
     def __init__(self, threshold=0):
         self.threshold = threshold
@@ -303,26 +303,26 @@ class slope_sign_changes(object):
 
 
 def waveform_length(X):
-    ''' cumulative length of the waveform over a segment for each variable in the segmented time
-    series '''
+    """ cumulative length of the waveform over a segment for each variable in the segmented time
+    series """
     return np.sum(np.abs(np.diff(X, axis=1)), axis=1)
 
 
 def root_mean_square(X):
-    ''' root mean square for each variable in the segmented time series '''
+    """ root mean square for each variable in the segmented time series """
     segment_width = X.shape[1]
     return np.sqrt(np.sum(X * X, axis=1) / segment_width)
 
 
 def emg_var(X):
-    ''' variance (assuming a mean of zero) for each variable in the segmented time series
-    (equals abs_energy divided by (seg_size - 1)) '''
+    """ variance (assuming a mean of zero) for each variable in the segmented time series
+    (equals abs_energy divided by (seg_size - 1)) """
     segment_width = X.shape[1]
     return np.sum(X * X, axis=1) / (segment_width - 1)
 
 
 class willison_amplitude(object):
-    ''' the Willison amplitude for each variable in the segmented time series '''
+    """ the Willison amplitude for each variable in the segmented time series """
 
     def __init__(self, threshold=0):
         self.threshold = threshold

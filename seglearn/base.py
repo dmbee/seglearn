@@ -1,6 +1,6 @@
-'''
+"""
 This module has some base classes for time series data
-'''
+"""
 
 # Author: David Burns
 # License: BSD
@@ -11,7 +11,7 @@ __all__ = ['TS_Data']
 
 
 class TS_Data(object):
-    '''
+    """
     Iterable/indexable class for time series data with context data
     Numpy arrays are sufficient time series data alone is needed
 
@@ -22,7 +22,7 @@ class TS_Data(object):
     context_data : array-like (N, )
         contextual data
 
-    '''
+    """
 
     def __init__(self, ts_data, context_data):
         N = len(ts_data)

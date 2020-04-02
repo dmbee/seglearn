@@ -105,10 +105,13 @@ def classifier_test(clf, X, y):
     assert pp.shape[0] == len(yp)
     assert pp.shape[1] == len(yv)
     score = clf.score(X, y)
-    assert score <= 1.0 and score >= 0.0
+    assert 1.0 >= score >= 0.0
+
+    ys = clf.predict_as_series(X)
+    assert len(X) == len(ys)
 
     if clf._get_segmenter():
-        s = clf.predict_segmented_series(X, categorical_target=True)
+        s = clf.predict_unsegmented(X, categorical_target=True)
         for i in np.arange(len(X)):
             assert len(X[i]) == len(s[i])
             assert np.all(np.isin(np.unique(s[i]), yv))
@@ -171,10 +174,13 @@ def regression_test(clf, X, y):
     assert len(ytr) == len(yp2)
     assert np.all(yp == yp2)
     score = clf.score(X, y)
-    assert score <= 1.0 and score >= 0.0
+    assert 1.0 >= score >= 0.0
+
+    ys = clf.predict_as_series(X)
+    assert len(X) == len(ys)
 
     if clf._get_segmenter():
-        s = clf.predict_segmented_series(X, categorical_target=False)
+        s = clf.predict_unsegmented(X, categorical_target=False)
         for i in np.arange(len(X)):
             assert len(X[i]) == len(s[i])
             assert np.max(yp) >= np.max(s[i])
@@ -238,7 +244,7 @@ def forecast_test(clf, X, y):
     assert len(ytr) == len(yp2)
     assert np.all(yp == yp2)
     score = clf.score(X, y)
-    assert score <= 1.0 and score >= 0.0
+    assert 1.0 >= score >= 0.0
 
 
 def test_pipe_forecast():

@@ -1,7 +1,7 @@
-'''
+"""
 This module is an sklearn compatible pipeline for machine learning
 time series data and sequences using a sliding window segmentation
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -10,11 +10,11 @@ from sklearn.base import BaseEstimator
 from sklearn.pipeline import Pipeline
 
 from .transform import XyTransformerMixin, Segment
-from .util import segmented_prediction_to_series, check_ts_data
+from .util import segmented_prediction_to_series
 
 
 class Pype(Pipeline):
-    '''
+    """
     This pipeline extends the sklearn Pipeline to support transformers that change X, y,
     sample_weight, and the number of samples.
 
@@ -52,7 +52,7 @@ class Pype(Pipeline):
     >>> pipe.fit(X, y)
     >>> print(pipe.score(X, y))
 
-    '''
+    """
 
     # todo: handle steps with None
     def __init__(self, steps, scorer=None, memory=None):
@@ -343,9 +343,31 @@ class Pype(Pipeline):
         Xt, _, _ = self._transform(X)
         return self._final_estimator.predict_log_proba(Xt)
 
-    def predict_segmented_series(self, X, categorical_target=False):
+
+    def predict_as_series(self, X):
         """
-        Generates a prediction for each time series on the same sampling as the original series, by resampling
+        Returns predictions in a list, grouping predictions based on the series they were derived from
+
+        Parameters
+        ----------
+        X : iterable
+            Data to predict on. Must fulfill input requirements of first step
+            of the pipeline.
+
+        Returns
+        -------
+        yp : list
+            Predictions
+        """
+        ix = np.arange(len(X))  # series index
+        ixp, yp = self.transform_predict(X, ix)
+        yp = [yp[ixp == i] for i in ix]
+        return np.array(yp)
+
+
+    def predict_unsegmented(self, X, categorical_target=False):
+        """
+        Generates predictions for each time series on the same sampling as the original series, by resampling
         a prediction performed with sliding window segmentation
 
         Requires that one of the Segment transforms be part of the pipeline
@@ -375,18 +397,17 @@ class Pype(Pipeline):
         width = segmenter.width
         step = segmenter._step
 
-        ix = np.arange(len(X)) # series index
-        ixp, yp = self.transform_predict(X, ix)
+        yp = self.predict_as_series(X)
+        yu = []
 
-        sp = []
-        for i in ix:
-            ii = ixp == i
-            ypi = segmented_prediction_to_series(yp[ii], step, width, categorical_target)
-            d = len(X[i]) - len(ypi)
-            ypi = np.concatenate([ypi, np.repeat(ypi[-1:], d)], axis=0)
-            sp.append(ypi)
+        for i, yi in enumerate(yp):
+            yui = segmented_prediction_to_series(yi, step, width, categorical_target)
+            d = len(X[i]) - len(yui)
+            if d > 0:
+                yui = np.concatenate([yui, np.repeat(yui[-1:], d)], axis=0)
+            yu.append(yui)
 
-        return np.array(sp)
+        return np.array(yu)
 
 
     def _get_segmenter(self):

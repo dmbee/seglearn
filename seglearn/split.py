@@ -1,4 +1,4 @@
-'''
+"""
 This module has two classes for splitting time series data temporally - where train/test or fold
 splits are created within each of the time series' in the time series data. This splitting approach
 is for evaluating how well the algorithm performs on segments drawn from the same time series but
@@ -8,7 +8,7 @@ performance on the training data so long as the data in each series is relativel
 Note that splitting along the temporal axis violates the assumption of independence between train
 and test samples, as successive samples in a sequence or series are not iid. However, temporal
 splitting is still useful in certain cases such as for the analysis of a single sequence / series.
-'''
+"""
 
 # Author: David Burns
 # License: BSD
@@ -21,7 +21,7 @@ from .base import TS_Data
 
 
 class TemporalKFold(object):
-    '''
+    """
     K-fold iterator variant for temporal splitting of time series data
 
     The time series' are divided in time with no overlap, and are balanced.
@@ -43,7 +43,7 @@ class TemporalKFold(object):
     >>> splitter = TemporalKFold(n_splits=4)
     >>> X, y, cv = splitter.split(data['X'], data['y'])
 
-    '''
+    """
 
     def __init__(self, n_splits=3):
         if n_splits < 2:
@@ -54,7 +54,7 @@ class TemporalKFold(object):
         return _build_repr(self)
 
     def split(self, X, y):
-        '''
+        """
         Splits time series data and target arrays, and generates splitting indices
 
         Parameters
@@ -72,7 +72,7 @@ class TemporalKFold(object):
             Split target data
         cv : list, shape [2, n_splits]
             Splitting indices
-        '''
+        """
 
         check_ts_data(X, y)
         Xt, Xc = get_ts_data_parts(X)
@@ -90,7 +90,7 @@ class TemporalKFold(object):
         return X_new, y_new, cv
 
     def _ts_slice(self, Xt, y):
-        ''' takes time series data, and splits each series into temporal folds '''
+        """ takes time series data, and splits each series into temporal folds """
         Ns = len(Xt)
         Xt_new = []
         for i in range(self.n_splits):
@@ -114,7 +114,7 @@ class TemporalKFold(object):
         return Xt_new, y_new
 
     def _make_indices(self, Ns):
-        ''' makes indices for cross validation '''
+        """ makes indices for cross validation """
         N_new = int(Ns * self.n_splits)
 
         test = [np.full(N_new, False) for i in range(self.n_splits)]
@@ -130,7 +130,7 @@ class TemporalKFold(object):
 
 
 def temporal_split(X, y, test_size=0.25):
-    '''
+    """
     Split time series or sequence data along the time axis.
     Test data is drawn from the end of each series / sequence
 
@@ -150,7 +150,7 @@ def temporal_split(X, y, test_size=0.25):
     y_train :  array-like, shape [n_series, ]
     y_test :  array-like, shape [n_series, ]
 
-    '''
+    """
 
     if test_size <= 0. or test_size >= 1.:
         raise ValueError("temporal_split: test_size must be >= 0.0 and <= 1.0"

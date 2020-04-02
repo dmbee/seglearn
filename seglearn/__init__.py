@@ -9,12 +9,12 @@ from .feature_functions import base_features, all_features
 from .pipe import Pype
 from .preprocessing import TargetRunLengthEncoder
 from .split import TemporalKFold, temporal_split
-from .transform import SegmentX, SegmentXY, SegmentXYForecast, PadTrunc, Interp, InterpLongToWide, FeatureRep, \
-    FeatureRepMix, FunctionTransformer
+from .transform import Segment, SegmentX, SegmentXY, SegmentXYForecast, PadTrunc, Interp, InterpLongToWide, \
+    FeatureRep, FeatureRepMix, FunctionTransformer, patch_sampler
 from .util import check_ts_data, check_ts_data_with_ts_target, ts_stats, get_ts_data_parts
 
-__all__ = ['TS_Data', 'FeatureRep', 'FeatureRepMix', 'PadTrunc', 'Interp', 'InterpLongToWide', 'Pype', 'SegmentX',
-           'SegmentXY', 'SegmentXYForecast', 'TemporalKFold', 'temporal_split', 'check_ts_data',
+__all__ = ['TS_Data', 'FeatureRep', 'FeatureRepMix', 'PadTrunc', 'Interp', 'InterpLongToWide', 'Pype', 'Segment',
+           'SegmentX', 'SegmentXY', 'SegmentXYForecast', 'TemporalKFold', 'temporal_split', 'check_ts_data',
            'check_ts_data_with_ts_target', 'ts_stats', 'get_ts_data_parts', 'all_features',
            'base_features', 'load_watch', 'TargetRunLengthEncoder', 'FunctionTransformer',
            'patch_sampler', '__version__']

@@ -200,7 +200,7 @@ def interp_sort(t, x):
     x : array-like, shape [n, ]
         data
     """
-    if (len(t) != len(x)):
+    if len(t) != len(x):
         raise ValueError("Interpolation time and value errors not equal")
 
     ind = np.argsort(t)
