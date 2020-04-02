@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.feature_functions &mdash; seglearn 1.2.0 documentation</title>
+  <title>seglearn.feature_functions &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -166,7 +166,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for seglearn.feature_functions</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module has functions or callable objects that can be used to compute features from segmented</span>
 <span class="sd">time series data</span>
 
@@ -193,7 +193,7 @@
 <span class="sd">&gt;&gt;&gt; from seglearn.transform import FeatureRep</span>
 <span class="sd">&gt;&gt;&gt; FeatureTransform = FeatureRep(features=all_features())</span>
 
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
@@ -203,8 +203,8 @@
 
 
 <div class="viewcode-block" id="base_features"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.base_features">[docs]</a><span class="k">def</span> <span class="nf">base_features</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39; Returns dictionary of some basic features that can be calculated for segmented time</span>
-<span class="sd">    series data &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; Returns dictionary of some basic features that can be calculated for segmented time</span>
+<span class="sd">    series data &quot;&quot;&quot;</span>
     <span class="n">features</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span>
                 <span class="s1">&#39;median&#39;</span><span class="p">:</span> <span class="n">median</span><span class="p">,</span>
                 <span class="s1">&#39;abs_energy&#39;</span><span class="p">:</span> <span class="n">abs_energy</span><span class="p">,</span>
@@ -220,10 +220,10 @@
 
 
 <div class="viewcode-block" id="all_features"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.all_features">[docs]</a><span class="k">def</span> <span class="nf">all_features</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39; Returns dictionary of all features in the module</span>
+    <span class="sd">&quot;&quot;&quot; Returns dictionary of all features in the module</span>
 
 <span class="sd">    .. note:: Some of the features (hist4, corr) are relatively expensive to compute</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">features</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span>
                 <span class="s1">&#39;median&#39;</span><span class="p">:</span> <span class="n">median</span><span class="p">,</span>
                 <span class="s1">&#39;gmean&#39;</span><span class="p">:</span> <span class="n">gmean</span><span class="p">,</span>
@@ -256,7 +256,7 @@
 
 
 <div class="viewcode-block" id="hudgins_features"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.hudgins_features">[docs]</a><span class="k">def</span> <span class="nf">hudgins_features</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Return a dict of Hudgin&#39;s time domain features used for EMG time series classification.&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;Return a dict of Hudgin&#39;s time domain features used for EMG time series classification.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s1">&#39;mean_abs_value&#39;</span><span class="p">:</span> <span class="n">mean_abs</span><span class="p">,</span>
         <span class="s1">&#39;zero_crossings&#39;</span><span class="p">:</span> <span class="n">zero_crossing</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
@@ -266,7 +266,7 @@
 
 
 <div class="viewcode-block" id="emg_features"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.emg_features">[docs]</a><span class="k">def</span> <span class="nf">emg_features</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;Return a dictionary of popular features used for EMG time series classification.&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;Return a dictionary of popular features used for EMG time series classification.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="s1">&#39;mean_abs_value&#39;</span><span class="p">:</span> <span class="n">mean_abs</span><span class="p">,</span>
         <span class="s1">&#39;zero_crossings&#39;</span><span class="p">:</span> <span class="n">zero_crossing</span><span class="p">(</span><span class="n">threshold</span><span class="p">),</span>
@@ -281,97 +281,97 @@
 
 
 <div class="viewcode-block" id="mean"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean">[docs]</a><span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical mean for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; statistical mean for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="median"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.median">[docs]</a><span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical median for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; statistical median for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="gmean"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.gmean">[docs]</a><span class="k">def</span> <span class="nf">gmean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; geometric mean for each variable &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; geometric mean for each variable &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">gmean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="hmean"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.hmean">[docs]</a><span class="k">def</span> <span class="nf">hmean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; harmonic mean for each variable &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; harmonic mean for each variable &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">hmean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="vec_sum"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.vec_sum">[docs]</a><span class="k">def</span> <span class="nf">vec_sum</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; vector sum of each variable &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; vector sum of each variable &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="abs_sum"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.abs_sum">[docs]</a><span class="k">def</span> <span class="nf">abs_sum</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; sum of absolute values &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; sum of absolute values &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="abs_energy"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.abs_energy">[docs]</a><span class="k">def</span> <span class="nf">abs_energy</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; absolute sum of squares for each variable &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; absolute sum of squares for each variable &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="std"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.std">[docs]</a><span class="k">def</span> <span class="nf">std</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical standard deviation for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; statistical standard deviation for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="var"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.var">[docs]</a><span class="k">def</span> <span class="nf">var</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical variance for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; statistical variance for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="median_absolute_deviation"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.median_absolute_deviation">[docs]</a><span class="k">def</span> <span class="nf">median_absolute_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; median absolute deviation for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; median absolute deviation for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">median_absolute_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="variation"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.variation">[docs]</a><span class="k">def</span> <span class="nf">variation</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; coefficient of variation &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; coefficient of variation &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">variation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="minimum"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.minimum">[docs]</a><span class="k">def</span> <span class="nf">minimum</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; minimum value for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; minimum value for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="maximum"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.maximum">[docs]</a><span class="k">def</span> <span class="nf">maximum</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; maximum value for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; maximum value for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="skew"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.skew">[docs]</a><span class="k">def</span> <span class="nf">skew</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; skewness for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; skewness for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="kurt"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.kurt">[docs]</a><span class="k">def</span> <span class="nf">kurt</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; kurtosis for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; kurtosis for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="mean_diff"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean_diff">[docs]</a><span class="k">def</span> <span class="nf">mean_diff</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; mean temporal derivative &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; mean temporal derivative &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="means_abs_diff"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.means_abs_diff">[docs]</a><span class="k">def</span> <span class="nf">means_abs_diff</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; mean absolute temporal derivative &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; mean absolute temporal derivative &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="mse"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mse">[docs]</a><span class="k">def</span> <span class="nf">mse</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; computes mean spectral energy for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; computes mean spectral energy for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="mean_crossings"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean_crossings">[docs]</a><span class="k">def</span> <span class="nf">mean_crossings</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; Computes number of mean crossings for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; Computes number of mean crossings for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -385,10 +385,10 @@
 
 
 <div class="viewcode-block" id="hist"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.hist">[docs]</a><span class="k">class</span> <span class="nc">hist</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; histogram for each variable in a segmented time series</span>
+    <span class="sd">&quot;&quot;&quot; histogram for each variable in a segmented time series</span>
 
 <span class="sd">    .. note:: this feature is expensive to compute with the current implementation</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">bins</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -413,11 +413,11 @@
 
 
 <div class="viewcode-block" id="corr2"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.corr2">[docs]</a><span class="k">def</span> <span class="nf">corr2</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; computes correlations between all variable pairs in a segmented time series</span>
+    <span class="sd">&quot;&quot;&quot; computes correlations between all variable pairs in a segmented time series</span>
 
 <span class="sd">    .. note:: this feature is expensive to compute with the current implementation, and cannot be</span>
 <span class="sd">    used with univariate time series</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -435,13 +435,13 @@
 
 
 <div class="viewcode-block" id="mean_abs"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.mean_abs">[docs]</a><span class="k">def</span> <span class="nf">mean_abs</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; statistical mean of the absolute values for each variable in a segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; statistical mean of the absolute values for each variable in a segmented time series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="zero_crossing"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.zero_crossing">[docs]</a><span class="k">class</span> <span class="nc">zero_crossing</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; number of zero crossings among two consecutive samples above a certain threshold for each</span>
-<span class="sd">    variable in the segmented time series&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; number of zero crossings among two consecutive samples above a certain threshold for each</span>
+<span class="sd">    variable in the segmented time series&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
@@ -456,8 +456,8 @@
 
 
 <div class="viewcode-block" id="slope_sign_changes"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.slope_sign_changes">[docs]</a><span class="k">class</span> <span class="nc">slope_sign_changes</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; number of changes between positive and negative slope among three consecutive samples</span>
-<span class="sd">    above a certain threshold for each variable in the segmented time series&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; number of changes between positive and negative slope among three consecutive samples</span>
+<span class="sd">    above a certain threshold for each variable in the segmented time series&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
@@ -471,26 +471,26 @@
 
 
 <div class="viewcode-block" id="waveform_length"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.waveform_length">[docs]</a><span class="k">def</span> <span class="nf">waveform_length</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; cumulative length of the waveform over a segment for each variable in the segmented time</span>
-<span class="sd">    series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; cumulative length of the waveform over a segment for each variable in the segmented time</span>
+<span class="sd">    series &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="root_mean_square"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.root_mean_square">[docs]</a><span class="k">def</span> <span class="nf">root_mean_square</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; root mean square for each variable in the segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; root mean square for each variable in the segmented time series &quot;&quot;&quot;</span>
     <span class="n">segment_width</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">segment_width</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="emg_var"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.emg_var">[docs]</a><span class="k">def</span> <span class="nf">emg_var</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; variance (assuming a mean of zero) for each variable in the segmented time series</span>
-<span class="sd">    (equals abs_energy divided by (seg_size - 1)) &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; variance (assuming a mean of zero) for each variable in the segmented time series</span>
+<span class="sd">    (equals abs_energy divided by (seg_size - 1)) &quot;&quot;&quot;</span>
     <span class="n">segment_width</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="willison_amplitude"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.willison_amplitude">[docs]</a><span class="k">class</span> <span class="nc">willison_amplitude</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; the Willison amplitude for each variable in the segmented time series &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; the Willison amplitude for each variable in the segmented time series &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>

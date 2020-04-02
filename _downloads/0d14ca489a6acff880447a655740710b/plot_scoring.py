@@ -1,4 +1,4 @@
-'''
+"""
 ==============================
 Scoring Time Series Estimators
 ==============================
@@ -9,7 +9,7 @@ calculate performance scores for time series estimators.
 This pipeline has been designed to evaluate performance using
 segments (not series') as instances of the data.
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -27,7 +27,7 @@ from sklearn.preprocessing import StandardScaler
 
 from seglearn.datasets import load_watch
 from seglearn.pipe import Pype
-from seglearn.transform import FeatureRep, SegmentX
+from seglearn.transform import FeatureRep, Segment
 
 
 ##############################################
@@ -37,7 +37,7 @@ from seglearn.transform import FeatureRep, SegmentX
 def plot_confusion_matrix(cm, classes,
                           normalize=True,
                           cmap=plt.cm.Blues):
-    ''' plots confusion matrix '''
+    """ plots confusion matrix """
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
@@ -67,7 +67,7 @@ X = data['X']
 y = data['y']
 
 # create a feature representation pipeline
-steps = [('seg', SegmentX()),
+steps = [('seg', Segment()),
          ('features', FeatureRep()),
          ('scaler', StandardScaler()),
          ('rf', RandomForestClassifier(n_estimators=20))]
@@ -141,7 +141,7 @@ print("CV F1 Scores: ", pd.DataFrame(cv_scores))
 # The disadvantage of this is that the parameters of the segmentation cannot be
 # optimized with this approach
 
-segmenter = SegmentX()
+segmenter = Segment()
 X_seg, y_seg, _ = segmenter.fit_transform(X, y)
 
 clf = Pipeline([('features', FeatureRep()),

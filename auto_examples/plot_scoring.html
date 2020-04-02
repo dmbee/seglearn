@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Scoring Time Series Estimators &mdash; seglearn 1.2.0 documentation</title>
+  <title>Scoring Time Series Estimators &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -106,9 +106,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
@@ -223,7 +223,7 @@ segments (not series’) as instances of the data.</p>
 
 <span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
 <span class="kn">from</span> <span class="nn">seglearn.pipe</span> <span class="kn">import</span> <span class="n">Pype</span>
-<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">SegmentX</span>
+<span class="kn">from</span> <span class="nn">seglearn.transform</span> <span class="kn">import</span> <span class="n">FeatureRep</span><span class="p">,</span> <span class="n">Segment</span>
 </pre></div>
 </div>
 <div class="section" id="confusion-plot">
@@ -231,7 +231,7 @@ segments (not series’) as instances of the data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_confusion_matrix</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span>
                           <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                           <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; plots confusion matrix &#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot; plots confusion matrix &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
         <span class="n">cm</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span> <span class="o">/</span> <span class="n">cm</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
@@ -260,7 +260,7 @@ segments (not series’) as instances of the data.</p>
 <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
 
 <span class="c1"># create a feature representation pipeline</span>
-<span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">SegmentX</span><span class="p">()),</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;seg&#39;</span><span class="p">,</span> <span class="n">Segment</span><span class="p">()),</span>
          <span class="p">(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
          <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
          <span class="p">(</span><span class="s1">&#39;rf&#39;</span><span class="p">,</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">20</span><span class="p">))]</span>
@@ -335,10 +335,10 @@ segments (not series’) as instances of the data.</p>
 /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
   FutureWarning)
 CV Scores:     fit_time  ...  train_score
-0  0.555701  ...          1.0
-1  0.601783  ...          1.0
-2  0.583803  ...          1.0
-3  0.577564  ...          1.0
+0  0.559378  ...          1.0
+1  0.601259  ...          1.0
+2  0.584286  ...          1.0
+3  0.604557  ...          1.0
 
 [4 rows x 4 columns]
 </pre></div>
@@ -367,10 +367,10 @@ CV Scores:     fit_time  ...  train_score
 /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
   FutureWarning)
 CV F1 Scores:     fit_time  ...  train_score
-0  0.615483  ...          1.0
-1  0.611870  ...          1.0
-2  0.682074  ...          1.0
-3  0.569624  ...          1.0
+0  0.578607  ...          1.0
+1  0.624480  ...          1.0
+2  0.606835  ...          1.0
+3  0.566420  ...          1.0
 
 [4 rows x 4 columns]
 </pre></div>
@@ -385,7 +385,7 @@ CV F1 Scores:     fit_time  ...  train_score
 <span class="c1"># The disadvantage of this is that the parameters of the segmentation cannot be</span>
 <span class="c1"># optimized with this approach</span>
 
-<span class="n">segmenter</span> <span class="o">=</span> <span class="n">SegmentX</span><span class="p">()</span>
+<span class="n">segmenter</span> <span class="o">=</span> <span class="n">Segment</span><span class="p">()</span>
 <span class="n">X_seg</span><span class="p">,</span> <span class="n">y_seg</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">segmenter</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="n">clf</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">()),</span>
@@ -400,15 +400,15 @@ CV F1 Scores:     fit_time  ...  train_score
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>CV Scores (workaround):     fit_time  ...  test_f1_macro
-0  1.692575  ...       0.817762
-1  1.709353  ...       0.828056
-2  1.749257  ...       0.828378
-3  1.618607  ...       0.813035
+0  1.768587  ...       0.817762
+1  1.723814  ...       0.828056
+2  1.701497  ...       0.828378
+3  1.619614  ...       0.813035
 
 [4 rows x 6 columns]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  16.534 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  16.503 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-scoring-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/0d14ca489a6acff880447a655740710b/plot_scoring.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_scoring.py</span></code></a></p>

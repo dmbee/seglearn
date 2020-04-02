@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Segmented Time Series Pipeline &mdash; seglearn 1.2.0 documentation</title>
+  <title>Segmented Time Series Pipeline &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -239,28 +239,31 @@ order in which they are chained, with the last object an estimator.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict" title="seglearn.pipe.Pype.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(self, X)</p></td>
 <td><p>Apply transforms to the data, and predict with the final estimator</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_log_proba" title="seglearn.pipe.Pype.predict_log_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_log_proba</span></code></a>(self, X)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_as_series" title="seglearn.pipe.Pype.predict_as_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_as_series</span></code></a>(self, X)</p></td>
+<td><p>Returns predictions in a list, grouping predictions based on the series they were derived from</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_log_proba" title="seglearn.pipe.Pype.predict_log_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_log_proba</span></code></a>(self, X)</p></td>
 <td><p>Apply transforms, and predict_log_proba of the final estimator</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_proba" title="seglearn.pipe.Pype.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(self, X)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_proba" title="seglearn.pipe.Pype.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(self, X)</p></td>
 <td><p>Apply transforms, and predict_proba of the final estimator</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_segmented_series" title="seglearn.pipe.Pype.predict_segmented_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_segmented_series</span></code></a>(self, X[, …])</p></td>
-<td><p>Generates a prediction for each time series on the same sampling as the original series, by resampling a prediction performed with sliding window segmentation</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.predict_unsegmented" title="seglearn.pipe.Pype.predict_unsegmented"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_unsegmented</span></code></a>(self, X[, …])</p></td>
+<td><p>Generates predictions for each time series on the same sampling as the original series, by resampling a prediction performed with sliding window segmentation</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.score" title="seglearn.pipe.Pype.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(self, X[, y, sample_weight])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.score" title="seglearn.pipe.Pype.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(self, X[, y, sample_weight])</p></td>
 <td><p>Apply transforms, and score with the final estimator</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score_samples</span></code>(self, X)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">score_samples</span></code>(self, X)</p></td>
 <td><p>Apply transforms, and score_samples of the final estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.set_params" title="seglearn.pipe.Pype.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self, \*\*params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.set_params" title="seglearn.pipe.Pype.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self, \*\*params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.transform" title="seglearn.pipe.Pype.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(self, X[, y])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.transform" title="seglearn.pipe.Pype.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(self, X[, y])</p></td>
 <td><p>Apply transforms, and transform with the final estimator This also works where final estimator is <code class="docutils literal notranslate"><span class="pre">None</span></code>: all prior transformations are applied.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.transform_predict" title="seglearn.pipe.Pype.transform_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_predict</span></code></a>(self, X, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.pipe.Pype.transform_predict" title="seglearn.pipe.Pype.transform_predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_predict</span></code></a>(self, X, y)</p></td>
 <td><p>Apply transforms to the data, and predict with the final estimator.</p></td>
 </tr>
 </tbody>
@@ -370,6 +373,27 @@ of the pipeline.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="seglearn.pipe.Pype.predict_as_series">
+<code class="sig-name descname">predict_as_series</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_as_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_as_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns predictions in a list, grouping predictions based on the series they were derived from</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">iterable</span></dt><dd><p>Data to predict on. Must fulfill input requirements of first step
+of the pipeline.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>yp</strong><span class="classifier">list</span></dt><dd><p>Predictions</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="seglearn.pipe.Pype.predict_log_proba">
 <code class="sig-name descname">predict_log_proba</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_log_proba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_log_proba" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply transforms, and predict_log_proba of the final estimator</p>
@@ -411,9 +435,9 @@ of the pipeline.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="seglearn.pipe.Pype.predict_segmented_series">
-<code class="sig-name descname">predict_segmented_series</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">categorical_target=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_segmented_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_segmented_series" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates a prediction for each time series on the same sampling as the original series, by resampling
+<dt id="seglearn.pipe.Pype.predict_unsegmented">
+<code class="sig-name descname">predict_unsegmented</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">categorical_target=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/pipe.html#Pype.predict_unsegmented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.pipe.Pype.predict_unsegmented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates predictions for each time series on the same sampling as the original series, by resampling
 a prediction performed with sliding window segmentation</p>
 <p>Requires that one of the Segment transforms be part of the pipeline</p>
 <p>See plot_feature_rep.py example</p>

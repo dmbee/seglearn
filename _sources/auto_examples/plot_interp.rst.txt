@@ -86,7 +86,7 @@ an optimal sampling frequency for the data
     from seglearn.datasets import load_watch
     from seglearn.pipe import Pype
     from seglearn.split import TemporalKFold
-    from seglearn.transform import FeatureRep, SegmentX, Interp
+    from seglearn.transform import FeatureRep, Segment, Interp
 
 
     def calc_segment_width(params):
@@ -109,7 +109,7 @@ an optimal sampling frequency for the data
     X = np.array([np.column_stack([np.arange(len(X[i])) / 50., X[i]]) for i in np.arange(len(X))])
 
     clf = Pype([('interp', Interp(1. / 25., categorical_target=True)),
-                ('segment', SegmentX(width=100)),
+                ('segment', Segment(width=100)),
                 ('features', FeatureRep()),
                 ('scaler', StandardScaler()),
                 ('rf', RandomForestClassifier(n_estimators=20))])
@@ -152,7 +152,7 @@ an optimal sampling frequency for the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  10.307 seconds)
+   **Total running time of the script:** ( 0 minutes  10.045 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_interp.py:

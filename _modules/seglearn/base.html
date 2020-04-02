@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.base &mdash; seglearn 1.2.0 documentation</title>
+  <title>seglearn.base &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -166,9 +166,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for seglearn.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module has some base classes for time series data</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
@@ -179,7 +179,7 @@
 
 
 <div class="viewcode-block" id="TS_Data"><a class="viewcode-back" href="../../base.html#seglearn.base.TS_Data">[docs]</a><span class="k">class</span> <span class="nc">TS_Data</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Iterable/indexable class for time series data with context data</span>
 <span class="sd">    Numpy arrays are sufficient time series data alone is needed</span>
 
@@ -190,7 +190,7 @@
 <span class="sd">    context_data : array-like (N, )</span>
 <span class="sd">        contextual data</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts_data</span><span class="p">,</span> <span class="n">context_data</span><span class="p">):</span>
         <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts_data</span><span class="p">)</span>

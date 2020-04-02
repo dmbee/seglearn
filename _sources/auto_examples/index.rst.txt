@@ -135,26 +135,6 @@ General-purpose and introductory examples for the `seglearn` toolbox.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_feature_rep_thumb.png
-
-     :ref:`sphx_glr_auto_examples_plot_feature_rep.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/plot_feature_rep
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to do model selection in a feature representation pipeline using ...">
 
 .. only:: html
@@ -192,6 +172,26 @@ General-purpose and introductory examples for the `seglearn` toolbox.
    :hidden:
 
    /auto_examples/plot_forecast
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This is a basic example using the pipeline to learn a feature representation of the time series...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_feature_rep_thumb.png
+
+     :ref:`sphx_glr_auto_examples_plot_feature_rep.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/plot_feature_rep
 
 .. raw:: html
 

@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.2.2
+* Deprecation fixes
+* Changed name for predict_segmented_series to predict_unsegment in pipe
+* Added predict_as_series convenience function in pipe
+
 Version 1.2.1
 
 * Implement predict_segmented_series for Pype, which resamples the prediction to the original time series sampling

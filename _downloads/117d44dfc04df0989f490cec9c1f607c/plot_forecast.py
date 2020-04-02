@@ -1,4 +1,4 @@
-'''
+"""
 =======================
 Time Series Forecasting
 =======================
@@ -13,7 +13,7 @@ We do not sequentially retrain the algorithm as we move through the test set - w
 approach you will sometimes see with time series forecasting (and which may or may not be
 useful in your application).
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 

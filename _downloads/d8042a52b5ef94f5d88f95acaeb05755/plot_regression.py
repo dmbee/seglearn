@@ -1,11 +1,11 @@
-'''
+"""
 ============================================
 Continuous Target and Time Series Regression
 ============================================
 
 In this example, we use the pipeline to learn a continuous time series target with a regressor
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 

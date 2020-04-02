@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.transform &mdash; seglearn 1.2.0 documentation</title>
+  <title>seglearn.transform &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -316,9 +316,9 @@
     <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;width must be &gt;=1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&gt;=</span> <span class="mf">0.0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;overlap must be &gt;=0 and &lt;=1.0 (was </span><span class="si">%.2f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;step must be &gt;=1 and &lt;=width=</span><span class="si">%s</span><span class="s1"> (was </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either overlap or step must be set to a valid number&#39;</span><span class="p">)</span>
@@ -1149,7 +1149,7 @@
 <span class="sd">        multivariate segmented time series along axis 1 (the segment) eg:</span>
 <span class="sd">            &gt;&gt;&gt; def mean(X):</span>
 <span class="sd">            &gt;&gt;&gt;    F = np.mean(X, axis = 1)</span>
-<span class="sd">            &gt;&gt;&gt;    return(F)</span>
+<span class="sd">            &gt;&gt;&gt;    return F</span>
 <span class="sd">            X : array-like shape [n_samples, segment_width, n_variables]</span>
 <span class="sd">            F : array-like [n_samples, n_features]</span>
 <span class="sd">            The number of features returned (n_features) must be &gt;= 1</span>
@@ -1166,7 +1166,7 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRep, SegmentX</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRep, Segment</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.pipe import Pype</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.feature_functions import mean, var, std, skew</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
@@ -1175,7 +1175,7 @@
 <span class="sd">    &gt;&gt;&gt; X = data[&#39;X&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; fts = {&#39;mean&#39;: mean, &#39;var&#39;: var, &#39;std&#39;: std, &#39;skew&#39;: skew}</span>
-<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, SegmentX()),</span>
+<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, Segment()),</span>
 <span class="sd">    &gt;&gt;&gt;             (&#39;ftr&#39;, FeatureRep(features = fts)),</span>
 <span class="sd">    &gt;&gt;&gt;             (&#39;rf&#39;,RandomForestClassifier())])</span>
 <span class="sd">    &gt;&gt;&gt; clf.fit(X, y)</span>
@@ -1341,7 +1341,7 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRepMix, FeatureRep, SegmentX</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRepMix, FeatureRep, Segment</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.pipe import Pype</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.feature_functions import mean, var, std, skew</span>
 <span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
@@ -1350,7 +1350,7 @@
 <span class="sd">    &gt;&gt;&gt; X = data[&#39;X&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; mask = [False, False, False, True, True, True]</span>
-<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, SegmentX()),</span>
+<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, Segment()),</span>
 <span class="sd">    &gt;&gt;&gt;             (&#39;union&#39;, FeatureRepMix([</span>
 <span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_a&#39;, FeatureRep(features={&#39;mean&#39;: mean}), 0),</span>
 <span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_b&#39;, FeatureRep(features={&#39;var&#39;: var}), [0,1,2]),</span>
@@ -1613,23 +1613,23 @@
 
 
 <span class="k">class</span> <span class="nc">_InitializePickableSampler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for initializing a serialized/pickled and dynamically patched imbalanced-learn Sampler.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampler_class</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Recreate a dynamically patched Sampler by creating a _InitializePickableSampler object and</span>
 <span class="sd">        turning it into a patched Sampler by using the patch_sampler function.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">_InitializePickableSampler</span><span class="p">()</span>
         <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">patch_sampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span>
 
 
 <div class="viewcode-block" id="patch_sampler"><a class="viewcode-back" href="../../transform.html#seglearn.transform.patch_sampler">[docs]</a><span class="k">def</span> <span class="nf">patch_sampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a dynamically patched imbalanced-learn Sampler class compatible with Pype.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
         <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;fit_resample&#39;</span><span class="p">),</span>
         <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;_check_X_y&#39;</span><span class="p">),</span>
@@ -1640,7 +1640,7 @@
                         <span class="s1">&#39; method and a &quot;_get_param_names&quot; class method.&#39;</span><span class="p">)</span>
 
     <span class="k">class</span> <span class="nc">PickableSampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dynamically created (pickable) class derived from an imbalanced-learn Sampler and the</span>
 <span class="sd">        XyTransformerMixin in order to enable the use of the imbalanced-learn Sampler transforms</span>
 <span class="sd">        inside a seglearn Pype.</span>
@@ -1656,7 +1656,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        self : object</span>
 <span class="sd">            returns self</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="c1"># set shuffle and random_state</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
@@ -1674,26 +1674,26 @@
 
         <span class="nd">@classmethod</span>
         <span class="k">def</span> <span class="nf">_get_param_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-            <span class="sd">&#39;&#39;&#39;</span>
+            <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Get parameters of the imbalanced-learn Sampler base class and the additional arguments</span>
 <span class="sd">            of the dynamically derived class.</span>
-<span class="sd">            &#39;&#39;&#39;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">init_signature</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">))</span>
             <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">init_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
                           <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;self&#39;</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="n">p</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">]</span>
             <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sampler_class</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="n">parameters</span><span class="p">))</span>
 
         <span class="k">def</span> <span class="nf">_check_X_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">):</span>
-            <span class="sd">&#39;&#39;&#39;</span>
+            <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Circumvent the check whether dim(Xt) == 2.</span>
-<span class="sd">            &#39;&#39;&#39;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">Xt_2d</span> <span class="o">=</span> <span class="n">Xt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">binarize_yt</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_check_X_y</span><span class="p">(</span><span class="n">Xt_2d</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span>
             <span class="n">Xt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">binarize_yt</span>
 
         <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-            <span class="sd">&#39;&#39;&#39;</span>
+            <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Return the given segmented time series data (identity transform) when calling transform</span>
 <span class="sd">            without fit on this data (potentially making a prediction) to not alter test data.</span>
 
@@ -1711,12 +1711,12 @@
 <span class="sd">            X : array-like [n_series, ...]</span>
 <span class="sd">            y : array-like [n_series]</span>
 <span class="sd">            sample_weight : array-like shape [n_series]</span>
-<span class="sd">            &#39;&#39;&#39;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span>
 
         <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
-            <span class="sd">&#39;&#39;&#39;</span>
+            <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Resample the given segmented time series data based on the Sampler transformer provided</span>
 <span class="sd">            as a bass class when calling fit (i.e. not making any prediction on the test data) on</span>
 <span class="sd">            this transformer.</span>
@@ -1738,7 +1738,7 @@
 <span class="sd">            X : array-like [n_series, ...]</span>
 <span class="sd">            y : array-like [n_series]</span>
 <span class="sd">            sample_weight : None</span>
-<span class="sd">            &#39;&#39;&#39;</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
             <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
             <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
@@ -1749,10 +1749,10 @@
             <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="kc">None</span>
 
         <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&#39;&#39;&#39;</span>
+            <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Definition on how to serialize/pickle an object of this dynamically created class.</span>
-<span class="sd">            &#39;&#39;&#39;</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">_InitializePickableSampler</span><span class="p">(),</span> <span class="p">(</span><span class="n">sampler_class</span><span class="p">,),</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">_InitializePickableSampler</span><span class="p">(),</span> <span class="p">(</span><span class="n">sampler_class</span><span class="p">,),</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
 
     <span class="n">new_class_name</span> <span class="o">=</span> <span class="s2">&quot;Patched&quot;</span> <span class="o">+</span> <span class="n">sampler_class</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="n">PickableSampler</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">new_class_name</span>

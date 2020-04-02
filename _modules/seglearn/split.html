@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.split &mdash; seglearn 1.2.0 documentation</title>
+  <title>seglearn.split &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -166,7 +166,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for seglearn.split</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module has two classes for splitting time series data temporally - where train/test or fold</span>
 <span class="sd">splits are created within each of the time series&#39; in the time series data. This splitting approach</span>
 <span class="sd">is for evaluating how well the algorithm performs on segments drawn from the same time series but</span>
@@ -176,7 +176,7 @@
 <span class="sd">Note that splitting along the temporal axis violates the assumption of independence between train</span>
 <span class="sd">and test samples, as successive samples in a sequence or series are not iid. However, temporal</span>
 <span class="sd">splitting is still useful in certain cases such as for the analysis of a single sequence / series.</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
@@ -189,7 +189,7 @@
 
 
 <div class="viewcode-block" id="TemporalKFold"><a class="viewcode-back" href="../../split.html#seglearn.split.TemporalKFold">[docs]</a><span class="k">class</span> <span class="nc">TemporalKFold</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    K-fold iterator variant for temporal splitting of time series data</span>
 
 <span class="sd">    The time series&#39; are divided in time with no overlap, and are balanced.</span>
@@ -211,7 +211,7 @@
 <span class="sd">    &gt;&gt;&gt; splitter = TemporalKFold(n_splits=4)</span>
 <span class="sd">    &gt;&gt;&gt; X, y, cv = splitter.split(data[&#39;X&#39;], data[&#39;y&#39;])</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">n_splits</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
@@ -222,7 +222,7 @@
         <span class="k">return</span> <span class="n">_build_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TemporalKFold.split"><a class="viewcode-back" href="../../split.html#seglearn.split.TemporalKFold.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Splits time series data and target arrays, and generates splitting indices</span>
 
 <span class="sd">        Parameters</span>
@@ -240,7 +240,7 @@
 <span class="sd">            Split target data</span>
 <span class="sd">        cv : list, shape [2, n_splits]</span>
 <span class="sd">            Splitting indices</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -258,7 +258,7 @@
         <span class="k">return</span> <span class="n">X_new</span><span class="p">,</span> <span class="n">y_new</span><span class="p">,</span> <span class="n">cv</span></div>
 
     <span class="k">def</span> <span class="nf">_ts_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; takes time series data, and splits each series into temporal folds &#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; takes time series data, and splits each series into temporal folds &quot;&quot;&quot;</span>
         <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
         <span class="n">Xt_new</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">):</span>
@@ -282,7 +282,7 @@
         <span class="k">return</span> <span class="n">Xt_new</span><span class="p">,</span> <span class="n">y_new</span>
 
     <span class="k">def</span> <span class="nf">_make_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ns</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; makes indices for cross validation &#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; makes indices for cross validation &quot;&quot;&quot;</span>
         <span class="n">N_new</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ns</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span>
 
         <span class="n">test</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">N_new</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)]</span>
@@ -298,7 +298,7 @@
 
 
 <div class="viewcode-block" id="temporal_split"><a class="viewcode-back" href="../../split.html#seglearn.split.temporal_split">[docs]</a><span class="k">def</span> <span class="nf">temporal_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Split time series or sequence data along the time axis.</span>
 <span class="sd">    Test data is drawn from the end of each series / sequence</span>
 
@@ -318,7 +318,7 @@
 <span class="sd">    y_train :  array-like, shape [n_series, ]</span>
 <span class="sd">    y_test :  array-like, shape [n_series, ]</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">test_size</span> <span class="o">&lt;=</span> <span class="mf">0.</span> <span class="ow">or</span> <span class="n">test_size</span> <span class="o">&gt;=</span> <span class="mf">1.</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;temporal_split: test_size must be &gt;= 0.0 and &lt;= 1.0&quot;</span>

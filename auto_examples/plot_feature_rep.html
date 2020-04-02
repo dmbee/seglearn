@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Basic Feature Representation Classification Pipeline &mdash; seglearn 1.2.0 documentation</title>
+  <title>Basic Feature Representation Classification Pipeline &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -38,8 +38,8 @@
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Hyperparameter Selection 1" href="plot_model_selection1.html" />
-    <link rel="prev" title="Continuous Target and Time Series Regression" href="plot_regression.html" /> 
+    <link rel="next" title="Hyperparameter Selection 2" href="plot_model_selection2.html" />
+    <link rel="prev" title="Time Series Forecasting" href="plot_forecast.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -106,9 +106,9 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_watchdata.html">Working with Time Series Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Basic Feature Representation Classification Pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
@@ -213,10 +213,10 @@ Pretend series y values:  [2 6 5]
 /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
   FutureWarning)
 CV Scores:     fit_time  ...  train_score
-0  0.543422  ...     0.999416
-1  0.567429  ...     1.000000
-2  0.560771  ...     0.999717
-3  0.562913  ...     1.000000
+0  0.549449  ...     0.999416
+1  0.601015  ...     1.000000
+2  0.594027  ...     0.999717
+3  0.572725  ...     1.000000
 
 [4 rows x 4 columns]
 Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#39;, &#39;mean_4&#39;, &#39;mean_5&#39;, &#39;median_0&#39;, &#39;median_1&#39;, &#39;median_2&#39;, &#39;median_3&#39;, &#39;median_4&#39;, &#39;median_5&#39;, &#39;abs_energy_0&#39;, &#39;abs_energy_1&#39;, &#39;abs_energy_2&#39;, &#39;abs_energy_3&#39;, &#39;abs_energy_4&#39;, &#39;abs_energy_5&#39;, &#39;std_0&#39;, &#39;std_1&#39;, &#39;std_2&#39;, &#39;std_3&#39;, &#39;std_4&#39;, &#39;std_5&#39;, &#39;var_0&#39;, &#39;var_1&#39;, &#39;var_2&#39;, &#39;var_3&#39;, &#39;var_4&#39;, &#39;var_5&#39;, &#39;min_0&#39;, &#39;min_1&#39;, &#39;min_2&#39;, &#39;min_3&#39;, &#39;min_4&#39;, &#39;min_5&#39;, &#39;max_0&#39;, &#39;max_1&#39;, &#39;max_2&#39;, &#39;max_3&#39;, &#39;max_4&#39;, &#39;max_5&#39;, &#39;skew_0&#39;, &#39;skew_1&#39;, &#39;skew_2&#39;, &#39;skew_3&#39;, &#39;skew_4&#39;, &#39;skew_5&#39;, &#39;kurt_0&#39;, &#39;kurt_1&#39;, &#39;kurt_2&#39;, &#39;kurt_3&#39;, &#39;kurt_4&#39;, &#39;kurt_5&#39;, &#39;mse_0&#39;, &#39;mse_1&#39;, &#39;mse_2&#39;, &#39;mse_3&#39;, &#39;mse_4&#39;, &#39;mse_5&#39;, &#39;mnx_0&#39;, &#39;mnx_1&#39;, &#39;mnx_2&#39;, &#39;mnx_3&#39;, &#39;mnx_4&#39;, &#39;mnx_5&#39;]
@@ -269,16 +269,19 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 
 <span class="c1"># lets make a pretend series with different activities</span>
-<span class="n">X_series</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+<span class="n">X_series</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">y_series</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pretend series y values: &quot;</span><span class="p">,</span> <span class="n">y_test</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
 
 <span class="c1"># plot the prediction</span>
-<span class="n">yp</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_segmented_series</span><span class="p">(</span><span class="n">X_series</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">yp</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_unsegmented</span><span class="p">([</span><span class="n">X_series</span><span class="p">],</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">yp0</span> <span class="o">=</span> <span class="n">yp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># we only predicted one series</span>
 <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yp0</span><span class="p">))</span> <span class="o">*</span> <span class="mf">0.02</span>   <span class="c1"># This data has 50 Hz sampling rate</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">yp0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">yp0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;predicted&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y_series</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;actual&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Prediction&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time [seconds]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="c1"># let&#39;s try some context data</span>
@@ -296,7 +299,7 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">f_labels</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.056 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.832 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-feature-rep-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3eb68eac10fe454101bd86597e898bf2/plot_feature_rep.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_feature_rep.py</span></code></a></p>
@@ -316,10 +319,10 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="plot_model_selection1.html" class="btn btn-neutral float-right" title="Hyperparameter Selection 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="plot_model_selection2.html" class="btn btn-neutral float-right" title="Hyperparameter Selection 2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="plot_regression.html" class="btn btn-neutral float-left" title="Continuous Target and Time Series Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="plot_forecast.html" class="btn btn-neutral float-left" title="Time Series Forecasting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

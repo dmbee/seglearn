@@ -1,4 +1,4 @@
-'''
+"""
 =================================================
 Pipeline using Time Series Padding and Truncation
 =================================================
@@ -6,7 +6,7 @@ Pipeline using Time Series Padding and Truncation
 This is a basic example using the pipeline to learn a feature representation of the time series data
 using padding and truncation instead of sliding window segmentation.
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 

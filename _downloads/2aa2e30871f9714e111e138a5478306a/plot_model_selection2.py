@@ -1,10 +1,10 @@
-'''
+"""
 ==========================
 Hyperparameter Selection 2
 ==========================
 
 This example demonstrates how to do model selection in a pipeline where segments are learned directly by a neural network
-'''
+"""
 
 # Author: David Burns
 # License: BSD
@@ -19,7 +19,7 @@ from sklearn.model_selection import GridSearchCV
 from seglearn.datasets import load_watch
 from seglearn.pipe import Pype
 from seglearn.split import TemporalKFold
-from seglearn.transform import SegmentX
+from seglearn.transform import Segment
 
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
@@ -47,7 +47,7 @@ splitter = TemporalKFold(n_splits=3)
 Xs, ys, cv = splitter.split(X, y)
 
 # create a segment learning pipeline
-pipe = Pype([('seg', SegmentX(order='C')),
+pipe = Pype([('seg', Segment(order='C')),
              ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
 # create a parameter dictionary using the sklearn API

@@ -43,11 +43,12 @@ The main contributions of this package are:
 3) ``SegmentXYForecast`` - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.
 4) ``PadTrunc`` - transformer class for fixing time series / sequence length using a combination of padding and truncation
 5) ``Interp`` - transformer class for resampling time series data
-6) ``FeatureRep`` - transformer class for computing a feature representation from segment data
-7) ``FeatureRepMix`` - transformer class for computing feature representations where a different ``FeatureRep`` can be applied to each time series variable
-8) ``Pype`` - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples
-9) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
-10) ``split`` - a module for splitting time series or sequences along the temporal axis
+6) ``InterpLongToWide`` - transformer class for interpolating long format time series to wide format used by seglearn
+7) ``FeatureRep`` - transformer class for computing a feature representation from segment data
+8) ``FeatureRepMix`` - transformer class for computing feature representations where a different ``FeatureRep`` can be applied to each time series variable
+9) ``Pype`` - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples
+10) ``TS_Data`` - an indexable / iterable class for storing time series & contextual data
+11) ``split`` - a module for splitting time series or sequences along the temporal axis
 
 
 What this Package Doesn't Include
@@ -101,6 +102,15 @@ There is a caveat for datasets that are a single time series. For compatibility 
     >>> y = [rand(1000)]
 
 If you want to split a single time series for train / test or cross validation - make sure to use one of the temporal splitting tools in ``split``. If you have many time series` in the dataset, you can use the sklearn splitters to split the data by series. This is demonstrated in the examples.
+
+Irregularly sampled long format time series data (with timestamps) can be interpolated and transformed to wide format
+used by seglearn using the ``InterpLongToWide`` transformer::
+
+    >>> Xlong = pd.DataFrame({'time': np.arange(20), 'sensor': np.random.choice([1,2,3], 20), 'value': np.random.rand(20)})
+    >>> interp = InterpLongToWide(sample_period=1.0, kind='linear', assume_sorted=False)
+    >>> Xwide, _ , _ = interp.transform([Xlong.values])
+
+Interpolation like this can be incorporated into a seglearn pipeline
 
 
 Using Seglearn

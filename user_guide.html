@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>User Guide &mdash; seglearn 1.2.0 documentation</title>
+  <title>User Guide &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -210,6 +210,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">SegmentXYForecast</span></code> - transformer class for performing the time series / sequence sliding window segmentation when the target is future values of a time series or sequence.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PadTrunc</span></code> - transformer class for fixing time series / sequence length using a combination of padding and truncation</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Interp</span></code> - transformer class for resampling time series data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">InterpLongToWide</span></code> - transformer class for interpolating long format time series to wide format used by seglearn</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> - transformer class for computing a feature representation from segment data</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">FeatureRepMix</span></code> - transformer class for computing feature representations where a different <code class="docutils literal notranslate"><span class="pre">FeatureRep</span></code> can be applied to each time series variable</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Pype</span></code> - sklearn compatible pipeline class that can handle transforms that change X, y, and number of samples</p></li>
@@ -264,6 +265,14 @@
 </pre></div>
 </div>
 <p>If you want to split a single time series for train / test or cross validation - make sure to use one of the temporal splitting tools in <code class="docutils literal notranslate"><span class="pre">split</span></code>. If you have many time series` in the dataset, you can use the sklearn splitters to split the data by series. This is demonstrated in the examples.</p>
+<p>Irregularly sampled long format time series data (with timestamps) can be interpolated and transformed to wide format
+used by seglearn using the <code class="docutils literal notranslate"><span class="pre">InterpLongToWide</span></code> transformer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Xlong</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="s1">&#39;sensor&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="mi">20</span><span class="p">),</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">interp</span> <span class="o">=</span> <span class="n">InterpLongToWide</span><span class="p">(</span><span class="n">sample_period</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Xwide</span><span class="p">,</span> <span class="n">_</span> <span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="n">Xlong</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Interpolation like this can be incorporated into a seglearn pipeline</p>
 </div>
 <div class="section" id="using-seglearn">
 <h2>Using Seglearn<a class="headerlink" href="#using-seglearn" title="Permalink to this headline">¶</a></h2>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.datasets &mdash; seglearn 1.2.0 documentation</title>
+  <title>seglearn.datasets &mdash; seglearn 1.2.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.2.0
+                1.2.1
               </div>
             
           
@@ -166,9 +166,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for seglearn.datasets</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module is for loading time series data sets</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># Author: David Burns</span>
 <span class="c1"># License: BSD</span>
 
@@ -179,7 +179,7 @@
 
 
 <div class="viewcode-block" id="load_watch"><a class="viewcode-back" href="../../datasets.html#seglearn.datasets.load_watch">[docs]</a><span class="k">def</span> <span class="nf">load_watch</span><span class="p">():</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loads some of the 6-axis inertial sensor data from my smartwatch project. The sensor data was</span>
 <span class="sd">    recorded as study subjects performed sets of 20 shoulder exercise repetitions while wearing a</span>
 <span class="sd">    smartwatch. It is a multivariate time series.</span>
@@ -208,7 +208,7 @@
 <span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
 <span class="sd">    &gt;&gt;&gt; data = load_watch()</span>
 <span class="sd">    &gt;&gt;&gt; print(data.keys())</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">module_path</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">module_path</span> <span class="o">+</span> <span class="s2">&quot;/data/watch_dataset.npy&quot;</span><span class="p">,</span> <span class="n">allow_pickle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">data</span></div>

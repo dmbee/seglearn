@@ -1,4 +1,4 @@
-'''
+"""
 ===========================
 Resampling Time Series Data
 ===========================
@@ -8,7 +8,7 @@ This is a basic example using the pipeline to learn resample a time series
 This may be useful for resampling irregularly sampled time series, or for determining
 an optimal sampling frequency for the data
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -21,7 +21,7 @@ from sklearn.preprocessing import StandardScaler
 from seglearn.datasets import load_watch
 from seglearn.pipe import Pype
 from seglearn.split import TemporalKFold
-from seglearn.transform import FeatureRep, SegmentX, Interp
+from seglearn.transform import FeatureRep, Segment, Interp
 
 
 def calc_segment_width(params):
@@ -44,7 +44,7 @@ y = data['y']
 X = np.array([np.column_stack([np.arange(len(X[i])) / 50., X[i]]) for i in np.arange(len(X))])
 
 clf = Pype([('interp', Interp(1. / 25., categorical_target=True)),
-            ('segment', SegmentX(width=100)),
+            ('segment', Segment(width=100)),
             ('features', FeatureRep()),
             ('scaler', StandardScaler()),
             ('rf', RandomForestClassifier(n_estimators=20))])

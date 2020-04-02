@@ -1,11 +1,11 @@
-'''
+"""
 ===================================================
 Classifying Segments Directly with a Neural Network
 ===================================================
 
 This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 
@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split
 
 from seglearn.datasets import load_watch
 from seglearn.pipe import Pype
-from seglearn.transform import SegmentX
+from seglearn.transform import Segment
 
 
 def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
@@ -44,7 +44,7 @@ X = data['X']
 y = data['y']
 
 # create a segment learning pipeline
-pipe = Pype([('seg', SegmentX(width=100, step=100, order='C')),
+pipe = Pype([('seg', Segment(width=100, step=100, order='C')),
              ('crnn', KerasClassifier(build_fn=crnn_model, epochs=1, batch_size=256, verbose=0))])
 
 # split the data

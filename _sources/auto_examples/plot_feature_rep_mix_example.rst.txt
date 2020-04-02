@@ -52,7 +52,7 @@ See API documentation for an example.
     # Author: Matthias Gazzari
     # License: BSD
 
-    from seglearn.transform import SegmentXY, FeatureRep, FeatureRepMix
+    from seglearn.transform import Segment, FeatureRep, FeatureRepMix
     from seglearn.feature_functions import minimum, maximum
     from seglearn.base import TS_Data
 
@@ -64,7 +64,7 @@ See API documentation for an example.
     # Time series target
     y = [np.array([True, False, False])]
 
-    segment = SegmentXY(width=3, overlap=1)
+    segment = Segment(width=3, overlap=1)
     X, y, _ = segment.fit_transform(X, y)
 
     print('After segmentation:')

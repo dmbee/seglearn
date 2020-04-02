@@ -1,4 +1,4 @@
-'''
+"""
 ============================
 Simple FeatureRepMix Example
 ============================
@@ -7,12 +7,12 @@ This example demonstrates how to use the FeatureRepMix on segmented data.
 
 Although not shown here, FeatureRepMix can be used with Pype in place of FeatureRep.
 See API documentation for an example.
-'''
+"""
 
 # Author: Matthias Gazzari
 # License: BSD
 
-from seglearn.transform import SegmentXY, FeatureRep, FeatureRepMix
+from seglearn.transform import Segment, FeatureRep, FeatureRepMix
 from seglearn.feature_functions import minimum, maximum
 from seglearn.base import TS_Data
 
@@ -24,7 +24,7 @@ X = [np.array([[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]])]
 # Time series target
 y = [np.array([True, False, False])]
 
-segment = SegmentXY(width=3, overlap=1)
+segment = Segment(width=3, overlap=1)
 X, y, _ = segment.fit_transform(X, y)
 
 print('After segmentation:')

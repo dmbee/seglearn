@@ -1,10 +1,10 @@
-'''
+"""
 ============================
 Linear Discriminant Analysis
 ============================
 
 This example demonstrates how the pipeline can be used to perform transformation of time series data, such as linear discriminant analysis for visualization purposes
-'''
+"""
 
 # Author: David Burns
 # License: BSD
@@ -42,7 +42,7 @@ X = data['X']
 y = data['y']
 
 # create a pipeline for LDA transformation of the feature representation
-clf = sgl.Pype([('segment', sgl.SegmentX()),
+clf = sgl.Pype([('segment', sgl.Segment()),
                 ('ftr', sgl.FeatureRep()),
                 ('lda', LinearDiscriminantAnalysis(n_components=2))])
 

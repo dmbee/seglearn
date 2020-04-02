@@ -1,11 +1,11 @@
-'''
+"""
 =============================
 Working with Time Series Data
 =============================
 
 This example shows how to load the included smartwatch inertial sensor dataset, and create time series data objects compatible with the `seglearn` pipeline.
 
-'''
+"""
 # Author: David Burns
 # License: BSD
 

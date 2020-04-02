@@ -1,10 +1,10 @@
-'''
+"""
 ===============================
 Simple imbalanced-learn example
 ===============================
 
 This example demonstrates how to use imbalanced-learn resample transforms inside a seglearn Pype.
-'''
+"""
 
 # Author: Matthias Gazzari
 # License: BSD
@@ -14,7 +14,7 @@ import numpy as np
 from sklearn.dummy import DummyClassifier
 
 from seglearn.pipe import Pype
-from seglearn.transform import SegmentXY, patch_sampler, FeatureRep
+from seglearn.transform import Segment, patch_sampler, FeatureRep
 from seglearn.feature_functions import minimum
 from seglearn.split import temporal_split
 
@@ -29,7 +29,7 @@ y = [np.array([True, False, False, False, False, False, True, False, False, Fals
 print("Implementation details: transform and fit_transform methods:")
 
 pipe = Pype([
-    ('segment', SegmentXY(width=1, overlap=0)),
+    ('segment', Segment(width=1, overlap=0)),
     ('resample', patch_sampler(RandomUnderSampler)()),
 ])
 print("Pipeline:", pipe)
@@ -60,7 +60,7 @@ class VerboseDummyClassifier(DummyClassifier):
         return super(VerboseDummyClassifier, self).score(X, y, sample_weight)
 
 pipe = Pype([
-    ('segment', SegmentXY(width=1, overlap=0)),
+    ('segment', Segment(width=1, overlap=0)),
     ('resample', patch_sampler(RandomUnderSampler)(shuffle=True)),
     ('feature', FeatureRep(features={"min":minimum})),
     ('estimator', VerboseDummyClassifier(strategy="constant", constant=True)),
