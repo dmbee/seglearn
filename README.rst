@@ -24,7 +24,7 @@
 .. |Downloads| image:: https://pepy.tech/badge/seglearn
 .. _Downloads: https://pepy.tech/project/seglearn
 
-seglearn
+Use of Seglearn Package
 ========
 
 Seglearn is a python package for machine learning time series or sequences. It provides an integrated pipeline for segmentation, feature extraction, feature processing, and final estimator. Seglearn provides a flexible approach to multivariate time series and related contextual (meta) data for classification, regression, and forecasting problems. Support and examples are provided for learning time series with classical machine learning and deep learning models. It is compatible with scikit-learn_.
