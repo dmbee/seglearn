@@ -170,9 +170,45 @@
   <div class="section" id="module-seglearn.util">
 <span id="data-input-and-checking-utilities"></span><h1>Data Input and Checking Utilities<a class="headerlink" href="#module-seglearn.util" title="Permalink to this headline">¶</a></h1>
 <p>This module has utilities for time series data input checking</p>
-<dl class="function">
+<dl class="py function">
+<dt id="seglearn.util.check_ts_data">
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">check_ts_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks time series data is good. If not raises value error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ts_target</strong><span class="classifier">bool</span></dt><dd><p>target (y) is a time series</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="seglearn.util.check_ts_data_with_ts_target">
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">check_ts_data_with_ts_target</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data_with_ts_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data_with_ts_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks time series data with time series target is good. If not raises value error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>target data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="seglearn.util.get_ts_data_parts">
-<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">get_ts_data_parts</code><span class="sig-paren">(</span><em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#get_ts_data_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.get_ts_data_parts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">get_ts_data_parts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#get_ts_data_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.get_ts_data_parts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Separates time series data object into time series variables and contextual variables</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -192,45 +228,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="seglearn.util.check_ts_data">
-<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">check_ts_data</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks time series data is good. If not raises value error.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>ts_target</strong><span class="classifier">bool</span></dt><dd><p>target (y) is a time series</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="seglearn.util.check_ts_data_with_ts_target">
-<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">check_ts_data_with_ts_target</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data_with_ts_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data_with_ts_target" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks time series data with time series target is good. If not raises value error.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
-</dd>
-<dt><strong>y</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>target data</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="seglearn.util.ts_stats">
-<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">ts_stats</code><span class="sig-paren">(</span><em class="sig-param">Xt</em>, <em class="sig-param">y</em>, <em class="sig-param">fs=1.0</em>, <em class="sig-param">class_labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#ts_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.ts_stats" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">ts_stats</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Xt</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">fs</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">class_labels</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#ts_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.ts_stats" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates some helpful statistics about the data X</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>

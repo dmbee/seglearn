@@ -194,17 +194,21 @@
 <div class="sphx-glr-example-title section" id="classifying-segments-directly-with-a-neural-network">
 <span id="sphx-glr-auto-examples-plot-segment-rep-py"></span><h1>Classifying Segments Directly with a Neural Network<a class="headerlink" href="#classifying-segments-directly-with-a-neural-network" title="Permalink to this headline">¶</a></h1>
 <p>This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data</p>
-<img alt="../_images/sphx_glr_plot_segment_rep_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_segment_rep_001.png" />
+<img alt="plot segment rep" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_segment_rep_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
 N series in train:  105
 N series in test:  35
 N segments in train:  1783
 N segments in test:  586
-Accuracy score:  0.15017065
+Accuracy score:  0.1860068291425705
 
-&lt;matplotlib.image.AxesImage object at 0x7fdf7838ded0&gt;
+&lt;matplotlib.image.AxesImage object at 0x7fcaa45813d0&gt;
 </pre></div>
 </div>
 <div class="line-block">
@@ -268,7 +272,7 @@ Accuracy score:  0.15017065
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  31.843 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.059 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-segment-rep-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3947e906ce2c7b6cbed10c38d1458c3b/plot_segment_rep.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_segment_rep.py</span></code></a></p>

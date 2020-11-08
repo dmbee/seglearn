@@ -24,19 +24,15 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
  .. code-block:: none
 
-    Using TensorFlow backend.
     Implementation details: transform and fit_transform methods:
-    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
-    Pipeline: Pype(memory=None, scorer=None,
-         steps=[('segment',
-                 Segment(order='F', overlap=0, random_state=None, shuffle=False,
-                         step=None, width=1,
-                         y_func=<function last at 0x7fe07ff87a70>)),
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+      warnings.warn("Pass {} as keyword args. From version 0.25 "
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      warnings.warn('From version 0.24, get_params will raise an '
+    Pipeline: Pype(steps=[('segment', Segment(overlap=0, width=1)),
                 ('resample',
-                 PatchedRandomUnderSampler(random_state=None, replacement=False,
-                                           sampling_strategy='auto',
-                                           shuffle=False))])
+                 PatchedRandomUnderSampler(replacement=False,
+                                           sampling_strategy='auto'))])
     Calling a transform on the data does not change it ...
     X (flattened): [ 0  1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10]
     y [ True False False False False False  True False False False]
@@ -46,23 +42,19 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
     VerboseDummyClassifier example:
 
-    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
-    Pipeline: Pype(memory=None, scorer=None,
-         steps=[('segment',
-                 Segment(order='F', overlap=0, random_state=None, shuffle=False,
-                         step=None, width=1,
-                         y_func=<function last at 0x7fe07ff87a70>)),
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+      warnings.warn("Pass {} as keyword args. From version 0.25 "
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      warnings.warn('From version 0.24, get_params will raise an '
+    Pipeline: Pype(steps=[('segment', Segment(overlap=0, width=1)),
                 ('resample',
-                 PatchedRandomUnderSampler(random_state=None, replacement=False,
+                 PatchedRandomUnderSampler(replacement=False,
                                            sampling_strategy='auto',
                                            shuffle=True)),
                 ('feature',
-                 FeatureRep(features={'min': <function minimum at 0x7fe070ace830>},
-                            verbose=False)),
+                 FeatureRep(features={'min': <function minimum at 0x7fcb253cb790>})),
                 ('estimator',
-                 VerboseDummyClassifier(constant=True, random_state=None,
-                                        strategy='constant'))])
+                 VerboseDummyClassifier(constant=True, strategy='constant'))])
     Split the data into half training and half test data:
     X_train: [array([[0, 1],
            [1, 2],
@@ -176,7 +168,7 @@ This example demonstrates how to use imbalanced-learn resample transforms inside
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.073 seconds)
+   **Total running time of the script:** ( 0 minutes  0.038 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_imblearn.py:

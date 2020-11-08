@@ -200,15 +200,17 @@ Then predict (future segments) from the features in the test set.</p>
 <p>We do not sequentially retrain the algorithm as we move through the test set - which is an
 approach you will sometimes see with time series forecasting (and which may or may not be
 useful in your application).</p>
-<img alt="../_images/sphx_glr_plot_forecast_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_forecast_001.png" />
+<img alt="plot forecast" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_forecast_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
 N series in train:  1
 N series in test:  1
 N segments in train:  34
 N segments in test:  9
-Score:  0.9969665115318143
+Score:  0.9969665115318141
 </pre></div>
 </div>
 <div class="line-block">
@@ -284,7 +286,7 @@ Score:  0.9969665115318143
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.090 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.111 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-forecast-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/117d44dfc04df0989f490cec9c1f607c/plot_forecast.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_forecast.py</span></code></a></p>

@@ -170,9 +170,9 @@
   <div class="section" id="module-seglearn.preprocessing">
 <span id="time-series-preprocessing"></span><h1>Time Series Preprocessing<a class="headerlink" href="#module-seglearn.preprocessing" title="Permalink to this headline">¶</a></h1>
 <p>This module is for preprocessing time series data.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder">
-<em class="property">class </em><code class="sig-prename descclassname">seglearn.preprocessing.</code><code class="sig-name descname">TargetRunLengthEncoder</code><span class="sig-paren">(</span><em class="sig-param">min_length=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">seglearn.preprocessing.</code><code class="sig-name descname">TargetRunLengthEncoder</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">min_length</span><span class="o">=</span><span class="default_value">200</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes a data set with a categorical target variable encoded as a time series and transforms it
 with run length encoding (RLE) of the target variable</p>
 <p>RLE finds contiguous runs of the same target value within the input data and derives the
@@ -198,26 +198,26 @@ Effectively it will let you use <code class="docutils literal notranslate"><span
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="seglearn.preprocessing.TargetRunLengthEncoder.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self, X[, y])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="seglearn.preprocessing.TargetRunLengthEncoder.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[, y])</p></td>
 <td><p>Fit the transform</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(self, X, y[, sample_weight])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X, y[, sample_weight])</p></td>
 <td><p>Fit the data and transform (required by sklearn API)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>(self[, deep])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(self, \*\*params)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="seglearn.preprocessing.TargetRunLengthEncoder.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(self, X, y[, sample_weight])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="seglearn.preprocessing.TargetRunLengthEncoder.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X, y[, sample_weight])</p></td>
 <td><p>Transforms the time series data with run length encoding of the target variable Note this transformation changes the number of samples in the data If sample_weight is provided, it is transformed to align to the new target encoding</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder.fit">
-<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the transform</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -238,9 +238,9 @@ this parameter.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="seglearn.preprocessing.TargetRunLengthEncoder.transform">
-<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/preprocessing.html#TargetRunLengthEncoder.transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.preprocessing.TargetRunLengthEncoder.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the time series data with run length encoding of the target variable
 Note this transformation changes the number of samples in the data
 If sample_weight is provided, it is transformed to align to the new target encoding</p>

@@ -18,6 +18,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_regression_001.png
+    :alt: plot regression
     :class: sphx-glr-single-img
 
 
@@ -27,13 +28,15 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
  .. code-block:: none
 
-    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+      warnings.warn("Pass {} as keyword args. From version 0.25 "
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      warnings.warn('From version 0.24, get_params will raise an '
     N series in train:  1
     N series in test:  1
     N segments in train:  74
     N segments in test:  24
-    Score:  0.9735806135052695
+    Score:  0.9735806135052694
 
 
 
@@ -111,7 +114,7 @@ In this example, we use the pipeline to learn a continuous time series target wi
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.090 seconds)
+   **Total running time of the script:** ( 0 minutes  0.132 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_regression.py:

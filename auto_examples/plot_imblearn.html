@@ -195,19 +195,15 @@
 <span id="sphx-glr-auto-examples-plot-imblearn-py"></span><h1>Simple imbalanced-learn example<a class="headerlink" href="#simple-imbalanced-learn-example" title="Permalink to this headline">¶</a></h1>
 <p>This example demonstrates how to use imbalanced-learn resample transforms inside a seglearn Pype.</p>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Using TensorFlow backend.
-Implementation details: transform and fit_transform methods:
-/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
-Pipeline: Pype(memory=None, scorer=None,
-     steps=[(&#39;segment&#39;,
-             Segment(order=&#39;F&#39;, overlap=0, random_state=None, shuffle=False,
-                     step=None, width=1,
-                     y_func=&lt;function last at 0x7fe07ff87a70&gt;)),
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Implementation details: transform and fit_transform methods:
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+Pipeline: Pype(steps=[(&#39;segment&#39;, Segment(overlap=0, width=1)),
             (&#39;resample&#39;,
-             PatchedRandomUnderSampler(random_state=None, replacement=False,
-                                       sampling_strategy=&#39;auto&#39;,
-                                       shuffle=False))])
+             PatchedRandomUnderSampler(replacement=False,
+                                       sampling_strategy=&#39;auto&#39;))])
 Calling a transform on the data does not change it ...
 X (flattened): [ 0  1  1  2  2  3  3  4  4  5  5  6  6  7  7  8  8  9  9 10]
 y [ True False False False False False  True False False False]
@@ -217,23 +213,19 @@ y [False False  True  True]
 
 VerboseDummyClassifier example:
 
-/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
-Pipeline: Pype(memory=None, scorer=None,
-     steps=[(&#39;segment&#39;,
-             Segment(order=&#39;F&#39;, overlap=0, random_state=None, shuffle=False,
-                     step=None, width=1,
-                     y_func=&lt;function last at 0x7fe07ff87a70&gt;)),
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+Pipeline: Pype(steps=[(&#39;segment&#39;, Segment(overlap=0, width=1)),
             (&#39;resample&#39;,
-             PatchedRandomUnderSampler(random_state=None, replacement=False,
+             PatchedRandomUnderSampler(replacement=False,
                                        sampling_strategy=&#39;auto&#39;,
                                        shuffle=True)),
             (&#39;feature&#39;,
-             FeatureRep(features={&#39;min&#39;: &lt;function minimum at 0x7fe070ace830&gt;},
-                        verbose=False)),
+             FeatureRep(features={&#39;min&#39;: &lt;function minimum at 0x7fcb253cb790&gt;})),
             (&#39;estimator&#39;,
-             VerboseDummyClassifier(constant=True, random_state=None,
-                                    strategy=&#39;constant&#39;))])
+             VerboseDummyClassifier(constant=True, strategy=&#39;constant&#39;))])
 Split the data into half training and half test data:
 X_train: [array([[0, 1],
        [1, 2],
@@ -338,7 +330,7 @@ Score:  0.2
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score: &quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.073 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.038 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-imblearn-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d7f79bd9255ce08638af395189103ec2/plot_imblearn.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_imblearn.py</span></code></a></p>

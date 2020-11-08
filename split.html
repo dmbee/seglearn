@@ -177,9 +177,9 @@ performance on the training data so long as the data in each series is relativel
 <p>Note that splitting along the temporal axis violates the assumption of independence between train
 and test samples, as successive samples in a sequence or series are not iid. However, temporal
 splitting is still useful in certain cases such as for the analysis of a single sequence / series.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="seglearn.split.TemporalKFold">
-<em class="property">class </em><code class="sig-prename descclassname">seglearn.split.</code><code class="sig-name descname">TemporalKFold</code><span class="sig-paren">(</span><em class="sig-param">n_splits=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">seglearn.split.</code><code class="sig-name descname">TemporalKFold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_splits</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold" title="Permalink to this definition">¶</a></dt>
 <dd><p>K-fold iterator variant for temporal splitting of time series data</p>
 <p>The time series’ are divided in time with no overlap, and are balanced.</p>
 <p>By splitting the time series’, the number of samples in the data set is changed and so new
@@ -208,14 +208,14 @@ iterator.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.split.TemporalKFold.split" title="seglearn.split.TemporalKFold.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(self, X, y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.split.TemporalKFold.split" title="seglearn.split.TemporalKFold.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(X, y)</p></td>
 <td><p>Splits time series data and target arrays, and generates splitting indices</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
+<dl class="py method">
 <dt id="seglearn.split.TemporalKFold.split">
-<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold.split" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold.split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Splits time series data and target arrays, and generates splitting indices</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -241,9 +241,9 @@ iterator.</p>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="seglearn.split.temporal_split">
-<code class="sig-prename descclassname">seglearn.split.</code><code class="sig-name descname">temporal_split</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">test_size=0.25</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#temporal_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.temporal_split" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">seglearn.split.</code><code class="sig-name descname">temporal_split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">test_size</span><span class="o">=</span><span class="default_value">0.25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#temporal_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.temporal_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split time series or sequence data along the time axis.
 Test data is drawn from the end of each series / sequence</p>
 <dl class="field-list simple">

@@ -18,6 +18,7 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_watchdata_001.png
+    :alt: plot watchdata
     :class: sphx-glr-single-img
 
 
@@ -27,6 +28,8 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
 
  .. code-block:: none
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/numpy/core/_asarray.py:136: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
+      return array(a, dtype, copy=False, order=order, subok=True)
     DATA STATS - AGGREGATED
     {'n_series': 140, 'n_classes': 7, 'n_TS_vars': 6, 'n_context_vars': 2, 'Total_Time': 4882.04, 'Series_Time_Mean': 34.87171428571428, 'Series_Time_Std': 8.757850351285423, 'Series_Time_Range': (18.94, 52.36)}
 
@@ -115,7 +118,7 @@ This example shows how to load the included smartwatch inertial sensor dataset, 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.252 seconds)
+   **Total running time of the script:** ( 0 minutes  0.284 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_watchdata.py:

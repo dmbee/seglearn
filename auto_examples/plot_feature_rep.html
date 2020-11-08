@@ -194,29 +194,69 @@
 <div class="sphx-glr-example-title section" id="basic-feature-representation-classification-pipeline">
 <span id="sphx-glr-auto-examples-plot-feature-rep-py"></span><h1>Basic Feature Representation Classification Pipeline<a class="headerlink" href="#basic-feature-representation-classification-pipeline" title="Permalink to this headline">¶</a></h1>
 <p>This is a basic example using the pipeline to learn a feature representation of the time series data</p>
-<img alt="../_images/sphx_glr_plot_feature_rep_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_feature_rep_001.png" />
+<img alt="plot feature rep" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_feature_rep_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
 N series in train:  105
 N series in test:  35
 N segments in train:  3419
 N segments in test:  1258
 Accuracy score:  0.6836248012718601
 Pretend series y values:  [2 6 5]
-/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
-/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
-/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
-/home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
+/home/circleci/project/examples/plot_feature_rep.py:70: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array(data[&#39;X&#39;])
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+  warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
+/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
 CV Scores:     fit_time  ...  train_score
-0  0.549449  ...     0.999416
-1  0.601015  ...     1.000000
-2  0.594027  ...     0.999717
-3  0.572725  ...     1.000000
+0  0.504412  ...     0.999416
+1  0.530912  ...     1.000000
+2  0.535869  ...     0.999717
+3  0.514849  ...     1.000000
 
 [4 rows x 4 columns]
 Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#39;, &#39;mean_4&#39;, &#39;mean_5&#39;, &#39;median_0&#39;, &#39;median_1&#39;, &#39;median_2&#39;, &#39;median_3&#39;, &#39;median_4&#39;, &#39;median_5&#39;, &#39;abs_energy_0&#39;, &#39;abs_energy_1&#39;, &#39;abs_energy_2&#39;, &#39;abs_energy_3&#39;, &#39;abs_energy_4&#39;, &#39;abs_energy_5&#39;, &#39;std_0&#39;, &#39;std_1&#39;, &#39;std_2&#39;, &#39;std_3&#39;, &#39;std_4&#39;, &#39;std_5&#39;, &#39;var_0&#39;, &#39;var_1&#39;, &#39;var_2&#39;, &#39;var_3&#39;, &#39;var_4&#39;, &#39;var_5&#39;, &#39;min_0&#39;, &#39;min_1&#39;, &#39;min_2&#39;, &#39;min_3&#39;, &#39;min_4&#39;, &#39;min_5&#39;, &#39;max_0&#39;, &#39;max_1&#39;, &#39;max_2&#39;, &#39;max_3&#39;, &#39;max_4&#39;, &#39;max_5&#39;, &#39;skew_0&#39;, &#39;skew_1&#39;, &#39;skew_2&#39;, &#39;skew_3&#39;, &#39;skew_4&#39;, &#39;skew_5&#39;, &#39;kurt_0&#39;, &#39;kurt_1&#39;, &#39;kurt_2&#39;, &#39;kurt_3&#39;, &#39;kurt_4&#39;, &#39;kurt_5&#39;, &#39;mse_0&#39;, &#39;mse_1&#39;, &#39;mse_2&#39;, &#39;mse_3&#39;, &#39;mse_4&#39;, &#39;mse_5&#39;, &#39;mnx_0&#39;, &#39;mnx_1&#39;, &#39;mnx_2&#39;, &#39;mnx_3&#39;, &#39;mnx_4&#39;, &#39;mnx_5&#39;]
@@ -299,7 +339,7 @@ Features:  [&#39;mean_0&#39;, &#39;mean_1&#39;, &#39;mean_2&#39;, &#39;mean_3&#3
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Features: &quot;</span><span class="p">,</span> <span class="n">clf</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">f_labels</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.832 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.241 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-feature-rep-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3eb68eac10fe454101bd86597e898bf2/plot_feature_rep.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_feature_rep.py</span></code></a></p>

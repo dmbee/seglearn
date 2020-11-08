@@ -101,8 +101,10 @@ Setup
 
  .. code-block:: none
 
-    /home/circleci/miniconda/envs/testenv/lib/python3.7/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
+      warnings.warn("Pass {} as keyword args. From version 0.25 "
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      warnings.warn('From version 0.24, get_params will raise an '
 
 
 
@@ -145,11 +147,13 @@ Accessing training history
 
  .. code-block:: none
 
+    /home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/seglearn/transform.py:237: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
+      Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
            loss  ...  val_accuracy
-    0  1.960427  ...      0.064426
-    1  1.953611  ...      0.067227
-    2  1.948920  ...      0.061625
-    3  1.942050  ...      0.056022
+    0  1.955522  ...      0.086835
+    1  1.947152  ...      0.053221
+    2  1.937812  ...      0.033613
+    3  1.927772  ...      0.016807
 
     [4 rows x 4 columns]
 
@@ -173,6 +177,7 @@ Training Curves
 
 
 .. image:: /auto_examples/images/sphx_glr_plot_nn_training_curves_001.png
+    :alt: plot nn training curves
     :class: sphx-glr-single-img
 
 
@@ -182,7 +187,7 @@ Training Curves
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 2 minutes  8.181 seconds)
+   **Total running time of the script:** ( 0 minutes  6.700 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:
