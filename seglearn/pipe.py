@@ -56,12 +56,12 @@ class Pype(Pipeline):
 
     # todo: handle steps with None
     def __init__(self, steps, scorer=None, memory=None):
-        super(Pype, self).__init__(steps, memory)
         self.scorer = scorer
         self.N_train = None
         self.N_test = None
         self.N_fit = None
         self.history = None
+        super(Pype, self).__init__(steps, memory)
 
     def fit(self, X, y=None, **fit_params):
         """
