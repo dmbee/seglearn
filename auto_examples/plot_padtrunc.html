@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pipeline using Time Series Padding and Truncation &mdash; seglearn 1.2.1 documentation</title>
+  <title>Pipeline using Time Series Padding and Truncation &mdash; seglearn 1.2.2 documentation</title>
   
 
   
@@ -24,7 +24,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -36,6 +35,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Working with Time Series Data" href="plot_watchdata.html" />
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.2.1
+                1.2.2
               </div>
             
           
@@ -189,7 +189,8 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-padtrunc-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-padtrunc-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="pipeline-using-time-series-padding-and-truncation">
 <span id="sphx-glr-auto-examples-plot-padtrunc-py"></span><h1>Pipeline using Time Series Padding and Truncation<a class="headerlink" href="#pipeline-using-time-series-padding-and-truncation" title="Permalink to this headline">¶</a></h1>
@@ -199,15 +200,13 @@ using padding and truncation instead of sliding window segmentation.</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/utils/validation.py:67: FutureWarning: Pass memory=None as keyword args. From version 0.25 passing these as positional arguments will result in an error
   warnings.warn(&quot;Pass {} as keyword args. From version 0.25 &quot;
-/home/circleci/miniconda/envs/testenv/lib/python3.8/site-packages/sklearn/base.py:209: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  warnings.warn(&#39;From version 0.24, get_params will raise an &#39;
 N series in train:  105
 N series in test:  35
 N segments in train:  105
 N segments in test:  35
 Accuracy score:  0.8285714285714286
 
-&lt;matplotlib.image.AxesImage object at 0x7fcb20a0da00&gt;
+&lt;matplotlib.image.AxesImage object at 0x7fe994176250&gt;
 </pre></div>
 </div>
 <div class="line-block">
@@ -258,7 +257,7 @@ Accuracy score:  0.8285714285714286
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.234 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.236 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-padtrunc-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/096b274c71d51fe3f94e03751a4d180b/plot_padtrunc.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_padtrunc.py</span></code></a></p>

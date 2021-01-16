@@ -2,6 +2,7 @@ Change Log
 ==========
 
 Version 1.2.2
+* Fix Pype initialization - pwoller
 * Deprecation fixes
 * Changed name for predict_segmented_series to predict_unsegment in pipe
 * Added predict_as_series convenience function in pipe
