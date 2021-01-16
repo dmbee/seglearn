@@ -111,6 +111,7 @@ def test_feature_rep():
     assert len(frep.f_labels) == Xt.shape[1]
 
 
+@pytest.mark.filterwarnings("ignore:deprecated, use Segment class")
 def test_segmentx():
     # test illegal parameter settings
     with pytest.raises(ValueError):
@@ -125,21 +126,22 @@ def test_segmentx():
         transform.SegmentX(order=None)               # illegal order
 
     # test _step property working as expected
-    seg = transform.SegmentX(width=10, overlap=0.5)
+
+    seg = transform.Segment(width=10, overlap=0.5)
     assert seg._step == 5
 
     # test precedence of step over overlap
-    seg = transform.SegmentX(width=10, overlap=1, step=1)
+    seg = transform.Segment(width=10, overlap=1, step=1)
     assert seg._step == 1
 
     # illegal overlap value, but valid step value
-    seg = transform.SegmentX(overlap=-1, step=1)
+    seg = transform.Segment(overlap=-1, step=1)
     assert seg._step == 1
 
     # test shape of segmented data
     width = 5
     nvars = 5
-    seg = transform.SegmentX(width=width)
+    seg = transform.Segment(width=width)
 
     # multivariate ts data without context data
     X = [np.random.rand(100, nvars), np.random.rand(100, nvars), np.random.rand(100, nvars)]
@@ -195,6 +197,7 @@ def test_segmentx():
     assert Xsc.shape == (N, 5)
 
 
+@pytest.mark.filterwarnings("ignore:deprecated, use Segment class")
 def test_segmentxy():
     # test illegal parameter settings
     with pytest.raises(ValueError):

@@ -1,6 +1,8 @@
 # Author: David Burns
 # License: BSD
 
+import pytest
+import warnings
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge
@@ -30,6 +32,7 @@ def transformation_test(clf, X, y):
     assert len(Xtr1) == len(ytr1)
 
 
+@pytest.mark.filterwarnings("ignore:deprecated, use Segment class")
 def test_pipe_transformation():
     # SegmentX transform pipe
     pipe = Pype([('seg', SegmentX()),
@@ -117,6 +120,7 @@ def classifier_test(clf, X, y):
             assert np.all(np.isin(np.unique(s[i]), yv))
 
 
+@pytest.mark.filterwarnings("ignore:deprecated, use Segment class")
 def test_pipe_classification():
     # no context data, single time series
     X = [np.random.rand(1000, 10)]
@@ -187,6 +191,7 @@ def regression_test(clf, X, y):
             assert np.min(yp) <= np.min(s[i])
 
 
+@pytest.mark.filterwarnings("ignore:deprecated, use Segment class")
 def test_pipe_regression():
     # no context data, single time series
     X = [np.random.rand(1000, 10)]
