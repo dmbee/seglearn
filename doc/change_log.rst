@@ -1,6 +1,9 @@
 Change Log
 ==========
 
+Version 1.2.3
+* Removed patch_sampler transform
+
 Version 1.2.2
 * Fix Pype initialization - pwoller
 * Deprecation fixes

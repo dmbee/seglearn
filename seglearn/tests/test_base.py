@@ -10,7 +10,7 @@ from seglearn.base import TS_Data
 
 def test_ts_data():
     # time series data
-    ts = np.array([np.random.rand(100, 10), np.random.rand(200, 10), np.random.rand(20, 10)])
+    ts = np.array([np.random.rand(100, 10), np.random.rand(200, 10), np.random.rand(20, 10)], dtype=object)
     c = np.random.rand(3, 10)
     data = TS_Data(ts, c)
 
@@ -45,7 +45,7 @@ def test_watch():
     assert isinstance(data, TS_Data)
 
 def test_pd():
-    ts = np.array([np.random.rand(100, 10), np.random.rand(200, 10), np.random.rand(20, 10)])
+    ts = np.array([np.random.rand(100, 10), np.random.rand(200, 10), np.random.rand(20, 10)], dtype=object)
     c = np.random.rand(3, 10)
 
     df = pd.DataFrame(c)

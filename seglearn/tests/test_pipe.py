@@ -1,18 +1,17 @@
 # Author: David Burns
 # License: BSD
 
-import pytest
-import warnings
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import Ridge
-from sklearn.preprocessing import StandardScaler
+import pytest
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import Ridge
 from sklearn.model_selection import cross_validate
+from sklearn.preprocessing import StandardScaler
 
+from seglearn.base import TS_Data
 from seglearn.pipe import Pype
 from seglearn.transform import FeatureRep, SegmentX, SegmentXY, SegmentXYForecast, PadTrunc
-from seglearn.base import TS_Data
 
 
 def yvals(y):
