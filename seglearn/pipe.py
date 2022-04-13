@@ -61,7 +61,7 @@ class Pype(Pipeline):
         self.N_test = None
         self.N_fit = None
         self.history = None
-        super(Pype, self).__init__(steps, memory)
+        super(Pype, self).__init__(steps, memory=memory)
 
     def fit(self, X, y=None, **fit_params):
         """
