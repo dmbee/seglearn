@@ -7,7 +7,7 @@
 |Travis|_ |Pypi|_ |PythonVersion|_ |CircleCI|_ |Coveralls|_ |Downloads|_
 
 .. |Travis| image:: https://travis-ci.com/dmbee/seglearn.svg?branch=master
-.. _Travis: https://travis-ci.com/dmbee/seglearn
+.. _Travis: https://app.travis-ci.com/github/dmbee/seglearn
 
 .. |Pypi| image:: https://badge.fury.io/py/seglearn.svg
 .. _Pypi: https://badge.fury.io/py/seglearn
