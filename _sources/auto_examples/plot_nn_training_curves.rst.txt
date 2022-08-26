@@ -1,0 +1,223 @@
+.. only:: html
+
+    .. note::
+        :class: sphx-glr-download-link-note
+
+        Click :ref:`here <sphx_glr_download_auto_examples_plot_nn_training_curves.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_auto_examples_plot_nn_training_curves.py:
+
+
+=======================================
+Plotting Neural Network Training Curves
+=======================================
+
+This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data
+
+
+
+.. code-block:: default
+
+    # Author: David Burns
+    # License: BSD
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from tensorflow.python.keras.layers import Dense, LSTM, Conv1D
+    from tensorflow.python.keras.models import Sequential
+    from tensorflow.python.keras.wrappers.scikit_learn import KerasClassifier
+    from pandas import DataFrame
+    from sklearn.model_selection import train_test_split
+
+    from seglearn.datasets import load_watch
+    from seglearn.pipe import Pype
+    from seglearn.transform import Segment
+
+
+
+
+
+
+
+
+
+Simple NN Model
+#############################################
+
+
+.. code-block:: default
+
+
+    def crnn_model(width=100, n_vars=6, n_classes=7, conv_kernel_size=5,
+                   conv_filters=3, lstm_units=3):
+        input_shape = (width, n_vars)
+        model = Sequential()
+        model.add(Conv1D(filters=conv_filters, kernel_size=conv_kernel_size,
+                         padding='valid', activation='relu', input_shape=input_shape))
+        model.add(LSTM(units=lstm_units, dropout=0.1, recurrent_dropout=0.1))
+        model.add(Dense(n_classes, activation="softmax"))
+
+        model.compile(loss='categorical_crossentropy', optimizer='adam',
+                      metrics=['accuracy'])
+
+        return model
+
+
+
+
+
+
+
+
+
+Setup
+#############################################
+
+
+.. code-block:: default
+
+
+    # load the data
+    data = load_watch()
+    X = data['X']
+    y = data['y']
+
+    # split the data
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+    # create a segment learning pipeline
+    pipe = Pype([('seg', Segment(width=100, step=100, order='C')),
+                 ('crnn', KerasClassifier(build_fn=crnn_model, epochs=4, batch_size=256,
+                                          verbose=0, validation_split=0.2))])
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/david/Code/venv3/lib/python3.6/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
+      FutureWarning)
+
+
+
+
+Accessing training history
+#############################################
+
+
+.. code-block:: default
+
+
+    # this is a bit of a hack, because history object is returned by the
+    # keras wrapper when fit is called
+    # this approach won't work with a more complex estimator pipeline, in which case
+    # a callable class with the desired properties should be made passed to build_fn
+
+    pipe.fit(X_train, y_train)
+    history = pipe.history.history
+    print(DataFrame(history))
+
+    # depends on version
+    if 'accuracy' in history:
+        ac_train = history['accuracy']
+        ac_val = history['val_accuracy']
+    elif 'acc' in history:
+        ac_train = history['acc']
+        ac_val = history['val_acc']
+    else:
+        raise ValueError("History object doesn't contain accuracy record")
+
+    epoch = np.arange(len(ac_train)) + 1
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/david/Code/venv3/lib/python3.6/site-packages/seglearn/transform.py:238: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
+      for i in np.arange(N)])
+           loss  accuracy  val_loss  val_accuracy
+    0  1.935082  0.143058  1.916399      0.257703
+    1  1.928849  0.152875  1.909948      0.252101
+    2  1.922523  0.161290  1.904884      0.246499
+    3  1.915349  0.171108  1.900211      0.243697
+
+
+
+
+Training Curves
+#############################################
+
+
+.. code-block:: default
+
+
+    plt.plot(epoch, ac_train, 'o', label="train")
+    plt.plot(epoch, ac_val, '+', label="validation")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy")
+    plt.legend()
+    plt.show()
+
+
+
+.. image:: /auto_examples/images/sphx_glr_plot_nn_training_curves_001.png
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/david/Code/seglearn/examples/plot_nn_training_curves.py:96: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+      plt.show()
+
+
+
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  3.531 seconds)
+
+
+.. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-python
+
+     :download:`Download Python source code: plot_nn_training_curves.py <plot_nn_training_curves.py>`
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+     :download:`Download Jupyter notebook: plot_nn_training_curves.ipynb <plot_nn_training_curves.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

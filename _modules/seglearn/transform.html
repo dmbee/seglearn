@@ -1,0 +1,1802 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>seglearn.transform &mdash; seglearn 1.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../change_log.html">Change Log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">General examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citations.html">Citing seglearn</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">seglearn</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>seglearn.transform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for seglearn.transform</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is for transforming time series data.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># Authors: David Burns, Matthias Gazzari, Philip Boyer</span>
+<span class="c1"># License: BSD</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.exceptions</span> <span class="kn">import</span> <span class="n">NotFittedError</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_random_state</span><span class="p">,</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_consistent_length</span><span class="p">,</span> <span class="n">shuffle</span>
+<span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.metaestimators</span> <span class="kn">import</span> <span class="n">_BaseComposition</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">.feature_functions</span> <span class="kn">import</span> <span class="n">base_features</span>
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">get_ts_data_parts</span><span class="p">,</span> <span class="n">check_ts_data</span><span class="p">,</span> <span class="n">interp_sort</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Segment&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentX&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXY&#39;</span><span class="p">,</span> <span class="s1">&#39;SegmentXYForecast&#39;</span><span class="p">,</span> <span class="s1">&#39;PadTrunc&#39;</span><span class="p">,</span> <span class="s1">&#39;InterpLongToWide&#39;</span><span class="p">,</span> <span class="s1">&#39;Interp&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;FeatureRep&#39;</span><span class="p">,</span> <span class="s1">&#39;FeatureRepMix&#39;</span><span class="p">,</span> <span class="s1">&#39;FunctionTransformer&#39;</span><span class="p">,</span> <span class="s1">&#39;patch_sampler&#39;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">XyTransformerMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base class for transformer that transforms data and target &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the data and transform (required by sklearn API)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">           Time series data and (optionally) contextual data</span>
+<span class="sd">        y : array-like shape [n_series], default = None</span>
+<span class="sd">            target vector</span>
+<span class="sd">        sample_weight : array-like shape [n_series], default = None</span>
+<span class="sd">            sample weights</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like, shape [n_segments, ]</span>
+<span class="sd">            transformed time series data</span>
+<span class="sd">        y_new : array-like, shape [n_segments]</span>
+<span class="sd">            expanded target vector</span>
+<span class="sd">        sample_weight_new : array-like shape [n_segments]</span>
+<span class="sd">            expanded sample weights</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns the last column from 2d matrix &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">y</span><span class="p">[:,</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">middle</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns the middle column from 2d matrix &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; returns average along axis 1&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">every</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns all values (sequences) of y &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">y</span>
+
+
+<span class="k">def</span> <span class="nf">shuffle_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Shuffles indices X, y, and sample_weight together&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
+
+        <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">yt</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">swt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">swt</span> <span class="o">=</span> <span class="n">swt</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span>
+
+
+<div class="viewcode-block" id="Segment"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Segment">[docs]</a><span class="k">class</span> <span class="nc">Segment</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer for sliding window segmentation for datasets where</span>
+<span class="sd">    X is time series data, optionally with contextual variables</span>
+<span class="sd">    and y can either have a single value for each time series or</span>
+<span class="sd">    itself be a time series with the same sampling interval as X</span>
+
+<span class="sd">    The target y is mapped to segments from their parent series.</span>
+
+<span class="sd">    If the target y is a time_series, the optional parameter y_func</span>
+<span class="sd">    determines the mapping behavior. The segment targets can be a single value,</span>
+<span class="sd">    or a sequence of values depending on ``y_func`` parameter.</span>
+
+<span class="sd">    The transformed data consists of segment/target pairs that can be learned</span>
+<span class="sd">    through a feature representation or directly with a neural network.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    width : int &gt; 0</span>
+<span class="sd">        width of segments (number of samples)</span>
+<span class="sd">    overlap : float range [0,1]</span>
+<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1</span>
+<span class="sd">        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</span>
+<span class="sd">    step : int range [1, width] (default=None)</span>
+<span class="sd">        number of samples to advance adjacent segments (note: this takes precedence over overlap)</span>
+<span class="sd">    y_func : function</span>
+<span class="sd">        returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)</span>
+<span class="sd">    shuffle : bool, optional</span>
+<span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
+<span class="sd">    random_state : int, default = None</span>
+<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``.</span>
+<span class="sd">        If you have set ``shuffle`` to True and want the same result with each call to ``fit``,</span>
+<span class="sd">        set ``random_state`` to an integer.</span>
+<span class="sd">    order : str, optional (default=&#39;F&#39;)</span>
+<span class="sd">        Determines the index order of the segmented time series. &#39;C&#39; means C-like index order (first</span>
+<span class="sd">        index changes slowest) and &#39;F&#39; means Fortran-like index order (last index changes slowest).</span>
+<span class="sd">        &#39;C&#39; ordering is suggested for neural network estimators, and &#39;F&#39; ordering is suggested for computing</span>
+<span class="sd">        feature representations.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    self : object</span>
+<span class="sd">        Returns self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">=</span> <span class="n">overlap</span> <span class="k">if</span> <span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="n">step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_func</span> <span class="o">=</span> <span class="n">y_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_validate_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;width must be &gt;=1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;overlap must be &gt;=0 and &lt;=1.0 (was </span><span class="si">%.2f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;step must be &gt;=1 and &lt;=width=</span><span class="si">%s</span><span class="s1"> (was </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Either overlap or step must be set to a valid number&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;order must be either &quot;C&quot; or &quot;F&quot; (was </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="Segment.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Segment.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transform</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires</span>
+<span class="sd">            this parameter.</span>
+<span class="sd">        shuffle : bool</span>
+<span class="sd">            Shuffles data after transformation</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Segment.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Segment.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the time series data into segments (temporal tensor)</span>
+<span class="sd">        Note this transformation changes the number of samples in the data</span>
+<span class="sd">        If y and sample_weight are provided, they are transformed to align to the new samples</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">           Time series data and (optionally) contextual data</span>
+<span class="sd">        y : array-like shape [n_series], default = None</span>
+<span class="sd">            target vector</span>
+<span class="sd">        sample_weight : array-like shape [n_series], default = None</span>
+<span class="sd">            sample weights</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Xt : array-like, shape [n_segments, ]</span>
+<span class="sd">            transformed time series data</span>
+<span class="sd">        yt : array-like, shape [n_segments]</span>
+<span class="sd">            expanded target vector</span>
+<span class="sd">        sample_weight_new : array-like shape [n_segments]</span>
+<span class="sd">            expanded sample weights</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ts_target</span> <span class="o">=</span> <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Nt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentX</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
+
+        <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_segmentY</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Nt</span><span class="p">,</span> <span class="n">ts_target</span><span class="p">)</span>
+
+        <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
+
+        <span class="k">if</span> <span class="n">swt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">swt</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">swt</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">shuffle_data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span></div>
+
+    <span class="k">def</span> <span class="nf">_segmentX</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>  <span class="c1"># number of time series</span>
+
+        <span class="k">if</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_tensor</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+
+        <span class="n">Nt</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">))]</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Xc</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">Nt</span>
+
+    <span class="k">def</span> <span class="nf">_segmentY</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Nt</span><span class="p">,</span> <span class="n">ts_target</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ts_target</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))])</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_func</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">yt</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">yt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="n">yt</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">yt</span></div>
+
+
+<div class="viewcode-block" id="SegmentX"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentX">[docs]</a><span class="k">class</span> <span class="nc">SegmentX</span><span class="p">(</span><span class="n">Segment</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DEPRECATED - Use Segment class instead</span>
+
+<span class="sd">    Transformer for sliding window segmentation for datasets where</span>
+<span class="sd">    X is time series data, optionally with contextual variables</span>
+<span class="sd">    and each time series in X has a single target value y</span>
+
+<span class="sd">    The target y is mapped to all segments from their parent series.</span>
+<span class="sd">    The transformed data consists of segment/target pairs that can be learned</span>
+<span class="sd">    through a feature representation or directly with a neural network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    width : int &gt; 0</span>
+<span class="sd">        width of segments (number of samples)</span>
+<span class="sd">    overlap : float range [0,1]</span>
+<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1</span>
+<span class="sd">        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</span>
+<span class="sd">    step : int range [1, width] (default=None)</span>
+<span class="sd">        number of samples to advance adjacent segments (note: this takes precedence over overlap)</span>
+<span class="sd">    shuffle : bool, optional</span>
+<span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
+<span class="sd">    random_state : int, default = None</span>
+<span class="sd">        Randomized segment shuffling will return different results for each call to</span>
+<span class="sd">        ``transform``. If you have set ``shuffle`` to True and want the same result</span>
+<span class="sd">        with each call to ``fit``, set ``random_state`` to an integer.</span>
+<span class="sd">    order : str, optional (default=&#39;F&#39;)</span>
+<span class="sd">        Determines the index order of the segmented time series. &#39;C&#39; means C-like index order (first</span>
+<span class="sd">        index changes slowest) and &#39;F&#39; means Fortran-like index order (last index changes slowest).</span>
+<span class="sd">        &#39;C&#39; ordering is suggested for neural network estimators, and &#39;F&#39; ordering is suggested for computing</span>
+<span class="sd">        feature representations.</span>
+
+<span class="sd">    Todo</span>
+<span class="sd">    ----</span>
+<span class="sd">    separate fit and predict overlap parameters</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                         <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;deprecated, use Segment class&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SegmentXY"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXY">[docs]</a><span class="k">class</span> <span class="nc">SegmentXY</span><span class="p">(</span><span class="n">Segment</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    DEPRECATED - Use Segment class instead</span>
+
+<span class="sd">    Transformer for sliding window segmentation for datasets where</span>
+<span class="sd">    X is time series data, optionally with contextual variables</span>
+<span class="sd">    and y is also time series data with the same sampling interval as X</span>
+
+<span class="sd">    The target y is mapped to segments from their parent series,</span>
+<span class="sd">    using the parameter ``y_func`` to determine the mapping behavior.</span>
+<span class="sd">    The segment targets can be a single value, or a sequence of values</span>
+<span class="sd">    depending on ``y_func`` parameter.</span>
+
+<span class="sd">    The transformed data consists of segment/target pairs that can be learned</span>
+<span class="sd">    through a feature representation or directly with a neural network.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    width : int &gt; 0</span>
+<span class="sd">        width of segments (number of samples)</span>
+<span class="sd">    overlap : float range [0,1]</span>
+<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1</span>
+<span class="sd">        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</span>
+<span class="sd">    step : int range [1, width] (default=None)</span>
+<span class="sd">        number of samples to advance adjacent segments (note: this takes precedence over overlap)</span>
+<span class="sd">    y_func : function</span>
+<span class="sd">        returns target from array of target segments (eg ``last``, ``middle``, or ``mean``)</span>
+<span class="sd">    shuffle : bool, optional</span>
+<span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
+<span class="sd">    random_state : int, default = None</span>
+<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``.</span>
+<span class="sd">        If you have set ``shuffle`` to True and want the same result with each call to ``fit``,</span>
+<span class="sd">        set ``random_state`` to an integer.</span>
+<span class="sd">    order : str, optional (default=&#39;F&#39;)</span>
+<span class="sd">        Determines the index order of the segmented time series. &#39;C&#39; means C-like index order (first</span>
+<span class="sd">        index changes slowest) and &#39;F&#39; means Fortran-like index order (last index changes slowest).</span>
+<span class="sd">        &#39;C&#39; ordering is suggested for neural network estimators, and &#39;F&#39; ordering is suggested for computing</span>
+<span class="sd">        feature representations.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    self : object</span>
+<span class="sd">        Returns self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">y_func</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                         <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;deprecated, use Segment class&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SegmentXYForecast"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXYForecast">[docs]</a><span class="k">class</span> <span class="nc">SegmentXYForecast</span><span class="p">(</span><span class="n">Segment</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Forecast sliding window segmentation for time series or sequence datasets</span>
+
+<span class="sd">    The target y is mapped to segments from their parent series,</span>
+<span class="sd">    using the ``forecast`` and ``y_func`` parameters to determine the mapping behavior.</span>
+<span class="sd">    The segment targets can be a single value, or a sequence of values</span>
+<span class="sd">    depending on ``y_func`` parameter.</span>
+
+<span class="sd">    The transformed data consists of segment/target pairs that can be learned</span>
+<span class="sd">    through a feature representation or directly with a neural network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    width : int &gt; 0</span>
+<span class="sd">        width of segments (number of samples)</span>
+<span class="sd">    overlap : float range [0,1]</span>
+<span class="sd">        amount of overlap between segments. must be in range: 0 &lt;= overlap &lt;= 1</span>
+<span class="sd">        (note: setting overlap to 1.0 results in the segments to being advanced by a single sample)</span>
+<span class="sd">    step : int range [1, width] (default=None)</span>
+<span class="sd">        number of samples to advance adjacent segments (note: this takes precedence over overlap)</span>
+<span class="sd">    forecast : int</span>
+<span class="sd">        The number of samples ahead in time to forecast</span>
+<span class="sd">    y_func : function</span>
+<span class="sd">        returns target from array of target forecast segments (eg ``last``, or ``mean``)</span>
+<span class="sd">    shuffle : bool, optional</span>
+<span class="sd">        shuffle the segments after transform (recommended for batch optimizations)</span>
+<span class="sd">    random_state : int, default = None</span>
+<span class="sd">        Randomized segment shuffling will return different results for each call to ``transform``.</span>
+<span class="sd">        If you have set ``shuffle`` to True and want the same result with each call to ``fit``, set</span>
+<span class="sd">        ``random_state`` to an integer.</span>
+<span class="sd">    order : str, optional (default=&#39;F&#39;)</span>
+<span class="sd">        Determines the index order of the segmented time series. &#39;C&#39; means C-like index order (first</span>
+<span class="sd">        index changes slowest) and &#39;F&#39; means Fortran-like index order (last index changes slowest).</span>
+<span class="sd">        &#39;C&#39; ordering is suggested for neural network estimators, and &#39;F&#39; ordering is suggested for computing</span>
+<span class="sd">        feature representations.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    self : object</span>
+<span class="sd">        Returns self.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">forecast</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">y_func</span><span class="o">=</span><span class="n">last</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="n">overlap</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                         <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">forecast</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;forecast must be &gt;=1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">forecast</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_func</span> <span class="o">=</span> <span class="n">y_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span> <span class="o">=</span> <span class="n">forecast</span>
+
+
+<div class="viewcode-block" id="SegmentXYForecast.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.SegmentXYForecast.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Forecast sliding window segmentation for time series or sequence datasets.</span>
+<span class="sd">        Note this transformation changes the number of samples in the data.</span>
+<span class="sd">        Currently sample weights always returned as None.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">           Time series data and (optionally) contextual data</span>
+<span class="sd">        y : array-like shape [n_series]</span>
+<span class="sd">            target vector</span>
+<span class="sd">        sample_weight : array-like shape [n_series], default = None</span>
+<span class="sd">            sample weights</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like, shape [n_segments, ]</span>
+<span class="sd">            segmented X data</span>
+<span class="sd">        y_new : array-like, shape [n_segments]</span>
+<span class="sd">            forecast y data</span>
+<span class="sd">        sample_weight_new : None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
+
+        <span class="c1"># if only one time series is learned</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xt</span><span class="p">]</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>  <span class="c1"># number of time series</span>
+
+        <span class="k">if</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_tensor</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+
+        <span class="n">Nt</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">))]</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+
+        <span class="c1"># todo: implement advance X</span>
+        <span class="n">Xt</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Xc</span> <span class="o">=</span> <span class="n">expand_variables_to_segments</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span> <span class="n">Nt</span><span class="p">)</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)])</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">yt</span><span class="p">[:,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">:(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">forecast</span><span class="p">)]</span>  <span class="c1"># target y</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_func</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+            <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">shuffle_data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="kc">None</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">expand_variables_to_segments</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Nt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; expands contextual variables v, by repeating each instance as specified in Nt &quot;&quot;&quot;</span>
+    <span class="n">N_v</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">Nt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">N_v</span><span class="p">),</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sliding_window</span><span class="p">(</span><span class="n">time_series</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Segments univariate time series with sliding window</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    time_series : array like shape [n_samples]</span>
+<span class="sd">        time series or sequence</span>
+<span class="sd">    width : int &gt; 0</span>
+<span class="sd">        segment width in samples</span>
+<span class="sd">    step : int &gt; 0</span>
+<span class="sd">        stepsize for sliding in samples</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    w : array like shape [n_segments, width]</span>
+<span class="sd">        resampled time series segments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">time_series</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="mi">1</span> <span class="o">+</span> <span class="n">i</span> <span class="o">-</span> <span class="n">width</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">:</span><span class="n">step</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">)])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="n">width</span><span class="p">),</span> <span class="n">width</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">order</span> <span class="o">==</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sliding_tensor</span><span class="p">(</span><span class="n">mv_time_series</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    segments multivariate time series with sliding window</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mv_time_series : array like shape [n_samples, n_variables]</span>
+<span class="sd">        multivariate time series or sequence</span>
+<span class="sd">    width : int &gt; 0</span>
+<span class="sd">        segment width in samples</span>
+<span class="sd">    step : int &gt; 0</span>
+<span class="sd">        stepsize for sliding in samples</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : array like shape [n_segments, width, n_variables]</span>
+<span class="sd">        segmented multivariate time series data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">mv_time_series</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">sliding_window</span><span class="p">(</span><span class="n">mv_time_series</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">width</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">D</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PadTrunc"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc">[docs]</a><span class="k">class</span> <span class="nc">PadTrunc</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer for using padding and truncation to enforce fixed length on all time</span>
+<span class="sd">    series in the dataset. Series&#39; longer than ``width`` are truncated to length ``width``.</span>
+<span class="sd">    Series&#39; shorter than length ``width`` are padded at the end with zeros up to length ``width``.</span>
+
+<span class="sd">    The same behavior is applied to the target if it is a series and passed to the transformer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    width : int &gt;= 1</span>
+<span class="sd">        width of segments (number of samples)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">width</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;width must be &gt;= 1 (was </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+
+    <span class="k">def</span> <span class="nf">_mv_resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">D</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">Ni</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">Ni</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">Ni</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">w</span>
+
+<div class="viewcode-block" id="PadTrunc.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transform. Does nothing, for compatibility with sklearn API.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PadTrunc.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.PadTrunc.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the time series data into fixed length segments using padding and or truncation</span>
+<span class="sd">        If y is a time series and passed, it will be transformed as well</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">           Time series data and (optionally) contextual data</span>
+<span class="sd">        y : array-like shape [n_series], default = None</span>
+<span class="sd">            target vector</span>
+<span class="sd">        sample_weight : array-like shape [n_series], default = None</span>
+<span class="sd">            sample weights</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like, shape [n_series, ]</span>
+<span class="sd">            transformed time series data</span>
+<span class="sd">        y_new : array-like, shape [n_series]</span>
+<span class="sd">            expanded target vector</span>
+<span class="sd">        sample_weight_new : None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ts_target</span> <span class="o">=</span> <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
+
+        <span class="n">Xt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mv_resize</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ts_target</span><span class="p">:</span>
+            <span class="c1"># y is a time series</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mv_resize</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
+            <span class="n">swt</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># todo: is this needed?</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yt</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span></div></div>
+
+
+<div class="viewcode-block" id="Interp"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Interp">[docs]</a><span class="k">class</span> <span class="nc">Interp</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer for resampling time series data to a fixed period over closed interval</span>
+<span class="sd">    (direct value interpolation).</span>
+<span class="sd">    Default interpolation is linear, but other types can be specified.</span>
+<span class="sd">    If the target is a series, it will be resampled as well.</span>
+
+<span class="sd">    categorical_target should be set to True if the target series is a class</span>
+<span class="sd">    The transformer will then use nearest neighbor interp on the target.</span>
+
+<span class="sd">    This transformer assumes the time dimension is column 0, i.e. X[0][:,0]</span>
+<span class="sd">    Note the time dimension is removed, since this becomes a linear sequence.</span>
+<span class="sd">    If start time or similar is important to the estimator, use a context variable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sample_period : numeric</span>
+<span class="sd">        desired sampling period</span>
+<span class="sd">    kind : string</span>
+<span class="sd">        interpolation type - valid types as per scipy.interpolate.interp1d</span>
+<span class="sd">    categorical_target : bool</span>
+<span class="sd">        set to True for classification problems to use nearest instead of linear interp for  the</span>
+<span class="sd">        target</span>
+<span class="sd">    assume_sorted : bool</span>
+<span class="sd">        assume time series data is sorted by timestamp</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_period</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_period</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sample_period must be &gt;0 (was </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">sample_period</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span> <span class="o">=</span> <span class="n">sample_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorical_target</span> <span class="o">=</span> <span class="n">categorical_target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assume_sorted</span> <span class="o">=</span> <span class="n">assume_sorted</span>
+
+<div class="viewcode-block" id="Interp.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Interp.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transform. Does nothing, for compatibility with sklearn API.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X variable must have more than 1 channel&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_interp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_new</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">assume_sorted</span><span class="p">:</span>
+            <span class="n">t</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">interp_sort</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+        <span class="n">interpolator</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">t_new</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Interp.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.Interp.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the time series data with linear direct value interpolation</span>
+<span class="sd">        If y is a time series and passed, it will be transformed as well</span>
+<span class="sd">        The time dimension is removed from the data</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">           Time series data and (optionally) contextual data</span>
+<span class="sd">        y : array-like shape [n_series], default = None</span>
+<span class="sd">            target vector</span>
+<span class="sd">        sample_weight : array-like shape [n_series], default = None</span>
+<span class="sd">            sample weights</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like, shape [n_series, ]</span>
+<span class="sd">            transformed time series data</span>
+<span class="sd">        y_new : array-like, shape [n_series]</span>
+<span class="sd">            expanded target vector</span>
+<span class="sd">        sample_weight_new : array-like or None</span>
+<span class="sd">            None is returned if target is changed. Otherwise it is returned unchanged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ts_target</span> <span class="o">=</span> <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
+
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>  <span class="c1"># number of series</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>  <span class="c1"># number of data channels</span>
+
+        <span class="c1"># 1st channel is time</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+        <span class="n">t_lin</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="n">D</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span>
+                                   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">D</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ts_target</span><span class="p">:</span>
+            <span class="c1"># y is a time series</span>
+            <span class="n">swt</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical_target</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># y is static - leave y alone</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span></div></div>
+
+
+<div class="viewcode-block" id="InterpLongToWide"><a class="viewcode-back" href="../../transform.html#seglearn.transform.InterpLongToWide">[docs]</a><span class="k">class</span> <span class="nc">InterpLongToWide</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts time series in long format dataframes (where variables are sampled at different times)</span>
+<span class="sd">    to wide format data frames usable by the rest of seglearn using direct value interpolation.</span>
+
+<span class="sd">    Input data for this class must have at least 3 columns of type (time, var_type, var_value)</span>
+<span class="sd">    Additional columns are treated as additional channels of var_value</span>
+<span class="sd">    (e.g. time, var_type, var_value1, var_value2).</span>
+
+<span class="sd">    Each time series must have the same var_types and the same number of columns.</span>
+
+<span class="sd">    Default interpolation is linear, but other types can be specified.</span>
+<span class="sd">    If the target is a series, it will be resampled as well.</span>
+
+<span class="sd">    categorical_target should be set to True if the target series is a class</span>
+<span class="sd">    The transformer will then use nearest neighbor interp on the target.</span>
+
+<span class="sd">    The interpolation to a linear sampling space, and conversion to wide format dataframe results</span>
+<span class="sd">    in the removal of the time column and var_type columns in the data.</span>
+
+<span class="sd">    If start time or similar is important to the estimator, use a context variable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sample_period : numeric</span>
+<span class="sd">        desired sampling period</span>
+<span class="sd">    kind : string</span>
+<span class="sd">        interpolation type - valid types as per scipy.interpolate.interp1d</span>
+<span class="sd">    categorical_target : bool</span>
+<span class="sd">        set to True for classification problems to use nearest instead of linear interp for  the</span>
+<span class="sd">        target</span>
+<span class="sd">    assume_sorted : bool</span>
+<span class="sd">        assume time series data are sorted by time stamp</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import InterpLongToWide</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # sample stacked input with values from 2 variables each with 2 channels</span>
+<span class="sd">    &gt;&gt;&gt; t = np.array([1.1, 1.2, 2.1, 3.3, 3.4, 3.5])</span>
+<span class="sd">    &gt;&gt;&gt; s = np.array([0, 1, 0, 0, 1, 1])</span>
+<span class="sd">    &gt;&gt;&gt; v1 = np.array([3, 4, 5, 7, 15, 25])</span>
+<span class="sd">    &gt;&gt;&gt; v2 = np.array([5, 7, 6, 9, 22, 35])</span>
+<span class="sd">    &gt;&gt;&gt; X = [np.column_stack([t, s, v1, v2])]</span>
+<span class="sd">    &gt;&gt;&gt; y = [np.array([1, 2, 2, 2, 3, 3])]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; stacked_interp = InterpLongToWide(0.5)</span>
+<span class="sd">    &gt;&gt;&gt; stacked_interp.fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; Xc, yc, _ = stacked_interp.transform(X, y)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_period</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sample_period</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;sample_period must be &gt;0 (was </span><span class="si">%f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">sample_period</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span> <span class="o">=</span> <span class="n">sample_period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">kind</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorical_target</span> <span class="o">=</span> <span class="n">categorical_target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assume_sorted</span> <span class="o">=</span> <span class="n">assume_sorted</span>
+
+<div class="viewcode-block" id="InterpLongToWide.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.InterpLongToWide.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transform. Does nothing, for compatibility with sklearn API.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_data</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;X input must be 2 dim array or greater&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_check_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks that unique identifiers vaf_types are consistent between time series.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Time series data and (optionally) contextual data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sval</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="n">sval</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unique identifier var_types not consistent between time series&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_interp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_new</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">assume_sorted</span><span class="p">:</span>
+            <span class="n">t</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">interp_sort</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+        <span class="n">interpolator</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;extrapolate&quot;</span><span class="p">,</span> <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">t_new</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InterpLongToWide.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.InterpLongToWide.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the time series data with linear direct value interpolation</span>
+<span class="sd">        If y is a time series and passed, it will be transformed as well</span>
+<span class="sd">        The time dimension is removed from the data</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">           Time series data and (optionally) contextual data</span>
+<span class="sd">        y : array-like shape [n_series], default = None</span>
+<span class="sd">            target vector</span>
+<span class="sd">        sample_weight : array-like shape [n_series], default = None</span>
+<span class="sd">            sample weights</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array-like, shape [n_series, ]</span>
+<span class="sd">            transformed time series data</span>
+<span class="sd">        y_new : array-like, shape [n_series]</span>
+<span class="sd">            expanded target vector</span>
+<span class="sd">        sample_weight_new : array-like or None</span>
+<span class="sd">            None is returned if target is changed. Otherwise it is returned unchanged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ts_target</span> <span class="o">=</span> <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">xt</span><span class="p">,</span> <span class="n">xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">swt</span> <span class="o">=</span> <span class="n">sample_weight</span>
+
+        <span class="c1"># number of data channels</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">xt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="c1"># number of series</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xt</span><span class="p">)</span>
+
+        <span class="c1"># retrieve the unique identifiers</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">xt</span><span class="p">[</span><span class="mi">0</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">x_new</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">t_lin</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># transform x</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+
+            <span class="c1"># splits series into a list for each variable</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))]</span>
+
+            <span class="c1"># find latest/earliest sample time for each identifier&#39;s first/last time sample time</span>
+            <span class="n">t_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))])</span>
+            <span class="n">t_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))])</span>
+
+            <span class="c1"># Generate a regular series of timestamps starting at tStart and tEnd for sample_period</span>
+            <span class="n">t_lin</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_period</span><span class="p">))</span>
+
+            <span class="c1"># Interpolate for the new regular sample times</span>
+            <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">x_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+                        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))]))</span>
+            <span class="k">elif</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">xd</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
+                    <span class="c1"># stack the columns of each variable by dimension d after interpolation to new regular sample times</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+                        <span class="p">[(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">j</span><span class="p">][:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">))</span>
+                         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">d</span><span class="p">)])</span>
+                    <span class="n">xd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+                <span class="c1"># column stack each of the sensors s -- resulting in s*d columns</span>
+                <span class="n">x_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="n">xd</span><span class="p">))</span>
+
+        <span class="c1"># transform y</span>
+        <span class="k">if</span> <span class="n">yt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ts_target</span><span class="p">:</span>
+            <span class="c1"># y is a time series</span>
+            <span class="n">swt</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">categorical_target</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                      <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">yt</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_interp</span><span class="p">(</span><span class="n">t_lin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">xt</span><span class="p">[</span><span class="n">i</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">yt</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">kind</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span>
+                      <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># y is static - leave y alone</span>
+            <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x_new</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">x_new</span><span class="p">,</span> <span class="n">xc</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">swt</span></div></div>
+
+
+<div class="viewcode-block" id="FeatureRep"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRep">[docs]</a><span class="k">class</span> <span class="nc">FeatureRep</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A transformer for calculating a feature representation from segmented time series data.</span>
+
+<span class="sd">    This transformer calculates features from the segmented time series&#39;, by computing the same</span>
+<span class="sd">    feature set for each segment from each time series in the data set.</span>
+
+<span class="sd">    The ``features`` computed are a parameter of this transformer, defined by a dict of functions.</span>
+<span class="sd">    The seglearn package includes some useful features, but this basic feature set can be easily</span>
+<span class="sd">    extended.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    features : dict, optional</span>
+<span class="sd">        Dictionary of functions for calculating features from a segmented time series.</span>
+<span class="sd">        Each function in the dictionary is specified to compute features from a</span>
+<span class="sd">        multivariate segmented time series along axis 1 (the segment) eg:</span>
+<span class="sd">            &gt;&gt;&gt; def mean(X):</span>
+<span class="sd">            &gt;&gt;&gt;    F = np.mean(X, axis = 1)</span>
+<span class="sd">            &gt;&gt;&gt;    return F</span>
+<span class="sd">            X : array-like shape [n_samples, segment_width, n_variables]</span>
+<span class="sd">            F : array-like [n_samples, n_features]</span>
+<span class="sd">            The number of features returned (n_features) must be &gt;= 1</span>
+
+<span class="sd">        If features is not specified, a default feature dictionary will be used (see base_features).</span>
+<span class="sd">        See ``feature_functions`` for example implementations.</span>
+<span class="sd">    verbose: boolean, optional (default false)</span>
+<span class="sd">        Controls the verbosity of output messages</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f_labels : list of string feature labels (in order) corresponding to the computed features</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRep, Segment</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.pipe import Pype</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.feature_functions import mean, var, std, skew</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.ensemble import RandomForestClassifier</span>
+<span class="sd">    &gt;&gt;&gt; data = load_watch()</span>
+<span class="sd">    &gt;&gt;&gt; X = data[&#39;X&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; fts = {&#39;mean&#39;: mean, &#39;var&#39;: var, &#39;std&#39;: std, &#39;skew&#39;: skew}</span>
+<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, Segment()),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;ftr&#39;, FeatureRep(features = fts)),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;rf&#39;,RandomForestClassifier())])</span>
+<span class="sd">    &gt;&gt;&gt; clf.fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; print(clf.score(X, y))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">features</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">base_features</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;features must either &#39;default&#39; or an instance of type dict&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">bool</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;verbose parameter must be type boolean&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FeatureRep.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRep.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transform</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Segmented time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;X Shape: &quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_feature_labels</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FeatureRep.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRep.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform the segmented time series data into feature data.</span>
+<span class="sd">        If contextual data is included in X, it is returned with the feature data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Segmented time series data and (optionally) contextual data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array shape [n_series, ...]</span>
+<span class="sd">            Feature representation of segmented time series data and contextual data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_if_fitted</span><span class="p">()</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">check_array</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="n">Xt</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">fts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">fts</span></div>
+
+    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Resets internal data-dependent state of the transformer. __init__ parameters not</span>
+<span class="sd">        touched. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_check_if_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s2">&quot;FeatureRep&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_check_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">Xti</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        tests output of each feature against a segmented time series X</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        features : dict</span>
+<span class="sd">            feature function dictionary</span>
+<span class="sd">        Xti : array-like, shape [n_samples, segment_width, n_variables]</span>
+<span class="sd">            segmented time series (instance)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            ftr_sizes : dict</span>
+<span class="sd">                number of features output by each feature function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="n">Xti</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">N_fts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="n">fshapes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N_fts</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">features</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_fts</span><span class="p">):</span>
+            <span class="n">fshapes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]](</span><span class="n">Xti</span><span class="p">))</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># make sure each feature returns an array shape [N, ]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">fshapes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">N</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;feature function returned array with invalid length, &quot;</span><span class="p">,</span>
+                             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">fshapes</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">N</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="n">keys</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="n">fshapes</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_fts</span><span class="p">)}</span>
+
+    <span class="k">def</span> <span class="nf">_generate_feature_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates string feature labels</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="n">ftr_sizes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_features</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">f_labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># calculated features</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">ftr_sizes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ftr_sizes</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+                <span class="n">f_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+
+        <span class="c1"># contextual features</span>
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">Xc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">s_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;context_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+            <span class="n">f_labels</span> <span class="o">+=</span> <span class="n">s_labels</span>
+
+        <span class="k">return</span> <span class="n">f_labels</span></div>
+
+
+<div class="viewcode-block" id="FeatureRepMix"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix">[docs]</a><span class="k">class</span> <span class="nc">FeatureRepMix</span><span class="p">(</span><span class="n">_BaseComposition</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A transformer for calculating a feature representation from segmented time series data.</span>
+
+<span class="sd">    This transformer calculates features from the segmented time series&#39;, by applying the supplied</span>
+<span class="sd">    list of FeatureRep transformers on the specified columns of data. Non-specified columns are</span>
+<span class="sd">    dropped.</span>
+
+<span class="sd">    The segmented time series data is expected to enter this transform in the form of</span>
+<span class="sd">    num_samples x segment_size x num_features and to leave this transform in the form of</span>
+<span class="sd">    num_samples x num_features. The term columns refers to the last dimension of both</span>
+<span class="sd">    representations.</span>
+
+<span class="sd">    Note: This code is partially taken (_validate and _transformers functions with docstring) from</span>
+<span class="sd">          the scikit-learn ColumnTransformer made available under the 3-Clause BSD license.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    transformers : list of (name, transformer, columns) to be applied on the segmented time series</span>
+<span class="sd">        name : string</span>
+<span class="sd">            unique string which is used to prefix the f_labels of the FeatureRep below</span>
+<span class="sd">        transformer : FeatureRep transform</span>
+<span class="sd">            to be applied on the columns specified below</span>
+<span class="sd">        columns : integer, slice or boolean mask</span>
+<span class="sd">            to specify the columns to be transformed</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f_labels : list of string feature labels (in order) corresponding to the computed features</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FeatureRepMix, FeatureRep, Segment</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.pipe import Pype</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.feature_functions import mean, var, std, skew</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.ensemble import RandomForestClassifier</span>
+<span class="sd">    &gt;&gt;&gt; data = load_watch()</span>
+<span class="sd">    &gt;&gt;&gt; X = data[&#39;X&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; y = data[&#39;y&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; mask = [False, False, False, True, True, True]</span>
+<span class="sd">    &gt;&gt;&gt; clf = Pype([(&#39;seg&#39;, Segment()),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;union&#39;, FeatureRepMix([</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_a&#39;, FeatureRep(features={&#39;mean&#39;: mean}), 0),</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_b&#39;, FeatureRep(features={&#39;var&#39;: var}), [0,1,2]),</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_c&#39;, FeatureRep(features={&#39;std&#39;: std}), slice(3,7)),</span>
+<span class="sd">    &gt;&gt;&gt;                 (&#39;ftr_d&#39;, FeatureRep(features={&#39;skew&#39;: skew}), mask),</span>
+<span class="sd">    &gt;&gt;&gt;             ])),</span>
+<span class="sd">    &gt;&gt;&gt;             (&#39;rf&#39;,RandomForestClassifier())])</span>
+<span class="sd">    &gt;&gt;&gt; clf.fit(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; print(clf.score(X, y))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span> <span class="o">=</span> <span class="n">transformers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_transformers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal list of transformers only containing the name and transformers, dropping the</span>
+<span class="sd">        columns. This is for the implementation of get_params via BaseComposition._get_params which</span>
+<span class="sd">        expects lists of tuples of len 2.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">]</span>
+
+    <span class="nd">@_transformers</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_transformers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">),</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">col</span><span class="p">))</span>
+            <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="FeatureRepMix.get_params"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.get_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get parameters for this transformer.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deep : boolean, optional</span>
+<span class="sd">            If True, will return the parameters for this transformer and contained transformers.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        params : mapping of string to any parameter names mapped to their values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_params</span><span class="p">(</span><span class="s1">&#39;_transformers&#39;</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="n">deep</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FeatureRepMix.set_params"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the parameters of this transformer.</span>
+
+<span class="sd">        Valid parameter keys can be listed with ``get_params()``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_params</span><span class="p">(</span><span class="s1">&#39;_transformers&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_select</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select slices of the last dimension from time series data of the form</span>
+<span class="sd">        num_samples x segment_size x num_features.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">Xt</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="n">cols</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_retrieve_indices</span><span class="p">(</span><span class="n">cols</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve a list of indices corresponding to the provided column specification.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">cols</span><span class="o">.</span><span class="n">start</span> <span class="k">if</span> <span class="n">cols</span><span class="o">.</span><span class="n">start</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">stop</span> <span class="o">=</span> <span class="n">cols</span><span class="o">.</span><span class="n">stop</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="n">cols</span><span class="o">.</span><span class="n">step</span> <span class="k">if</span> <span class="n">cols</span><span class="o">.</span><span class="n">step</span> <span class="k">else</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">cols</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cols</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">cols</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;No valid column specifier. Only a scalar, list or slice of all&#39;</span>
+                            <span class="s1">&#39;integers or a boolean mask are allowed.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FeatureRepMix.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transform</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Segmented time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            There is no need of a target in a transformer, yet the pipeline API requires this</span>
+<span class="sd">            parameter.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            Returns self.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># calculated features (prefix with the FeatureRep name and correct the index)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">cols</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrieve_indices</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+            <span class="n">trans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">cols</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">trans</span><span class="o">.</span><span class="n">f_labels</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">label</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+
+        <span class="c1"># contextual features</span>
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">Xc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;context_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Internal function to validate the transformer before applying all internal transformers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span><span class="s1">&#39;FeatureRepMix&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">names</span><span class="p">,</span> <span class="n">transformers</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">)</span>
+
+        <span class="c1"># validate names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_names</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+        <span class="c1"># validate transformers</span>
+        <span class="k">for</span> <span class="n">trans</span> <span class="ow">in</span> <span class="n">transformers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="n">FeatureRep</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;All transformers must be an instance of FeatureRep.&quot;</span>
+                                <span class="s2">&quot; &#39;</span><span class="si">%s</span><span class="s2">&#39; (type </span><span class="si">%s</span><span class="s2">) doesn&#39;t.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">trans</span><span class="p">)))</span>
+
+<div class="viewcode-block" id="FeatureRepMix.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FeatureRepMix.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform the segmented time series data into feature data.</span>
+<span class="sd">        If contextual data is included in X, it is returned with the feature data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">            Segmented time series data and (optionally) contextual data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_new : array shape [n_series, ...]</span>
+<span class="sd">            Feature representation of segmented time series data and contextual data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
+
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">check_array</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># calculated features</span>
+        <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">trans</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">cols</span><span class="p">))</span>
+                               <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">cols</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformers</span><span class="p">])</span>
+        <span class="c1"># contextual features</span>
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">fts</span><span class="p">,</span> <span class="n">Xc</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">fts</span></div></div>
+
+
+<div class="viewcode-block" id="FunctionTransformer"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FunctionTransformer">[docs]</a><span class="k">class</span> <span class="nc">FunctionTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transformer for applying a custom function to time series data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func : function, optional (default=None)</span>
+<span class="sd">        the function to be applied to Xt, the time series part of X (contextual variables Xc are</span>
+<span class="sd">        passed through unaltered) - X remains unchanged if no function is supplied</span>
+<span class="sd">    func_kwargs : dictionary, optional (default={})</span>
+<span class="sd">        keyword arguments to be passed to the function call</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    self : object</span>
+<span class="sd">        returns self</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from seglearn.transform import FunctionTransformer</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; def choose_cols(Xt, cols):</span>
+<span class="sd">    &gt;&gt;&gt;     return [time_series[:, cols] for time_series in Xt]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; X = [np.array([[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 10, 11]]),</span>
+<span class="sd">    &gt;&gt;&gt;     np.array([[30, 40, 50], [60, 70, 80], [90, 100, 110]])]</span>
+<span class="sd">    &gt;&gt;&gt; y = [np.array([True, False, False, True]),</span>
+<span class="sd">    &gt;&gt;&gt;     np.array([False, True, False])]</span>
+<span class="sd">    &gt;&gt;&gt; trans = FunctionTransformer(choose_cols, func_kwargs={&quot;cols&quot;:[0,1]})</span>
+<span class="sd">    &gt;&gt;&gt; X = trans.fit_transform(X, y)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">func_kwargs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_kwargs</span> <span class="o">=</span> <span class="n">func_kwargs</span>
+
+<div class="viewcode-block" id="FunctionTransformer.fit"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FunctionTransformer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the transform</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_samples, ...]</span>
+<span class="sd">            time series data and (optionally) contextual data</span>
+<span class="sd">        y : None</span>
+<span class="sd">            there is no need of a target in a transformer, yet the pipeline API requires this</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            returns self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="FunctionTransformer.transform"><a class="viewcode-back" href="../../transform.html#seglearn.transform.FunctionTransformer.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transforms the time series data based on the provided function. Note this transformation</span>
+<span class="sd">        must not change the number of samples in the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_samples, ...]</span>
+<span class="sd">            time series data and (optionally) contextual data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Xt : array-like, shape [n_samples, ...]</span>
+<span class="sd">            transformed time series data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">func_kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_samples</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;FunctionTransformer changes sample number (not supported).&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Xt</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">_InitializePickableSampler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for initializing a serialized/pickled and dynamically patched imbalanced-learn Sampler.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampler_class</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recreate a dynamically patched Sampler by creating a _InitializePickableSampler object and</span>
+<span class="sd">        turning it into a patched Sampler by using the patch_sampler function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">_InitializePickableSampler</span><span class="p">()</span>
+        <span class="n">obj</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">patch_sampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+
+<div class="viewcode-block" id="patch_sampler"><a class="viewcode-back" href="../../transform.html#seglearn.transform.patch_sampler">[docs]</a><span class="k">def</span> <span class="nf">patch_sampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a dynamically patched imbalanced-learn Sampler class compatible with Pype.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;fit_resample&#39;</span><span class="p">),</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;_check_X_y&#39;</span><span class="p">),</span>
+        <span class="nb">hasattr</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="s1">&#39;_get_param_names&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">conditions</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;The sampler class to be patched must have a &quot;fit_resample&quot;, a &quot;_check_X_y&quot;&#39;</span>
+                        <span class="s1">&#39; method and a &quot;_get_param_names&quot; class method.&#39;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">PickableSampler</span><span class="p">(</span><span class="n">sampler_class</span><span class="p">,</span> <span class="n">XyTransformerMixin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dynamically created (pickable) class derived from an imbalanced-learn Sampler and the</span>
+<span class="sd">        XyTransformerMixin in order to enable the use of the imbalanced-learn Sampler transforms</span>
+<span class="sd">        inside a seglearn Pype.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        shuffle : boolean, optional (default=False)</span>
+<span class="sd">        random_state : int, RandomState instance or None, optional (default=None)</span>
+<span class="sd">            seed of the pseudo random number generator used for shuffling the resampled data</span>
+<span class="sd">        **kwargs : keyword arguments to be passed to the imbalanced-learn Sampler base class</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : object</span>
+<span class="sd">            returns self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="c1"># set shuffle and random_state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+
+            <span class="c1"># call imbalanced-learn Sampler base class with the correct arguments</span>
+            <span class="n">orig_signature</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span>
+            <span class="n">orig_args</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">orig_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                         <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;self&#39;</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="n">p</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;shuffle&quot;</span> <span class="ow">in</span> <span class="n">orig_args</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;shuffle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shuffle</span>
+            <span class="k">if</span> <span class="s2">&quot;random_state&quot;</span> <span class="ow">in</span> <span class="n">orig_args</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;random_state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random_state</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">_get_param_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Get parameters of the imbalanced-learn Sampler base class and the additional arguments</span>
+<span class="sd">            of the dynamically derived class.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">init_signature</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">))</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">init_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                          <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">&#39;self&#39;</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">kind</span> <span class="o">!=</span> <span class="n">p</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">]</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sampler_class</span><span class="o">.</span><span class="n">_get_param_names</span><span class="p">()</span> <span class="o">+</span> <span class="n">parameters</span><span class="p">))</span>
+
+        <span class="k">def</span> <span class="nf">_check_X_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Circumvent the check whether dim(Xt) == 2.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">Xt_2d</span> <span class="o">=</span> <span class="n">Xt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Xt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">binarize_yt</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_check_X_y</span><span class="p">(</span><span class="n">Xt_2d</span><span class="p">,</span> <span class="n">yt</span><span class="p">)</span>
+            <span class="n">Xt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;numeric&#39;</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">allow_nd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">binarize_yt</span>
+
+        <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Return the given segmented time series data (identity transform) when calling transform</span>
+<span class="sd">            without fit on this data (potentially making a prediction) to not alter test data.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            X : array-like, shape [n_series, ...]</span>
+<span class="sd">               time series data and (optionally) contextual data</span>
+<span class="sd">            y : array-like, shape [n_series] (default=None)</span>
+<span class="sd">                target vector</span>
+<span class="sd">            sample_weight : array-like shape [n_series] (default=None)</span>
+<span class="sd">                sample weights</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            X : array-like [n_series, ...]</span>
+<span class="sd">            y : array-like [n_series]</span>
+<span class="sd">            sample_weight : array-like shape [n_series]</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span>
+
+        <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Resample the given segmented time series data based on the Sampler transformer provided</span>
+<span class="sd">            as a bass class when calling fit (i.e. not making any prediction on the test data) on</span>
+<span class="sd">            this transformer.</span>
+<span class="sd">            Sample weights always returned as None.</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            X : array-like, shape [n_series, ...]</span>
+<span class="sd">               time series data and (optionally) contextual data</span>
+<span class="sd">            y : array-like, shape [n_series] (default=None)</span>
+<span class="sd">                target vector</span>
+<span class="sd">            sample_weight : array-like shape [n_series] (default=None)</span>
+<span class="sd">                sample weights</span>
+<span class="sd">            **fit_params : dict of string -&gt; object</span>
+<span class="sd">                parameters for the inner imbalanced-learn Sampler object</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            X : array-like [n_series, ...]</span>
+<span class="sd">            y : array-like [n_series]</span>
+<span class="sd">            sample_weight : None</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">PickableSampler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
+                <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="n">shuffle</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">Xt</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Definition on how to serialize/pickle an object of this dynamically created class.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">_InitializePickableSampler</span><span class="p">(),</span> <span class="p">(</span><span class="n">sampler_class</span><span class="p">,),</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+
+    <span class="n">new_class_name</span> <span class="o">=</span> <span class="s2">&quot;Patched&quot;</span> <span class="o">+</span> <span class="n">sampler_class</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">PickableSampler</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">new_class_name</span>
+    <span class="n">PickableSampler</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">=</span> <span class="n">new_class_name</span>
+    <span class="k">return</span> <span class="n">PickableSampler</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

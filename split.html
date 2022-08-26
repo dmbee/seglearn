@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Temporal K Fold Data Splitter &mdash; seglearn 1.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_log.html">Change Log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">General examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing seglearn</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">seglearn</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Temporal K Fold Data Splitter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/split.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-seglearn.split">
+<span id="temporal-k-fold-data-splitter"></span><h1>Temporal K Fold Data Splitter<a class="headerlink" href="#module-seglearn.split" title="Permalink to this headline">¶</a></h1>
+<p>This module has two classes for splitting time series data temporally - where train/test or fold
+splits are created within each of the time series’ in the time series data. This splitting approach
+is for evaluating how well the algorithm performs on segments drawn from the same time series but
+excluded from the training set. The performance from this splitting approach should be similar to
+performance on the training data so long as the data in each series is relatively uniform.</p>
+<p>Note that splitting along the temporal axis violates the assumption of independence between train
+and test samples, as successive samples in a sequence or series are not iid. However, temporal
+splitting is still useful in certain cases such as for the analysis of a single sequence / series.</p>
+<dl class="class">
+<dt id="seglearn.split.TemporalKFold">
+<em class="property">class </em><code class="sig-prename descclassname">seglearn.split.</code><code class="sig-name descname">TemporalKFold</code><span class="sig-paren">(</span><em class="sig-param">n_splits=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold" title="Permalink to this definition">¶</a></dt>
+<dd><p>K-fold iterator variant for temporal splitting of time series data</p>
+<p>The time series’ are divided in time with no overlap, and are balanced.</p>
+<p>By splitting the time series’, the number of samples in the data set is changed and so new
+arrays for the data and target are returned by the <code class="docutils literal notranslate"><span class="pre">split</span></code> function in addition to the
+iterator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_splits</strong><span class="classifier">int &gt; 1</span></dt><dd><p>number of folds</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.split</span> <span class="kn">import</span> <span class="n">TemporalKFold</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">splitter</span> <span class="o">=</span> <span class="n">TemporalKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span> <span class="o">=</span> <span class="n">splitter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#seglearn.split.TemporalKFold.split" title="seglearn.split.TemporalKFold.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(self, X, y)</p></td>
+<td><p>Splits time series data and target arrays, and generates splitting indices</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="seglearn.split.TemporalKFold.split">
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">X</em>, <em class="sig-param">y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#TemporalKFold.split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.TemporalKFold.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits time series data and target arrays, and generates splitting indices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like shape [n_series, ]</span></dt><dd><p>target vector</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series * n_splits, ]</span></dt><dd><p>Split time series data and contextual data</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, shape [n_series * n_splits]</span></dt><dd><p>Split target data</p>
+</dd>
+<dt><strong>cv</strong><span class="classifier">list, shape [2, n_splits]</span></dt><dd><p>Splitting indices</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.split.temporal_split">
+<code class="sig-prename descclassname">seglearn.split.</code><code class="sig-name descname">temporal_split</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">test_size=0.25</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/split.html#temporal_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.split.temporal_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split time series or sequence data along the time axis.
+Test data is drawn from the end of each series / sequence</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like shape [n_series, ]</span></dt><dd><p>target vector</p>
+</dd>
+<dt><strong>test_size</strong><span class="classifier">float</span></dt><dd><p>between 0 and 1, amount to allocate to test</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_train</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
+<dt><strong>X_test</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
+<dt><strong>y_train</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
+<dt><strong>y_test</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
