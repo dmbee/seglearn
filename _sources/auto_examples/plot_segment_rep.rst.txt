@@ -36,9 +36,9 @@ This is a basic example using a convolutional recurrent neural network to learn 
     N series in test:  35
     N segments in train:  1783
     N segments in test:  586
-    Accuracy score:  0.11262798309326172
+    Accuracy score:  0.17235495150089264
 
-    <matplotlib.image.AxesImage object at 0x7f4cc0075748>
+    <matplotlib.image.AxesImage object at 0x7fc5ced7a518>
 
 
 
@@ -109,7 +109,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  16.714 seconds)
+   **Total running time of the script:** ( 0 minutes  12.968 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_segment_rep.py:

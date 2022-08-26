@@ -149,10 +149,10 @@ Accessing training history
     /home/david/Code/venv3/lib/python3.6/site-packages/seglearn/transform.py:238: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
       for i in np.arange(N)])
            loss  accuracy  val_loss  val_accuracy
-    0  1.935082  0.143058  1.916399      0.257703
-    1  1.928849  0.152875  1.909948      0.252101
-    2  1.922523  0.161290  1.904884      0.246499
-    3  1.915349  0.171108  1.900211      0.243697
+    0  1.945784  0.206872  1.987774      0.098039
+    1  1.939762  0.223703  1.985568      0.098039
+    2  1.934930  0.220196  1.982926      0.092437
+    3  1.934727  0.228611  1.981828      0.095238
 
 
 
@@ -192,7 +192,7 @@ Training Curves
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.531 seconds)
+   **Total running time of the script:** ( 0 minutes  3.666 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:
