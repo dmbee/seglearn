@@ -159,7 +159,10 @@ def var(X):
 
 def median_absolute_deviation(X):
     """ median absolute deviation for each variable in a segmented time series """
-    return stats.median_absolute_deviation(X, axis=1)
+    if hasattr(stats, 'median_abs_deviation'):
+        return stats.median_abs_deviation(X, axis=1)
+    else:
+        return stats.median_absolute_deviation(X, axis=1)
 
 
 def variation(X):

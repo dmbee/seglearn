@@ -1,10 +1,17 @@
 Change Log
 ==========
 
+Version 1.2.4
+
+* Pype updated to support sklearn v1.0+
+* Fix for scipy stats.median_abs_deviation
+
 Version 1.2.3
+
 * Removed patch_sampler transform
 
 Version 1.2.2
+
 * Fix Pype initialization - pwoller
 * Deprecation fixes
 * Changed name for predict_segmented_series to predict_unsegment in pipe
