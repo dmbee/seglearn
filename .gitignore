@@ -7,7 +7,6 @@ __pycache__/
 *.so
 
 # scikit-learn specific
-doc/_build/
 doc/auto_examples/
 doc/modules/generated/
 doc/datasets/generated/
@@ -63,6 +62,7 @@ coverage/
 
 # Sphinx documentation
 docs/_build/
+/doc/_build/doctrees/
 
 # PyBuilder
 target/
@@ -77,3 +77,4 @@ testing.ipynb
 # deployment scripts
 reinstall.sh
 deploy_to_pypi.sh
+
