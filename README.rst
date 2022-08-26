@@ -4,7 +4,7 @@
 
 .. _scikit-learn-contrib: https://github.com/scikit-learn-contrib
 
-|Travis|_ |Pypi|_ |PythonVersion|_ |CircleCI|_ |Coveralls|_ |Downloads|_
+|Travis|_ |Pypi|_ |PythonVersion|_ |Coveralls|_ |Downloads|_
 
 .. |Travis| image:: https://travis-ci.com/dmbee/seglearn.svg?branch=master
 .. _Travis: https://app.travis-ci.com/github/dmbee/seglearn
@@ -14,9 +14,6 @@
 
 .. |PythonVersion| image:: https://img.shields.io/pypi/pyversions/seglearn.svg
 .. _PythonVersion: https://img.shields.io/pypi/pyversions/seglearn.svg
-
-.. |CircleCI| image:: https://circleci.com/gh/dmbee/seglearn.svg?style=shield&circle-token=:circle-token
-.. _CircleCI: https://circleci.com/gh/dmbee/seglearn/tree/master
 
 .. |Coveralls| image:: https://coveralls.io/repos/github/dmbee/seglearn/badge.svg?branch=master&&service=github
 .. _Coveralls: https://coveralls.io/github/dmbee/seglearn?branch=master&service=github
@@ -40,14 +37,16 @@ documentation_.
 Dependencies
 ~~~~~~~~~~~~
 
-seglearn is tested to work under Python 3.5.
-The dependency requirements are based on the last scikit-learn release:
+seglearn is tested to work under Python 3.5, 3.6, and 3.8.
+The dependency requirements are:
 
 * scipy(>=0.17.0)
 * numpy(>=1.11.0)
 * scikit-learn(>=0.21.3)
 
-Additionally, to run the examples, you need:
+seglearn is now also compatible with sklearn 1.0+
+
+To run the examples, you need:
 
 * matplotlib(>=2.0.0)
 * keras (>=2.1.4) for the neural network examples
@@ -87,7 +86,7 @@ Testing
 
 After installation, you can use `pytest` to run the test suite from seglearn's root directory::
 
-  pytest
+  python -m pytest
 
 Change Log
 ----------

@@ -5,6 +5,7 @@ Version 1.2.4
 
 * Pype updated to support sklearn v1.0+
 * Fix for scipy stats.median_abs_deviation
+* Removed circle_ci deployment of documentation
 
 Version 1.2.3
 

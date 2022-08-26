@@ -77,4 +77,4 @@ testing.ipynb
 # deployment scripts
 reinstall.sh
 deploy_to_pypi.sh
-
+deploy_html.sh
