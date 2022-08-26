@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Input and Checking Utilities &mdash; seglearn 1.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="change_log.html">Change Log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">General examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citations.html">Citing seglearn</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">seglearn</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data Input and Checking Utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/util.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-seglearn.util">
+<span id="data-input-and-checking-utilities"></span><h1>Data Input and Checking Utilities<a class="headerlink" href="#module-seglearn.util" title="Permalink to this headline">¶</a></h1>
+<p>This module has utilities for time series data input checking</p>
+<dl class="function">
+<dt id="seglearn.util.get_ts_data_parts">
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">get_ts_data_parts</code><span class="sig-paren">(</span><em class="sig-param">X</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#get_ts_data_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.get_ts_data_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Separates time series data object into time series variables and contextual variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>Xt</strong><span class="classifier">array-like, shape [n_series, ]</span></dt><dd><p>Time series data</p>
+</dd>
+<dt><strong>Xs</strong><span class="classifier">array-like, shape [n_series, n_contextd = np.colum _variables]</span></dt><dd><p>contextual variables</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.util.check_ts_data">
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">check_ts_data</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks time series data is good. If not raises value error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ts_target</strong><span class="classifier">bool</span></dt><dd><p>target (y) is a time series</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.util.check_ts_data_with_ts_target">
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">check_ts_data_with_ts_target</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#check_ts_data_with_ts_target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.check_ts_data_with_ts_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks time series data with time series target is good. If not raises value error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>target data</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="seglearn.util.ts_stats">
+<code class="sig-prename descclassname">seglearn.util.</code><code class="sig-name descname">ts_stats</code><span class="sig-paren">(</span><em class="sig-param">Xt</em>, <em class="sig-param">y</em>, <em class="sig-param">fs=1.0</em>, <em class="sig-param">class_labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/seglearn/util.html#ts_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#seglearn.util.ts_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates some helpful statistics about the data X</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape [n_series, …]</span></dt><dd><p>Time series data and (optionally) contextual data</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, shape [n_series]</span></dt><dd><p>target data</p>
+</dd>
+<dt><strong>fs</strong><span class="classifier">float</span></dt><dd><p>sampling frequency</p>
+</dd>
+<dt><strong>class_labels</strong><span class="classifier">list of strings, default None</span></dt><dd><p>List of target class names</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>results</strong><span class="classifier">dict</span></dt><dd><div class="line-block">
+<div class="line">Dictionary of relevant statistics for the time series data</div>
+<div class="line">results[‘total’] has stats for the whole data set</div>
+<div class="line">results[‘by_class’] has stats segragated by target class</div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

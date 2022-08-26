@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Working with Time Series Data &mdash; seglearn 1.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Classifying Segments Directly with a Neural Network" href="plot_segment_rep.html" />
+    <link rel="prev" title="Pipeline using Time Series Padding and Truncation" href="plot_padtrunc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../change_log.html">Change Log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">General examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep_mix_example.html">Simple FeatureRepMix Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_lda.html">Linear Discriminant Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_padtrunc.html">Pipeline using Time Series Padding and Truncation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working with Time Series Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_segment_rep.html">Classifying Segments Directly with a Neural Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_regression.html">Continuous Target and Time Series Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_model_selection1.html">Hyperparameter Selection 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_forecast.html">Time Series Forecasting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_feature_rep.html">Basic Feature Representation Classification Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_model_selection2.html">Hyperparameter Selection 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_nn_training_curves.html">Plotting Neural Network Training Curves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_interp.html">Resampling Time Series Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_scoring.html">Scoring Time Series Estimators</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citations.html">Citing seglearn</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">seglearn</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">General examples</a> &raquo;</li>
+        
+      <li>Working with Time Series Data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/auto_examples/plot_watchdata.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-watchdata-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="working-with-time-series-data">
+<span id="sphx-glr-auto-examples-plot-watchdata-py"></span><h1>Working with Time Series Data<a class="headerlink" href="#working-with-time-series-data" title="Permalink to this headline">¶</a></h1>
+<p>This example shows how to load the included smartwatch inertial sensor dataset, and create time series data objects compatible with the <cite>seglearn</cite> pipeline.</p>
+<img alt="../_images/sphx_glr_plot_watchdata_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_watchdata_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/david/Code/venv3/lib/python3.6/site-packages/numpy/core/_asarray.py:136: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
+  return array(a, dtype, copy=False, order=order, subok=True)
+DATA STATS - AGGREGATED
+{&#39;n_series&#39;: 140, &#39;n_classes&#39;: 7, &#39;n_TS_vars&#39;: 6, &#39;n_context_vars&#39;: 2, &#39;Total_Time&#39;: 4882.04, &#39;Series_Time_Mean&#39;: 34.87171428571428, &#39;Series_Time_Std&#39;: 8.757850351285423, &#39;Series_Time_Range&#39;: (18.94, 52.36)}
+
+DATA STATS - BY CLASS
+  Class_labels  n_series  Total_Time  Series_Time_Mean  Series_Time_Std  Series_Time_Min  Series_Time_Max
+0          PEN        20      532.44            26.622         2.720845            21.28            31.10
+1          ABD        20      798.10            39.905         8.055554            22.48            49.10
+2          FEL        20      809.96            40.498         8.772099            22.30            50.84
+3           IR        20      747.90            37.395         9.085212            19.40            52.36
+4           ER        20      752.08            37.604         7.983878            21.30            49.24
+5         TRAP        20      611.56            30.578         6.099252            19.26            45.12
+6          ROW        20      630.00            31.500         5.957100            18.94            38.66
+/home/david/Code/seglearn/examples/plot_watchdata.py:67: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
+  plt.show()
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Author: David Burns</span>
+<span class="c1"># License: BSD</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
+<span class="kn">from</span> <span class="nn">seglearn.datasets</span> <span class="kn">import</span> <span class="n">load_watch</span>
+<span class="kn">from</span> <span class="nn">seglearn.util</span> <span class="kn">import</span> <span class="n">check_ts_data</span><span class="p">,</span> <span class="n">ts_stats</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">load_watch</span><span class="p">()</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># sampling frequency</span>
+
+<span class="c1"># create time series data object with no contextual variables</span>
+
+<span class="n">check_ts_data</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+
+<span class="c1"># create time series data object with 2 contextual variables</span>
+<span class="n">Xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;side&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">]])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">Xs</span><span class="p">)</span>
+<span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># recover time series and contextual variables</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">ts_data</span>
+<span class="n">Xs</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">context_data</span>
+
+<span class="c1"># generate some statistics from the time series data</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">ts_stats</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">class_labels</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;y_labels&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DATA STATS - AGGREGATED&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;DATA STATS - BY CLASS&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;by_class&#39;</span><span class="p">]))</span>
+
+<span class="c1"># plot an instance from the data set</span>
+<span class="c1"># this plot shows 6-axis inertial sensor data recorded by someone doing shoulder pendulum exercise</span>
+<span class="n">Xt0</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt0</span><span class="p">))</span> <span class="o">/</span> <span class="n">fs</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [s]&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Acceleration [G]&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X_labels&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">],</span> <span class="s1">&#39;g-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">Xt0</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;time [s]&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Rotational Velocity [rad/s]&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;X_labels&#39;</span><span class="p">][</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.219 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-watchdata-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/12e9ebab39c80acd06bf409f997cd50d/plot_watchdata.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_watchdata.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/3e14e3a2a6181b67ebdb41495517ba6d/plot_watchdata.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_watchdata.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="plot_segment_rep.html" class="btn btn-neutral float-right" title="Classifying Segments Directly with a Neural Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="plot_padtrunc.html" class="btn btn-neutral float-left" title="Pipeline using Time Series Padding and Truncation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

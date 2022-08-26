@@ -1,0 +1,476 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>seglearn.util &mdash; seglearn 1.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../change_log.html">Change Log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">General examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citations.html">Citing seglearn</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">seglearn</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>seglearn.util</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for seglearn.util</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module has utilities for time series data input checking</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># Author: David Burns</span>
+<span class="c1"># License: BSD</span>
+
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">seglearn.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;get_ts_data_parts&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data&#39;</span><span class="p">,</span> <span class="s1">&#39;check_ts_data_with_ts_target&#39;</span><span class="p">,</span> <span class="s1">&#39;ts_stats&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="get_ts_data_parts"><a class="viewcode-back" href="../../util.html#seglearn.util.get_ts_data_parts">[docs]</a><span class="k">def</span> <span class="nf">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Separates time series data object into time series variables and contextual variables</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : array-like, shape [n_series, ...]</span>
+<span class="sd">       Time series data and (optionally) contextual data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Xt : array-like, shape [n_series, ]</span>
+<span class="sd">        Time series data</span>
+<span class="sd">    Xs : array-like, shape [n_series, n_contextd = np.colum _variables]</span>
+<span class="sd">        contextual variables</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">TS_Data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">ts_data</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">context_data</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X</span><span class="o">.</span><span class="n">ts_data</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ts_data&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="check_ts_data"><a class="viewcode-back" href="../../util.html#seglearn.util.check_ts_data">[docs]</a><span class="k">def</span> <span class="nf">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks time series data is good. If not raises value error.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : array-like, shape [n_series, ...]</span>
+<span class="sd">       Time series data and (optionally) contextual data</span>
+<span class="sd">       </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ts_target : bool</span>
+<span class="sd">        target (y) is a time series      </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Nx</span> <span class="o">!=</span> <span class="n">Ny</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of time series different in X (</span><span class="si">%d</span><span class="s2">) and y (</span><span class="si">%d</span><span class="s2">)&quot;</span>
+                             <span class="o">%</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Ntx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
+        <span class="n">Nty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>  <span class="c1"># all targets are single values</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Ntx</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>  <span class="c1"># y is a time series</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Nty</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>  <span class="c1"># target vector (eg multilabel or onehot)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid time series lengths.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                             <span class="s2">&quot;Ns: &quot;</span><span class="p">,</span> <span class="n">Nx</span><span class="p">,</span>
+                             <span class="s2">&quot;Ntx: &quot;</span><span class="p">,</span> <span class="n">Ntx</span><span class="p">,</span>
+                             <span class="s2">&quot;Nty: &quot;</span><span class="p">,</span> <span class="n">Nty</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_ts_data_with_ts_target"><a class="viewcode-back" href="../../util.html#seglearn.util.check_ts_data_with_ts_target">[docs]</a><span class="k">def</span> <span class="nf">check_ts_data_with_ts_target</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks time series data with time series target is good. If not raises value error.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : array-like, shape [n_series, ...]</span>
+<span class="sd">       Time series data and (optionally) contextual data</span>
+<span class="sd">    y : array-like, shape [n_series, ...]</span>
+<span class="sd">        target data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">Nx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Ny</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Nx</span> <span class="o">!=</span> <span class="n">Ny</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of time series different in X (</span><span class="si">%d</span><span class="s2">) and y (</span><span class="si">%d</span><span class="s2">)&quot;</span>
+                             <span class="o">%</span> <span class="p">(</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">))</span>
+
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Ntx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
+        <span class="n">Nty</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Nx</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">Nty</span> <span class="o">==</span> <span class="n">Ntx</span><span class="p">)</span> <span class="o">==</span> <span class="n">Nx</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid time series lengths.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                             <span class="s2">&quot;Ns: &quot;</span><span class="p">,</span> <span class="n">Nx</span><span class="p">,</span>
+                             <span class="s2">&quot;Ntx: &quot;</span><span class="p">,</span> <span class="n">Ntx</span><span class="p">,</span>
+                             <span class="s2">&quot;Nty: &quot;</span><span class="p">,</span> <span class="n">Nty</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ts_stats"><a class="viewcode-back" href="../../util.html#seglearn.util.ts_stats">[docs]</a><span class="k">def</span> <span class="nf">ts_stats</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">class_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates some helpful statistics about the data X</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : array-like, shape [n_series, ...]</span>
+<span class="sd">       Time series data and (optionally) contextual data</span>
+<span class="sd">    y : array-like, shape [n_series]</span>
+<span class="sd">        target data</span>
+<span class="sd">    fs : float</span>
+<span class="sd">        sampling frequency</span>
+<span class="sd">    class_labels : list of strings, default None</span>
+<span class="sd">        List of target class names</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    results : dict</span>
+<span class="sd">        | Dictionary of relevant statistics for the time series data</span>
+<span class="sd">        | results[&#39;total&#39;] has stats for the whole data set</span>
+<span class="sd">        | results[&#39;by_class&#39;] has stats segragated by target class</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_ts_data</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+    <span class="n">Xt</span><span class="p">,</span> <span class="n">Xs</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">Xs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">Xs</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># number of classes</span>
+    <span class="k">if</span> <span class="n">class_labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">class_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">Ti</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">/</span> <span class="n">fs</span>
+    <span class="n">ic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y</span> <span class="o">==</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)])</span>
+    <span class="n">Tic</span> <span class="o">=</span> <span class="p">[</span><span class="n">Ti</span><span class="p">[</span><span class="n">ic</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)]</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Ti</span><span class="p">)</span>
+
+    <span class="n">total</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;n_series&quot;</span><span class="p">:</span> <span class="n">N</span><span class="p">,</span> <span class="s2">&quot;n_classes&quot;</span><span class="p">:</span> <span class="n">C</span><span class="p">,</span> <span class="s2">&quot;n_TS_vars&quot;</span><span class="p">:</span> <span class="n">D</span><span class="p">,</span> <span class="s2">&quot;n_context_vars&quot;</span><span class="p">:</span> <span class="n">S</span><span class="p">,</span> <span class="s2">&quot;Total_Time&quot;</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+             <span class="s2">&quot;Series_Time_Mean&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Ti</span><span class="p">),</span>
+             <span class="s2">&quot;Series_Time_Std&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">Ti</span><span class="p">),</span>
+             <span class="s2">&quot;Series_Time_Range&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">Ti</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Ti</span><span class="p">))}</span>
+
+    <span class="n">by_class</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Class_labels&quot;</span><span class="p">:</span> <span class="n">class_labels</span><span class="p">,</span>
+                <span class="s2">&quot;n_series&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">Tic</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)]),</span>
+                <span class="s2">&quot;Total_Time&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Tic</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)]),</span>
+                <span class="s2">&quot;Series_Time_Mean&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Tic</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)]),</span>
+                <span class="s2">&quot;Series_Time_Std&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">Tic</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)]),</span>
+                <span class="s2">&quot;Series_Time_Min&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">Tic</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)]),</span>
+                <span class="s2">&quot;Series_Time_Max&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Tic</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">)])}</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span>
+               <span class="s1">&#39;by_class&#39;</span><span class="p">:</span> <span class="n">by_class</span><span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">results</span></div>
+
+<span class="k">def</span> <span class="nf">interp_sort</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    sorts time series x by timestamp t, removing duplicates in the first entry</span>
+
+<span class="sd">    this is required to user the scipy interp1d methods which returns nan when there are duplicate</span>
+<span class="sd">    values for t_min</span>
+
+<span class="sd">    this can be removed once the scipy issue is fixed</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    t : array-like, shape [n]</span>
+<span class="sd">        timestamps</span>
+<span class="sd">    x : array-like, shape [n, ]</span>
+<span class="sd">        data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    t : array-like, shape [n]</span>
+<span class="sd">        timestamps</span>
+<span class="sd">    x : array-like, shape [n, ]</span>
+<span class="sd">        data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Interpolation time and value errors not equal&quot;</span><span class="p">)</span>
+
+    <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+
+    <span class="n">t</span><span class="p">,</span> <span class="n">ind</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Interpolation time has duplicate time indices&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">segmented_prediction_to_series</span><span class="p">(</span><span class="n">yp</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">categorical_target</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    resamples prediction on a single segmented series to original series sampling</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    yp : array-like, shape [n, ]</span>
+<span class="sd">        prediction on segmented series</span>
+<span class="sd">    step : int</span>
+<span class="sd">        segmentation step size (number of samples)</span>
+<span class="sd">    width : int</span>
+<span class="sd">        segmentation width (number of samples)</span>
+<span class="sd">    categorical_target : boolean</span>
+<span class="sd">        set to True for classification problems and False for regression problems</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    yt : array-like, shape [n, ]</span>
+<span class="sd">        resampled prediction</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># average regression predictions if highly overlapping</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">categorical_target</span> <span class="ow">and</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">width</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">segmentation_mask</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">yp</span><span class="p">),</span> <span class="n">step</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">yp</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">yt</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">yt</span><span class="p">)</span> <span class="o">/</span> <span class="n">counts</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">yt</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">counts</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">yt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">yt</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">yp</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">step</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ye</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">yp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:],</span> <span class="n">width</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">yt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">yt</span><span class="p">,</span> <span class="n">ye</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">yt</span>
+
+
+<span class="k">def</span> <span class="nf">segmentation_mask</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">N</span> <span class="o">*</span> <span class="n">step</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="p">))</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">+</span> <span class="n">steps</span>
+    <span class="k">return</span> <span class="n">mask</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

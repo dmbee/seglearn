@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>seglearn.split &mdash; seglearn 1.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> seglearn
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install and contribution</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../change_log.html">Change Log</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial - Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">General examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Addtional Information</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citations.html">Citing seglearn</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">seglearn</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>seglearn.split</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for seglearn.split</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module has two classes for splitting time series data temporally - where train/test or fold</span>
+<span class="sd">splits are created within each of the time series&#39; in the time series data. This splitting approach</span>
+<span class="sd">is for evaluating how well the algorithm performs on segments drawn from the same time series but</span>
+<span class="sd">excluded from the training set. The performance from this splitting approach should be similar to</span>
+<span class="sd">performance on the training data so long as the data in each series is relatively uniform.</span>
+
+<span class="sd">Note that splitting along the temporal axis violates the assumption of independence between train</span>
+<span class="sd">and test samples, as successive samples in a sequence or series are not iid. However, temporal</span>
+<span class="sd">splitting is still useful in certain cases such as for the analysis of a single sequence / series.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Author: David Burns</span>
+<span class="c1"># License: BSD</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection._split</span> <span class="kn">import</span> <span class="n">_build_repr</span>
+
+<span class="kn">from</span> <span class="nn">.util</span> <span class="kn">import</span> <span class="n">check_ts_data</span><span class="p">,</span> <span class="n">get_ts_data_parts</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">TS_Data</span>
+
+
+<div class="viewcode-block" id="TemporalKFold"><a class="viewcode-back" href="../../split.html#seglearn.split.TemporalKFold">[docs]</a><span class="k">class</span> <span class="nc">TemporalKFold</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    K-fold iterator variant for temporal splitting of time series data</span>
+
+<span class="sd">    The time series&#39; are divided in time with no overlap, and are balanced.</span>
+
+<span class="sd">    By splitting the time series&#39;, the number of samples in the data set is changed and so new</span>
+<span class="sd">    arrays for the data and target are returned by the ``split`` function in addition to the</span>
+<span class="sd">    iterator.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_splits : int &gt; 1</span>
+<span class="sd">        number of folds</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.split import TemporalKFold</span>
+<span class="sd">    &gt;&gt;&gt; from seglearn.datasets import load_watch</span>
+<span class="sd">    &gt;&gt;&gt; data = load_watch()</span>
+<span class="sd">    &gt;&gt;&gt; splitter = TemporalKFold(n_splits=4)</span>
+<span class="sd">    &gt;&gt;&gt; X, y, cv = splitter.split(data[&#39;X&#39;], data[&#39;y&#39;])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n_splits</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;TemporalKFold: n_splits must be &gt;= 2 (set to </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">n_splits</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">=</span> <span class="n">n_splits</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_build_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TemporalKFold.split"><a class="viewcode-back" href="../../split.html#seglearn.split.TemporalKFold.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Splits time series data and target arrays, and generates splitting indices</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape [n_series, ...]</span>
+<span class="sd">           Time series data and (optionally) contextual data</span>
+<span class="sd">        y : array-like shape [n_series, ]</span>
+<span class="sd">            target vector</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X : array-like, shape [n_series * n_splits, ]</span>
+<span class="sd">            Split time series data and contextual data</span>
+<span class="sd">        y : array-like, shape [n_series * n_splits]</span>
+<span class="sd">            Split target data</span>
+<span class="sd">        cv : list, shape [2, n_splits]</span>
+<span class="sd">            Splitting indices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+        <span class="n">Xt_new</span><span class="p">,</span> <span class="n">y_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ts_slice</span><span class="p">(</span><span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">Xc_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">Xc</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span>
+            <span class="n">X_new</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">Xt_new</span><span class="p">,</span> <span class="n">Xc_new</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">X_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Xt_new</span><span class="p">)</span>
+
+        <span class="n">cv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_indices</span><span class="p">(</span><span class="n">Ns</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">X_new</span><span class="p">,</span> <span class="n">y_new</span><span class="p">,</span> <span class="n">cv</span></div>
+
+    <span class="k">def</span> <span class="nf">_ts_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; takes time series data, and splits each series into temporal folds &quot;&quot;&quot;</span>
+        <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+        <span class="n">Xt_new</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">):</span>
+                <span class="n">Njs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span>
+                <span class="n">Xt_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">j</span><span class="p">][(</span><span class="n">Njs</span> <span class="o">*</span> <span class="n">i</span><span class="p">):(</span><span class="n">Njs</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))])</span>
+        <span class="n">Xt_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Xt_new</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="c1"># y is a time series</span>
+            <span class="n">y_new</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">):</span>
+                    <span class="n">Njs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span>
+                    <span class="n">y_new</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">][(</span><span class="n">Njs</span> <span class="o">*</span> <span class="n">i</span><span class="p">):(</span><span class="n">Njs</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))])</span>
+            <span class="n">y_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_new</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># y is contextual to each series</span>
+            <span class="n">y_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">y</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)])</span>
+
+        <span class="k">return</span> <span class="n">Xt_new</span><span class="p">,</span> <span class="n">y_new</span>
+
+    <span class="k">def</span> <span class="nf">_make_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ns</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; makes indices for cross validation &quot;&quot;&quot;</span>
+        <span class="n">N_new</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Ns</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span>
+
+        <span class="n">test</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">N_new</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">):</span>
+            <span class="n">test</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">Ns</span> <span class="o">*</span> <span class="n">i</span><span class="p">,</span> <span class="n">Ns</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">train</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)]</span>
+
+        <span class="n">test</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_new</span><span class="p">)[</span><span class="n">test</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)]</span>
+        <span class="n">train</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N_new</span><span class="p">)[</span><span class="n">train</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)]</span>
+
+        <span class="n">cv</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">cv</span></div>
+
+
+<div class="viewcode-block" id="temporal_split"><a class="viewcode-back" href="../../split.html#seglearn.split.temporal_split">[docs]</a><span class="k">def</span> <span class="nf">temporal_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split time series or sequence data along the time axis.</span>
+<span class="sd">    Test data is drawn from the end of each series / sequence</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : array-like, shape [n_series, ...]</span>
+<span class="sd">       Time series data and (optionally) contextual data</span>
+<span class="sd">    y : array-like shape [n_series, ]</span>
+<span class="sd">        target vector</span>
+<span class="sd">    test_size : float</span>
+<span class="sd">        between 0 and 1, amount to allocate to test</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    X_train : array-like, shape [n_series, ]</span>
+<span class="sd">    X_test : array-like, shape [n_series, ]</span>
+<span class="sd">    y_train :  array-like, shape [n_series, ]</span>
+<span class="sd">    y_test :  array-like, shape [n_series, ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">test_size</span> <span class="o">&lt;=</span> <span class="mf">0.</span> <span class="ow">or</span> <span class="n">test_size</span> <span class="o">&gt;=</span> <span class="mf">1.</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;temporal_split: test_size must be &gt;= 0.0 and &lt;= 1.0&quot;</span>
+                         <span class="s2">&quot; (was </span><span class="si">%.1f</span><span class="s2">)&quot;</span> <span class="o">%</span><span class="n">test_size</span><span class="p">)</span>
+
+    <span class="n">Ns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># number of series</span>
+    <span class="n">check_ts_data</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">Xt</span><span class="p">,</span> <span class="n">Xc</span> <span class="o">=</span> <span class="n">get_ts_data_parts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+    <span class="n">train_size</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">test_size</span>
+
+    <span class="n">train_ind</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">train_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">])))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+    <span class="n">test_ind</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+
+    <span class="n">X_train</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">train_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">Xt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">test_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="n">Xc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">X_train</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+        <span class="n">X_test</span> <span class="o">=</span> <span class="n">TS_Data</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Xc</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">Xt</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="c1"># y is a time series</span>
+        <span class="n">y_train</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">train_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+        <span class="n">y_test</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">test_ind</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Ns</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># y is contextual</span>
+        <span class="n">y_train</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, David Burns
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
