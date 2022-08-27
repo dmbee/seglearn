@@ -28,13 +28,13 @@ See API documentation for an example.
  .. code-block:: none
 
     After segmentation:
-    X: [[[ 0  1  2  3]
-      [ 4  5  6  7]
-      [ 8  9 10 11]]]
-    y:  [False]
+    X: [[[ 0.  1.  2.  3.]
+      [ 4.  5.  6.  7.]
+      [ 8.  9. 10. 11.]]]
+    y:  [0.]
     After column-wise feature extraction:
        a_min_0  b_min_1  c_min_2  c_min_3  d_max_0  d_max_1  e_max_2  e_max_3
-    0        0        1        2        3        8        9       10       11
+    0      0.0      1.0      2.0      3.0      8.0      9.0     10.0     11.0
 
 
 
@@ -85,7 +85,7 @@ See API documentation for an example.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.223 seconds)
+   **Total running time of the script:** ( 0 minutes  0.327 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_feature_rep_mix_example.py:

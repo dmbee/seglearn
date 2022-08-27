@@ -29,32 +29,16 @@ This example demonstrates how to do model selection in a pipeline where segments
 
     /home/david/Code/venv3/lib/python3.6/site-packages/seglearn/split.py:100: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
       Xt_new = np.array(Xt_new)
-    /home/david/Code/venv3/lib/python3.6/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
     Fitting 3 folds for each of 3 candidates, totalling 9 fits
-    [Parallel(n_jobs=1)]: Using backend SequentialBackend with 1 concurrent workers.
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    /home/david/Code/venv3/lib/python3.6/site-packages/seglearn/transform.py:238: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
-      for i in np.arange(N)])
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=   2.6s
-    [Parallel(n_jobs=1)]: Done   1 out of   1 | elapsed:    2.6s remaining:    0.0s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=   2.6s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=100 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=100, total=   2.5s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=   2.9s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=   2.7s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=200 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=200, total=   2.8s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=   3.0s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=   3.2s
-    [CV] crnn__width=seg__width, seg__overlap=0.0, seg__width=400 ........
-    [CV]  crnn__width=seg__width, seg__overlap=0.0, seg__width=400, total=   3.0s
-    [Parallel(n_jobs=1)]: Done   9 out of   9 | elapsed:   25.4s finished
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.5s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.7s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.5s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=200; total time=   2.8s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=200; total time=   2.7s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=200; total time=   2.8s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.3s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.2s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.2s
     /home/david/Code/seglearn/examples/plot_model_selection2.py:74: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
       plt.show()
 
@@ -139,7 +123,7 @@ This example demonstrates how to do model selection in a pipeline where segments
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  28.063 seconds)
+   **Total running time of the script:** ( 0 minutes  28.859 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection2.py:

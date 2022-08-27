@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>seglearn.feature_functions &mdash; seglearn 1.2.4 documentation</title>
+  <title>seglearn.feature_functions &mdash; seglearn 1.2.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.2.4
+                1.2.5
               </div>
             
           
@@ -327,7 +327,10 @@
 
 <div class="viewcode-block" id="median_absolute_deviation"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.median_absolute_deviation">[docs]</a><span class="k">def</span> <span class="nf">median_absolute_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; median absolute deviation for each variable in a segmented time series &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">median_absolute_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="s1">&#39;median_abs_deviation&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">median_abs_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">median_absolute_deviation</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="variation"><a class="viewcode-back" href="../../feature_functions.html#seglearn.feature_functions.variation">[docs]</a><span class="k">def</span> <span class="nf">variation</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
@@ -423,7 +426,7 @@
     <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
     <span class="n">trii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu_indices</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">DD</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trii</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
