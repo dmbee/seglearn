@@ -138,10 +138,10 @@ Accessing training history
  .. code-block:: none
 
            loss  accuracy  val_loss  val_accuracy
-    0  1.960850  0.126227  1.892800      0.221289
-    1  1.954619  0.143759  1.898374      0.207283
-    2  1.950636  0.150771  1.903935      0.204482
-    3  1.944786  0.164797  1.908494      0.190476
+    0  2.014606  0.142356  1.974929      0.123249
+    1  2.003283  0.160589  1.969610      0.112045
+    2  1.992076  0.169705  1.965618      0.117647
+    3  1.981149  0.170407  1.961261      0.114846
 
 
 
@@ -181,7 +181,7 @@ Training Curves
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.741 seconds)
+   **Total running time of the script:** ( 0 minutes  3.718 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

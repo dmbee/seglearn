@@ -88,7 +88,7 @@ This example demonstrates how the pipeline can be used to perform transformation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.662 seconds)
+   **Total running time of the script:** ( 0 minutes  0.919 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_lda.py:

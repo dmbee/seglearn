@@ -109,7 +109,7 @@ This example demonstrates how to do model selection in a feature representation 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  8.437 seconds)
+   **Total running time of the script:** ( 0 minutes  8.819 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection1.py:
