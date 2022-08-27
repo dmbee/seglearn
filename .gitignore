@@ -79,5 +79,6 @@ testing.ipynb
 reinstall.sh
 deploy_to_pypi.sh
 deploy_html.sh
+build_html.sh
 
 
