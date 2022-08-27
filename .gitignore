@@ -62,7 +62,8 @@ coverage/
 
 # Sphinx documentation
 docs/_build/
-/doc/_build/doctrees/
+doc/_build/
+html/
 
 # PyBuilder
 target/
@@ -78,3 +79,5 @@ testing.ipynb
 reinstall.sh
 deploy_to_pypi.sh
 deploy_html.sh
+
+
