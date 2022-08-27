@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Classifying Segments Directly with a Neural Network &mdash; seglearn 1.2.4 documentation</title>
+  <title>Classifying Segments Directly with a Neural Network &mdash; seglearn 1.2.5 documentation</title>
   
 
   
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.2.4
+                1.2.5
               </div>
             
           
@@ -195,17 +195,13 @@
 <p>This is a basic example using a convolutional recurrent neural network to learn segments directly from time series data</p>
 <img alt="../_images/sphx_glr_plot_segment_rep_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_plot_segment_rep_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/david/Code/venv3/lib/python3.6/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-  FutureWarning)
-/home/david/Code/venv3/lib/python3.6/site-packages/seglearn/transform.py:238: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify &#39;dtype=object&#39; when creating the ndarray
-  for i in np.arange(N)])
-N series in train:  105
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>N series in train:  105
 N series in test:  35
 N segments in train:  1783
 N segments in test:  586
-Accuracy score:  0.17235495150089264
+Accuracy score:  0.0904436856508255
 
-&lt;matplotlib.image.AxesImage object at 0x7fc5ced7a518&gt;
+&lt;matplotlib.image.AxesImage object at 0x7fce611adcc0&gt;
 </pre></div>
 </div>
 <div class="line-block">
@@ -269,7 +265,7 @@ Accuracy score:  0.17235495150089264
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  12.968 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.583 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-segment-rep-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3947e906ce2c7b6cbed10c38d1458c3b/plot_segment_rep.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_segment_rep.py</span></code></a></p>

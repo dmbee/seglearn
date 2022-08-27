@@ -26,6 +26,8 @@ class TS_Data(object):
 
     def __init__(self, ts_data, context_data):
         N = len(ts_data)
+        if isinstance(ts_data, (list, tuple)):
+            ts_data = np.array(ts_data, dtype=object)
         self.ts_data = np.atleast_1d(ts_data)
         self.context_data = np.atleast_1d(context_data)
         self.index = 0

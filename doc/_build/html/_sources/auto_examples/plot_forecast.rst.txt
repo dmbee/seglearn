@@ -36,13 +36,11 @@ useful in your application).
 
  .. code-block:: none
 
-    /home/david/Code/venv3/lib/python3.6/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
     N series in train:  1
     N series in test:  1
     N segments in train:  34
     N segments in test:  9
-    Score:  0.9969665116177243
+    Score:  0.9969665116177244
     /home/david/Code/seglearn/examples/plot_forecast.py:84: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
       plt.show()
 
@@ -128,7 +126,7 @@ useful in your application).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.083 seconds)
+   **Total running time of the script:** ( 0 minutes  0.089 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_forecast.py:

@@ -28,17 +28,13 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
  .. code-block:: none
 
-    /home/david/Code/venv3/lib/python3.6/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
-    /home/david/Code/venv3/lib/python3.6/site-packages/seglearn/transform.py:238: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
-      for i in np.arange(N)])
     N series in train:  105
     N series in test:  35
     N segments in train:  1783
     N segments in test:  586
-    Accuracy score:  0.17235495150089264
+    Accuracy score:  0.0904436856508255
 
-    <matplotlib.image.AxesImage object at 0x7fc5ced7a518>
+    <matplotlib.image.AxesImage object at 0x7fce611adcc0>
 
 
 
@@ -109,7 +105,7 @@ This is a basic example using a convolutional recurrent neural network to learn 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.968 seconds)
+   **Total running time of the script:** ( 0 minutes  3.583 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_segment_rep.py:

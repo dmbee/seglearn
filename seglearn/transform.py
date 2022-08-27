@@ -72,7 +72,7 @@ def every(y):
 def shuffle_data(X, y=None, sample_weight=None):
     """ Shuffles indices X, y, and sample_weight together"""
     if len(X) > 1:
-        ind = np.arange(len(X), dtype=np.int)
+        ind = np.arange(len(X), dtype=int)
         np.random.shuffle(ind)
         Xt = X[ind]
         yt = y
@@ -235,13 +235,13 @@ class Segment(BaseEstimator, XyTransformerMixin):
 
         if Xt[0].ndim > 1:
             Xt = np.array([sliding_tensor(Xt[i], self.width, self._step, self.order)
-                           for i in np.arange(N)])
+                           for i in np.arange(N)], dtype=object)
         else:
             Xt = np.array([sliding_window(Xt[i], self.width, self._step, self.order)
-                           for i in np.arange(N)])
+                           for i in np.arange(N)], dtype=object)
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
-        Xt = np.concatenate(Xt)
+        Xt = np.concatenate(Xt).astype(float)
 
         if Xc is not None:
             Xc = expand_variables_to_segments(Xc, Nt)
@@ -252,8 +252,8 @@ class Segment(BaseEstimator, XyTransformerMixin):
     def _segmentY(self, y, Nt, ts_target=False):
         if ts_target:
             yt = np.array([sliding_window(y[i], self.width, self._step, self.order)
-                           for i in np.arange(len(y))])
-            yt = np.concatenate(yt)
+                           for i in np.arange(len(y))], dtype=object)
+            yt = np.concatenate(yt).astype(float)
             yt = self.y_func(yt)
         else:
             yt = expand_variables_to_segments(y, Nt)
@@ -456,13 +456,13 @@ class SegmentXYForecast(Segment):
 
         if Xt[0].ndim > 1:
             Xt = np.array([sliding_tensor(Xt[i], self.width + self.forecast, self._step, self.order)
-                           for i in np.arange(N)])
+                           for i in np.arange(N)], dtype=object)
         else:
             Xt = np.array([sliding_window(Xt[i], self.width + self.forecast, self._step, self.order)
-                           for i in np.arange(N)])
+                           for i in np.arange(N)], dtype=object)
 
         Nt = [len(Xt[i]) for i in np.arange(len(Xt))]
-        Xt = np.concatenate(Xt)
+        Xt = np.concatenate(Xt).astype(float)
 
         # todo: implement advance X
         Xt = Xt[:, 0:self.width]
@@ -473,8 +473,8 @@ class SegmentXYForecast(Segment):
 
         if yt is not None:
             yt = np.array([sliding_window(yt[i], self.width + self.forecast, self._step, self.order)
-                           for i in np.arange(N)])
-            yt = np.concatenate(yt)
+                           for i in np.arange(N)], dtype=object)
+            yt = np.concatenate(yt).astype(float)
             yt = yt[:, self.width:(self.width + self.forecast)]  # target y
             yt = self.y_func(yt)
 
@@ -565,7 +565,7 @@ class PadTrunc(BaseEstimator, XyTransformerMixin):
             D = v[0].shape[1]
             w = np.zeros((N, self.width, D))
         else:
-            w = np.zeros((N, self.width))
+            w = np.zeros((N, self.width), dtype=float)
         for i in np.arange(N):
             Ni = min(self.width, len(v[i]))
             w[i, 0:Ni] = v[i][0:Ni]
@@ -1105,7 +1105,7 @@ class FeatureRep(BaseEstimator, TransformerMixin):
         """
         N = Xti.shape[0]
         N_fts = len(features)
-        fshapes = np.zeros((N_fts, 2), dtype=np.int)
+        fshapes = np.zeros((N_fts, 2), dtype=int)
         keys = [key for key in features]
         for i in np.arange(N_fts):
             fshapes[i] = np.row_stack(features[keys[i]](Xti)).shape

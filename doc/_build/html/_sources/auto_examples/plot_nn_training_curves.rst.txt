@@ -96,15 +96,6 @@ Setup
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/david/Code/venv3/lib/python3.6/site-packages/sklearn/base.py:197: FutureWarning: From version 0.24, get_params will raise an AttributeError if a parameter cannot be retrieved as an instance attribute. Previously it would return None.
-      FutureWarning)
-
 
 
 
@@ -146,13 +137,11 @@ Accessing training history
 
  .. code-block:: none
 
-    /home/david/Code/venv3/lib/python3.6/site-packages/seglearn/transform.py:238: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
-      for i in np.arange(N)])
            loss  accuracy  val_loss  val_accuracy
-    0  1.945784  0.206872  1.987774      0.098039
-    1  1.939762  0.223703  1.985568      0.098039
-    2  1.934930  0.220196  1.982926      0.092437
-    3  1.934727  0.228611  1.981828      0.095238
+    0  1.960850  0.126227  1.892800      0.221289
+    1  1.954619  0.143759  1.898374      0.207283
+    2  1.950636  0.150771  1.903935      0.204482
+    3  1.944786  0.164797  1.908494      0.190476
 
 
 
@@ -192,7 +181,7 @@ Training Curves
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.666 seconds)
+   **Total running time of the script:** ( 0 minutes  3.741 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_nn_training_curves.py:

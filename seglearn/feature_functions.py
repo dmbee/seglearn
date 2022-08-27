@@ -258,7 +258,7 @@ def corr2(X):
     D = X.shape[2]
 
     if D == 1:
-        return np.zeros(N, dtype=np.float)
+        return np.zeros(N, dtype=float)
 
     trii = np.triu_indices(D, k=1)
     DD = len(trii[0])

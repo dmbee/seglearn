@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 1.2.5
+
+* Fixed problem with ragged nesting of numpy arrays
+
 Version 1.2.4
 
 * Pype updated to support sklearn v1.0+

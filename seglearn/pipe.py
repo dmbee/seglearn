@@ -362,7 +362,7 @@ class Pype(Pipeline):
         ix = np.arange(len(X))  # series index
         ixp, yp = self.transform_predict(X, ix)
         yp = [yp[ixp == i] for i in ix]
-        return np.array(yp)
+        return np.array(yp, dtype=object)
 
 
     def predict_unsegmented(self, X, categorical_target=False):
@@ -407,7 +407,7 @@ class Pype(Pipeline):
                 yui = np.concatenate([yui, np.repeat(yui[-1:], d)], axis=0)
             yu.append(yui)
 
-        return np.array(yu)
+        return np.array(yu, dtype=object)
 
 
     def _get_segmenter(self):
