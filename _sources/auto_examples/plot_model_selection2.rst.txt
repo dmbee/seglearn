@@ -30,15 +30,15 @@ This example demonstrates how to do model selection in a pipeline where segments
     /home/david/Code/venv3/lib/python3.6/site-packages/seglearn/split.py:100: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray
       Xt_new = np.array(Xt_new)
     Fitting 3 folds for each of 3 candidates, totalling 9 fits
-    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.5s
-    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.7s
     [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.4s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.6s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=100; total time=   2.7s
     [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=200; total time=   2.8s
     [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=200; total time=   2.6s
     [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=200; total time=   2.8s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.1s
     [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.2s
-    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.2s
-    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.0s
+    [CV] END crnn__width=seg__width, seg__overlap=0.0, seg__width=400; total time=   3.1s
     /home/david/Code/seglearn/examples/plot_model_selection2.py:74: UserWarning: Matplotlib is currently using agg, which is a non-GUI backend, so cannot show the figure.
       plt.show()
 
@@ -123,7 +123,7 @@ This example demonstrates how to do model selection in a pipeline where segments
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  28.133 seconds)
+   **Total running time of the script:** ( 0 minutes  27.853 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_model_selection2.py:

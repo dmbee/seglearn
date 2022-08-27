@@ -211,10 +211,10 @@ OPTION 3: scoring during model selection
  .. code-block:: none
 
     CV Scores:     fit_time  score_time  test_score  train_score
-    0  0.432296    0.074203    0.784972     0.999708
-    1  0.454933    0.067463    0.842857     1.000000
-    2  0.439893    0.068577    0.774956     1.000000
-    3  0.416337    0.069303    0.770619     1.000000
+    0  0.446275    0.076087    0.784972     0.999708
+    1  0.502541    0.079094    0.842857     1.000000
+    2  0.466788    0.069131    0.774956     1.000000
+    3  0.431198    0.071541    0.770619     1.000000
 
 
 
@@ -245,10 +245,10 @@ SCORING WORKAROUND 1: USE ANOTHER SCORER FUNCTION
  .. code-block:: none
 
     CV F1 Scores:     fit_time  score_time  test_score  train_score
-    0  0.417708    0.076011    0.824988          1.0
-    1  0.439400    0.068582    0.841483          1.0
-    2  0.439197    0.071378    0.791326          1.0
-    3  0.422054    0.069434    0.797336          1.0
+    0  0.431416    0.073237    0.824988          1.0
+    1  0.467504    0.068295    0.841483          1.0
+    2  0.446201    0.069201    0.791326          1.0
+    3  0.435928    0.070309    0.797336          1.0
 
 
 
@@ -289,10 +289,10 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
  .. code-block:: none
 
     CV Scores (workaround):     fit_time  score_time  test_accuracy  test_precision_macro  test_recall_macro  test_f1_macro
-    0  1.312801    0.082043       0.813675              0.829951           0.827524       0.823218
-    1  1.304105    0.079576       0.816082              0.840500           0.834377       0.831517
-    2  1.296575    0.079588       0.810950              0.838272           0.820251       0.822046
-    3  1.261959    0.079775       0.799829              0.822963           0.818255       0.816566
+    0  1.312680    0.081219       0.813675              0.829951           0.827524       0.823218
+    1  1.308434    0.079772       0.816082              0.840500           0.834377       0.831517
+    2  1.313067    0.081143       0.810950              0.838272           0.820251       0.822046
+    3  1.310060    0.090736       0.799829              0.822963           0.818255       0.816566
 
 
 
@@ -300,7 +300,7 @@ SCORING WORKAROUND 2: WORK OUTSIDE THE PIPELINE
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.079 seconds)
+   **Total running time of the script:** ( 0 minutes  12.474 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_scoring.py:

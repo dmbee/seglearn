@@ -35,7 +35,7 @@ using padding and truncation instead of sliding window segmentation.
     N segments in test:  35
     Accuracy score:  0.8285714285714286
 
-    <matplotlib.image.AxesImage object at 0x7fafeb981780>
+    <matplotlib.image.AxesImage object at 0x7f4c55d8d7f0>
 
 
 
@@ -93,7 +93,7 @@ using padding and truncation instead of sliding window segmentation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.180 seconds)
+   **Total running time of the script:** ( 0 minutes  0.201 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_padtrunc.py:

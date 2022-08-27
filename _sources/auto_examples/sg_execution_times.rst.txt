@@ -5,32 +5,32 @@
 
 Computation times
 =================
-**01:11.797** total execution time for **auto_examples** files:
+**01:13.720** total execution time for **auto_examples** files:
 
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_model_selection2.py` (``plot_model_selection2.py``)               | 00:28.133 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_model_selection2.py` (``plot_model_selection2.py``)               | 00:27.853 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_scoring.py` (``plot_scoring.py``)                                 | 00:12.079 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_scoring.py` (``plot_scoring.py``)                                 | 00:12.474 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_model_selection1.py` (``plot_model_selection1.py``)               | 00:08.062 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_model_selection1.py` (``plot_model_selection1.py``)               | 00:08.050 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_interp.py` (``plot_interp.py``)                                   | 00:07.244 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_segment_rep.py` (``plot_segment_rep.py``)                         | 00:07.691 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_segment_rep.py` (``plot_segment_rep.py``)                         | 00:05.069 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_interp.py` (``plot_interp.py``)                                   | 00:07.292 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py` (``plot_nn_training_curves.py``)           | 00:04.053 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_nn_training_curves.py` (``plot_nn_training_curves.py``)           | 00:03.716 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_feature_rep.py` (``plot_feature_rep.py``)                         | 00:03.504 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_feature_rep.py` (``plot_feature_rep.py``)                         | 00:03.483 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_feature_rep_mix_example.py` (``plot_feature_rep_mix_example.py``) | 00:02.391 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_feature_rep_mix_example.py` (``plot_feature_rep_mix_example.py``) | 00:01.887 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_lda.py` (``plot_lda.py``)                                         | 00:00.708 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_lda.py` (``plot_lda.py``)                                         | 00:00.697 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_watchdata.py` (``plot_watchdata.py``)                             | 00:00.211 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_watchdata.py` (``plot_watchdata.py``)                             | 00:00.209 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_padtrunc.py` (``plot_padtrunc.py``)                               | 00:00.180 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_padtrunc.py` (``plot_padtrunc.py``)                               | 00:00.201 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_forecast.py` (``plot_forecast.py``)                               | 00:00.090 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_forecast.py` (``plot_forecast.py``)                               | 00:00.089 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_auto_examples_plot_regression.py` (``plot_regression.py``)                           | 00:00.075 | 0.0 MB |
+| :ref:`sphx_glr_auto_examples_plot_regression.py` (``plot_regression.py``)                           | 00:00.077 | 0.0 MB |
 +-----------------------------------------------------------------------------------------------------+-----------+--------+
